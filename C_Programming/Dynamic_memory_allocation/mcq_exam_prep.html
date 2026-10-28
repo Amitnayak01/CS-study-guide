@@ -1,0 +1,3484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "What is a run-time environment?",
+    "options": [
+      "The environment in which a program executes and its memory requirements are handled during execution",
+      "The environment used only to compile the source code",
+      "The environment used only to write the program code",
+      "The environment used only for debugging syntax errors"
+    ],
+    "answer": "A",
+    "explanation": "A run-time environment refers to the environment in which a program actually runs, where memory and resources are managed during execution."
+  },
+  {
+    "id": 2,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "The term “dynamic” in a dynamic environment refers to:",
+    "options": [
+      "Memory requirements fixed permanently before compilation",
+      "Variables that cannot be changed once declared",
+      "Memory requirements that can change or be decided while the program is running",
+      "Functions that execute only once during compilation"
+    ],
+    "answer": "C",
+    "explanation": "“Dynamic” means memory needs are determined and can change during program execution, not fixed in advance."
+  },
+  {
+    "id": 3,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "A run-time environment comes into existence:",
+    "options": [
+      "When the source code is written",
+      "When the program is compiled",
+      "When the program starts executing",
+      "When the program is saved to disk"
+    ],
+    "answer": "C",
+    "explanation": "The run-time environment exists only while the program is actually executing, not during writing or compiling."
+  },
+  {
+    "id": 4,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "How does compile-time memory allocation differ from run-time memory allocation?",
+    "options": [
+      "Compile-time allocation is decided after execution ends",
+      "Compile-time allocation fixes memory size before execution, while run-time allocation decides memory size during execution",
+      "Run-time allocation is always fixed and cannot change",
+      "Both are decided at the same stage of the program"
+    ],
+    "answer": "B",
+    "explanation": "Compile-time memory is fixed before the program runs, whereas run-time memory is decided dynamically as the program executes."
+  },
+  {
+    "id": 5,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "A program asks the user to enter the number of students and then needs to store their marks. Why is a dynamic environment useful here?",
+    "options": [
+      "Because compile-time memory is always sufficient",
+      "Because the exact memory required is known only at run time based on user input",
+      "Because arrays cannot store marks",
+      "Because dynamic environments do not need memory"
+    ],
+    "answer": "B",
+    "explanation": "Since the number of students is unknown until the user enters it, memory must be allocated at run time."
+  },
+  {
+    "id": 6,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "What creates the need for dynamic memory allocation?",
+    "options": [
+      "Memory requirements that never change",
+      "The need to reduce the size of the source code",
+      "The need to avoid using variables",
+      "Memory requirements that are unknown at compile time"
+    ],
+    "answer": "D",
+    "explanation": "When memory requirements cannot be determined in advance, dynamic memory allocation is needed to allocate memory at run time."
+  },
+  {
+    "id": 7,
+    "level": "Intermediate",
+    "type": "Limitation of Static Memory",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "What is a major drawback of using fixed-size (static) memory allocation when data size is unpredictable?",
+    "options": [
+      "It always allocates exactly the right amount of memory",
+      "It automatically adjusts memory size at run time",
+      "It removes the need for a run-time environment",
+      "It may waste memory or fail to accommodate all the required data"
+    ],
+    "answer": "D",
+    "explanation": "Fixed-size allocation can either waste memory (if oversized) or be insufficient (if undersized) when the actual data size varies."
+  },
+  {
+    "id": 8,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "In a dynamic environment, memory management decisions such as how much memory to allocate are made:",
+    "options": [
+      "During program execution",
+      "Before the program is written",
+      "During compilation only",
+      "After the program is deleted"
+    ],
+    "answer": "A",
+    "explanation": "A dynamic environment makes memory-related decisions while the program is actually running."
+  },
+  {
+    "id": 9,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "The __________ is the memory area typically used for memory that is allocated during program execution.",
+    "options": [
+      "stack",
+      "heap",
+      "register",
+      "code segment"
+    ],
+    "answer": "B",
+    "explanation": "Dynamically allocated memory in C is taken from the heap, unlike local variables which use the stack."
+  },
+  {
+    "id": 10,
+    "level": "Intermediate",
+    "type": "Statement Based",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Which statement about a run-time environment is correct?",
+    "options": [
+      "It allows a program to allocate memory only before it starts running",
+      "It prevents a program from using any memory during execution",
+      "It is identical to the compile-time environment",
+      "It allows a program to allocate memory based on conditions known only while running"
+    ],
+    "answer": "D",
+    "explanation": "The run-time environment supports allocation decisions that depend on conditions discovered only during execution."
+  },
+  {
+    "id": 11,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Which of these is an example of a run-time memory requirement?",
+    "options": [
+      "The number of array elements is decided based on user input during execution",
+      "The size of an int variable as defined by the C standard",
+      "The name of the source code file",
+      "The total number of lines in the compiled program"
+    ],
+    "answer": "A",
+    "explanation": "When array size depends on input received while the program runs, it is a run-time memory requirement."
+  },
+  {
+    "id": 12,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Compile-time memory allocation is best described as:",
+    "options": [
+      "Memory whose size is decided only after the program finishes running",
+      "Memory that is allocated using malloc()",
+      "Memory that changes size while the program runs",
+      "Memory whose size is fixed and known before the program executes"
+    ],
+    "answer": "D",
+    "explanation": "Compile-time allocation fixes the memory size in advance, before execution begins."
+  },
+  {
+    "id": 13,
+    "level": "Intermediate",
+    "type": "Assertion-Reason",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Assertion (A): Dynamic memory allocation is performed at run time.\nReason (R): Functions like malloc() are executed while the program is running, not during compilation.",
+    "options": [
+      "A is true but R is false",
+      "A is false but R is true",
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are false"
+    ],
+    "answer": "C",
+    "explanation": "Dynamic allocation happens at run time because functions like malloc() execute during program execution, which correctly explains the assertion."
+  },
+  {
+    "id": 14,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Which environment is directly concerned with how a program behaves and uses memory while it is running?",
+    "options": [
+      "Editing environment",
+      "Compilation environment",
+      "Run-time environment",
+      "Documentation environment"
+    ],
+    "answer": "C",
+    "explanation": "The run-time environment governs a program's behavior and memory usage during actual execution."
+  },
+  {
+    "id": 15,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Why can't all memory requirements always be decided at compile time?",
+    "options": [
+      "Because some requirements, such as user input size, are known only when the program runs",
+      "Because compilers cannot allocate any memory",
+      "Because compile-time memory is always unlimited",
+      "Because C does not support compile-time memory allocation"
+    ],
+    "answer": "A",
+    "explanation": "Certain data (like user input) is unknown until run time, so memory for it cannot be fixed at compile time."
+  },
+  {
+    "id": 16,
+    "level": "Intermediate",
+    "type": "Statement Based",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Which of the following best supports the need for a dynamic environment in programming?",
+    "options": [
+      "Programs often need to handle data whose exact size is not known in advance",
+      "Programs never need more memory than declared at compile time",
+      "All programs use a fixed amount of memory regardless of input",
+      "Compile-time allocation is always more efficient than run-time allocation"
+    ],
+    "answer": "A",
+    "explanation": "A dynamic environment is needed because many programs must handle data sizes that are unknown until run time."
+  },
+  {
+    "id": 17,
+    "level": "Intermediate",
+    "type": "Match the Following",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Match the type of memory allocation with its correct timing:\n1. Static allocation   2. Dynamic allocation\nA. Decided before program runs   B. Decided while the program runs",
+    "options": [
+      "1-B, 2-A",
+      "1-A, 2-B",
+      "Both 1 and 2 match with A",
+      "Both 1 and 2 match with B"
+    ],
+    "answer": "B",
+    "explanation": "Static allocation size is fixed before execution (compile time), while dynamic allocation size is decided during execution (run time)."
+  },
+  {
+    "id": 18,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "A key characteristic of a run-time environment is that it:",
+    "options": [
+      "Never changes once the program starts",
+      "Only manages the compilation process",
+      "Cannot use functions like malloc() or free()",
+      "Can adapt memory usage based on conditions occurring during execution"
+    ],
+    "answer": "D",
+    "explanation": "The run-time environment is adaptive, allowing memory usage to change according to conditions that arise during execution."
+  },
+  {
+    "id": 19,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Which of the following is decided only at run time and NOT at compile time?",
+    "options": [
+      "The exact amount of memory to allocate for user-entered data",
+      "The size of the int data type",
+      "The syntax rules of the C language",
+      "The number of keywords in C"
+    ],
+    "answer": "A",
+    "explanation": "The int size and language syntax are fixed by the compiler/standard, but memory needed for user-entered data is determined at run time."
+  },
+  {
+    "id": 20,
+    "level": "Intermediate",
+    "type": "Application Based",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "A program must store an unknown number of employee records provided during execution. Which type of memory allocation environment is required?",
+    "options": [
+      "Static (compile-time) memory allocation only",
+      "Dynamic (run-time) memory allocation",
+      "No memory allocation is required",
+      "Allocation decided before the program is written"
+    ],
+    "answer": "B",
+    "explanation": "Since the number of records is unknown until execution, a dynamic environment using run-time allocation is required."
+  },
+  {
+    "id": 21,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Which statement correctly distinguishes dynamic environment from static environment?",
+    "options": [
+      "Both environments make decisions only after the program ends",
+      "A static environment allocates memory only using malloc()",
+      "In a dynamic environment, memory decisions are made during execution; in a static environment, they are fixed beforehand",
+      "A dynamic environment never uses memory at all"
+    ],
+    "answer": "C",
+    "explanation": "The core distinction is timing: dynamic environments decide memory usage during execution, static environments fix it earlier."
+  },
+  {
+    "id": 22,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "The need for a dynamic environment mainly arises due to:",
+    "options": [
+      "The need to reduce compiler errors",
+      "Variability in data size that is only known during program execution",
+      "The need to increase source code readability",
+      "The requirement to avoid using variables in a program"
+    ],
+    "answer": "B",
+    "explanation": "Data whose size varies and is known only at run time creates the need for a dynamic environment."
+  },
+  {
+    "id": 23,
+    "level": "Intermediate",
+    "type": "Statement Based",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Which of the following is true regarding compile-time memory requirements?",
+    "options": [
+      "They are determined before the program starts executing",
+      "They are determined after the program finishes executing",
+      "They always exceed run-time memory requirements",
+      "They are irrelevant to program execution"
+    ],
+    "answer": "A",
+    "explanation": "Compile-time requirements are fixed and known before execution starts."
+  },
+  {
+    "id": 24,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "In the context of a dynamic environment, “run time” refers to:",
+    "options": [
+      "The period during which the source code is being typed",
+      "The period during which the program is actually executing",
+      "The period during which the compiler checks for syntax errors",
+      "The period before the program is written"
+    ],
+    "answer": "B",
+    "explanation": "Run time is the period when the program is actively executing instructions."
+  },
+  {
+    "id": 25,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Programs that need to allocate memory based on values entered by the user require a __________ environment.",
+    "options": [
+      "static",
+      "dynamic (run-time)",
+      "compile-time only",
+      "syntax-checking"
+    ],
+    "answer": "B",
+    "explanation": "Since the memory requirement depends on user input, it can only be resolved in a dynamic (run-time) environment."
+  },
+  {
+    "id": 26,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Which of these best explains why static arrays are sometimes inefficient?",
+    "options": [
+      "Their fixed size may either waste memory or be insufficient for actual data needs",
+      "They always allocate the exact amount of memory needed",
+      "They automatically resize during execution",
+      "They are stored outside the memory of the program"
+    ],
+    "answer": "A",
+    "explanation": "Static arrays have a size fixed at compile time, which can lead to wasted or insufficient memory depending on actual data."
+  },
+  {
+    "id": 27,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Which of the following scenarios does NOT require a dynamic environment?",
+    "options": [
+      "Declaring a fixed-size array of 10 integers whose size never changes",
+      "Allocating memory for a number of records entered by the user",
+      "Allocating memory whose size depends on a value read during execution",
+      "Allocating memory for data whose quantity is unknown until run time"
+    ],
+    "answer": "A",
+    "explanation": "A fixed-size array with a size that never changes can be handled with compile-time (static) allocation; the others require a dynamic environment."
+  },
+  {
+    "id": 28,
+    "level": "Intermediate",
+    "type": "Statement Based",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Which statement is correct about the relationship between run-time environment and memory management?",
+    "options": [
+      "The run-time environment has no role in memory management",
+      "The run-time environment provides the basis for managing memory dynamically during execution",
+      "Memory management occurs only at compile time in C",
+      "The run-time environment prevents memory allocation altogether"
+    ],
+    "answer": "B",
+    "explanation": "The run-time environment is what makes dynamic memory management possible, since allocation decisions occur while the program runs."
+  },
+  {
+    "id": 29,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Why is understanding the run-time environment important before learning dynamic memory management in C?",
+    "options": [
+      "Because malloc() and free() operate only during compilation",
+      "Because run-time concepts are unrelated to memory functions",
+      "Because the run-time environment only affects variable naming",
+      "Because dynamic memory functions like malloc() and free() operate during run time"
+    ],
+    "answer": "D",
+    "explanation": "Since malloc() and free() work while the program executes, understanding the run-time environment is essential to understanding them."
+  },
+  {
+    "id": 30,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Dynamic Environment as Run-Time Environment",
+    "question": "Which best summarizes the concept of a “dynamic environment as a run-time environment”?",
+    "options": [
+      "An environment where memory allocation and related decisions are handled while the program executes",
+      "An environment where all memory is allocated before the program starts",
+      "An environment used only for writing pseudocode",
+      "An environment that eliminates the need for memory altogether"
+    ],
+    "answer": "A",
+    "explanation": "The dynamic environment is essentially the run-time environment in which memory allocation decisions happen during execution."
+  },
+  {
+    "id": 31,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Dynamic Memory Management",
+    "question": "What is dynamic memory management?",
+    "options": [
+      "The process of allocating and releasing memory during program execution as needed",
+      "The process of allocating memory only before compilation",
+      "The process of permanently reserving memory that can never be released",
+      "The process of managing only static/global variables"
+    ],
+    "answer": "A",
+    "explanation": "Dynamic memory management involves allocating memory when needed and releasing it during program execution."
+  },
+  {
+    "id": 32,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Dynamic Memory Management",
+    "question": "What is the main purpose of dynamic memory management?",
+    "options": [
+      "To permanently allocate maximum memory at program start",
+      "To prevent a program from using any memory",
+      "To efficiently allocate memory only when it is required and release it when no longer needed",
+      "To allocate memory only for global variables"
+    ],
+    "answer": "C",
+    "explanation": "Its purpose is efficient use of memory by allocating on demand and freeing memory once it is no longer needed."
+  },
+  {
+    "id": 33,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Dynamic Memory Management",
+    "question": "When is memory allocated in dynamic memory management?",
+    "options": [
+      "Before the program is compiled",
+      "Only when the program is written",
+      "During program execution, when the need arises",
+      "After the program has finished executing"
+    ],
+    "answer": "C",
+    "explanation": "Dynamic memory is allocated at run time, exactly when the program needs it."
+  },
+  {
+    "id": 34,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Dynamic Memory Management",
+    "question": "When should dynamically allocated memory be deallocated?",
+    "options": [
+      "Immediately after it is allocated, regardless of use",
+      "When it is no longer needed by the program",
+      "Only when the computer is restarted",
+      "Only if the program never uses it"
+    ],
+    "answer": "B",
+    "explanation": "Memory should be released once its purpose is served, to avoid wasting resources."
+  },
+  {
+    "id": 35,
+    "level": "Intermediate",
+    "type": "Advantage",
+    "topic": "Dynamic Memory Management",
+    "question": "Which of the following is an advantage of dynamic memory management?",
+    "options": [
+      "It removes the need for any memory during execution",
+      "Memory is used more efficiently, since it is allocated only as required",
+      "It guarantees the program cannot have errors",
+      "It eliminates the use of pointers entirely"
+    ],
+    "answer": "B",
+    "explanation": "One key advantage is efficient use of memory since allocation matches actual need."
+  },
+  {
+    "id": 36,
+    "level": "Intermediate",
+    "type": "Advantage",
+    "topic": "Dynamic Memory Management",
+    "question": "Dynamic memory management is particularly useful when:",
+    "options": [
+      "The amount of memory needed is always fixed and known in advance",
+      "The program does not use any variables",
+      "The amount of memory needed is not known until the program runs",
+      "The program is very small and simple"
+    ],
+    "answer": "C",
+    "explanation": "It is most beneficial when memory requirements vary and are determined during execution."
+  },
+  {
+    "id": 37,
+    "level": "Intermediate",
+    "type": "Limitation",
+    "topic": "Dynamic Memory Management",
+    "question": "What is a common limitation of dynamic memory management in C?",
+    "options": [
+      "Memory is automatically freed by the compiler",
+      "It cannot be used with pointers",
+      "It works only with global variables",
+      "The programmer must manually allocate and free memory, and forgetting to do so causes errors"
+    ],
+    "answer": "D",
+    "explanation": "Unlike some languages, C requires the programmer to manually manage memory, which can lead to memory leaks or errors if done incorrectly."
+  },
+  {
+    "id": 38,
+    "level": "Intermediate",
+    "type": "Limitation",
+    "topic": "Dynamic Memory Management",
+    "question": "What problem can occur if dynamically allocated memory is never freed?",
+    "options": [
+      "The program automatically frees it after 10 seconds",
+      "The compiler reports a syntax error",
+      "Memory leak, where unused memory remains reserved and unavailable for reuse",
+      "The variable is deleted from the source code"
+    ],
+    "answer": "C",
+    "explanation": "Not freeing memory that is no longer needed causes a memory leak, wasting available memory."
+  },
+  {
+    "id": 39,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Dynamic Memory Management",
+    "question": "In C, from which region of memory is dynamically allocated memory typically obtained?",
+    "options": [
+      "Heap",
+      "Stack",
+      "CPU registers",
+      "Code (text) segment"
+    ],
+    "answer": "A",
+    "explanation": "Dynamically allocated memory in C comes from the heap, managed using functions like malloc()."
+  },
+  {
+    "id": 40,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Dynamic Memory Management",
+    "question": "Which header file must be included in a C program to use dynamic memory management functions?",
+    "options": [
+      "stdio.h",
+      "string.h",
+      "math.h",
+      "stdlib.h"
+    ],
+    "answer": "D",
+    "explanation": "Functions such as malloc() and free() are declared in the stdlib.h header file."
+  },
+  {
+    "id": 41,
+    "level": "Intermediate",
+    "type": "Statement Based",
+    "topic": "Dynamic Memory Management",
+    "question": "Which of the following statements about dynamic memory management is correct?",
+    "options": [
+      "It removes all responsibility for memory handling from the programmer",
+      "It only works with arrays of fixed size",
+      "It cannot be used in C programs",
+      "It gives the programmer control over allocating and releasing memory during execution"
+    ],
+    "answer": "D",
+    "explanation": "Dynamic memory management allows the programmer to explicitly control when memory is allocated and released."
+  },
+  {
+    "id": 42,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Dynamic Memory Management",
+    "question": "A program needs to store data whose size depends on a value entered by the user at run time. What is the most suitable approach?",
+    "options": [
+      "Use dynamic memory management to allocate memory based on the user's input",
+      "Always declare the largest possible fixed-size array",
+      "Avoid storing the data altogether",
+      "Use only compile-time constants"
+    ],
+    "answer": "A",
+    "explanation": "Dynamic memory management allows memory to be allocated exactly according to the run-time requirement."
+  },
+  {
+    "id": 43,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "Dynamic Memory Management",
+    "question": "Memory that is allocated and released during the execution of a program is known as __________ memory.",
+    "options": [
+      "static",
+      "global",
+      "constant",
+      "dynamic"
+    ],
+    "answer": "D",
+    "explanation": "Memory handled during execution through allocation and deallocation is called dynamic memory."
+  },
+  {
+    "id": 44,
+    "level": "Intermediate",
+    "type": "Assertion-Reason",
+    "topic": "Dynamic Memory Management",
+    "question": "Assertion (A): Dynamic memory management improves memory utilization.\nReason (R): Memory is allocated only when required and released after use.",
+    "options": [
+      "Both A and R are true, and R correctly explains A",
+      "A is true but R is false",
+      "A is false but R is true",
+      "Both A and R are false"
+    ],
+    "answer": "A",
+    "explanation": "Allocating memory only when needed and releasing it after use directly leads to better memory utilization, so R correctly explains A."
+  },
+  {
+    "id": 45,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Dynamic Memory Management",
+    "question": "How does dynamic memory differ from static memory in terms of allocation timing?",
+    "options": [
+      "Dynamic memory is fixed at compile time, while static memory changes during execution",
+      "Both are allocated at exactly the same time",
+      "Neither is related to program execution",
+      "Dynamic memory is allocated and released during execution, while static memory is fixed at compile time"
+    ],
+    "answer": "D",
+    "explanation": "Dynamic memory allocation and deallocation happen at run time, unlike static memory which is fixed before execution."
+  },
+  {
+    "id": 46,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Dynamic Memory Management",
+    "question": "What must a programmer typically do after finishing use of dynamically allocated memory in C?",
+    "options": [
+      "Do nothing, as C automatically frees all memory",
+      "Restart the program",
+      "Recompile the program",
+      "Explicitly free the memory using free()"
+    ],
+    "answer": "D",
+    "explanation": "In C, the programmer must explicitly release dynamically allocated memory using free() when it is no longer needed."
+  },
+  {
+    "id": 47,
+    "level": "Intermediate",
+    "type": "Statement Based",
+    "topic": "Dynamic Memory Management",
+    "question": "Which of the following is NOT true about dynamic memory management?",
+    "options": [
+      "It allows memory to be allocated based on run-time needs",
+      "It automatically deallocates memory without any action from the programmer in C",
+      "It requires the use of functions such as malloc() and free()",
+      "It can lead to memory leaks if not handled carefully"
+    ],
+    "answer": "B",
+    "explanation": "In C, memory is not automatically deallocated; the programmer must call free() explicitly, making this statement false."
+  },
+  {
+    "id": 48,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Dynamic Memory Management",
+    "question": "Which of the following best describes the core operations involved in dynamic memory management?",
+    "options": [
+      "Compiling the program and linking libraries",
+      "Allocating memory when needed and deallocating it when no longer required",
+      "Declaring global variables and constants",
+      "Writing comments and documentation"
+    ],
+    "answer": "B",
+    "explanation": "The two core operations are allocation (getting memory) and deallocation (releasing memory)."
+  },
+  {
+    "id": 49,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Dynamic Memory Management",
+    "question": "Which situation illustrates a limitation of dynamic memory management rather than an advantage?",
+    "options": [
+      "Memory is allocated exactly according to run-time needs",
+      "Memory usage adapts to varying data sizes",
+      "A programmer forgets to release memory, resulting in wasted memory during program execution",
+      "Unused memory can be released back for reuse"
+    ],
+    "answer": "C",
+    "explanation": "Forgetting to release memory shows the risk/limitation of manual dynamic memory management, unlike its advantages of flexibility and efficiency."
+  },
+  {
+    "id": 50,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Dynamic Memory Management",
+    "question": "Why might a program using only static memory fail when handling large, unpredictable amounts of user data?",
+    "options": [
+      "Because static memory can always resize itself automatically",
+      "Because static memory has a fixed size decided in advance and cannot adjust to unexpected data sizes",
+      "Because static memory is stored on the heap",
+      "Because static memory does not exist in C"
+    ],
+    "answer": "B",
+    "explanation": "Static memory size cannot change during execution, so it may be insufficient for unpredictable, large data."
+  },
+  {
+    "id": 51,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Dynamic Memory Management",
+    "question": "Dynamic memory management primarily helps programs to:",
+    "options": [
+      "Avoid using any pointers in the program",
+      "Use memory efficiently according to actual run-time requirements",
+      "Increase the size of the source code",
+      "Prevent the program from compiling"
+    ],
+    "answer": "B",
+    "explanation": "It enables efficient memory use tailored to what is actually needed while the program executes."
+  },
+  {
+    "id": 52,
+    "level": "Intermediate",
+    "type": "Statement Based",
+    "topic": "Dynamic Memory Management",
+    "question": "Which of the following correctly relates dynamic memory management to the run-time environment?",
+    "options": [
+      "Dynamic memory management has no connection to the run-time environment",
+      "Dynamic memory management occurs before the run-time environment exists",
+      "The run-time environment prevents dynamic memory management",
+      "Dynamic memory management operates within the run-time environment, since allocation and deallocation happen during execution"
+    ],
+    "answer": "D",
+    "explanation": "Since allocation and deallocation happen while the program runs, dynamic memory management is part of the run-time environment."
+  },
+  {
+    "id": 53,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Dynamic Memory Management",
+    "question": "Which of the following is a correct statement about dynamically allocated memory that is not freed before a program terminates normally on most modern operating systems?",
+    "options": [
+      "The memory remains permanently lost even after the process ends",
+      "The memory is automatically compacted into the stack",
+      "The operating system reclaims the memory when the process ends, but relying on this is considered poor programming practice",
+      "The C compiler prevents the program from terminating"
+    ],
+    "answer": "C",
+    "explanation": "While most operating systems reclaim memory after a process ends, it is still good practice to explicitly free memory to avoid leaks during execution."
+  },
+  {
+    "id": 54,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Dynamic Memory Management",
+    "question": "Which of these is a typical advantage of dynamic over static memory allocation?",
+    "options": [
+      "It never requires any function calls",
+      "It uses less code than static allocation in every case",
+      "It allows memory size to be decided based on actual run-time requirements",
+      "It eliminates the need for a run-time environment"
+    ],
+    "answer": "C",
+    "explanation": "Dynamic allocation's key advantage is flexibility — the size can match the real, run-time need."
+  },
+  {
+    "id": 55,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Dynamic Memory Management",
+    "question": "In dynamic memory management, “deallocation” refers to:",
+    "options": [
+      "Releasing previously allocated memory so it can be reused",
+      "Allocating new memory for a variable",
+      "Declaring a variable at compile time",
+      "Compiling the program without errors"
+    ],
+    "answer": "A",
+    "explanation": "Deallocation means giving back memory that was previously allocated so it becomes available again."
+  },
+  {
+    "id": 56,
+    "level": "Intermediate",
+    "type": "Statement Based",
+    "topic": "Dynamic Memory Management",
+    "question": "Which statement best reflects a limitation of manual dynamic memory management in C?",
+    "options": [
+      "The programming language automatically manages all memory perfectly",
+      "There is no risk of errors when using dynamic memory",
+      "Dynamic memory management cannot be used with functions",
+      "The programmer is responsible for correctly allocating and freeing memory, and mistakes can cause errors"
+    ],
+    "answer": "D",
+    "explanation": "In C, manual memory management places responsibility on the programmer, and mistakes can lead to problems like leaks or invalid access."
+  },
+  {
+    "id": 57,
+    "level": "Intermediate",
+    "type": "Application Based",
+    "topic": "Dynamic Memory Management",
+    "question": "Which scenario best demonstrates proper dynamic memory management?",
+    "options": [
+      "Allocating memory once and never using or freeing it",
+      "Freeing memory before allocating it",
+      "Allocating memory for data needed, using it, and then freeing it once it is no longer required",
+      "Allocating memory repeatedly without ever using it"
+    ],
+    "answer": "C",
+    "explanation": "Proper dynamic memory management involves allocation, appropriate use, and timely deallocation."
+  },
+  {
+    "id": 58,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "Dynamic Memory Management",
+    "question": "Failing to release memory that is no longer needed can result in a __________.",
+    "options": [
+      "compilation error",
+      "syntax warning",
+      "stack overflow only",
+      "memory leak"
+    ],
+    "answer": "D",
+    "explanation": "Unused memory that is never freed accumulates and causes a memory leak."
+  },
+  {
+    "id": 59,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Dynamic Memory Management",
+    "question": "Which pair of operations forms the foundation of dynamic memory management?",
+    "options": [
+      "Compilation and linking",
+      "Allocation and deallocation",
+      "Declaration and initialization only",
+      "Input and output"
+    ],
+    "answer": "B",
+    "explanation": "Dynamic memory management is fundamentally about allocating memory when needed and deallocating it when done."
+  },
+  {
+    "id": 60,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Dynamic Memory Management",
+    "question": "Why is dynamic memory management considered essential in programs handling variable-sized data?",
+    "options": [
+      "Because it forces the program to always use the maximum possible memory",
+      "Because it lets the program request only as much memory as is actually needed at run time",
+      "Because it removes the need for any memory at all",
+      "Because it only works with fixed-size data"
+    ],
+    "answer": "B",
+    "explanation": "Its core benefit is matching memory allocation to the real, variable needs discovered during execution."
+  },
+  {
+    "id": 61,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "The malloc() Function",
+    "question": "What is the purpose of the malloc() function in C?",
+    "options": [
+      "To release previously allocated memory",
+      "To print formatted output to the console",
+      "To dynamically allocate a specified number of bytes of memory during program execution",
+      "To compare two strings"
+    ],
+    "answer": "C",
+    "explanation": "malloc() is used to dynamically allocate a block of memory of a given size during program execution."
+  },
+  {
+    "id": 62,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "The malloc() Function",
+    "question": "Which header file must be included to use malloc()?",
+    "options": [
+      "stdio.h",
+      "conio.h",
+      "string.h",
+      "stdlib.h"
+    ],
+    "answer": "D",
+    "explanation": "malloc() is declared in the stdlib.h header file."
+  },
+  {
+    "id": 63,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "The malloc() Function",
+    "question": "What is the general syntax for calling malloc()?",
+    "options": [
+      "ptr = (cast_type*) malloc(size_in_bytes);",
+      "ptr = malloc[size_in_bytes];",
+      "malloc(ptr, size_in_bytes);",
+      "ptr = malloc.size(size_in_bytes);"
+    ],
+    "answer": "A",
+    "explanation": "malloc() is called as malloc(size), with the returned pointer typically cast to the required pointer type."
+  },
+  {
+    "id": 64,
+    "level": "Basic",
+    "type": "Argument",
+    "topic": "The malloc() Function",
+    "question": "What does the argument passed to malloc() represent?",
+    "options": [
+      "The number of variables to declare",
+      "The number of bytes of memory to allocate",
+      "The name of the variable being allocated",
+      "The data type of the pointer"
+    ],
+    "answer": "B",
+    "explanation": "malloc() takes a single argument specifying the number of bytes to allocate."
+  },
+  {
+    "id": 65,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "The malloc() Function",
+    "question": "What does malloc() return on successful allocation?",
+    "options": [
+      "The exact value stored in the allocated memory",
+      "A pointer to the first byte of the allocated memory block",
+      "An integer representing the memory address as a number",
+      "The size of memory allocated"
+    ],
+    "answer": "B",
+    "explanation": "On success, malloc() returns a pointer (of type void*) pointing to the beginning of the allocated block."
+  },
+  {
+    "id": 66,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "The malloc() Function",
+    "question": "What is the data type of the pointer returned by malloc()?",
+    "options": [
+      "int* only",
+      "char* only",
+      "void*",
+      "float* only"
+    ],
+    "answer": "C",
+    "explanation": "malloc() returns a generic pointer of type void*, which can be assigned to any pointer type."
+  },
+  {
+    "id": 67,
+    "level": "Basic",
+    "type": "Failure Case",
+    "topic": "The malloc() Function",
+    "question": "What does malloc() return if it fails to allocate the requested memory?",
+    "options": [
+      "NULL",
+      "0.0",
+      "-1",
+      "An uninitialized pointer with garbage value"
+    ],
+    "answer": "A",
+    "explanation": "If malloc() cannot allocate the requested memory, it returns NULL."
+  },
+  {
+    "id": 68,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "The malloc() Function",
+    "question": "Why might malloc() fail to allocate memory?",
+    "options": [
+      "If the program has too few variables",
+      "If the source code has comments",
+      "If there is not enough free memory available in the heap",
+      "If the compiler is outdated"
+    ],
+    "answer": "C",
+    "explanation": "malloc() fails when the system does not have enough available memory to satisfy the request."
+  },
+  {
+    "id": 69,
+    "level": "Intermediate",
+    "type": "Best Practice",
+    "topic": "The malloc() Function",
+    "question": "After calling malloc(), what should a programmer always check?",
+    "options": [
+      "Whether the pointer's address is even or odd",
+      "Whether the pointer was declared as global",
+      "Whether the pointer's name starts with a letter",
+      "Whether the returned pointer is NULL, to detect allocation failure"
+    ],
+    "answer": "D",
+    "explanation": "Checking for NULL ensures the program can detect and handle failed memory allocation instead of crashing."
+  },
+  {
+    "id": 70,
+    "level": "Intermediate",
+    "type": "Size Calculation",
+    "topic": "The malloc() Function",
+    "question": "When allocating memory for an array of 10 integers using malloc(), which expression correctly calculates the required size?",
+    "options": [
+      "sizeof(10)",
+      "10 * sizeof(int)",
+      "10 + sizeof(int)",
+      "sizeof(int) / 10"
+    ],
+    "answer": "B",
+    "explanation": "The number of elements multiplied by the size of one element gives the total bytes needed."
+  },
+  {
+    "id": 71,
+    "level": "Intermediate",
+    "type": "Code Snippet",
+    "topic": "The malloc() Function",
+    "question": "What does the following statement do?\nint *p = (int*) malloc(5 * sizeof(int));",
+    "options": [
+      "Allocates memory for 5 characters only",
+      "Declares 5 separate integer variables named p",
+      "Frees memory pointed to by p",
+      "Allocates memory for 5 integers and stores the starting address in pointer p"
+    ],
+    "answer": "D",
+    "explanation": "This allocates space for 5 integers (5 * sizeof(int) bytes) and assigns the address to p."
+  },
+  {
+    "id": 72,
+    "level": "Intermediate",
+    "type": "Casting",
+    "topic": "The malloc() Function",
+    "question": "Why is the return value of malloc() often cast to a specific pointer type, such as (int*)?",
+    "options": [
+      "To make the pointer type match the type of data it will point to, improving clarity",
+      "Because malloc() cannot compile without a cast in any C compiler",
+      "Because casting changes the amount of memory allocated",
+      "Because malloc() returns an int by default"
+    ],
+    "answer": "A",
+    "explanation": "Casting the void* return value clarifies the intended pointer type, though it is not strictly required in standard C."
+  },
+  {
+    "id": 73,
+    "level": "Advanced",
+    "type": "Casting / Tricky",
+    "topic": "The malloc() Function",
+    "question": "In standard C (not C++), is casting the return value of malloc() mandatory?",
+    "options": [
+      "Yes, the program will not compile without an explicit cast in C",
+      "Yes, malloc() only works with cast values",
+      "No, because void* is automatically converted to any pointer type in C",
+      "No, because malloc() does not return a pointer"
+    ],
+    "answer": "C",
+    "explanation": "In C, void* is implicitly convertible to other pointer types, so casting malloc()'s return value is optional, though commonly done for clarity."
+  },
+  {
+    "id": 74,
+    "level": "Intermediate",
+    "type": "Memory Content",
+    "topic": "The malloc() Function",
+    "question": "What is the initial content of memory allocated by malloc()?",
+    "options": [
+      "Automatically set to zero",
+      "Automatically set to the value 1",
+      "Filled with the string \"NULL\"",
+      "Uninitialized (contains garbage/indeterminate values)"
+    ],
+    "answer": "D",
+    "explanation": "malloc() does not initialize the allocated memory; it may contain leftover, indeterminate values."
+  },
+  {
+    "id": 75,
+    "level": "Intermediate",
+    "type": "Common Mistake",
+    "topic": "The malloc() Function",
+    "question": "What is a common mistake when using malloc()?",
+    "options": [
+      "Not checking whether the returned pointer is NULL before using it",
+      "Including stdlib.h before using malloc()",
+      "Passing the correct size in bytes to malloc()",
+      "Storing the returned pointer in a variable"
+    ],
+    "answer": "A",
+    "explanation": "Failing to check for NULL can cause the program to crash if allocation fails and the pointer is dereferenced."
+  },
+  {
+    "id": 76,
+    "level": "Intermediate",
+    "type": "Common Mistake",
+    "topic": "The malloc() Function",
+    "question": "What problem occurs if a program uses a pointer returned by a failed malloc() call without checking for NULL?",
+    "options": [
+      "The program automatically retries the allocation",
+      "The compiler generates an error before running",
+      "The pointer is automatically converted to a valid address",
+      "The program may crash or behave unpredictably due to dereferencing a NULL pointer"
+    ],
+    "answer": "D",
+    "explanation": "Dereferencing a NULL pointer leads to undefined behavior, often causing the program to crash."
+  },
+  {
+    "id": 77,
+    "level": "Intermediate",
+    "type": "Proper Use",
+    "topic": "The malloc() Function",
+    "question": "Which of the following is the correct way to allocate memory for a single integer using malloc()?",
+    "options": [
+      "int *p = malloc(int);",
+      "int p = malloc(sizeof(int));",
+      "int *p = malloc();",
+      "int *p = (int*) malloc(sizeof(int));"
+    ],
+    "answer": "D",
+    "explanation": "The correct usage passes sizeof(int) as the size argument and assigns the result to an integer pointer."
+  },
+  {
+    "id": 78,
+    "level": "Intermediate",
+    "type": "Output / Prediction",
+    "topic": "The malloc() Function",
+    "question": "What happens when the statement malloc(0) is executed?",
+    "options": [
+      "It always causes a compilation error",
+      "It always allocates exactly one byte of memory in every compiler",
+      "The behavior is implementation-defined; it may return NULL or a valid pointer that should not be dereferenced",
+      "It always crashes the program immediately"
+    ],
+    "answer": "C",
+    "explanation": "Calling malloc(0) has implementation-defined behavior according to the C standard."
+  },
+  {
+    "id": 79,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "The malloc() Function",
+    "question": "Which statement about malloc() and initialization is correct?",
+    "options": [
+      "malloc() always initializes memory to zero",
+      "malloc() initializes memory to the value of the pointer variable",
+      "malloc() allocates memory but does not initialize its contents",
+      "malloc() initializes memory only for integer pointers"
+    ],
+    "answer": "C",
+    "explanation": "Unlike some other allocation functions, malloc() leaves the allocated memory uninitialized."
+  },
+  {
+    "id": 80,
+    "level": "Intermediate",
+    "type": "Function Based",
+    "topic": "The malloc() Function",
+    "question": "Which function call correctly allocates memory for an array of 20 float elements?",
+    "options": [
+      "(float*) malloc(20)",
+      "(float*) malloc(sizeof(float))",
+      "(float*) malloc(float * 20)",
+      "(float*) malloc(20 * sizeof(float))"
+    ],
+    "answer": "D",
+    "explanation": "The total bytes required is the number of elements multiplied by the size of each float."
+  },
+  {
+    "id": 81,
+    "level": "Intermediate",
+    "type": "Error Identification",
+    "topic": "The malloc() Function",
+    "question": "Identify the error in the following statement:\nint *p = malloc(sizeof(int))",
+    "options": [
+      "malloc() cannot allocate memory for int pointers",
+      "sizeof(int) is invalid syntax",
+      "The pointer p is declared incorrectly",
+      "The statement is missing a semicolon at the end"
+    ],
+    "answer": "D",
+    "explanation": "Every C statement must end with a semicolon; this statement is otherwise syntactically valid."
+  },
+  {
+    "id": 82,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "The malloc() Function",
+    "question": "A program needs memory for storing 100 characters at run time. Which malloc() call is most appropriate?",
+    "options": [
+      "(char*) malloc(100 * sizeof(char))",
+      "(char*) malloc(100.0)",
+      "(char*) malloc()",
+      "(int*) malloc(char)"
+    ],
+    "answer": "A",
+    "explanation": "This correctly requests 100 bytes (since sizeof(char) is 1) for storing 100 characters."
+  },
+  {
+    "id": 83,
+    "level": "Intermediate",
+    "type": "Output / Prediction",
+    "topic": "The malloc() Function",
+    "question": "If malloc() successfully allocates memory, what value will the pointer variable hold?",
+    "options": [
+      "The value zero",
+      "The number of bytes allocated",
+      "The starting address of the allocated memory block",
+      "The value NULL"
+    ],
+    "answer": "C",
+    "explanation": "On success, the pointer holds the address where the allocated block begins."
+  },
+  {
+    "id": 84,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "The malloc() Function",
+    "question": "What is stored in the memory block allocated by malloc() before any values are assigned to it?",
+    "options": [
+      "Garbage (indeterminate) values left over from previous use of that memory",
+      "Always the value 0",
+      "Always the value -1",
+      "The address of the pointer itself"
+    ],
+    "answer": "A",
+    "explanation": "malloc() does not clear memory, so it may contain leftover data from earlier use."
+  },
+  {
+    "id": 85,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "The malloc() Function",
+    "question": "Why is malloc() useful in a program that reads an unknown number of values from the user?",
+    "options": [
+      "It automatically determines how many values the user will enter without any allocation",
+      "It prevents the user from entering more than 10 values",
+      "It removes the need to use pointers",
+      "It allows memory to be allocated for exactly the number of values needed, determined at run time"
+    ],
+    "answer": "D",
+    "explanation": "malloc() lets the program request memory sized according to run-time input, which is essential for unknown-size data."
+  },
+  {
+    "id": 86,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "The malloc() Function",
+    "question": "What happens if you call malloc() with a very large size that exceeds available memory?",
+    "options": [
+      "malloc() automatically allocates as much memory as is available",
+      "malloc() returns NULL, indicating that the allocation failed",
+      "The compiler stops the program from running",
+      "The operating system crashes"
+    ],
+    "answer": "B",
+    "explanation": "When the requested size cannot be satisfied, malloc() fails and returns NULL rather than allocating a lesser amount."
+  },
+  {
+    "id": 87,
+    "level": "Intermediate",
+    "type": "Statement Based",
+    "topic": "The malloc() Function",
+    "question": "Which of these correctly describes malloc()'s role in C?",
+    "options": [
+      "It reserves a contiguous block of memory of a specified size on the heap",
+      "It reserves memory on the stack for local variables",
+      "It compiles a C program into an executable",
+      "It declares a new function in the program"
+    ],
+    "answer": "A",
+    "explanation": "malloc() reserves a contiguous block of memory of the requested size from the heap."
+  },
+  {
+    "id": 88,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "The malloc() Function",
+    "question": "Which of the following differentiates malloc() from a normal variable declaration like int x;?",
+    "options": [
+      "malloc() always uses less memory than a normal declaration",
+      "malloc() allocates memory during execution, while a normal declaration allocates memory determined at compile time",
+      "A normal declaration also requires a size argument like malloc()",
+      "malloc() can only be used for character variables"
+    ],
+    "answer": "B",
+    "explanation": "malloc() defers memory allocation to run time, whereas a plain variable declaration is handled at compile time."
+  },
+  {
+    "id": 89,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "The malloc() Function",
+    "question": "The malloc() function takes __________ as its only argument.",
+    "options": [
+      "the name of the variable to store data in",
+      "the type of data to be stored",
+      "the initial value to be stored",
+      "the number of bytes to allocate"
+    ],
+    "answer": "D",
+    "explanation": "malloc() requires only the number of bytes to allocate; it has no knowledge of variable names or types."
+  },
+  {
+    "id": 90,
+    "level": "Intermediate",
+    "type": "Assertion-Reason",
+    "topic": "The malloc() Function",
+    "question": "Assertion (A): It is good practice to check the pointer returned by malloc() before using it.\nReason (R): malloc() may return NULL if memory allocation fails.",
+    "options": [
+      "A is true but R is false",
+      "A is false but R is true",
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are false"
+    ],
+    "answer": "C",
+    "explanation": "Checking for NULL is good practice precisely because malloc() can fail and return NULL, so R correctly explains A."
+  },
+  {
+    "id": 91,
+    "level": "Intermediate",
+    "type": "Program Tracing",
+    "topic": "The malloc() Function",
+    "question": "What is the output of the following code if malloc() succeeds?\nint *p = (int*) malloc(sizeof(int));\n*p = 25;\nprintf(\"%d\", *p);",
+    "options": [
+      "25",
+      "Garbage value",
+      "0",
+      "Compilation error"
+    ],
+    "answer": "A",
+    "explanation": "After allocation, the value 25 is stored at the location pointed to by p, so printing *p outputs 25."
+  },
+  {
+    "id": 92,
+    "level": "Intermediate",
+    "type": "Error Identification",
+    "topic": "The malloc() Function",
+    "question": "What is wrong with the following code?\nint *p;\n*p = 10;",
+    "options": [
+      "The variable p should have been declared as float",
+      "Memory for p was never allocated using malloc() before dereferencing it",
+      "The value 10 cannot be assigned to an integer pointer",
+      "printf() is missing from the code"
+    ],
+    "answer": "B",
+    "explanation": "Dereferencing an uninitialized pointer that was never allocated memory leads to undefined behavior."
+  },
+  {
+    "id": 93,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "The malloc() Function",
+    "question": "Which of the following best explains why malloc() is called a “dynamic” memory allocation function?",
+    "options": [
+      "Because it can only be called once in a program",
+      "Because it changes the value of existing variables automatically",
+      "Because it works only with dynamic-type variables in C",
+      "Because it allocates memory while the program is running, based on the size specified at that time"
+    ],
+    "answer": "D",
+    "explanation": "malloc() allocates memory at run time according to the size given, which is what makes it “dynamic”."
+  },
+  {
+    "id": 94,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "The malloc() Function",
+    "question": "How many arguments does the malloc() function accept?",
+    "options": [
+      "Two (size and type)",
+      "One (the size in bytes)",
+      "Three (size, type, and initial value)",
+      "Zero"
+    ],
+    "answer": "B",
+    "explanation": "malloc() accepts a single argument representing the number of bytes to allocate."
+  },
+  {
+    "id": 95,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "The malloc() Function",
+    "question": "Consider: char *str = (char*) malloc(10);. What does this statement allocate?",
+    "options": [
+      "10 characters of memory that automatically includes an extra null terminator beyond the 10 bytes",
+      "10 bytes of memory, enough to store a string of up to 9 characters plus a null terminator",
+      "10 integers of memory",
+      "Memory for exactly 10 pointers"
+    ],
+    "answer": "B",
+    "explanation": "malloc(10) allocates 10 bytes; since sizeof(char) is 1, this can hold a 9-character string plus a terminating null character within those 10 bytes."
+  },
+  {
+    "id": 96,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "The malloc() Function",
+    "question": "A programmer wants to allocate memory for an array of 50 double values. Which statement is correct?",
+    "options": [
+      "double *p = (double*) malloc(50 * sizeof(double));",
+      "double *p = (double*) malloc(50);",
+      "double p = (double*) malloc(50 * sizeof(double));",
+      "double *p = malloc(sizeof(double) - 50);"
+    ],
+    "answer": "A",
+    "explanation": "The correct call multiplies the number of elements by sizeof(double) to compute the total bytes needed."
+  },
+  {
+    "id": 97,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "The malloc() Function",
+    "question": "If sizeof(int) is 4 bytes, how many bytes does malloc(4 * sizeof(int)) allocate?",
+    "options": [
+      "4 bytes",
+      "8 bytes",
+      "16 bytes",
+      "20 bytes"
+    ],
+    "answer": "C",
+    "explanation": "4 * sizeof(int) = 4 * 4 = 16 bytes, since sizeof(int) is 4 on the assumed system."
+  },
+  {
+    "id": 98,
+    "level": "Intermediate",
+    "type": "Statement Based",
+    "topic": "The malloc() Function",
+    "question": "Which statement correctly compares malloc() allocation with array declaration such as int arr[10]?",
+    "options": [
+      "Both always use exactly the same amount of memory in every case",
+      "malloc() allocation size can depend on a run-time value, whereas an ordinary array's size is generally fixed at compile time",
+      "Array declarations always require malloc() internally in C",
+      "malloc() cannot be used to allocate memory equivalent to an array"
+    ],
+    "answer": "B",
+    "explanation": "A key distinction is that malloc()'s size argument can be a run-time expression, unlike a plain array's fixed compile-time size."
+  },
+  {
+    "id": 99,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "The malloc() Function",
+    "question": "Which of the following is a valid reason to prefer malloc() over a fixed-size array in a program?",
+    "options": [
+      "malloc() always executes faster than array declarations in every case",
+      "The exact number of elements needed is not known until the program runs",
+      "malloc() removes the need to use pointers",
+      "Fixed-size arrays cannot store integers"
+    ],
+    "answer": "B",
+    "explanation": "malloc() is preferred when the required size is only known at run time, unlike a fixed-size array."
+  },
+  {
+    "id": 100,
+    "level": "Intermediate",
+    "type": "Program Tracing",
+    "topic": "The malloc() Function",
+    "question": "What will the following code print if malloc() fails and returns NULL, and no NULL check is performed?\nint *p = (int*) malloc(1000000000000);\n*p = 5;",
+    "options": [
+      "It will print 5 successfully",
+      "It will print 0",
+      "It will print NULL",
+      "The program's behavior is undefined and it will likely crash"
+    ],
+    "answer": "D",
+    "explanation": "Dereferencing a NULL pointer (as would occur here if malloc() fails) results in undefined behavior, typically a crash."
+  },
+  {
+    "id": 101,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "The malloc() Function",
+    "question": "Which of the following correctly declares and initializes a pointer to hold the result of malloc() for an integer?",
+    "options": [
+      "int ptr = (int*) malloc(sizeof(int));",
+      "int *ptr = malloc sizeof(int);",
+      "int *ptr = (int*) malloc(sizeof(int));",
+      "*int ptr = malloc(sizeof(int));"
+    ],
+    "answer": "C",
+    "explanation": "The correct syntax declares ptr as an int pointer and assigns the cast result of malloc() to it."
+  },
+  {
+    "id": 102,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "The malloc() Function",
+    "question": "What kind of memory block does malloc() allocate?",
+    "options": [
+      "A contiguous (single connected) block of the requested size",
+      "Multiple scattered blocks of varying size",
+      "A block that automatically resizes as needed",
+      "A block located only in the stack segment"
+    ],
+    "answer": "A",
+    "explanation": "malloc() allocates one contiguous block of memory equal to the requested size."
+  },
+  {
+    "id": 103,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "The malloc() Function",
+    "question": "Which best distinguishes a successful malloc() call from a failed one?",
+    "options": [
+      "A successful call returns NULL; a failed call returns a valid pointer",
+      "Both successful and failed calls return the same value",
+      "A successful call returns a valid non-NULL pointer; a failed call returns NULL",
+      "A failed call always terminates the program automatically"
+    ],
+    "answer": "C",
+    "explanation": "The difference is the returned pointer: valid address on success, NULL on failure."
+  },
+  {
+    "id": 104,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "The malloc() Function",
+    "question": "To allocate memory for n integers, the size argument passed to malloc() should be __________.",
+    "options": [
+      "n only",
+      "sizeof(int) only",
+      "n * sizeof(int)",
+      "n + sizeof(int)"
+    ],
+    "answer": "C",
+    "explanation": "The total memory needed for n integers is the count multiplied by the size of one integer."
+  },
+  {
+    "id": 105,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "The malloc() Function",
+    "question": "Why is it generally unsafe to assume malloc() always succeeds in a program that allocates very large amounts of memory?",
+    "options": [
+      "Because malloc() only works for small amounts of memory by design",
+      "Because the system may not have enough free memory, causing malloc() to return NULL",
+      "Because malloc() cannot allocate memory larger than 10 bytes",
+      "Because C does not allow large memory allocations under any circumstance"
+    ],
+    "answer": "B",
+    "explanation": "Large allocation requests can exceed available memory, so malloc() may fail and return NULL, making success checks essential."
+  },
+  {
+    "id": 106,
+    "level": "Intermediate",
+    "type": "Statement Based",
+    "topic": "The malloc() Function",
+    "question": "Which of the following is true about the memory allocated by malloc()?",
+    "options": [
+      "It is automatically freed after the function that allocated it returns",
+      "It exists only within the block where malloc() was called",
+      "It remains allocated until it is explicitly freed or the program terminates",
+      "It is automatically converted into a static variable"
+    ],
+    "answer": "C",
+    "explanation": "Memory from malloc() persists beyond the function's scope until explicitly freed with free() or the program ends."
+  },
+  {
+    "id": 107,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "The malloc() Function",
+    "question": "A programmer allocates memory with malloc() inside a function and returns the pointer to the caller. Is this valid?",
+    "options": [
+      "Yes, because malloc()-allocated memory persists after the function returns, unlike local stack variables",
+      "No, because all memory allocated inside a function is destroyed when the function returns",
+      "No, because malloc() cannot be used inside functions",
+      "Yes, but only if the pointer is declared as static"
+    ],
+    "answer": "A",
+    "explanation": "Since malloc() allocates from the heap, the memory remains valid after the function returns, unlike automatic local variables."
+  },
+  {
+    "id": 108,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "The malloc() Function",
+    "question": "Which library function family does malloc() belong to?",
+    "options": [
+      "Standard input/output functions",
+      "String handling functions",
+      "Standard C library dynamic memory management functions",
+      "Mathematical functions"
+    ],
+    "answer": "C",
+    "explanation": "malloc() is one of the standard C library functions for dynamic memory management, found in stdlib.h."
+  },
+  {
+    "id": 109,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "The malloc() Function",
+    "question": "What is the risk of using a pointer returned by malloc() immediately after allocation without initializing its content?",
+    "options": [
+      "The pointer will refer to memory with garbage (unknown) values until explicitly set",
+      "The compiler will refuse to compile the program",
+      "The pointer will automatically be set to zero",
+      "The pointer will point to the previous variable declared in the program"
+    ],
+    "answer": "A",
+    "explanation": "malloc() leaves memory uninitialized, so any values read before assignment will be indeterminate garbage."
+  },
+  {
+    "id": 110,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "The malloc() Function",
+    "question": "Which of the following best explains why malloc()'s return type is void* rather than a specific type like int*?",
+    "options": [
+      "Because malloc() cannot return any pointer type",
+      "Because void* uses less memory than other pointer types",
+      "Because malloc() is only used for void functions",
+      "So that the same function can be used to allocate memory for any data type"
+    ],
+    "answer": "D",
+    "explanation": "A generic void* return type allows malloc() to be used generally for any data type, with the caller casting as needed."
+  },
+  {
+    "id": 111,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "The free() Function",
+    "question": "What is the purpose of the free() function in C?",
+    "options": [
+      "To allocate new memory dynamically",
+      "To print the value stored in a pointer",
+      "To release memory that was previously allocated dynamically, returning it to the system for reuse",
+      "To copy the contents of one array to another"
+    ],
+    "answer": "C",
+    "explanation": "free() releases previously allocated dynamic memory so it can be reused by the program or system."
+  },
+  {
+    "id": 112,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "The free() Function",
+    "question": "What is the correct syntax for using free()?",
+    "options": [
+      "free[ptr];",
+      "ptr = free();",
+      "free(ptr, size);",
+      "free(ptr);"
+    ],
+    "answer": "D",
+    "explanation": "free() is called with the pointer to be released as its only argument, written as free(ptr);."
+  },
+  {
+    "id": 113,
+    "level": "Basic",
+    "type": "Argument",
+    "topic": "The free() Function",
+    "question": "What type of argument does free() require?",
+    "options": [
+      "An integer representing the size of memory to release",
+      "A pointer previously returned by a dynamic memory allocation function such as malloc()",
+      "A string containing the variable's name",
+      "Two pointers to be compared"
+    ],
+    "answer": "B",
+    "explanation": "free() takes a single pointer argument, which must be one returned by a memory allocation function like malloc()."
+  },
+  {
+    "id": 114,
+    "level": "Basic",
+    "type": "Header",
+    "topic": "The free() Function",
+    "question": "Which header file declares the free() function?",
+    "options": [
+      "stdio.h",
+      "stdlib.h",
+      "stdlib.c",
+      "memory.h only"
+    ],
+    "answer": "B",
+    "explanation": "free(), along with malloc(), is declared in stdlib.h."
+  },
+  {
+    "id": 115,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "The free() Function",
+    "question": "What happens to the memory pointed to by a pointer after free() is called on it?",
+    "options": [
+      "The memory is permanently destroyed and cannot be reused",
+      "The memory is automatically reallocated to the same pointer",
+      "The memory is released back to the system, becoming available for future allocation",
+      "The memory is converted into a static variable"
+    ],
+    "answer": "C",
+    "explanation": "free() releases the memory block so that it can be reused for future allocations."
+  },
+  {
+    "id": 116,
+    "level": "Intermediate",
+    "type": "Relationship",
+    "topic": "The free() Function",
+    "question": "What is the relationship between malloc() and free()?",
+    "options": [
+      "malloc() and free() perform the same operation",
+      "free() must always be called before malloc()",
+      "malloc() allocates memory, and free() is used to release memory previously allocated by malloc()",
+      "malloc() automatically calls free() internally after every statement"
+    ],
+    "answer": "C",
+    "explanation": "free() is the counterpart to malloc(); it releases memory that malloc() (or a similar function) allocated."
+  },
+  {
+    "id": 117,
+    "level": "Intermediate",
+    "type": "Consequence",
+    "topic": "The free() Function",
+    "question": "What is a possible consequence of not calling free() on dynamically allocated memory that is no longer needed?",
+    "options": [
+      "The program automatically stops running",
+      "A memory leak, where memory remains reserved even though it is no longer used",
+      "The unused memory is converted into a global variable",
+      "The compiler generates a syntax error"
+    ],
+    "answer": "B",
+    "explanation": "Failing to free unused dynamically allocated memory results in a memory leak."
+  },
+  {
+    "id": 118,
+    "level": "Intermediate",
+    "type": "Common Mistake",
+    "topic": "The free() Function",
+    "question": "What is a common mistake when using free()?",
+    "options": [
+      "Calling free() only once on a pointer",
+      "Calling free() more than once on the same pointer (double free)",
+      "Including stdlib.h before calling free()",
+      "Passing a pointer previously returned by malloc() to free()"
+    ],
+    "answer": "B",
+    "explanation": "Calling free() twice on the same pointer, known as a double free, leads to undefined behavior."
+  },
+  {
+    "id": 119,
+    "level": "Intermediate",
+    "type": "Common Mistake / Dangling Pointer",
+    "topic": "The free() Function",
+    "question": "What is a “dangling pointer” in the context of free()?",
+    "options": [
+      "A pointer that has never been assigned any address",
+      "A pointer that only stores integer values",
+      "A pointer that still holds the address of memory that has already been freed",
+      "A pointer that has been declared but not yet used"
+    ],
+    "answer": "C",
+    "explanation": "After free() is called, if the pointer still holds the old address and is used, it is called a dangling pointer."
+  },
+  {
+    "id": 120,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "The free() Function",
+    "question": "What happens if a program uses (dereferences) a pointer after calling free() on it, without reassigning it?",
+    "options": [
+      "The behavior is undefined and may cause unpredictable results or crashes",
+      "The program automatically re-allocates the memory",
+      "The value read will always be zero",
+      "The pointer becomes a null pointer automatically"
+    ],
+    "answer": "A",
+    "explanation": "Dereferencing a freed pointer (dangling pointer) leads to undefined behavior since the memory may have been reused."
+  },
+  {
+    "id": 121,
+    "level": "Intermediate",
+    "type": "Proper Usage",
+    "topic": "The free() Function",
+    "question": "What is good practice immediately after calling free(ptr)?",
+    "options": [
+      "Call malloc() again with the same variable name immediately",
+      "Delete the variable declaration from the program",
+      "Call free(ptr) a second time to confirm deallocation",
+      "Set ptr to NULL to avoid accidentally using it as a dangling pointer"
+    ],
+    "answer": "D",
+    "explanation": "Setting the pointer to NULL after freeing helps prevent accidental use of a dangling pointer."
+  },
+  {
+    "id": 122,
+    "level": "Intermediate",
+    "type": "Statement Based",
+    "topic": "The free() Function",
+    "question": "Which of the following statements about free() is correct?",
+    "options": [
+      "free() does not change the value of the pointer variable itself; it only releases the memory it points to",
+      "free() automatically sets the pointer variable to NULL",
+      "free() deletes the pointer variable from the program",
+      "free() always returns a new memory address"
+    ],
+    "answer": "A",
+    "explanation": "free() releases the memory but the pointer variable still holds the old (now invalid) address unless the programmer sets it to NULL manually."
+  },
+  {
+    "id": 123,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "The free() Function",
+    "question": "What does free(NULL) do in C?",
+    "options": [
+      "It causes the program to crash",
+      "Nothing; it is safe and has no effect",
+      "It allocates a new NULL block of memory",
+      "It causes undefined behavior in all compilers"
+    ],
+    "answer": "B",
+    "explanation": "According to the C standard, calling free() with a NULL pointer is a safe no-operation."
+  },
+  {
+    "id": 124,
+    "level": "Intermediate",
+    "type": "Code Snippet",
+    "topic": "The free() Function",
+    "question": "What does the following code do?\nint *p = (int*) malloc(sizeof(int));\n*p = 10;\nfree(p);",
+    "options": [
+      "Allocates memory but never stores or releases it",
+      "Releases memory before allocating it",
+      "Allocates memory, stores 10 in it, then releases the allocated memory",
+      "Causes a compilation error"
+    ],
+    "answer": "C",
+    "explanation": "The code allocates memory, assigns a value, and correctly frees the memory afterward."
+  },
+  {
+    "id": 125,
+    "level": "Intermediate",
+    "type": "Error Identification",
+    "topic": "The free() Function",
+    "question": "What is wrong with the following code?\nint *p = (int*) malloc(sizeof(int));\nfree(p);\nfree(p);",
+    "options": [
+      "malloc() was called with the wrong size",
+      "The pointer p was never assigned a value",
+      "free(p) is called twice on the same pointer, which is a double free error",
+      "free() cannot be used with integer pointers"
+    ],
+    "answer": "C",
+    "explanation": "Calling free() twice on the same pointer without reallocating causes undefined behavior (double free)."
+  },
+  {
+    "id": 126,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "The free() Function",
+    "question": "A program allocates memory using malloc() inside a loop but never calls free() for memory no longer needed. What is the likely result over many iterations?",
+    "options": [
+      "The program's memory usage grows continuously, potentially leading to a memory leak",
+      "The program automatically frees old memory before each new allocation",
+      "The loop will not execute more than once",
+      "malloc() will refuse to allocate memory a second time"
+    ],
+    "answer": "A",
+    "explanation": "Without free(), each allocation adds to unused memory, causing a memory leak that grows with more iterations."
+  },
+  {
+    "id": 127,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "The free() Function",
+    "question": "Which of the following best describes what free() returns?",
+    "options": [
+      "free() returns the address that was freed",
+      "free() does not return any value (it is a void function)",
+      "free() returns 1 on success and 0 on failure",
+      "free() returns the size of memory that was freed"
+    ],
+    "answer": "B",
+    "explanation": "free() has a void return type; it does not provide any return value."
+  },
+  {
+    "id": 128,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "The free() Function",
+    "question": "In a simple C program that allocates memory for storing a value and prints it, when should free() be called?",
+    "options": [
+      "Before malloc() is called",
+      "Immediately after declaring the pointer, before allocation",
+      "After the allocated memory has been used and is no longer needed, before the program ends",
+      "free() should never be called in a simple program"
+    ],
+    "answer": "C",
+    "explanation": "free() should be called once the dynamically allocated memory is no longer required, typically near the end of its use."
+  },
+  {
+    "id": 129,
+    "level": "Intermediate",
+    "type": "Statement Based",
+    "topic": "The free() Function",
+    "question": "Which of the following is true regarding the pointer passed to free()?",
+    "options": [
+      "It should be a pointer that was returned by a memory allocation function like malloc(), and not yet freed",
+      "It can be any pointer, even one that was never allocated dynamically",
+      "It must always point to an integer",
+      "It must be declared as a global variable"
+    ],
+    "answer": "A",
+    "explanation": "Passing a pointer to free() that was not obtained from a dynamic allocation function, or freeing it twice, causes undefined behavior."
+  },
+  {
+    "id": 130,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "The free() Function",
+    "question": "The function used to release memory previously obtained through malloc() is __________.",
+    "options": [
+      "release()",
+      "free()",
+      "delete()",
+      "clear()"
+    ],
+    "answer": "B",
+    "explanation": "In C, dynamically allocated memory is released using the free() function."
+  },
+  {
+    "id": 131,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "The free() Function",
+    "question": "Why is it important to call free() on memory allocated with malloc() once it is no longer needed?",
+    "options": [
+      "To increase the size of the allocated memory",
+      "To convert the memory into a static variable",
+      "To return the memory to the system so it can be reused, preventing memory leaks",
+      "To make the pointer point to a new random address"
+    ],
+    "answer": "C",
+    "explanation": "Calling free() prevents wasted, unreachable memory (memory leaks) by returning it for reuse."
+  },
+  {
+    "id": 132,
+    "level": "Intermediate",
+    "type": "Assertion-Reason",
+    "topic": "The free() Function",
+    "question": "Assertion (A): free(p) should be called only once for a given allocation.\nReason (R): Calling free() more than once on the same pointer results in undefined behavior.",
+    "options": [
+      "A is true but R is false",
+      "A is false but R is true",
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are false"
+    ],
+    "answer": "C",
+    "explanation": "The reason (undefined behavior from double free) is exactly why free() should only be called once per allocation."
+  },
+  {
+    "id": 133,
+    "level": "Intermediate",
+    "type": "Program Tracing",
+    "topic": "The free() Function",
+    "question": "What is the state of the pointer p after executing free(p); if p is not manually set to NULL afterward?",
+    "options": [
+      "p still holds the old address, but that memory is no longer valid to use (a dangling pointer)",
+      "p is automatically changed to point to new memory",
+      "p is automatically set to 0",
+      "p is deleted from the program entirely"
+    ],
+    "answer": "A",
+    "explanation": "free() does not change the pointer's stored address; it becomes a dangling pointer unless explicitly set to NULL."
+  },
+  {
+    "id": 134,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "The free() Function",
+    "question": "Which of the following best explains why setting a pointer to NULL after free() is considered good practice?",
+    "options": [
+      "It permanently deletes the pointer variable",
+      "It allocates new memory automatically",
+      "It prevents the pointer from being mistakenly dereferenced as a dangling pointer later in the program",
+      "It is required by the C compiler to avoid errors"
+    ],
+    "answer": "C",
+    "explanation": "Setting the pointer to NULL avoids accidental use of a now-invalid (dangling) pointer address."
+  },
+  {
+    "id": 135,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "The free() Function",
+    "question": "How does free() differ from malloc() in terms of function signature?",
+    "options": [
+      "free() takes a size and returns a pointer, while malloc() takes a pointer and returns nothing",
+      "Both take the same argument and return the same type",
+      "free() and malloc() have identical function signatures",
+      "free() takes a pointer and returns nothing, while malloc() takes a size and returns a pointer"
+    ],
+    "answer": "D",
+    "explanation": "malloc(size) returns a pointer, while free(pointer) returns void; their signatures serve opposite roles."
+  },
+  {
+    "id": 136,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "The free() Function",
+    "question": "Which of these correctly frees memory pointed to by pointer variable data?",
+    "options": [
+      "free(&data);",
+      "data = free();",
+      "free(*data);",
+      "free(data);"
+    ],
+    "answer": "D",
+    "explanation": "free() takes the pointer itself (not its address or dereferenced value) as the argument."
+  },
+  {
+    "id": 137,
+    "level": "Intermediate",
+    "type": "Statement Based",
+    "topic": "The free() Function",
+    "question": "Which of the following is a correct pairing in dynamic memory management?",
+    "options": [
+      "malloc() to release memory, free() to obtain it",
+      "malloc() and free() both only obtain memory",
+      "malloc() to obtain memory, free() to release it",
+      "malloc() and free() both only release memory"
+    ],
+    "answer": "C",
+    "explanation": "malloc() obtains memory, and free() is its counterpart used to release memory back to the system."
+  },
+  {
+    "id": 138,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "The free() Function",
+    "question": "Which scenario represents correct and safe use of malloc() and free() together?",
+    "options": [
+      "Allocate memory with malloc(), free it, then use the memory afterward",
+      "Call free() before calling malloc() on the same pointer",
+      "Call malloc() and free() on the same pointer repeatedly without using the memory in between",
+      "Allocate memory with malloc(), check for NULL, use the memory, then free it exactly once when done"
+    ],
+    "answer": "D",
+    "explanation": "The correct pattern is to allocate, verify success, use the memory appropriately, and free it exactly once when finished."
+  },
+  {
+    "id": 139,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "The free() Function",
+    "question": "If a program frees a pointer and then reassigns it with a new call to malloc(), is this valid?",
+    "options": [
+      "Yes, since the pointer variable can be reused to store a new, valid address from a new allocation",
+      "No, a pointer can never be reused after being freed",
+      "No, malloc() cannot be called again on a variable that was previously freed",
+      "Yes, but only if the pointer is renamed first"
+    ],
+    "answer": "A",
+    "explanation": "After freeing, the same pointer variable can safely be assigned a new address from another malloc() call."
+  },
+  {
+    "id": 140,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "The free() Function",
+    "question": "Why is understanding free() essential when writing programs that use malloc() extensively?",
+    "options": [
+      "Because free() is needed to compile any program that uses variables",
+      "Because free() increases the size of allocated memory",
+      "Because programs cannot run without calling free() at least once",
+      "To properly manage memory and avoid leaks or errors from mismanaged deallocation"
+    ],
+    "answer": "D",
+    "explanation": "Proper use of free() ensures memory allocated by malloc() is released appropriately, avoiding leaks and other memory errors."
+  },
+  {
+    "id": 141,
+    "level": "Intermediate",
+    "type": "Program Tracing",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "What is the output of the following program?\n#include <stdio.h>\n#include <stdlib.h>\nint main() {\n    int *p = (int*) malloc(sizeof(int));\n    *p = 15;\n    printf(\"%d\", *p);\n    free(p);\n    return 0;\n}",
+    "options": [
+      "Garbage value",
+      "0",
+      "15",
+      "Compilation error"
+    ],
+    "answer": "C",
+    "explanation": "The program allocates memory, stores 15 in it, and prints the value before freeing the memory, so it outputs 15."
+  },
+  {
+    "id": 142,
+    "level": "Intermediate",
+    "type": "Error Identification",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "What is the error in the following code?\nint main() {\n    int *p = (int*) malloc(sizeof(int));\n    *p = 20;\n    printf(\"%d\", *p);\n    return 0;\n}",
+    "options": [
+      "The value 20 cannot be stored in a pointer",
+      "malloc() is used incorrectly for integers",
+      "printf() cannot print pointer values",
+      "The allocated memory is never released using free() before the program ends"
+    ],
+    "answer": "D",
+    "explanation": "The code is functionally correct but fails to free the dynamically allocated memory, leading to a memory leak."
+  },
+  {
+    "id": 143,
+    "level": "Intermediate",
+    "type": "Correct Sequence",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "What is the correct order of operations in a simple program using malloc() and free()?",
+    "options": [
+      "Allocate memory, check for NULL, use the memory, then free the memory",
+      "Free the memory, allocate memory, then use it",
+      "Use the memory, allocate it, then check for NULL",
+      "Check for NULL, free the memory, then allocate it"
+    ],
+    "answer": "A",
+    "explanation": "The proper sequence is to first allocate, verify success, use the memory, and finally free it."
+  },
+  {
+    "id": 144,
+    "level": "Intermediate",
+    "type": "Program Tracing",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "What will the following code print?\nint *p = (int*) malloc(3 * sizeof(int));\np[0] = 1; p[1] = 2; p[2] = 3;\nprintf(\"%d %d %d\", p[0], p[1], p[2]);\nfree(p);",
+    "options": [
+      "1 2 3",
+      "Garbage values",
+      "0 0 0",
+      "Compilation error"
+    ],
+    "answer": "A",
+    "explanation": "The program allocates memory for 3 integers, assigns values 1, 2, and 3, and correctly prints them."
+  },
+  {
+    "id": 145,
+    "level": "Intermediate",
+    "type": "Error Identification",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "Identify the incorrect memory-management practice in this code:\nint *p = (int*) malloc(sizeof(int));\nfree(p);\n*p = 5;\nprintf(\"%d\", *p);",
+    "options": [
+      "malloc() was called with an incorrect size",
+      "The code uses the pointer p after it has already been freed (dangling pointer usage)",
+      "free() was called before malloc()",
+      "printf() is missing format specifiers"
+    ],
+    "answer": "B",
+    "explanation": "Using p after free(p) accesses memory that has already been released, leading to undefined behavior."
+  },
+  {
+    "id": 146,
+    "level": "Intermediate",
+    "type": "Correctness / Proper Use",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "Which of the following code snippets correctly allocates and uses memory for a single integer?",
+    "options": [
+      "int *p = malloc(sizeof(int)); free(p); *p = 5; printf(\"%d\", *p);",
+      "int p = (int*) malloc(sizeof(int)); *p = 5;",
+      "int *p = (int*) malloc(sizeof(int)); if (p != NULL) { *p = 5; printf(\"%d\", *p); free(p); }",
+      "int *p; *p = 5; malloc(sizeof(int));"
+    ],
+    "answer": "C",
+    "explanation": "This snippet allocates memory, checks for NULL, uses the memory correctly, then frees it — the proper sequence."
+  },
+  {
+    "id": 147,
+    "level": "Intermediate",
+    "type": "NULL Check",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "What should the following incomplete code check before using pointer p?\nint *p = (int*) malloc(sizeof(int) * 100);\n// missing check\np[0] = 10;",
+    "options": [
+      "Whether p is a global variable",
+      "Whether p is NULL, to confirm that the allocation succeeded before use",
+      "Whether p was declared as static",
+      "Whether the printf() function is available"
+    ],
+    "answer": "B",
+    "explanation": "The program should check if p is NULL before using it, to handle the case where malloc() fails."
+  },
+  {
+    "id": 148,
+    "level": "Intermediate",
+    "type": "Program Tracing",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "What is the output of the following code if malloc() succeeds?\nint *p = (int*) malloc(sizeof(int));\nif (p != NULL) {\n    *p = 100;\n    printf(\"%d\", *p);\n} else {\n    printf(\"Allocation failed\");\n}\nfree(p);",
+    "options": [
+      "Allocation failed",
+      "Garbage value",
+      "100",
+      "0"
+    ],
+    "answer": "C",
+    "explanation": "Since malloc() succeeds, the code stores 100 in the allocated memory and prints it."
+  },
+  {
+    "id": 149,
+    "level": "Intermediate",
+    "type": "Error Identification",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "What mistake is present in the following code?\nint *p = (int*) malloc(sizeof(int));\nfree(p);\nfree(p);",
+    "options": [
+      "malloc() allocated the wrong amount of memory",
+      "The pointer p was declared with the wrong type",
+      "free() was called before malloc()",
+      "free(p) is called twice on the same pointer, which is a double-free error"
+    ],
+    "answer": "D",
+    "explanation": "Calling free() twice on the same pointer without reallocating in between is an incorrect and undefined-behavior-causing practice."
+  },
+  {
+    "id": 150,
+    "level": "Intermediate",
+    "type": "Understanding Allocation",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "In the code int *arr = (int*) malloc(5 * sizeof(int));, how many integers can be stored using arr?",
+    "options": [
+      "1",
+      "5",
+      "10",
+      "sizeof(int)"
+    ],
+    "answer": "B",
+    "explanation": "The allocation reserves space for 5 integers (5 * sizeof(int) bytes), so arr can hold 5 int values."
+  },
+  {
+    "id": 151,
+    "level": "Intermediate",
+    "type": "Understanding Deallocation",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "After free(arr); is executed on a previously allocated array pointer, what should NOT be done next?",
+    "options": [
+      "Reassigning arr to the result of a new malloc() call",
+      "Setting arr to NULL",
+      "Declaring a new pointer variable",
+      "Accessing elements of arr, such as arr[0], without reallocating memory first"
+    ],
+    "answer": "D",
+    "explanation": "Accessing the array after freeing it uses invalid (freed) memory, which is incorrect practice."
+  },
+  {
+    "id": 152,
+    "level": "Intermediate",
+    "type": "Program Tracing / Error",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "What is the problem with the following program?\nint main() {\n    int *p;\n    *p = 10;\n    printf(\"%d\", *p);\n    return 0;\n}",
+    "options": [
+      "The value 10 is too large to store in an integer",
+      "printf() is used incorrectly",
+      "The program is missing only the free() function",
+      "The pointer p is used without first allocating memory for it using malloc()"
+    ],
+    "answer": "D",
+    "explanation": "p is an uninitialized pointer; dereferencing it without allocating memory leads to undefined behavior."
+  },
+  {
+    "id": 153,
+    "level": "Intermediate",
+    "type": "Correct Sequence Identification",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "Which sequence of steps represents correct usage of malloc() and free() in a simple program?",
+    "options": [
+      "Declare pointer, free memory, allocate memory, use memory",
+      "Declare pointer, allocate memory with malloc(), check for NULL, use memory, free memory",
+      "Use memory, declare pointer, allocate memory, free memory",
+      "Allocate memory, free memory, check for NULL, use memory"
+    ],
+    "answer": "B",
+    "explanation": "The pointer must be declared and allocated, verified, then used, and finally freed — in that specific order."
+  },
+  {
+    "id": 154,
+    "level": "Intermediate",
+    "type": "Program Tracing",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "What does the following program output?\n#include <stdio.h>\n#include <stdlib.h>\nint main() {\n    int *p = (int*) malloc(sizeof(int));\n    if (p == NULL) {\n        printf(\"Memory not allocated\");\n    } else {\n        *p = 50;\n        printf(\"%d\", *p);\n    }\n    free(p);\n    return 0;\n}",
+    "options": [
+      "Memory not allocated",
+      "50 (assuming malloc() succeeds)",
+      "Garbage value",
+      "Compilation error"
+    ],
+    "answer": "B",
+    "explanation": "Since malloc() typically succeeds for such a small request, the program stores and prints 50."
+  },
+  {
+    "id": 155,
+    "level": "Intermediate",
+    "type": "Understanding Return Pointer",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "In the statement int *p = (int*) malloc(sizeof(int) * 10);, what does p point to after a successful allocation?",
+    "options": [
+      "The last integer in the block",
+      "A single integer variable only, regardless of size requested",
+      "Nothing until a value is assigned",
+      "The first byte (start) of a contiguous block of memory sized for 10 integers"
+    ],
+    "answer": "D",
+    "explanation": "p receives the starting address of the allocated block, which is sized for 10 integers."
+  },
+  {
+    "id": 156,
+    "level": "Intermediate",
+    "type": "Error Identification",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "What is incorrect about the following code?\nint *p = (int*) malloc(sizeof(int));\n*p = 5;\nint *q = p;\nfree(p);\nfree(q);",
+    "options": [
+      "Both p and q point to the same memory, so freeing both causes a double-free error",
+      "q should have been declared as a different data type",
+      "malloc() should have been called twice, once for each pointer",
+      "The value 5 cannot be shared between two pointers"
+    ],
+    "answer": "A",
+    "explanation": "Since q and p point to the same allocated block, calling free() on both results in freeing the same memory twice."
+  },
+  {
+    "id": 157,
+    "level": "Intermediate",
+    "type": "Scenario / Application",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "A program needs to read n integers (n given by the user) and store them, then print their sum before ending. Which approach uses malloc() and free() correctly?",
+    "options": [
+      "Allocate memory for n integers with malloc(), read and store the values, compute the sum, then free the memory before the program ends",
+      "Allocate memory for n integers only after computing the sum",
+      "Free the memory for n integers before reading any values",
+      "Avoid using malloc() and instead only use fixed-size arrays"
+    ],
+    "answer": "A",
+    "explanation": "The correct practice is to allocate based on n, use the memory to read and sum values, then free it once done."
+  },
+  {
+    "id": 158,
+    "level": "Intermediate",
+    "type": "Understanding NULL",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "What does it mean if, after calling p = (int*) malloc(1000000000000);, the condition if (p == NULL) evaluates to true?",
+    "options": [
+      "The allocation succeeded and p points to valid memory",
+      "The malloc() function was used with incorrect syntax",
+      "The variable p was never declared",
+      "The memory allocation failed because the system could not provide the requested amount of memory"
+    ],
+    "answer": "D",
+    "explanation": "A NULL result from malloc() indicates that the allocation request could not be satisfied."
+  },
+  {
+    "id": 159,
+    "level": "Intermediate",
+    "type": "Program Tracing",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "What happens when the following code executes, assuming malloc() fails and returns NULL?\nint *p = (int*) malloc(sizeof(int) * 1000000000000);\n*p = 5;\nprintf(\"%d\", *p);",
+    "options": [
+      "It prints 5 correctly",
+      "It prints 0",
+      "The program exhibits undefined behavior because it dereferences a NULL pointer",
+      "It automatically retries the allocation with a smaller size"
+    ],
+    "answer": "C",
+    "explanation": "Without a NULL check, dereferencing p (which is NULL after failed allocation) leads to undefined behavior."
+  },
+  {
+    "id": 160,
+    "level": "Intermediate",
+    "type": "Correct Identification",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "Which of the following correctly frees memory allocated for an array using malloc()?",
+    "options": [
+      "free(arr); where arr is the pointer originally returned by malloc()",
+      "free(arr[0]);",
+      "free(&arr);",
+      "Calling free(arr) before malloc(arr) in the code"
+    ],
+    "answer": "A",
+    "explanation": "free() should be called on the original pointer returned by malloc(), not on individual elements or its address."
+  },
+  {
+    "id": 161,
+    "level": "Intermediate",
+    "type": "Program Tracing",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "Given the code below, what is stored in *p immediately after the malloc() call and before any assignment?\nint *p = (int*) malloc(sizeof(int));",
+    "options": [
+      "An indeterminate (garbage) value, since malloc() does not initialize memory",
+      "The value 0",
+      "The value 1",
+      "The address of p itself"
+    ],
+    "answer": "A",
+    "explanation": "malloc() does not initialize memory, so its contents are indeterminate until a value is explicitly assigned."
+  },
+  {
+    "id": 162,
+    "level": "Intermediate",
+    "type": "Statement Based / Error",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "Which of these is an example of an incorrect memory-management practice?",
+    "options": [
+      "Checking for NULL right after calling malloc()",
+      "Calling free() exactly once after the memory is no longer needed",
+      "Casting the result of malloc() to the appropriate pointer type",
+      "Using a pointer to access memory after it has already been freed"
+    ],
+    "answer": "D",
+    "explanation": "Accessing memory after it has been freed is a classic memory-management error (dangling pointer usage)."
+  },
+  {
+    "id": 163,
+    "level": "Intermediate",
+    "type": "Application Based",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "In a program that dynamically allocates memory for an array of student marks and computes the average, where should free() be placed?",
+    "options": [
+      "After the average has been computed and the array is no longer needed",
+      "Immediately after malloc(), before storing any marks",
+      "Before malloc() is called",
+      "free() is not needed if the program ends immediately afterward"
+    ],
+    "answer": "A",
+    "explanation": "free() should be called once the allocated array has served its purpose and is no longer required, i.e., after computing the average."
+  },
+  {
+    "id": 164,
+    "level": "Intermediate",
+    "type": "Program Tracing",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "What is the output of the following program?\n#include <stdio.h>\n#include <stdlib.h>\nint main() {\n    int *p = (int*) malloc(2 * sizeof(int));\n    p[0] = 4;\n    p[1] = 6;\n    printf(\"%d\", p[0] + p[1]);\n    free(p);\n    return 0;\n}",
+    "options": [
+      "10",
+      "46",
+      "4 6",
+      "Compilation error"
+    ],
+    "answer": "A",
+    "explanation": "p[0] and p[1] are assigned 4 and 6 respectively, and their sum, 10, is printed."
+  },
+  {
+    "id": 165,
+    "level": "Intermediate",
+    "type": "Error Identification",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "What is the issue with the following program?\nint main() {\n    int *p = (int*) malloc(sizeof(int));\n    free(p);\n    printf(\"%d\", *p);\n    return 0;\n}",
+    "options": [
+      "malloc() was never called in this program",
+      "The program accesses (dereferences) the pointer p after it has already been freed",
+      "printf() cannot be used with pointers",
+      "free() was called with the wrong argument type"
+    ],
+    "answer": "B",
+    "explanation": "Dereferencing p after free(p) accesses invalid memory, since the memory has already been released."
+  },
+  {
+    "id": 166,
+    "level": "Intermediate",
+    "type": "Correct Sequence",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "In a program that allocates memory, uses it, and then needs a new block, which sequence is correct for the pointer variable?",
+    "options": [
+      "Assign the new block to the pointer before freeing the old one",
+      "Free the old block before assigning the pointer to a newly allocated block, to avoid losing track of the old memory",
+      "Never free the old block once a new one is assigned",
+      "Allocate the new block before allocating the old one"
+    ],
+    "answer": "B",
+    "explanation": "Freeing the old memory before reassigning the pointer prevents losing the reference to memory that must be released (avoiding a memory leak)."
+  },
+  {
+    "id": 167,
+    "level": "Intermediate",
+    "type": "Program Tracing",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "Consider the code: int *p = (int*) malloc(sizeof(int)); free(p); p = NULL;. What is the state of p after this code executes?",
+    "options": [
+      "p is a null pointer and does not reference any memory, freed or otherwise",
+      "p still points to the freed memory block",
+      "p points to a newly allocated block of memory",
+      "p causes a compilation error"
+    ],
+    "answer": "A",
+    "explanation": "Setting p to NULL after freeing it clears the dangling reference, leaving p as a safe null pointer."
+  },
+  {
+    "id": 168,
+    "level": "Advanced",
+    "type": "Difficult / Tracing",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "What is the most likely outcome of running the following code, which allocates memory in a loop without ever freeing it?\nfor (int i = 0; i < 1000; i++) {\n    int *p = (int*) malloc(sizeof(int) * 1000);\n}",
+    "options": [
+      "The program will continuously consume more memory, potentially leading to a memory leak or allocation failure over time",
+      "The program automatically frees each previous allocation before the next loop iteration",
+      "Memory usage will remain constant throughout the loop",
+      "The loop will fail to compile"
+    ],
+    "answer": "A",
+    "explanation": "Since each allocation inside the loop is never freed, memory usage keeps growing, which is a memory leak."
+  },
+  {
+    "id": 169,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "Which correction fixes the memory leak in a loop that repeatedly allocates memory without freeing it?",
+    "options": [
+      "Move the malloc() call outside the loop but never free it",
+      "Call free() on the pointer at the end of each loop iteration, after it is no longer needed",
+      "Remove the malloc() call and replace it with printf()",
+      "Call malloc() twice in each iteration instead of once"
+    ],
+    "answer": "B",
+    "explanation": "Adding a matching free() call within each iteration ensures memory allocated inside the loop is properly released."
+  },
+  {
+    "id": 170,
+    "level": "Intermediate",
+    "type": "Program Tracing",
+    "topic": "Simple Programs Using malloc() and free()",
+    "question": "What is the output of the following program?\n#include <stdio.h>\n#include <stdlib.h>\nint main() {\n    int *p = (int*) malloc(sizeof(int));\n    if (p == NULL) {\n        printf(\"Failed\");\n        return 1;\n    }\n    *p = 7;\n    printf(\"Value: %d\", *p);\n    free(p);\n    return 0;\n}",
+    "options": [
+      "Failed",
+      "Value: 0",
+      "Compilation error",
+      "Value: 7"
+    ],
+    "answer": "D",
+    "explanation": "Since malloc() succeeds for this small allocation, the program stores 7 and prints \"Value: 7\"."
+  }
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {"id": 1, "level": "Basic", "type": "Concept", "topic": "How VB Accesses Data", "question": "Which data access technology of Visual Basic 6.0 is built on OLE DB and is recommended for new database applications?", "options": ["DAO (Data Access Objects)", "RDO (Remote Data Objects)", "Jet Database Engine API", "ADO (ActiveX Data Objects)"], "answer": "D", "explanation": "ADO is the newest model in VB 6.0. It sits on OLE DB and reaches relational as well as non-relational data."},
+  {"id": 2, "level": "Basic", "type": "Concept", "topic": "How VB Accesses Data", "question": "Which sequence shows the order in which VB data access models were introduced?", "options": ["DAO, ADO, RDO", "DAO, RDO, ADO", "ADO, RDO, DAO", "RDO, DAO, ADO"], "answer": "B", "explanation": "DAO (Jet) came first, RDO (ODBC) followed for client/server work, and ADO (OLE DB) is the latest."},
+  {"id": 3, "level": "Basic", "type": "Concept", "topic": "How VB Accesses Data", "question": "DAO is mainly designed for accessing which kind of data?", "options": ["E-mail and file-system data only", "Crystal Report (.rpt) files only", "Local Jet (Microsoft Access .mdb) databases", "Remote ODBC server databases only"], "answer": "C", "explanation": "DAO works through the Jet engine and suits Access databases. RDO targets remote ODBC sources."},
+  {"id": 4, "level": "Basic", "type": "Concept", "topic": "How VB Accesses Data", "question": "RDO (Remote Data Objects) was introduced mainly to access:", "options": ["Only Microsoft Access files through the Jet engine", "Only XML documents transferred over HTTP", "Only text and spreadsheet files on a local disk", "Client/server databases such as SQL Server and Oracle through ODBC"], "answer": "D", "explanation": "RDO is a thin object layer over the ODBC API for client/server databases."},
+  {"id": 5, "level": "Basic", "type": "Concept", "topic": "How VB Accesses Data", "question": "The intrinsic Data control that sits in the standard VB toolbox talks to databases through:", "options": ["The Crystal Reports engine", "The Jet database engine (DAO-based)", "OLE DB service components (ADO-based)", "The Data Environment run-time"], "answer": "B", "explanation": "The old intrinsic Data control is DAO-based. The ADO Data control has to be added separately as a component."},
+  {"id": 6, "level": "Basic", "type": "Concept", "topic": "How VB Accesses Data", "question": "A control such as TextBox or DataGrid that shows or edits a database field through a data control is called a:", "options": ["Data provider", "Data-bound control", "Data service", "Data environment"], "answer": "B", "explanation": "Bound controls connect to a data source using properties such as DataSource and DataField."},
+  {"id": 7, "level": "Basic", "type": "Concept", "topic": "How VB Accesses Data", "question": "In the OLE DB model, which component exposes data from a source in a uniform way?", "options": ["Data consumer", "Data provider (OLE DB provider)", "Recordset", "Bound control"], "answer": "B", "explanation": "A provider exposes data through OLE DB interfaces. A consumer, such as ADO, uses those interfaces."},
+  {"id": 8, "level": "Basic", "type": "Concept", "topic": "How VB Accesses Data", "question": "Microsoft's Universal Data Access (UDA) strategy aims to:", "options": ["Give uniform access to relational and non-relational data without converting it to one format", "Restrict applications to Microsoft SQL Server only", "Convert all data into Microsoft Access tables before use", "Replace SQL with a purely visual query language"], "answer": "A", "explanation": "UDA (ADO + OLE DB + ODBC) gives a common access layer to many kinds of data."},
+  {"id": 9, "level": "Basic", "type": "Concept", "topic": "How VB Accesses Data", "question": "What is the topmost object in the DAO object hierarchy?", "options": ["DBEngine", "Recordset", "Workspace", "Database"], "answer": "A", "explanation": "The DAO hierarchy runs DBEngine, Workspace, Database, then Recordset and TableDef."},
+  {"id": 10, "level": "Basic", "type": "Concept", "topic": "How VB Accesses Data", "question": "What is the purpose of a data access interface between a VB application and a database?", "options": ["To design the forms and menus of the application", "To give the application a common way to connect to, read and update data without knowing how it is stored", "To store the VB project files inside the database", "To compile the VB code into native machine code"], "answer": "B", "explanation": "A data access interface hides the storage details and exposes standard objects and methods to the program."},
+  {"id": 11, "level": "Basic", "type": "Concept", "topic": "Data Access Interface & RDBMS", "question": "Which of the following is NOT a data access interface or model?", "options": ["ODBC", "OLE DB", "DAO", "Crystal Reports"], "answer": "D", "explanation": "Crystal Reports is a reporting tool. ODBC, OLE DB and DAO are data access interfaces."},
+  {"id": 12, "level": "Basic", "type": "Concept", "topic": "Data Access Interface & RDBMS", "question": "ODBC stands for:", "options": ["Object Database Connector", "Open Database Connectivity", "Open Data Broker Channel", "Online Data Binding Component"], "answer": "B", "explanation": "ODBC is a standard API for accessing relational DBMSs using SQL."},
+  {"id": 13, "level": "Basic", "type": "Concept", "topic": "Data Access Interface & RDBMS", "question": "Which interface can directly access non-relational sources such as e-mail stores and file systems?", "options": ["ODBC", "RDO", "OLE DB", "DAO"], "answer": "C", "explanation": "ODBC is SQL/relational oriented, while OLE DB defines interfaces for any kind of data."},
+  {"id": 14, "level": "Basic", "type": "Concept", "topic": "Data Access Interface & RDBMS", "question": "In a relational database, data is organised into:", "options": ["Hierarchical parent-child trees", "Objects with inheritance", "Tables made of rows and columns", "Networks of linked records"], "answer": "C", "explanation": "The relational model stores data as tables (relations)."},
+  {"id": 15, "level": "Basic", "type": "Concept", "topic": "Data Access Interface & RDBMS", "question": "In relational terminology, a row of a table is called a:", "options": ["Field (attribute)", "Domain", "Relation", "Record (tuple)"], "answer": "D", "explanation": "A row is a record/tuple, a column is a field/attribute, and the table is the relation."},
+  {"id": 16, "level": "Basic", "type": "Concept", "topic": "Data Access Interface & RDBMS", "question": "Which key uniquely identifies every record of a table and cannot contain NULL?", "options": ["Secondary key", "Primary key", "Foreign key", "Index key"], "answer": "B", "explanation": "A primary key must be unique and not null for each record."},
+  {"id": 17, "level": "Basic", "type": "Concept", "topic": "Data Access Interface & RDBMS", "question": "A field in one table that refers to the primary key of another table is called a:", "options": ["Foreign key", "Candidate key", "Primary key", "Composite key"], "answer": "A", "explanation": "Foreign keys create the link between related tables."},
+  {"id": 18, "level": "Intermediate", "type": "Scenario", "topic": "Data Access Interface & RDBMS", "question": "One class contains many students, but each student belongs to exactly one class. The relationship between Class and Student is:", "options": ["One-to-one", "Self-referencing", "One-to-many", "Many-to-many"], "answer": "C", "explanation": "One Class record is related to many Student records."},
+  {"id": 19, "level": "Basic", "type": "Concept", "topic": "Data Access Interface & RDBMS", "question": "Referential integrity guarantees that:", "options": ["Every column in a table contains only unique values", "Every table has an index on each of its columns", "All records are stored in sorted order of the primary key", "Every foreign key value matches an existing primary key value in the related table"], "answer": "D", "explanation": "It prevents orphan records, for example a student whose class does not exist."},
+  {"id": 20, "level": "Basic", "type": "Concept", "topic": "Data Access Interface & RDBMS", "question": "A many-to-many relationship between two tables is normally implemented using:", "options": ["A calculated field stored in either table", "A single shared primary key column in one table", "Two separate primary keys in one table", "A third (junction) table holding the keys of both tables"], "answer": "D", "explanation": "A link table with two foreign keys breaks many-to-many into two one-to-many relationships."},
+  {"id": 21, "level": "Basic", "type": "Concept", "topic": "Data Access Interface & RDBMS", "question": "A NULL value in a field means:", "options": ["The value is zero", "The value is unknown or missing", "The value is an empty string", "The field has been deleted"], "answer": "B", "explanation": "NULL is different from 0 or an empty string."},
+  {"id": 22, "level": "Basic", "type": "Concept", "topic": "Data Access Interface & RDBMS", "question": "A column or set of columns that could be chosen as the primary key of a table is called a:", "options": ["Candidate key", "Foreign key", "Alternate index", "Composite field"], "answer": "A", "explanation": "All minimal attribute sets that identify rows uniquely are candidate keys. One of them becomes the primary key."},
+  {"id": 23, "level": "Basic", "type": "Concept", "topic": "Data Access Interface & RDBMS", "question": "In relational terminology, the number of columns in a table is its:", "options": ["Cardinality", "Degree", "Schema", "Domain"], "answer": "B", "explanation": "Degree = number of columns (attributes). Cardinality = number of rows (tuples)."},
+  {"id": 24, "level": "Basic", "type": "Concept", "topic": "Data Access Interface & RDBMS", "question": "What mainly distinguishes an RDBMS from a basic DBMS?", "options": ["It stores data only in text files", "Data can be accessed only through VB", "It cannot be queried using SQL", "Data is stored in related tables, and relationships are maintained through keys"], "answer": "D", "explanation": "An RDBMS organises data as related tables linked by primary and foreign keys."},
+  {"id": 25, "level": "Basic", "type": "Concept", "topic": "Data Access Interface & RDBMS", "question": "In the ODBC architecture, which component loads the correct driver and passes the application's calls to it?", "options": ["Data Source Name (DSN)", "Recordset", "Driver Manager", "Jet Engine"], "answer": "C", "explanation": "Application, ODBC Driver Manager, ODBC driver, then data source."},
+  {"id": 26, "level": "Intermediate", "type": "SQL", "topic": "Data Access Interface & RDBMS", "question": "CREATE TABLE and ALTER TABLE are examples of which type of SQL statement?", "options": ["DDL (Data Definition Language)", "DML (Data Manipulation Language)", "DCL (Data Control Language)", "TCL (Transaction Control Language)"], "answer": "A", "explanation": "DDL defines or changes structure. DML works on the data inside the tables."},
+  {"id": 27, "level": "Intermediate", "type": "SQL", "topic": "Data Access Interface & RDBMS", "question": "Which join returns only the rows that have matching values in both tables?", "options": ["CROSS JOIN", "INNER JOIN", "RIGHT JOIN", "LEFT JOIN"], "answer": "B", "explanation": "LEFT and RIGHT joins also keep unmatched rows of one table. CROSS JOIN pairs every row with every row."},
+  {"id": 28, "level": "Basic", "type": "Concept", "topic": "Data Access Interface & RDBMS", "question": "Which property of the intrinsic (DAO) Data control gives the name and path of the database file?", "options": ["ConnectionString", "RecordSource", "Connect", "DatabaseName"], "answer": "D", "explanation": "ConnectionString is the ADO Data Control's equivalent. RecordSource names the table or query."},
+  {"id": 29, "level": "Basic", "type": "Concept", "topic": "Data Access Interface & RDBMS", "question": "Which property of the intrinsic Data control chooses between table, dynaset or snapshot Recordsets?", "options": ["RecordSource", "DefaultType", "CursorType", "RecordsetType"], "answer": "D", "explanation": "RecordsetType values: 0 Table, 1 Dynaset (default), 2 Snapshot."},
+  {"id": 30, "level": "Basic", "type": "Concept", "topic": "OLE DB & ADO", "question": "Which technology provides a standard interface for accessing data from different data sources?", "options": ["DataGrid", "Form Designer", "Crystal Reports", "OLE DB"], "answer": "D", "explanation": "OLE DB provides interfaces for accessing data from different types of data sources."},
+  {"id": 31, "level": "Basic", "type": "Concept", "topic": "OLE DB & ADO", "question": "OLE DB stands for:", "options": ["Object Library for Enterprise Databases", "Object Level Embedded DataBase", "Open Linking and Exchange Database", "Object Linking and Embedding Database"], "answer": "D", "explanation": "OLE DB is Microsoft's COM-based data access technology."},
+  {"id": 32, "level": "Basic", "type": "Concept", "topic": "OLE DB & ADO", "question": "OLE DB is based on which Microsoft technology?", "options": ["CORBA", "COM (Component Object Model)", "JDBC", "DDE (Dynamic Data Exchange)"], "answer": "B", "explanation": "OLE DB is a set of COM interfaces implemented by data providers and used by consumers."},
+  {"id": 33, "level": "Basic", "type": "Concept", "topic": "OLE DB & ADO", "question": "What is the relationship between ADO and OLE DB?", "options": ["ADO replaces OLE DB providers with ODBC drivers", "OLE DB is a high-level wrapper built on top of ADO", "ADO is a high-level object interface that uses OLE DB providers underneath", "ADO and OLE DB are the same thing with different names"], "answer": "C", "explanation": "ADO gives VB programmers an easy object model, while OLE DB does the low-level work."},
+  {"id": 34, "level": "Basic", "type": "Concept", "topic": "OLE DB & ADO", "question": "Which of the following is NOT an ADO object?", "options": ["Command", "Recordset", "Connection", "Workspace"], "answer": "D", "explanation": "Workspace belongs to the DAO hierarchy (DBEngine - Workspace - Database)."},
+  {"id": 35, "level": "Basic", "type": "Concept", "topic": "OLE DB & ADO", "question": "Which ADO object is typically used to run a parameterised query or stored command?", "options": ["Command", "Property", "Error", "Field"], "answer": "A", "explanation": "The Command object holds the command text and its Parameters collection."},
+  {"id": 36, "level": "Basic", "type": "Concept", "topic": "OLE DB & ADO", "question": "Which provider name is used by ADO for an Access .mdb database through Jet 4.0?", "options": ["SQLOLEDB", "MSDASQL", "MSDAORA", "Microsoft.Jet.OLEDB.4.0"], "answer": "D", "explanation": "SQLOLEDB is for SQL Server, MSDAORA for Oracle and MSDASQL for ODBC drivers."},
+  {"id": 37, "level": "Basic", "type": "Concept", "topic": "OLE DB & ADO", "question": "Which OLE DB provider lets ADO use an existing ODBC driver?", "options": ["MSDAORA", "Microsoft.Jet.OLEDB.4.0", "SQLOLEDB", "MSDASQL"], "answer": "D", "explanation": "MSDASQL is the OLE DB Provider for ODBC drivers."},
+  {"id": 38, "level": "Basic", "type": "Concept", "topic": "OLE DB & ADO", "question": "What is the main advantage of ADO over DAO and RDO?", "options": ["Support only for Jet databases and ODBC drivers", "A deeper hierarchy that must always be created from the top", "A simple, flat object model that reaches many data sources through OLE DB", "Mandatory use of the Data control for every operation"], "answer": "C", "explanation": "ADO objects such as Recordset can be created independently, and ADO works with many sources."},
+  {"id": 39, "level": "Basic", "type": "Concept", "topic": "OLE DB & ADO", "question": "To write ADO code in VB 6.0, which reference is added through Project &gt; References?", "options": ["Microsoft ActiveX Data Objects 2.x Library", "Microsoft Remote Data Object 2.0", "Microsoft DAO 3.6 Object Library", "Microsoft DataGrid Control 6.0 (OLEDB)"], "answer": "A", "explanation": "This library provides the ADODB.Connection, ADODB.Recordset and ADODB.Command classes."},
+  {"id": 40, "level": "Basic", "type": "Concept", "topic": "OLE DB & ADO", "question": "Which flow correctly shows the ADO data access path?", "options": ["ADO -&gt; VB application -&gt; data source -&gt; OLE DB provider", "VB application -&gt; OLE DB provider -&gt; ADO -&gt; data source", "VB application -&gt; data source -&gt; ADO -&gt; OLE DB provider", "VB application -&gt; ADO -&gt; OLE DB provider -&gt; data source"], "answer": "D", "explanation": "The application calls ADO, ADO calls the OLE DB provider, and the provider talks to the data source."},
+  {"id": 41, "level": "Intermediate", "type": "Concept", "topic": "SQL Statements", "question": "Which of the following SQL commands is a DML (data manipulation) command?", "options": ["ALTER", "DROP", "CREATE", "INSERT"], "answer": "D", "explanation": "INSERT, UPDATE, DELETE and SELECT work on data. CREATE, ALTER and DROP are DDL."},
+  {"id": 42, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "Which statement correctly adds a new row to the Student table?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">INSERT INTO Student (RollNo, Name) VALUES (1, 'Asha')</code>", "<code style=\"font-family:monospace;font-size:.92em\">ADD INTO Student (RollNo, Name) VALUES (1, 'Asha')</code>", "<code style=\"font-family:monospace;font-size:.92em\">INSERT INTO Student SET RollNo = 1, Name = 'Asha'</code>", "<code style=\"font-family:monospace;font-size:.92em\">INSERT Student (RollNo, Name) INTO VALUES (1, 'Asha')</code>"], "answer": "A", "explanation": "The standard form is INSERT INTO table (columns) VALUES (values)."},
+  {"id": 43, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "What is the effect of the following statement?\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">UPDATE Student SET Marks = 0</span>", "options": ["Only the first record of the table is changed", "Nothing changes, because UPDATE requires a WHERE clause", "Only the current record of the Recordset is changed", "Marks of ALL students become 0 because there is no WHERE clause"], "answer": "D", "explanation": "Without WHERE, UPDATE modifies every row of the table."},
+  {"id": 44, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "Which statement removes all rows of the Student table but keeps the table structure?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">DELETE FROM Student</code>", "<code style=\"font-family:monospace;font-size:.92em\">DROP TABLE Student</code>", "<code style=\"font-family:monospace;font-size:.92em\">DELETE TABLE Student</code>", "<code style=\"font-family:monospace;font-size:.92em\">ALTER TABLE Student DROP ALL</code>"], "answer": "A", "explanation": "DELETE removes rows. DROP TABLE removes the table itself."},
+  {"id": 45, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "Which condition selects names that begin with the letter A?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">WHERE Name = 'A%'</code>", "<code style=\"font-family:monospace;font-size:.92em\">WHERE Name STARTS 'A'</code>", "<code style=\"font-family:monospace;font-size:.92em\">WHERE Name LIKE 'A%'</code>", "<code style=\"font-family:monospace;font-size:.92em\">WHERE Name CONTAINS 'A'</code>"], "answer": "C", "explanation": "LIKE with the % wildcard performs pattern matching."},
+  {"id": 46, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "SELECT COUNT(*) FROM Student returns:", "options": ["The sum of all numeric columns", "All rows of the Student table", "A single value: the number of rows in Student", "The first row of the Student table"], "answer": "C", "explanation": "COUNT is an aggregate function that returns the row count."},
+  {"id": 47, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "Which clause combines rows from two tables using a related column?", "options": ["ORDER BY", "INNER JOIN ... ON", "HAVING", "GROUP BY"], "answer": "B", "explanation": "A join links tables, typically on primary key = foreign key."},
+  {"id": 48, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "What does this query return?\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">SELECT Dept, COUNT(*) FROM Emp GROUP BY Dept</span>", "options": ["The number of employees in each department", "All employees sorted by department", "The total number of employees only", "Departments that have no employees"], "answer": "A", "explanation": "GROUP BY forms one group per Dept and COUNT(*) counts rows in each group."},
+  {"id": 49, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "Which clause filters groups after GROUP BY has been applied?", "options": ["HAVING", "WHERE", "DISTINCT", "ORDER BY"], "answer": "A", "explanation": "WHERE filters rows before grouping. HAVING filters the groups."},
+  {"id": 50, "level": "Intermediate", "type": "Code", "topic": "SQL Statements", "question": "A text box txtName holds a student name. Which VB string builds a correct SQL query for it?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">\"SELECT * FROM Student WHERE Name = \" &amp; \"'txtName.Text'\"</code>", "<code style=\"font-family:monospace;font-size:.92em\">\"SELECT * FROM Student WHERE Name = \" &amp; txtName.Text</code>", "<code style=\"font-family:monospace;font-size:.92em\">\"SELECT * FROM Student WHERE Name = '\" &amp; txtName.Text &amp; \"'\"</code>", "<code style=\"font-family:monospace;font-size:.92em\">\"SELECT * FROM Student WHERE Name = ' &amp; txtName.Text &amp; '\"</code>"], "answer": "C", "explanation": "Text values must be enclosed in single quotes, and the text box value must be concatenated outside the string."},
+  {"id": 51, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "WHERE Marks BETWEEN 40 AND 60 selects:", "options": ["Marks from 40 to 60, both values included", "Marks less than 40 or more than 60", "Marks from 41 to 60 only", "Marks greater than 40 and less than 60"], "answer": "A", "explanation": "BETWEEN is inclusive of both limits."},
+  {"id": 52, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "Which keyword removes duplicate values from a query result?", "options": ["REMOVE", "SINGLE", "DISTINCT", "UNIQUE"], "answer": "C", "explanation": "SELECT DISTINCT returns each different value only once."},
+  {"id": 53, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "SELECT * FROM Student ORDER BY Name sorts the records:", "options": ["Randomly", "In the order they were entered", "In descending order of Name", "In ascending order of Name (the default)"], "answer": "D", "explanation": "ORDER BY is ascending unless DESC is specified."},
+  {"id": 54, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "SELECT AVG(Marks) FROM Student returns:", "options": ["The total of the Marks column", "The average value of the Marks column", "The number of non-null Marks values", "The highest Marks value"], "answer": "B", "explanation": "AVG is an aggregate function. SUM totals, MAX gives the highest and COUNT gives the number of values."},
+  {"id": 55, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "Which condition correctly selects students whose Phone value is missing?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">WHERE Phone IS EMPTY</code>", "<code style=\"font-family:monospace;font-size:.92em\">WHERE Phone == NULL</code>", "<code style=\"font-family:monospace;font-size:.92em\">WHERE Phone = NULL</code>", "<code style=\"font-family:monospace;font-size:.92em\">WHERE Phone IS NULL</code>"], "answer": "D", "explanation": "NULL cannot be compared with =. It must be tested using IS NULL or IS NOT NULL."},
+  {"id": 56, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "In a LIKE pattern, the underscore (_) wildcard stands for:", "options": ["Exactly one digit", "A literal underscore only", "Exactly one character", "Any number of characters including none"], "answer": "C", "explanation": "% matches any number of characters, while _ matches a single character. So LIKE '_a%' means the second letter is a."},
+  {"id": 57, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "WHERE Dept IN ('CS', 'IT') is equivalent to:", "options": ["<code style=\"font-family:monospace;font-size:.92em\">WHERE Dept = 'CS' OR Dept = 'IT'</code>", "<code style=\"font-family:monospace;font-size:.92em\">WHERE Dept LIKE 'CS' AND 'IT'</code>", "<code style=\"font-family:monospace;font-size:.92em\">WHERE Dept = 'CS' AND Dept = 'IT'</code>", "<code style=\"font-family:monospace;font-size:.92em\">WHERE Dept BETWEEN 'CS' AND 'IT'</code>"], "answer": "A", "explanation": "IN tests membership in a list and acts like a series of OR conditions."},
+  {"id": 58, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "In SELECT Name AS StudentName FROM Student, the AS keyword:", "options": ["Creates a new table called StudentName", "Converts Name to a different data type", "Gives the column an alias in the result", "Renames the column permanently in the table"], "answer": "C", "explanation": "An alias only changes the heading in the query result."},
+  {"id": 59, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "Which statement creates a new table?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">ADD TABLE Student (RollNo INTEGER, Name VARCHAR(30))</code>", "<code style=\"font-family:monospace;font-size:.92em\">MAKE TABLE Student (RollNo INTEGER, Name VARCHAR(30))</code>", "<code style=\"font-family:monospace;font-size:.92em\">CREATE TABLE Student (RollNo INTEGER, Name VARCHAR(30))</code>", "<code style=\"font-family:monospace;font-size:.92em\">NEW TABLE Student (RollNo INTEGER, Name VARCHAR(30))</code>"], "answer": "C", "explanation": "CREATE TABLE is the standard DDL statement to define a table."},
+  {"id": 60, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "Which statement adds a new column to an existing table?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">ALTER TABLE Student ADD Phone VARCHAR(10)</code>", "<code style=\"font-family:monospace;font-size:.92em\">MODIFY TABLE Student ADD Phone VARCHAR(10)</code>", "<code style=\"font-family:monospace;font-size:.92em\">UPDATE TABLE Student ADD Phone VARCHAR(10)</code>", "<code style=\"font-family:monospace;font-size:.92em\">INSERT COLUMN Phone INTO Student</code>"], "answer": "A", "explanation": "ALTER TABLE changes the structure of an existing table."},
+  {"id": 61, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "The Student table has 10 rows, and Marks is NULL in 2 of them. What does SELECT COUNT(Marks) FROM Student return?", "options": ["8", "0", "10", "2"], "answer": "A", "explanation": "COUNT(column) ignores NULL values. COUNT(*) would give 10."},
+  {"id": 62, "level": "Intermediate", "type": "SQL", "topic": "SQL Statements", "question": "What does this query return?\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">SELECT * FROM Student</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">WHERE Marks &gt; (SELECT AVG(Marks) FROM Student)</span>", "options": ["Students whose marks equal the class average", "Students whose marks are above the class average", "The student with the highest marks only", "All students, with the average added as a column"], "answer": "B", "explanation": "The inner query computes the average, and the outer query compares each row with it."},
+  {"id": 63, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "The ADO Data Control is added to the toolbox using:", "options": ["It is already present in the standard toolbox", "Project &gt; Components &gt; Microsoft ADO Data Control 6.0 (OLEDB)", "Tools &gt; Add-Ins &gt; ADO Data Control", "Project &gt; References &gt; Microsoft ADO Data Control 6.0"], "answer": "B", "explanation": "The ADO Data Control is an ActiveX control (MSADODC.OCX) added from the Components dialog."},
+  {"id": 64, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "The default name given to the first ADO Data Control placed on a form is:", "options": ["AdoData1", "Data1", "ADO1", "Adodc1"], "answer": "D", "explanation": "Data1 is the default name of the intrinsic (DAO) Data control."},
+  {"id": 65, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "Which property of the ADO Data Control specifies how to connect to the data source?", "options": ["RecordSource", "DataMember", "ConnectionString", "DatabaseName"], "answer": "C", "explanation": "DatabaseName belongs to the DAO Data control, not to ADO Data Control."},
+  {"id": 66, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "Which property decides the table, query or command that supplies the records?", "options": ["DataSource", "ConnectionString", "DataField", "RecordSource"], "answer": "D", "explanation": "RecordSource, together with CommandType, tells Adodc what to retrieve."},
+  {"id": 67, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "To give a table name directly in RecordSource, the CommandType must be:", "options": ["adCmdFile", "adCmdStoredProc", "adCmdTable", "adCmdText"], "answer": "C", "explanation": "adCmdTable (2) means the source is a table name. adCmdText (1) is used for SQL text."},
+  {"id": 68, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "How can the underlying ADO Recordset of Adodc1 be reached in code?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">Adodc1.DataSource</code>", "<code style=\"font-family:monospace;font-size:.92em\">Adodc1.Connection</code>", "<code style=\"font-family:monospace;font-size:.92em\">Adodc1.Recordset</code>", "<code style=\"font-family:monospace;font-size:.92em\">Adodc1.Records</code>"], "answer": "C", "explanation": "For example, Adodc1.Recordset.MoveNext."},
+  {"id": 69, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "Which property of the ADO Data Control sets the text shown between its navigation buttons?", "options": ["RecordSource", "Caption", "Text", "Name"], "answer": "B", "explanation": "Caption displays text, for example \"Student Records\", between the arrow buttons."},
+  {"id": 70, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "What is the default value of EOFAction in the ADO Data Control?", "options": ["adStayEOF", "adDoMoveFirst", "adDoMoveLast", "adDoAddNew"], "answer": "C", "explanation": "Values: 0 adDoMoveLast (default), 1 adStayEOF, 2 adDoAddNew."},
+  {"id": 71, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "Which EOFAction adds a blank new record automatically when the user clicks Next on the last record?", "options": ["adDoMoveNext", "adDoAddNew", "adDoMoveLast", "adStayEOF"], "answer": "B", "explanation": "adDoAddNew (2) calls AddNew when the user moves past the last record."},
+  {"id": 72, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "A Universal Data Link file has the extension:", "options": ["MDB", "DSN", "ADO", "UDL"], "answer": "D", "explanation": ".udl stores an OLE DB connection string. .dsn is an ODBC File DSN."},
+  {"id": 73, "level": "Intermediate", "type": "Code", "topic": "ADO Data Control", "question": "Which connection string correctly connects to an Access database?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">Provider=Microsoft.Jet.OLEDB.4.0;Database Name=C:\\School.mdb</code>", "<code style=\"font-family:monospace;font-size:.92em\">Provider=SQLOLEDB;Data Source=C:\\School.mdb</code>", "<code style=\"font-family:monospace;font-size:.92em\">Driver=Microsoft.Jet.OLEDB.4.0;File=C:\\School.mdb</code>", "<code style=\"font-family:monospace;font-size:.92em\">Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\\School.mdb</code>"], "answer": "D", "explanation": "An OLE DB connection string needs Provider and Data Source."},
+  {"id": 74, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "To make Adodc1 re-run its RecordSource after changing it at run time, you call:", "options": ["<code style=\"font-family:monospace;font-size:.92em\">Adodc1.Reload</code>", "<code style=\"font-family:monospace;font-size:.92em\">Adodc1.Reset</code>", "<code style=\"font-family:monospace;font-size:.92em\">Adodc1.Refresh</code>", "<code style=\"font-family:monospace;font-size:.92em\">Adodc1.Update</code>"], "answer": "C", "explanation": "Refresh re-creates the Recordset from the current ConnectionString and RecordSource."},
+  {"id": 75, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "To bind a TextBox to the field Name supplied by Adodc1, you set:", "options": ["DataMember = Adodc1 and ListField = Name", "RecordSource = Adodc1 and DataField = Name", "DataSource = Adodc1 and DataField = Name", "ConnectionString = Adodc1 and RowSource = Name"], "answer": "C", "explanation": "A bound control needs DataSource (the data control) and DataField (the column)."},
+  {"id": 76, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "Which type of ODBC DSN is stored in the registry and is available to all users of a computer?", "options": ["User DSN", "System DSN", "Remote DSN", "File DSN"], "answer": "B", "explanation": "A User DSN is visible to one user only, and a File DSN is stored in a .dsn file."},
+  {"id": 77, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "What is the default ConnectionTimeout of the ADO Data Control (in seconds)?", "options": ["15", "0", "30", "60"], "answer": "A", "explanation": "ConnectionTimeout defaults to 15 seconds and CommandTimeout to 30 seconds."},
+  {"id": 78, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "Which property of the ADO Data Control sets the read/write permissions of its connection?", "options": ["EOFAction", "Mode", "LockType", "CursorType"], "answer": "B", "explanation": "Mode takes values such as adModeRead, adModeWrite and adModeReadWrite."},
+  {"id": 79, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "What is the default BOFAction of the ADO Data Control?", "options": ["adDoAddNew", "adStayBOF", "adDoMoveLast", "adDoMoveFirst"], "answer": "D", "explanation": "BOFAction 0 = adDoMoveFirst (default), 1 = adStayBOF."},
+  {"id": 80, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "The MaxRecords property of the ADO Data Control:", "options": ["Limits the number of records returned, where 0 means no limit", "Sets the maximum number of fields in the Recordset", "Sets the maximum number of Adodc controls per form", "Sets the size of each record in bytes"], "answer": "A", "explanation": "MaxRecords is useful to avoid fetching very large result sets."},
+  {"id": 81, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "Which event of the ADO Data Control occurs AFTER the current record has changed?", "options": ["RecordChanging", "MoveComplete", "WillChangeRecord", "WillMove"], "answer": "B", "explanation": "WillMove is fired before the move, and MoveComplete after it."},
+  {"id": 82, "level": "Intermediate", "type": "Code", "topic": "ADO Data Control", "question": "Which statement starts adding a new record through the recordset of the ADO Data Control Adodc1?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">Adodc1.Recordset.Insert</code>", "<code style=\"font-family:monospace;font-size:.92em\">Adodc1.NewRecord</code>", "<code style=\"font-family:monospace;font-size:.92em\">Adodc1.AddNew</code>", "<code style=\"font-family:monospace;font-size:.92em\">Adodc1.Recordset.AddNew</code>"], "answer": "D", "explanation": "The ADO Data Control itself has no AddNew method. It is a method of its Recordset."},
+  {"id": 83, "level": "Intermediate", "type": "Code", "topic": "ADO Data Control", "question": "Which connection string uses an ODBC data source (DSN) named SchoolDSN?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">Provider=MSDASQL;DSN=SchoolDSN</code>", "<code style=\"font-family:monospace;font-size:.92em\">DSN=Provider=MSDASQL;SchoolDSN</code>", "<code style=\"font-family:monospace;font-size:.92em\">Driver=SchoolDSN;Provider=MSDASQL</code>", "<code style=\"font-family:monospace;font-size:.92em\">Provider=SQLOLEDB;DSN=SchoolDSN</code>"], "answer": "A", "explanation": "MSDASQL is the OLE DB provider for ODBC, and DSN names the data source."},
+  {"id": 84, "level": "Intermediate", "type": "Concept", "topic": "ADO Data Control", "question": "In the Property Pages of the ADO Data Control, clicking the Build button opens:", "options": ["The Data Link Properties dialog box", "The Crystal Reports Expert", "The Query Builder form", "The Data Environment designer"], "answer": "A", "explanation": "Data Link Properties lets you choose the provider and database and test the connection."},
+  {"id": 85, "level": "Intermediate", "type": "Concept", "topic": "Binding Controls", "question": "The DataCombo and DataList controls belong to which component?", "options": ["Microsoft DataList Controls 6.0 (OLEDB)", "Microsoft Windows Common Controls 6.0", "Microsoft DataGrid Control 6.0 (OLEDB)", "Microsoft ADO Data Control 6.0 (OLEDB)"], "answer": "A", "explanation": "DataGrid has its own component (MSDATGRD.OCX). DataCombo and DataList share MSDATLST.OCX."},
+  {"id": 86, "level": "Intermediate", "type": "Concept", "topic": "Binding Controls", "question": "What is the main difference between DataCombo and DataList?", "options": ["DataCombo is unbound while DataList is bound", "DataList works only with DAO while DataCombo works with ADO", "DataList can edit records but DataCombo cannot", "DataCombo is a drop-down combo with a text portion, while DataList is an always-visible list"], "answer": "D", "explanation": "Both are data-bound. DataCombo behaves like a ComboBox, DataList like a ListBox."},
+  {"id": 87, "level": "Intermediate", "type": "Concept", "topic": "Binding Controls", "question": "Which property gives the data control that fills the list of a DataCombo or DataList?", "options": ["DataField", "BoundText", "RowSource", "DataSource"], "answer": "C", "explanation": "RowSource supplies the list items. DataSource is the recordset that will be updated."},
+  {"id": 88, "level": "Intermediate", "type": "Concept", "topic": "Binding Controls", "question": "The ListField property of DataCombo specifies:", "options": ["The ADO control to which the list is bound", "The field used for sorting the list", "The field of RowSource whose values are displayed in the list", "The field of DataSource that is updated by the selection"], "answer": "C", "explanation": "ListField selects what the user sees in the list."},
+  {"id": 89, "level": "Intermediate", "type": "Concept", "topic": "Binding Controls", "question": "The DataField property of DataCombo specifies:", "options": ["The field of the DataSource recordset that is updated with the selected value", "The column width of the list", "The name of the table that fills the list", "The field of RowSource shown in the list"], "answer": "A", "explanation": "DataField is the destination field in the table being edited."},
+  {"id": 90, "level": "Intermediate", "type": "Concept", "topic": "Binding Controls", "question": "The BoundColumn property of a DataCombo is:", "options": ["The column number of the grid", "The RowSource field whose value is passed to the DataField", "The number of columns of the ADO control", "The field displayed in the text portion"], "answer": "B", "explanation": "BoundColumn supplies the value that is saved, for example an ID, even if ListField shows a name."},
+  {"id": 91, "level": "Intermediate", "type": "Concept", "topic": "Binding Controls", "question": "Which property returns the BoundColumn value of the current selection?", "options": ["SelectedItem", "Text", "BoundText", "MatchedWithList"], "answer": "C", "explanation": "Text holds the displayed ListField text, and SelectedItem returns a bookmark."},
+  {"id": 92, "level": "Intermediate", "type": "Concept", "topic": "Binding Controls", "question": "To stop users typing a value that is not in a DataCombo list, set Style to:", "options": ["dbcFixedList", "dbcDropdownList", "dbcDropdownCombo", "dbcSimpleCombo"], "answer": "B", "explanation": "Style values: 0 dbcDropdownCombo, 1 dbcSimpleCombo, 2 dbcDropdownList."},
+  {"id": 93, "level": "Intermediate", "type": "Concept", "topic": "Binding Controls", "question": "A DataGrid is bound to an ADO Data Control using the property:", "options": ["DataSource", "DataField", "RowSource", "ListField"], "answer": "A", "explanation": "DataGrid shows a whole recordset, so it only needs DataSource."},
+  {"id": 94, "level": "Intermediate", "type": "Concept", "topic": "Binding Controls", "question": "Which settings make a DataGrid read-only?", "options": ["AllowAddNew, AllowDelete and AllowUpdate all set to False", "Only AllowAddNew and AllowDelete set to False", "Only AllowAddNew set to False", "Only AllowUpdate set to False"], "answer": "A", "explanation": "All three permissions must be turned off to block adding, deleting and editing."},
+  {"id": 95, "level": "Intermediate", "type": "Concept", "topic": "Binding Controls", "question": "Which DataGrid property lets users add records through the blank row at the bottom?", "options": ["AllowDelete", "AllowRowSizing", "AllowAddNew", "AllowUpdate"], "answer": "C", "explanation": "AllowAddNew = True shows an empty row for new records."},
+  {"id": 96, "level": "Intermediate", "type": "Concept", "topic": "Binding Controls", "question": "To load the column layout of a DataGrid from its bound recordset at design time, you use:", "options": ["Project &gt; Add Columns", "Right-click &gt; Retrieve Fields", "Format &gt; Auto Fields", "Insert &gt; Fields"], "answer": "B", "explanation": "Retrieve Fields fills the Columns collection from the recordset."},
+  {"id": 97, "level": "Intermediate", "type": "Scenario", "topic": "Binding Controls", "question": "The Orders table has CustID. The Customers table has CustID and CustName. A DataCombo must show CustName but store CustID in Orders (AdodcOrders and AdodcCustomers are the data controls). Which settings are correct?", "options": ["DataSource = AdodcCustomers, DataField = CustID, RowSource = AdodcOrders, ListField = CustName, BoundColumn = CustID", "DataSource = AdodcCustomers, DataField = CustName, RowSource = AdodcOrders, ListField = CustID, BoundColumn = CustName", "DataSource = AdodcOrders, DataField = CustID, RowSource = AdodcCustomers, ListField = CustName, BoundColumn = CustID", "DataSource = AdodcOrders, DataField = CustName, RowSource = AdodcCustomers, ListField = CustID, BoundColumn = CustName"], "answer": "C", "explanation": "DataSource/DataField point to the table being updated, and RowSource/ListField/BoundColumn point to the lookup table."},
+  {"id": 98, "level": "Intermediate", "type": "Concept", "topic": "Binding Controls", "question": "Which property of a bound control becomes True when the user changes its contents?", "options": ["DataChanged", "Modified", "DataField", "Changed"], "answer": "A", "explanation": "DataChanged lets code detect that the displayed value was edited."},
+  {"id": 99, "level": "Intermediate", "type": "Concept", "topic": "Binding Controls", "question": "The MatchEntry property of a DataList or DataCombo decides:", "options": ["Which field is used as the data source", "Whether the list is sorted", "How many columns are displayed", "How the list matches the characters the user types (basic or extended matching)"], "answer": "D", "explanation": "dblBasicMatching goes by the first character. dblExtendedMatching matches the whole typed text."},
+  {"id": 100, "level": "Intermediate", "type": "Concept", "topic": "Binding Controls", "question": "Which property of a DataList returns a bookmark for the currently selected item?", "options": ["SelectedItem", "RowSource", "ListField", "BoundText"], "answer": "A", "explanation": "The bookmark can be assigned to the Recordset's Bookmark to move to that record."},
+  {"id": 101, "level": "Intermediate", "type": "Concept", "topic": "Binding Controls", "question": "Which DataGrid property shows or hides the column heading row?", "options": ["AllowRowSizing", "HeadFont", "Caption", "ColumnHeaders"], "answer": "D", "explanation": "ColumnHeaders = False removes the heading row."},
+  {"id": 102, "level": "Intermediate", "type": "Code", "topic": "Binding Controls", "question": "Which statement sets the heading text of the FIRST column of DataGrid1?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">DataGrid1.Columns(1).Caption = \"Name\"</code>", "<code style=\"font-family:monospace;font-size:.92em\">DataGrid1.Column(0).Text = \"Name\"</code>", "<code style=\"font-family:monospace;font-size:.92em\">DataGrid1.Fields(0).Caption = \"Name\"</code>", "<code style=\"font-family:monospace;font-size:.92em\">DataGrid1.Columns(0).Caption = \"Name\"</code>"], "answer": "D", "explanation": "The Columns collection is zero-based, so the first column is Columns(0)."},
+  {"id": 103, "level": "Intermediate", "type": "Code", "topic": "Binding Controls", "question": "How is a DataGrid bound in code to an existing ADO Recordset named rs?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">Set DataGrid1.DataSource = rs</code>", "<code style=\"font-family:monospace;font-size:.92em\">DataGrid1.RowSource = rs</code>", "<code style=\"font-family:monospace;font-size:.92em\">DataGrid1.Recordset = rs</code>", "<code style=\"font-family:monospace;font-size:.92em\">DataGrid1.DataSource = rs</code>"], "answer": "A", "explanation": "DataSource is an object property, so the Set keyword is required."},
+  {"id": 104, "level": "Intermediate", "type": "Code", "topic": "Coding ADO", "question": "If cn is declared as Dim cn As ADODB.Connection, which statement must run before cn.Open?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">Set cn = New ADODB.Connection</code>", "<code style=\"font-family:monospace;font-size:.92em\">Create cn As ADODB.Connection</code>", "<code style=\"font-family:monospace;font-size:.92em\">Load cn</code>", "<code style=\"font-family:monospace;font-size:.92em\">cn = New ADODB.Connection</code>"], "answer": "A", "explanation": "Object variables need the Set keyword to be assigned an object."},
+  {"id": 105, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "What is the correct order of arguments of Recordset.Open?", "options": ["Options, Source, ActiveConnection, CursorType, LockType", "ActiveConnection, Source, LockType, CursorType, Options", "Source, CursorType, ActiveConnection, Options, LockType", "Source, ActiveConnection, CursorType, LockType, Options"], "answer": "D", "explanation": "Example: rs.Open \"Student\", cn, adOpenStatic, adLockOptimistic, adCmdTable."},
+  {"id": 106, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "What is the default CursorType of an ADO Recordset opened without specifying it?", "options": ["adOpenDynamic", "adOpenForwardOnly", "adOpenStatic", "adOpenKeyset"], "answer": "B", "explanation": "The default is a forward-only cursor (value 0) with read-only locking."},
+  {"id": 107, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "Which LockType allows editing and locks the record only when Update is called?", "options": ["adLockReadOnly", "adLockOptimistic", "adLockBatchOptimistic", "adLockPessimistic"], "answer": "B", "explanation": "Pessimistic locking locks the record as soon as editing starts."},
+  {"id": 108, "level": "Intermediate", "type": "Scenario", "topic": "Coding ADO", "question": "A programmer opens a Recordset with default settings and then calls rs.AddNew, which causes an error. The most likely reason is:", "options": ["The Connection was opened using Jet 4.0", "AddNew cannot be used with Access databases", "The default forward-only, read-only Recordset does not allow updates", "Update must be called before AddNew"], "answer": "C", "explanation": "Open the Recordset with a suitable cursor and adLockOptimistic before using AddNew."},
+  {"id": 109, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "What is the correct sequence for adding a record to a Recordset?", "options": ["AddNew, Update, assign field values", "Update, AddNew, assign field values", "AddNew, assign field values, Update", "Assign field values, AddNew, Update"], "answer": "C", "explanation": "AddNew creates a blank record, you fill it, and Update saves it."},
+  {"id": 110, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "Which method of DAO has no equivalent in ADO, because ADO field values can be changed directly?", "options": ["AddNew", "Delete", "Edit", "Update"], "answer": "C", "explanation": "In ADO you simply assign a new value to the field and call Update."},
+  {"id": 111, "level": "Intermediate", "type": "Code", "topic": "Coding ADO", "question": "What does this code do?\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">rs.Find \"RollNo = 5\"</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">If Not rs.EOF Then</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">&nbsp;&nbsp;&nbsp;&nbsp;rs!Marks = 90</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">&nbsp;&nbsp;&nbsp;&nbsp;rs.Update</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">End If</span>", "options": ["Adds a new record having RollNo 5", "Sets Marks of every student to 90", "Deletes the record with RollNo 5", "Sets Marks of the student with RollNo 5 to 90, if found"], "answer": "D", "explanation": "Find locates the record, the field is assigned a new value, and Update saves the change."},
+  {"id": 112, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "After rs.Delete is executed on the current record, what should the program do next?", "options": ["Call rs.AddNew to refill the record", "Call rs.Update to complete the deletion", "Move to another record, because the deleted record cannot be used", "Nothing, the same record remains usable"], "answer": "C", "explanation": "Delete takes effect immediately in non-batch mode, so use MoveNext or MoveFirst afterwards."},
+  {"id": 113, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "Which method abandons changes made to the current record (or a new record after AddNew) before Update is called?", "options": ["Cancel", "Close", "CancelUpdate", "Requery"], "answer": "C", "explanation": "CancelUpdate discards pending changes."},
+  {"id": 114, "level": "Intermediate", "type": "Code", "topic": "Coding ADO", "question": "Which statement correctly searches for the student named Ravi?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">rs.Find \"Name = 'Ravi'\"</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs.Find Name = 'Ravi'</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs.Find Name, \"Ravi\"</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs.Search \"Name = 'Ravi'\"</code>"], "answer": "A", "explanation": "Find takes one criteria string, and text values go inside single quotes."},
+  {"id": 115, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "Which statement about Recordset.Find is TRUE?", "options": ["It supports several conditions combined with AND", "It always searches from the first record", "The criteria can use only one column, so AND/OR combinations are not allowed", "It returns a new Recordset of the matching rows"], "answer": "C", "explanation": "Find searches from the current record. For multiple conditions use Filter or an SQL query."},
+  {"id": 116, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "If Find does not find a match while searching forward, then:", "options": ["A run-time error \"record not found\" occurs", "rs.BOF becomes True", "The first record becomes current", "rs.EOF becomes True"], "answer": "D", "explanation": "After a failed forward Find, EOF is True (BOF for a backward search)."},
+  {"id": 117, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "Which Recordset property shows only the records that meet a condition, without running a new query?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">Sort</code>", "<code style=\"font-family:monospace;font-size:.92em\">Source</code>", "<code style=\"font-family:monospace;font-size:.92em\">Filter</code>", "<code style=\"font-family:monospace;font-size:.92em\">Bookmark</code>"], "answer": "C", "explanation": "Example: rs.Filter = \"Marks &gt; 60\"."},
+  {"id": 118, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "rs.RecordCount returns -1 when:", "options": ["The Recordset uses a forward-only cursor", "The connection is closed", "The Recordset is empty", "The table has no primary key"], "answer": "A", "explanation": "Forward-only cursors cannot report the count. An empty Recordset returns 0."},
+  {"id": 119, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "If both rs.BOF and rs.EOF are True, then:", "options": ["The Recordset is closed", "The pointer is on the last record", "The Recordset is read-only", "The Recordset contains no records"], "answer": "D", "explanation": "BOF and EOF are both True only for an empty Recordset."},
+  {"id": 120, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "What happens if MoveNext is called when rs.EOF is already True?", "options": ["The pointer silently stays at EOF", "A run-time error occurs", "A new blank record is added", "The pointer wraps to the first record"], "answer": "B", "explanation": "Moving beyond EOF raises the error \"Either BOF or EOF is True...\"."},
+  {"id": 121, "level": "Intermediate", "type": "Code", "topic": "Coding ADO", "question": "What happens when this code runs on a Recordset that has records?\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">Do While Not rs.EOF</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">&nbsp;&nbsp;&nbsp;&nbsp;List1.AddItem rs!Name</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">Loop</span>", "options": ["The same name is added again and again, an infinite loop (no MoveNext)", "Each name is added once and the loop ends", "A compile error occurs at List1.AddItem", "Only the first name is added and the loop ends"], "answer": "A", "explanation": "Without rs.MoveNext, EOF never becomes True."},
+  {"id": 122, "level": "Intermediate", "type": "Code", "topic": "Coding ADO", "question": "Which of the following is NOT a valid way to read the Name field of the current record?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">rs!Name</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs.Field(\"Name\")</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs(\"Name\")</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs.Fields(\"Name\")</code>"], "answer": "B", "explanation": "The collection is Fields. There is no Field member."},
+  {"id": 123, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "Which of the following runs an action query (UPDATE, DELETE, INSERT) directly without returning a Recordset?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">rs.Execute</code>", "<code style=\"font-family:monospace;font-size:.92em\">cn.Execute</code>", "<code style=\"font-family:monospace;font-size:.92em\">cn.Run</code>", "<code style=\"font-family:monospace;font-size:.92em\">cn.Query</code>"], "answer": "B", "explanation": "Connection.Execute can run SQL statements. Example: cn.Execute \"DELETE FROM Student WHERE RollNo = 5\"."},
+  {"id": 124, "level": "Intermediate", "type": "Code", "topic": "Coding ADO", "question": "What is the correct way to release a Recordset when work is finished?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">Set rs = Nothing and then rs.Close</code>", "<code style=\"font-family:monospace;font-size:.92em\">Unload rs</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs.Close and then Set rs = Nothing</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs.Dispose</code>"], "answer": "C", "explanation": "Close the object first, then release the reference."},
+  {"id": 125, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "Which cursor type shows additions, changes and deletions made by other users?", "options": ["adOpenKeyset", "adOpenForwardOnly", "adOpenStatic", "adOpenDynamic"], "answer": "D", "explanation": "Keyset shows changes and deletions but not new records. Static shows none of them."},
+  {"id": 126, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "Which Recordset method re-executes the underlying command to refresh the data?", "options": ["Requery", "Update", "MoveFirst", "Clone"], "answer": "A", "explanation": "Requery re-runs the query and brings fresh data."},
+  {"id": 127, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "Which property stores the current record position so you can return to it later?", "options": ["Source", "Index", "Bookmark", "RecordCount"], "answer": "C", "explanation": "Save with bm = rs.Bookmark and return with rs.Bookmark = bm."},
+  {"id": 128, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "What is the difference between Find and Filter?", "options": ["Both return a new Recordset object", "Find moves the pointer to a matching record, while Filter hides the records that do not match", "Find hides non-matching records, while Filter moves the pointer", "Find works only on indexed fields, Filter on any field"], "answer": "B", "explanation": "Find changes the current record. Filter changes which records are visible."},
+  {"id": 129, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "Which Options constant tells ADO that the Source argument of Recordset.Open is an SQL statement?", "options": ["adCmdText", "adCmdTable", "adCmdUnknown", "adCmdFile"], "answer": "A", "explanation": "adCmdText is used for SQL text. adCmdTable is used when the Source is a table name."},
+  {"id": 130, "level": "Intermediate", "type": "Code", "topic": "Coding ADO", "question": "After this statement executes, the variable n holds:\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">cn.Execute \"DELETE FROM Student WHERE Marks &lt; 33\", n</span>", "options": ["The number of records in the whole table", "Always 1", "The ID of the last deleted record", "The number of records deleted"], "answer": "D", "explanation": "The second argument of Connection.Execute receives RecordsAffected."},
+  {"id": 131, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "Which Recordset property gets or sets the ordinal position of the current record?", "options": ["RecordCount", "AbsolutePosition", "CursorLocation", "Bookmark"], "answer": "B", "explanation": "AbsolutePosition gives the record number, starting from 1."},
+  {"id": 132, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "Setting rs.Sort = \"Name DESC\" requires which CursorLocation?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">adUseDynamic</code>", "<code style=\"font-family:monospace;font-size:.92em\">adUseServer</code>", "<code style=\"font-family:monospace;font-size:.92em\">adUseClient</code>", "<code style=\"font-family:monospace;font-size:.92em\">adUseNone</code>"], "answer": "C", "explanation": "The Sort property works on a client-side cursor, so set rs.CursorLocation = adUseClient before opening the Recordset."},
+  {"id": 133, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "Which Recordset method creates a duplicate Recordset that refers to the same data?", "options": ["Copy", "Requery", "Clone", "Duplicate"], "answer": "C", "explanation": "A clone has its own current-record pointer, so you can move in it independently."},
+  {"id": 134, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "Which LockType is required to use UpdateBatch on a Recordset?", "options": ["adLockBatchOptimistic", "adLockPessimistic", "adLockReadOnly", "adLockOptimistic"], "answer": "A", "explanation": "In batch mode, changes are stored locally and sent to the database together by UpdateBatch."},
+  {"id": 135, "level": "Intermediate", "type": "Code", "topic": "Coding ADO", "question": "In the CommandText of an ADO Command, what does the ? mark represent?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">An error in the SQL statement</code>", "<code style=\"font-family:monospace;font-size:.92em\">A comment marker</code>", "<code style=\"font-family:monospace;font-size:.92em\">A parameter placeholder whose value is supplied through the Parameters collection</code>", "<code style=\"font-family:monospace;font-size:.92em\">A wildcard that matches any single character</code>"], "answer": "C", "explanation": "Example: SELECT * FROM Student WHERE RollNo = ? with a parameter for RollNo."},
+  {"id": 136, "level": "Intermediate", "type": "Concept", "topic": "Coding ADO", "question": "Which Recordset method copies records into a two-dimensional array?", "options": ["ToArray", "GetRows", "CopyRows", "GetArray"], "answer": "B", "explanation": "GetRows returns a variant array, with the first index for fields and the second for records."},
+  {"id": 137, "level": "Intermediate", "type": "Code", "topic": "Coding ADO", "question": "What does MsgBox display after this code runs on a Recordset that has records?\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">rs.MoveFirst</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">rs.MovePrevious</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">MsgBox rs.BOF</span>", "options": ["False", "0", "True", "A run-time error occurs"], "answer": "C", "explanation": "Moving back from the first record places the pointer before it, so BOF becomes True."},
+  {"id": 138, "level": "Intermediate", "type": "Code", "topic": "Coding ADO", "question": "Which code deletes all the records of an open, updatable Recordset?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">Do While Not rs.EOF: rs.Delete: rs.MoveNext: Loop</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs.MoveFirst: rs.Delete</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs.DeleteAll</code>", "<code style=\"font-family:monospace;font-size:.92em\">Do Until rs.EOF: rs.Delete: Loop</code>"], "answer": "A", "explanation": "Each record needs Delete followed by MoveNext. The last option deletes only one record."},
+  {"id": 139, "level": "Intermediate", "type": "Scenario", "topic": "Coding ADO", "question": "A student must be found using two conditions, such as Class = 10 AND Section = 'A'. Since Find accepts one condition only, what is the best approach?", "options": ["Use an SQL query with AND in the WHERE clause (or Filter)", "Use rs.Seek on the Class field", "Use rs.Find with two arguments separated by a comma", "Call Find twice with the same field"], "answer": "A", "explanation": "SQL (or Filter, which allows AND) handles multi-condition searches."},
+  {"id": 140, "level": "Intermediate", "type": "Concept", "topic": "Data Environment", "question": "A Data Environment is added to a VB 6.0 project using:", "options": ["Project &gt; Components &gt; Data Environment", "Tools &gt; Add Data Environment", "File &gt; New &gt; Data Environment Report", "Project &gt; Add Data Environment"], "answer": "D", "explanation": "The Data Environment designer is added from the Project menu."},
+  {"id": 141, "level": "Intermediate", "type": "Concept", "topic": "Data Environment", "question": "What are the two basic types of objects in the Data Environment designer?", "options": ["Provider and Parameter", "Recordset and Field", "Table and Query", "Connection and Command"], "answer": "D", "explanation": "A Connection defines the data source and Commands define the data retrieved through it."},
+  {"id": 142, "level": "Intermediate", "type": "Concept", "topic": "Data Environment", "question": "A Command object in the Data Environment can be based on:", "options": ["A table, view, stored procedure or SQL statement", "Only a Crystal Report file", "Only an SQL statement typed at run time", "Only a table"], "answer": "A", "explanation": "The Command's Source of Data can be a database object or an SQL statement."},
+  {"id": 143, "level": "Intermediate", "type": "Concept", "topic": "Data Environment", "question": "What happens when a Command is dragged from the Data Environment designer onto a form?", "options": ["A Crystal report is created from the Command", "The Command is deleted from the Data Environment", "A new Connection object is created on the form", "Data-bound labels and text boxes are created for its fields"], "answer": "D", "explanation": "Drag and drop quickly creates a bound data-entry form."},
+  {"id": 144, "level": "Intermediate", "type": "Code", "topic": "Data Environment", "question": "If a Command named Students is defined in DataEnvironment1, its Recordset is reached in code as:", "options": ["<code style=\"font-family:monospace;font-size:.92em\">DataEnvironment1.Students.rs</code>", "<code style=\"font-family:monospace;font-size:.92em\">DataEnvironment1.Recordset.Students</code>", "<code style=\"font-family:monospace;font-size:.92em\">DataEnvironment1.rsStudents</code>", "<code style=\"font-family:monospace;font-size:.92em\">Students.DataEnvironment1</code>"], "answer": "C", "explanation": "The Recordset of a Command is exposed with the prefix rs, followed by the Command name."},
+  {"id": 145, "level": "Intermediate", "type": "Concept", "topic": "Data Environment", "question": "A child Command is related to its parent Command through which tab of Command Properties?", "options": ["General", "Relation", "Advanced", "Parameters"], "answer": "B", "explanation": "The Relation tab (Relate to a Parent Command Object) gives a parent-child hierarchy."},
+  {"id": 146, "level": "Intermediate", "type": "Concept", "topic": "Data Environment", "question": "A Data Environment designer is saved in a file with the extension:", "options": ["CLS", "FRM", "DSR", "RPT"], "answer": "C", "explanation": "Designers are saved as .dsr files. .frm is a form and .rpt is a Crystal report."},
+  {"id": 147, "level": "Intermediate", "type": "Concept", "topic": "Data Environment", "question": "What is an advantage of the Data Environment over placing separate ADO Data controls on every form?", "options": ["It stores the data inside the project file", "It removes the need for an OLE DB provider", "Connection and commands are defined once in a designer and reused across forms", "It works without any database connection"], "answer": "C", "explanation": "The Data Environment centralises Connection and Command definitions."},
+  {"id": 148, "level": "Intermediate", "type": "Code", "topic": "Data Environment", "question": "Which settings bind a TextBox to the field Name of the Command Students in DataEnvironment1?", "options": ["RecordSource = DataEnvironment1, DataMember = Name", "DataSource = DataEnvironment1, DataMember = Students, DataField = Name", "RowSource = DataEnvironment1, ListField = Students, BoundColumn = Name", "DataSource = Students, DataMember = DataEnvironment1"], "answer": "B", "explanation": "DataMember selects the Command inside the Data Environment."},
+  {"id": 149, "level": "Intermediate", "type": "Concept", "topic": "Data Environment", "question": "In the Data Environment Connection properties, the OLE DB provider is chosen on which tab of Data Link Properties?", "options": ["All", "Connection", "Provider", "Advanced"], "answer": "C", "explanation": "Choose the provider on the Provider tab, then set the database on the Connection tab."},
+  {"id": 150, "level": "Intermediate", "type": "Concept", "topic": "Data Environment", "question": "Which object of the Data Environment stores the details of the provider and the database?", "options": ["Connection", "Command", "Recordset", "Parameter"], "answer": "A", "explanation": "A Connection defines how to reach the data source. Commands retrieve data through it."},
+  {"id": 151, "level": "Intermediate", "type": "Concept", "topic": "Data Environment", "question": "In the SQL of a Data Environment Command, a parameter is shown by:", "options": ["An ampersand (&amp;)", "A question mark (?)", "An asterisk (*)", "A hash sign (#)"], "answer": "B", "explanation": "Example: SELECT * FROM Student WHERE Class = ?. The value is set in the Parameters tab or through code."},
+  {"id": 152, "level": "Intermediate", "type": "Code", "topic": "Data Environment", "question": "If the Command Students in DataEnvironment1 has one parameter, how can it be executed from code with the value 10?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">DataEnvironment1.Execute Students, 10</code>", "<code style=\"font-family:monospace;font-size:.92em\">DataEnvironment1.rsStudents = 10</code>", "<code style=\"font-family:monospace;font-size:.92em\">DataEnvironment1.Students(10).Open</code>", "<code style=\"font-family:monospace;font-size:.92em\">DataEnvironment1.Students 10</code>"], "answer": "D", "explanation": "Each Command is exposed as a method of the Data Environment, and the parameters are passed as arguments."},
+  {"id": 153, "level": "Intermediate", "type": "Scenario", "topic": "Data Environment", "question": "A Data Environment Command is executed again, and an error says the operation is not allowed when the object is open. What is the likely fix?", "options": ["Delete and recreate the Connection", "Add a primary key to the table", "Close its Recordset (for example DataEnvironment1.rsStudents) before executing the Command again", "Set the CommandType to adCmdText"], "answer": "C", "explanation": "A Command whose Recordset is already open cannot be run again until that Recordset is closed."},
+  {"id": 154, "level": "Intermediate", "type": "Concept", "topic": "Data Environment", "question": "A Data Report designer in VB 6.0 gets its data from:", "options": ["A Form's Print method only", "A Crystal Report file", "The Windows registry", "A Data Environment Command"], "answer": "D", "explanation": "A Data Report is bound to the Data Environment through its DataSource and DataMember properties."},
+  {"id": 155, "level": "Intermediate", "type": "Concept", "topic": "Data Environment", "question": "How is a Data Report added to a VB 6.0 project?", "options": ["Project &gt; Add Data Report", "File &gt; New Report", "Tools &gt; Report Designer", "Project &gt; Components &gt; Data Report"], "answer": "A", "explanation": "It is added from the Project menu, like the Data Environment."},
+  {"id": 156, "level": "Intermediate", "type": "Concept", "topic": "Data Environment", "question": "A hierarchical Command in the Data Environment is:", "options": ["A Command that can only read one record", "A Command that contains another Connection", "A parent Command that has one or more child Commands related through key fields", "A Command with more than five parameters"], "answer": "C", "explanation": "The relation is defined on the Relation tab, and child Commands are shown under their parent."},
+  {"id": 157, "level": "Intermediate", "type": "Concept", "topic": "Data Environment", "question": "A Data Environment Connection is opened:", "options": ["Only through a call to the Windows API", "Every time a form is unloaded", "Only when the project is compiled", "Automatically the first time one of its Commands is executed or its Recordset is accessed"], "answer": "D", "explanation": "You can also open it explicitly in code with DataEnvironment1.Connection1.Open."},
+  {"id": 158, "level": "Basic", "type": "Concept", "topic": "Crystal Reports", "question": "Crystal Reports is mainly used to:", "options": ["Design and print formatted reports from database data", "Write SQL stored procedures", "Create database tables and relationships", "Compile VB projects into EXE files"], "answer": "A", "explanation": "Crystal Reports is a report designer and report-writing tool."},
+  {"id": 159, "level": "Basic", "type": "Concept", "topic": "Crystal Reports", "question": "A saved Crystal Reports report file has the extension:", "options": ["DSR", "REP", "CRP", "RPT"], "answer": "D", "explanation": "Crystal reports are saved as .rpt files. .dsr is a Data Environment designer."},
+  {"id": 160, "level": "Intermediate", "type": "Scenario", "topic": "Crystal Reports", "question": "A company logo and the report title must appear only once, at the start of the report. Which section should hold them?", "options": ["Page Header", "Page Footer", "Details", "Report Header"], "answer": "D", "explanation": "Report Header prints once at the beginning. Page Header prints at the top of every page."},
+  {"id": 161, "level": "Basic", "type": "Concept", "topic": "Crystal Reports", "question": "Which Crystal Reports section prints once for every record?", "options": ["Report Header", "Details", "Report Footer", "Page Footer"], "answer": "B", "explanation": "The Details section repeats for each record of the report."},
+  {"id": 162, "level": "Intermediate", "type": "Scenario", "topic": "Crystal Reports", "question": "A grand total of all records must print only once at the very end. The summary field should be placed in:", "options": ["Group Footer", "Report Footer", "Page Footer", "Details"], "answer": "B", "explanation": "Report Footer prints once after the last record."},
+  {"id": 163, "level": "Basic", "type": "Concept", "topic": "Crystal Reports", "question": "To show the current page number on every page, you use:", "options": ["The Group Number special field in Report Footer", "The Print Date special field in Details", "The Page Number special field in the Page Header or Page Footer", "The Record Number special field in Report Header"], "answer": "C", "explanation": "Special fields like Page Number, Print Date and Record Number can be inserted in any section."},
+  {"id": 164, "level": "Basic", "type": "Concept", "topic": "Crystal Reports", "question": "A field whose value is calculated using a Crystal formula is called a:", "options": ["Formula field", "Special field", "Text object", "Database field"], "answer": "A", "explanation": "Formula fields are created with the Formula Editor and can be placed in the report like other fields."},
+  {"id": 165, "level": "Basic", "type": "Concept", "topic": "Crystal Reports", "question": "With the Crystal Report control in VB, which property specifies the report file to run?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">SelectionFormula</code>", "<code style=\"font-family:monospace;font-size:.92em\">ReportFileName</code>", "<code style=\"font-family:monospace;font-size:.92em\">DataFiles</code>", "<code style=\"font-family:monospace;font-size:.92em\">WindowTitle</code>"], "answer": "B", "explanation": "Example: CrystalReport1.ReportFileName = App.Path &amp; \"\\Student.rpt\"."},
+  {"id": 166, "level": "Basic", "type": "Concept", "topic": "Crystal Reports", "question": "Setting the Destination property to crptToWindow sends the report to:", "options": ["The default printer", "A preview window on the screen", "A disk file", "An e-mail message"], "answer": "B", "explanation": "Destination values: crptToWindow = 0, crptToPrinter = 1, crptToFile = 2."},
+  {"id": 167, "level": "Basic", "type": "Concept", "topic": "Crystal Reports", "question": "Which property of the Crystal Report control limits the records printed at run time?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">SelectionFormula</code>", "<code style=\"font-family:monospace;font-size:.92em\">WindowState</code>", "<code style=\"font-family:monospace;font-size:.92em\">ReportFileName</code>", "<code style=\"font-family:monospace;font-size:.92em\">Formulas</code>"], "answer": "A", "explanation": "Example: CrystalReport1.SelectionFormula = \"{Student.Marks} &gt; 60\"."},
+  {"id": 168, "level": "Basic", "type": "Concept", "topic": "Crystal Reports", "question": "In a Crystal Reports formula, a database field is written as:", "options": ["{Table.Field}", "[Table.Field]", "&lt;Table.Field&gt;", "(Table.Field)"], "answer": "A", "explanation": "Fields are enclosed in curly braces, for example {Student.Name}."},
+  {"id": 169, "level": "Basic", "type": "Concept", "topic": "Crystal Reports", "question": "In Crystal Reports 7.0 or above, which tool guides the user step by step in creating a common report type?", "options": ["Formula Editor", "Section Expert", "Browser Pane", "Report Expert"], "answer": "D", "explanation": "Report Experts cover standard, cross-tab, mailing label and other report types."},
+  {"id": 170, "level": "Intermediate", "type": "Scenario", "topic": "Crystal Reports", "question": "A subtotal of marks must print after the last record of each class. Which section should hold the subtotal field?", "options": ["Report Header", "Page Header", "Group Footer", "Details"], "answer": "C", "explanation": "The Group Footer prints at the end of each group."},
+  {"id": 171, "level": "Basic", "type": "Concept", "topic": "Crystal Reports", "question": "A field that asks the user for a value when the report is run is called a:", "options": ["SQL expression field", "Special field", "Formula field", "Parameter field"], "answer": "D", "explanation": "A parameter field can be used to select records, for example a particular class."},
+  {"id": 172, "level": "Basic", "type": "Concept", "topic": "Crystal Reports", "question": "A Running Total field in Crystal Reports:", "options": ["Converts numbers to text", "Accumulates a value record by record as the report is processed", "Prints only the grand total at the end", "Counts the pages in the report"], "answer": "B", "explanation": "Running totals can be reset after each group or after each page."},
+  {"id": 173, "level": "Basic", "type": "Concept", "topic": "Crystal Reports", "question": "Which Crystal Reports tool sets the order in which records appear in the report?", "options": ["Record Sort Expert", "Group Sort Expert only", "Section Expert", "Highlighting Expert"], "answer": "A", "explanation": "Records can be sorted on one or more fields in ascending or descending order."},
+  {"id": 174, "level": "Basic", "type": "Concept", "topic": "Crystal Reports", "question": "A Cross-Tab report presents data as:", "options": ["A single value per page", "A mailing-label layout", "A grid of rows and columns with summarised values at the intersections", "A list of formulas"], "answer": "C", "explanation": "Cross-Tab is a standard report type, available in Crystal Reports 7.0 or above."},
+  {"id": 175, "level": "Intermediate", "type": "Code", "topic": "Crystal Reports", "question": "Which method of the Crystal Report control sends the report to the selected Destination?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">RunReport</code>", "<code style=\"font-family:monospace;font-size:.92em\">PrintReport</code>", "<code style=\"font-family:monospace;font-size:.92em\">ShowReport</code>", "<code style=\"font-family:monospace;font-size:.92em\">Execute</code>"], "answer": "B", "explanation": "Example: CrystalReport1.PrintReport after setting ReportFileName and Destination."},
+  {"id": 176, "level": "Basic", "type": "Concept", "topic": "Crystal Reports", "question": "In the Crystal Reports designer, which tab shows the report with actual data?", "options": ["Formula", "Preview", "Design", "Layout"], "answer": "B", "explanation": "The Design tab is used for layout and the Preview tab shows the report with the data."},
+  {"id": 177, "level": "Advanced", "type": "Statement", "topic": "Tricky / Exam Special", "question": "Consider the statements:\n1. ADO is a high-level interface built on top of OLE DB.\n2. OLE DB providers can expose relational and non-relational data.\n3. ADO can work only with Jet databases.\nWhich statements are correct?", "options": ["1 and 2 only", "2 and 3 only", "1, 2 and 3", "1 and 3 only"], "answer": "A", "explanation": "ADO works with any OLE DB provider, so statement 3 is false."},
+  {"id": 178, "level": "Advanced", "type": "Statement", "topic": "Tricky / Exam Special", "question": "Consider the statements:\n1. Find can combine two columns using AND.\n2. Filter limits the records visible in a Recordset.\n3. After a successful Find, the pointer is at the matching record.\nWhich statements are correct?", "options": ["2 and 3 only", "1, 2 and 3", "1 and 2 only", "1 and 3 only"], "answer": "A", "explanation": "Find accepts a single-column criteria only."},
+  {"id": 179, "level": "Advanced", "type": "Statement", "topic": "Tricky / Exam Special", "question": "Consider the statements about the Data Environment:\n1. It can hold more than one Connection.\n2. A Command can be based on an SQL statement.\n3. A parent-child relation can be defined between Commands.\nWhich statements are correct?", "options": ["1 and 2 only", "1, 2 and 3", "2 and 3 only", "1 and 3 only"], "answer": "B", "explanation": "All three statements are true."},
+  {"id": 180, "level": "Advanced", "type": "Assertion-Reason", "topic": "Tricky / Exam Special", "question": "Assertion (A): rs.RecordCount may return -1 for an ADO Recordset.\nReason (R): The default ADO Recordset uses a forward-only cursor, which cannot report the number of records.", "options": ["A is true, but R is false", "Both A and R are true, and R is the correct explanation of A", "A is false, but R is true", "Both A and R are true, but R is not the correct explanation of A"], "answer": "B", "explanation": "Opening with adOpenStatic or adOpenKeyset gives a valid RecordCount."},
+  {"id": 181, "level": "Advanced", "type": "Assertion-Reason", "topic": "Tricky / Exam Special", "question": "Assertion (A): In ADO, a new record that is being added is saved even if Update is not called, when the pointer moves to another record.\nReason (R): ADO automatically calls Update when you move off a record that has pending changes.", "options": ["A is false, but R is true", "A is true, but R is false", "Both A and R are true, but R is not the correct explanation of A", "Both A and R are true, and R is the correct explanation of A"], "answer": "D", "explanation": "This differs from DAO, where such pending changes are discarded."},
+  {"id": 182, "level": "Advanced", "type": "Assertion-Reason", "topic": "Tricky / Exam Special", "question": "Assertion (A): A DataCombo can show customer names but store customer IDs in another table.\nReason (R): ListField and BoundColumn of a DataCombo can refer to different fields of the RowSource.", "options": ["A is true, but R is false", "Both A and R are true, but R is not the correct explanation of A", "Both A and R are true, and R is the correct explanation of A", "A is false, but R is true"], "answer": "C", "explanation": "ListField is displayed, while BoundColumn is the value written to DataField."},
+  {"id": 183, "level": "Advanced", "type": "Assertion-Reason", "topic": "Tricky / Exam Special", "question": "Assertion (A): Adodc1.Recordset gives access to the ADO Recordset behind the ADO Data Control.\nReason (R): The ADO Data Control does not use ADO objects internally.", "options": ["Both A and R are true, and R is the correct explanation of A", "A is true, but R is false", "A is false, but R is true", "Both A and R are true, but R is not the correct explanation of A"], "answer": "B", "explanation": "The ADO Data Control wraps an ADO Connection and Recordset."},
+  {"id": 184, "level": "Advanced", "type": "Assertion-Reason", "topic": "Tricky / Exam Special", "question": "Assertion (A): OLE DB can access only relational databases.\nReason (R): OLE DB is based on COM interfaces.", "options": ["A is true, but R is false", "Both A and R are true, but R is not the correct explanation of A", "Both A and R are true, and R is the correct explanation of A", "A is false, but R is true"], "answer": "D", "explanation": "OLE DB can reach non-relational data too, such as e-mail and file systems."},
+  {"id": 185, "level": "Advanced", "type": "Match", "topic": "Tricky / Exam Special", "question": "Match the technology with its description:\n1. DAO\n2. RDO\n3. ADO\n4. ODBC\na. Object layer over ODBC for client/server databases\nb. Standard API for relational databases using SQL\nc. High-level interface over OLE DB\nd. Jet-based object model", "options": ["1-d, 2-c, 3-a, 4-b", "1-a, 2-d, 3-b, 4-c", "1-b, 2-a, 3-c, 4-d", "1-d, 2-a, 3-c, 4-b"], "answer": "D", "explanation": "DAO uses Jet, RDO sits over ODBC, ADO sits over OLE DB and ODBC is the SQL API."},
+  {"id": 186, "level": "Advanced", "type": "Match", "topic": "Tricky / Exam Special", "question": "Match each CursorType constant with its value:\n1. adOpenKeyset\n2. adOpenStatic\n3. adOpenDynamic\n4. adOpenForwardOnly\na. 0\nb. 1\nc. 2\nd. 3", "options": ["1-b, 2-d, 3-c, 4-a", "1-a, 2-d, 3-c, 4-b", "1-c, 2-d, 3-b, 4-a", "1-b, 2-c, 3-d, 4-a"], "answer": "A", "explanation": "adOpenForwardOnly = 0, adOpenKeyset = 1, adOpenDynamic = 2, adOpenStatic = 3."},
+  {"id": 187, "level": "Advanced", "type": "Match", "topic": "Tricky / Exam Special", "question": "Match the Crystal Reports section with when it prints:\n1. Report Header\n2. Page Header\n3. Details\n4. Report Footer\na. Once for each record\nb. Once at the start of the report\nc. Once at the end of the report\nd. At the top of every page", "options": ["1-b, 2-d, 3-a, 4-c", "1-d, 2-b, 3-a, 4-c", "1-a, 2-d, 3-b, 4-c", "1-b, 2-d, 3-c, 4-a"], "answer": "A", "explanation": "Report Header and Report Footer print once. Page Header repeats on each page."},
+  {"id": 188, "level": "Advanced", "type": "Tricky", "topic": "Tricky / Exam Special", "question": "Which property is available in a DataCombo but NOT in a DataList?", "options": ["ListField", "Style", "RowSource", "BoundColumn"], "answer": "B", "explanation": "DataList is only a list, so it has no Style property to choose a drop-down or simple combo."},
+  {"id": 189, "level": "Advanced", "type": "Tricky", "topic": "Tricky / Exam Special", "question": "After rs.Find finds the first matching record, how can the NEXT match be found in ADO?", "options": ["Move past the current record (MoveNext or SkipRows = 1) and call Find again", "Call rs.Requery and then Find", "Call Find again with the same arguments, it moves on automatically", "Call rs.FindNext"], "answer": "A", "explanation": "FindNext belongs to DAO. In ADO calling Find again from the same record finds the same record."},
+  {"id": 190, "level": "Advanced", "type": "Tricky", "topic": "Tricky / Exam Special", "question": "The DAO snapshot-type Recordset is closest to which ADO cursor type?", "options": ["adOpenStatic", "adOpenKeyset", "adOpenDynamic", "adOpenForwardOnly"], "answer": "A", "explanation": "Snapshot is a static copy, and a dynaset is similar to a keyset cursor."},
+  {"id": 191, "level": "Advanced", "type": "Match", "topic": "Tricky / Exam Special", "question": "Match the ADO Data Control property with its function:\n1. ConnectionString\n2. RecordSource\n3. EOFAction\n4. CommandType\na. How to connect to the data source\nb. The table or query supplying the records\nc. Behaviour when moving past the last record\nd. Whether the source is a table, SQL text or procedure", "options": ["1-a, 2-b, 3-d, 4-c", "1-a, 2-b, 3-c, 4-d", "1-c, 2-b, 3-a, 4-d", "1-b, 2-a, 3-c, 4-d"], "answer": "B", "explanation": "ConnectionString connects, RecordSource selects the data, EOFAction handles movement past the last record and CommandType gives the source type."},
+  {"id": 192, "level": "Advanced", "type": "Assertion-Reason", "topic": "Tricky / Exam Special", "question": "Assertion (A): A DataGrid can display records of an ADO Recordset created entirely in code.\nReason (R): The DataSource property of a DataGrid accepts a Recordset object when it is assigned with Set.", "options": ["Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true", "Both A and R are true, and R is the correct explanation of A"], "answer": "D", "explanation": "No data control is needed. Set DataGrid1.DataSource = rs is enough."},
+  {"id": 193, "level": "Advanced", "type": "Statement", "topic": "Tricky / Exam Special", "question": "Consider the statements:\n1. Connection.Execute can run action queries such as UPDATE.\n2. Connection.Execute with a SELECT returns a forward-only, read-only Recordset.\n3. Connection.Execute always returns an updatable Recordset.\nWhich statements are correct?", "options": ["1, 2 and 3", "2 and 3 only", "1 and 2 only", "1 and 3 only"], "answer": "C", "explanation": "Execute returns a default-type (forward-only, read-only) Recordset. For an updatable one, use Recordset.Open."},
+  {"id": 194, "level": "Advanced", "type": "Statement", "topic": "Tricky / Exam Special", "question": "Consider the statements about the Data Environment:\n1. Each Command exposes its Recordset with the prefix rs.\n2. A Data Environment can hold more than one Connection.\n3. A Data Environment cannot be used as a source for data-bound controls.\nWhich statements are correct?", "options": ["1 and 2 only", "1 and 3 only", "2 and 3 only", "1, 2 and 3"], "answer": "A", "explanation": "Controls are bound to a Command using DataSource and DataMember, so statement 3 is false."},
+  {"id": 195, "level": "Advanced", "type": "Tricky", "topic": "Tricky / Exam Special", "question": "Which statement correctly searches a Date field named DOB for 1 January 2000 using Find?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">rs.Find \"DOB = $1/1/2000$\"</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs.Find \"DOB LIKE #1/1/2000#\"</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs.Find \"DOB = #1/1/2000#\"</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs.Find \"DOB IS #1/1/2000#\"</code>"], "answer": "C", "explanation": "Date values in Find criteria are enclosed in # signs, and text values in single quotes."},
+  {"id": 196, "level": "Advanced", "type": "Tricky", "topic": "Tricky / Exam Special", "question": "A text box contains O'Neil, and the SQL string built from it fails. Which fix is correct?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">Use double quotes around the whole name in the SQL</code>", "<code style=\"font-family:monospace;font-size:.92em\">Remove the Where clause from the SQL</code>", "<code style=\"font-family:monospace;font-size:.92em\">Set the Recordset CursorType to adOpenStatic</code>", "<code style=\"font-family:monospace;font-size:.92em\">Double the single quote using Replace(txt.Text, \"'\", \"''\") before building the SQL</code>"], "answer": "D", "explanation": "A single quote ends the SQL text literal, so an embedded one must be written as two single quotes."},
+  {"id": 197, "level": "Intermediate", "type": "Scenario", "topic": "Mixed Practice", "question": "Which statement adds 5 marks to every student of Class 10 in one step from VB?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">cn.Execute \"SELECT Marks + 5 FROM Student WHERE Class = 10\"</code>", "<code style=\"font-family:monospace;font-size:.92em\">cn.Execute \"UPDATE Student SET Marks = Marks + 5 WHERE Class = 10\"</code>", "<code style=\"font-family:monospace;font-size:.92em\">cn.Execute \"INSERT Student SET Marks = Marks + 5 WHERE Class = 10\"</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs.Update \"Marks = Marks + 5 WHERE Class = 10\"</code>"], "answer": "B", "explanation": "An UPDATE query run through Connection.Execute changes all matching rows at once."},
+  {"id": 198, "level": "Intermediate", "type": "Concept", "topic": "Mixed Practice", "question": "Which property of the Connection object tells whether the connection is open?", "options": ["State", "Version", "Mode", "Attributes"], "answer": "A", "explanation": "State is adStateOpen (1) when the connection is open and adStateClosed (0) otherwise."},
+  {"id": 199, "level": "Intermediate", "type": "Code", "topic": "Mixed Practice", "question": "If the Student table has 25 records, what does this code display?\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">rs.Open \"SELECT * FROM Student\", cn, adOpenStatic, adLockReadOnly</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">rs.MoveLast</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">MsgBox rs.RecordCount</span>", "options": ["25", "1", "-1", "0"], "answer": "A", "explanation": "A static cursor reports an accurate RecordCount."},
+  {"id": 200, "level": "Intermediate", "type": "SQL", "topic": "Mixed Practice", "question": "What does this query return?\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">SELECT TOP 3 * FROM Student ORDER BY Marks DESC</span>", "options": ["The three students with the lowest marks", "Three randomly chosen students", "The three students with the highest marks", "The first three students in order of entry"], "answer": "C", "explanation": "ORDER BY Marks DESC puts the highest marks first and TOP 3 keeps three rows."},
+  {"id": 201, "level": "Intermediate", "type": "Code", "topic": "Mixed Practice", "question": "For a table with 8 records, how many items does this code add to List1?\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">Adodc1.Recordset.MoveFirst</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">Do While Not Adodc1.Recordset.EOF</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">&nbsp;&nbsp;&nbsp;&nbsp;List1.AddItem Adodc1.Recordset!Name</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">&nbsp;&nbsp;&nbsp;&nbsp;Adodc1.Recordset.MoveNext</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">Loop</span>", "options": ["7", "8", "1", "9"], "answer": "B", "explanation": "The loop visits every record from first to last, and MoveNext moves it forward."},
+  {"id": 202, "level": "Intermediate", "type": "Code", "topic": "Mixed Practice", "question": "After this code runs, the variable n contains:\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">rs.Filter = \"Marks &gt;= 40\"</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">n = 0</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">Do While Not rs.EOF</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">&nbsp;&nbsp;&nbsp;&nbsp;n = n + 1</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">&nbsp;&nbsp;&nbsp;&nbsp;rs.MoveNext</span>\n<span style=\"font-family:monospace;font-size:.92em;background:var(--bg2);padding:1px 8px;border-radius:4px;display:inline-block;margin-top:3px\">Loop</span>", "options": ["The total number of records in the table", "The number of records with Marks of 40 or more", "Always 0", "The number of records with Marks below 40"], "answer": "B", "explanation": "Filter shows only the matching records, so the loop counts only those."},
+  {"id": 203, "level": "Intermediate", "type": "Concept", "topic": "Mixed Practice", "question": "Which expression gives the number of fields (columns) in a Recordset?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">rs.Columns.Count</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs.FieldCount</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs.RecordCount</code>", "<code style=\"font-family:monospace;font-size:.92em\">rs.Fields.Count</code>"], "answer": "D", "explanation": "The Fields collection holds the columns. RecordCount holds the rows."},
+  {"id": 204, "level": "Intermediate", "type": "Concept", "topic": "Mixed Practice", "question": "What is the correct order of steps to display records using ADO code?", "options": ["Open Recordset, add ADO reference, create Connection, process records, close objects", "Add ADO reference, create Connection, open it, open Recordset, process records, close objects", "Add ADO reference, open Recordset, create Connection, open Connection, process records", "Create Recordset, open Connection, add ADO reference, process records, close objects"], "answer": "B", "explanation": "A Recordset needs an open Connection (or its own connection string) before records are processed."},
+  {"id": 205, "level": "Intermediate", "type": "Code", "topic": "Mixed Practice", "question": "Which constant makes Find search towards the beginning of the Recordset?", "options": ["<code style=\"font-family:monospace;font-size:.92em\">adSearchReverse</code>", "<code style=\"font-family:monospace;font-size:.92em\">adSearchBackward</code>", "<code style=\"font-family:monospace;font-size:.92em\">adSeekBefore</code>", "<code style=\"font-family:monospace;font-size:.92em\">adBackward</code>"], "answer": "B", "explanation": "Example: rs.Find \"Marks &gt; 90\", , adSearchBackward."},
+  {"id": 206, "level": "Intermediate", "type": "Concept", "topic": "Mixed Practice", "question": "Which collection of the Connection object holds errors returned by the data provider?", "options": ["Errors", "Properties", "Parameters", "Fields"], "answer": "A", "explanation": "Each provider error appears as an Error object in Connection.Errors."},
+  {"id": 207, "level": "Intermediate", "type": "Scenario", "topic": "Mixed Practice", "question": "Adodc1.RecordSource is changed to an SQL SELECT statement at run time, but the grid stays empty or errors out, because CommandType is still adCmdTable. What is the best fix?", "options": ["Set the DataField of the grid to the table name", "Set CommandType to adCmdText and call Adodc1.Refresh", "Call Adodc1.Update", "Set Adodc1.EOFAction = adDoAddNew"], "answer": "B", "explanation": "CommandType must match the kind of RecordSource, and Refresh re-runs it."},
+  {"id": 208, "level": "Intermediate", "type": "Concept", "topic": "Mixed Practice", "question": "Which cursor type should be chosen for a Recordset that needs forward and backward movement and an accurate RecordCount, but need not show other users' changes?", "options": ["adOpenKeyset", "adOpenForwardOnly", "adOpenStatic", "adOpenDynamic"], "answer": "C", "explanation": "A static cursor is a fixed snapshot that supports scrolling and RecordCount."},
+  {"id": 209, "level": "Intermediate", "type": "Concept", "topic": "Mixed Practice", "question": "Which statement about the ADO Data Control is FALSE?", "options": ["It has buttons to move between records", "It needs a ConnectionString or Data Link to reach the data", "It contains an ADO Recordset", "It can be bound to only one control at a time"], "answer": "D", "explanation": "Many controls can be bound to one data control through their DataSource property."}
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

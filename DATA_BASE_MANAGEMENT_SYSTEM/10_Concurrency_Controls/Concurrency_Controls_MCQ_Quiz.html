@@ -1,0 +1,2929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+ {
+  "id": 1,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "In a DBMS, a 'lost update' occurs when:",
+  "options": [
+   "two transactions update the same item from the same old value and one overwrites the other's result",
+   "a committed update is erased from the database after the transaction ends normally",
+   "a transaction reads data written by another transaction that later aborts and is rolled back",
+   "a transaction sees different values when it reads the same item twice during its execution"
+  ],
+  "answer": "A",
+  "explanation": "Both transactions read the same old value, so the later write overwrites the earlier one. The earlier update is lost (W-W conflict)."
+ },
+ {
+  "id": 2,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "Reading a data item written by another transaction that has not yet committed is called:",
+  "options": [
+   "Lost update",
+   "Lock conversion",
+   "Dirty read",
+   "Phantom read"
+  ],
+  "answer": "C",
+  "explanation": "Uncommitted (dirty) data may later be rolled back, so the reader may use a value that never officially existed. It is a W-R conflict."
+ },
+ {
+  "id": 3,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "T2 totals accounts X and Y while T1 transfers money from X to Y. T2 reads X after T1 debits it but reads Y before T1 credits it, so the total is wrong. This problem is called:",
+  "options": [
+   "Phantom read (extra rows appear)",
+   "Lost update (write-write overwrite)",
+   "Unrepeatable read (item changed)",
+   "Incorrect summary (inconsistent retrieval)"
+  ],
+  "answer": "D",
+  "explanation": "An aggregate computed during another transaction's updates sees some items before and some after the change, giving an inconsistent total."
+ },
+ {
+  "id": 4,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "T1 reads item A twice. Between the two reads, T2 updates A and commits, so T1 gets two different values. This is:",
+  "options": [
+   "Incorrect summary",
+   "Lost update",
+   "Unrepeatable read",
+   "Dirty read"
+  ],
+  "answer": "C",
+  "explanation": "The same item returns different values within one transaction because another transaction changed it in between (R-W conflict)."
+ },
+ {
+  "id": 5,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "T1 runs the same condition-based query twice. Between the runs, T2 inserts a new qualifying row and commits. The second result has an extra row. This is:",
+  "options": [
+   "Phantom read",
+   "Dirty read",
+   "Lost update",
+   "Unrepeatable read"
+  ],
+  "answer": "A",
+  "explanation": "A phantom is a new row that appears for the same predicate. Unrepeatable read concerns a changed value of an existing row."
+ },
+ {
+  "id": 6,
+  "level": "Intermediate",
+  "type": "Scenario-Based",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "A = 100. T1 reads A; T2 reads A. T1 writes A = A - 10; then T2 writes A = A + 20 and commits. What is the final value of A, and which problem occurs?",
+  "options": [
+   "110; lost update",
+   "90; dirty read",
+   "120; lost update",
+   "120; dirty read"
+  ],
+  "answer": "C",
+  "explanation": "T2 computed from the old value 100 and overwrote T1's write. A serial run would give 110, so T1's update is lost."
+ },
+ {
+  "id": 7,
+  "level": "Intermediate",
+  "type": "Scenario-Based",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "T1 changes A from 300 to 500 but has not committed. T2 reads 500. T1 then aborts and A returns to 300. The value 500 used by T2:",
+  "options": [
+   "was protected by a shared lock held by T1",
+   "never existed in any committed database state",
+   "was committed but later lost in a crash",
+   "was valid in some serial schedule of T1 and T2"
+  ],
+  "answer": "B",
+  "explanation": "T2 acted on uncommitted data that was rolled back. Dirty reads can also force cascading rollbacks."
+ },
+ {
+  "id": 8,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "Which of the following is NOT a problem of concurrent transactions?",
+  "options": [
+   "Incorrect summary",
+   "Dirty read",
+   "Serializable schedule",
+   "Lost update"
+  ],
+  "answer": "C",
+  "explanation": "A serializable schedule is the desired outcome of concurrency control, not a problem."
+ },
+ {
+  "id": 9,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "The ACID property that concurrency control mechanisms mainly enforce is:",
+  "options": [
+   "Durability",
+   "Isolation",
+   "Consistency",
+   "Atomicity"
+  ],
+  "answer": "B",
+  "explanation": "Isolation means concurrent transactions behave as though executed one at a time, which is what concurrency control provides."
+ },
+ {
+  "id": 10,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "The main reason for allowing concurrent execution of transactions is to:",
+  "options": [
+   "remove the need for isolation between transactions running together",
+   "improve throughput and resource utilisation by overlapping CPU and I/O work",
+   "guarantee that no transaction ever aborts because of other transactions",
+   "reduce the physical storage size of the database on disk"
+  ],
+  "answer": "B",
+  "explanation": "Interleaving keeps CPU and disks busy and reduces waiting time for short transactions, but it needs control to stay correct."
+ },
+ {
+  "id": 11,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "Which pair of operations by different transactions on the same item can lead to a dirty read?",
+  "options": [
+   "Read followed by Write later (R-W)",
+   "Write followed by Write again (W-W)",
+   "Write followed by Read before commit (W-R)",
+   "Read followed by Read by both (R-R)"
+  ],
+  "answer": "C",
+  "explanation": "A dirty read is a read of another transaction's uncommitted write. R-W gives unrepeatable read; W-W gives lost update."
+ },
+ {
+  "id": 12,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "T2 reads a value written by T1, and T3 reads a value written by T2. T1 then aborts, so T2 and T3 must also be rolled back. This is called:",
+  "options": [
+   "Phantom read",
+   "Cascading rollback",
+   "Lost update",
+   "Unrepeatable read"
+  ],
+  "answer": "B",
+  "explanation": "Dirty reads create dependencies, so the abort of one transaction forces the abort of all transactions that read its uncommitted data."
+ },
+ {
+  "id": 13,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "A schedule is recoverable if:",
+  "options": [
+   "every transaction commits before any other transaction is allowed to start",
+   "all transactions perform all of their writes before any of their reads",
+   "no two transactions ever access the same data item at the same time",
+   "every transaction commits only after all transactions whose data it read have committed"
+  ],
+  "answer": "D",
+  "explanation": "Recoverability ensures a committed transaction never depends on data that is later rolled back."
+ },
+ {
+  "id": 14,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "In a cascadeless schedule, a transaction may read an item written by another transaction only after that transaction has:",
+  "options": [
+   "written a second item",
+   "started",
+   "read the same item",
+   "committed"
+  ],
+  "answer": "D",
+  "explanation": "Reading only committed data removes dirty reads, so no cascading rollback can happen. Every cascadeless schedule is recoverable."
+ },
+ {
+  "id": 15,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "A schedule is conflict serializable if it is conflict equivalent to:",
+  "options": [
+   "some serial schedule of the same transactions",
+   "any other non-serial schedule",
+   "a recoverable schedule of the same transactions",
+   "a cascadeless schedule of the same transactions"
+  ],
+  "answer": "A",
+  "explanation": "Swapping non-conflicting operations must be able to turn the schedule into a serial one."
+ },
+ {
+  "id": 16,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "In concurrency control, a schedule is:",
+  "options": [
+   "the plan used by the query optimiser to execute a single query",
+   "the chronological order in which operations of concurrent transactions execute",
+   "the set of all timestamps that are assigned to every data item",
+   "the list of all locks currently held by the active transactions"
+  ],
+  "answer": "B",
+  "explanation": "A schedule fixes the interleaving order of read/write operations of several transactions. It is serial if there is no interleaving."
+ },
+ {
+  "id": 17,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "In a serial schedule:",
+  "options": [
+   "every transaction is rolled back and then restarted once",
+   "only read operations of the transactions are allowed to run",
+   "the operations of all transactions are interleaved arbitrarily",
+   "the operations of different transactions are never interleaved"
+  ],
+  "answer": "D",
+  "explanation": "Each transaction runs completely before the next one begins. Serial schedules are always correct but give poor throughput."
+ },
+ {
+  "id": 18,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Problems of Concurrent Transactions",
+  "question": "Concurrent execution of transactions is considered correct if the resulting schedule is:",
+  "options": [
+   "serial only",
+   "serializable",
+   "free of all read operations",
+   "interleaved at the operation level"
+  ],
+  "answer": "B",
+  "explanation": "Serializability (equivalence to some serial schedule) is the correctness criterion. Requiring only serial schedules is unnecessarily strict."
+ },
+ {
+  "id": 19,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "In concurrency control, a lock is best described as:",
+  "options": [
+   "a variable on a data item that controls how concurrent transactions access it",
+   "a backup copy of a data item that is kept on disk for recovery use",
+   "an index structure that speeds up the search for a particular data item",
+   "a log record that is written to stable storage when a transaction commits"
+  ],
+  "answer": "A",
+  "explanation": "A lock restricts access to a data item so that conflicting operations cannot interleave improperly."
+ },
+ {
+  "id": 20,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "A transaction holding a shared (S) lock on a data item can:",
+  "options": [
+   "only read it, while other transactions may also hold S locks on it",
+   "read and write it, while all other access to the item is blocked",
+   "delete it from the table but not read its value at all",
+   "only write it, while all other readers of the item are blocked"
+  ],
+  "answer": "A",
+  "explanation": "S (read) locks are shareable, since reads do not conflict with reads."
+ },
+ {
+  "id": 21,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "An exclusive (X) lock on a data item allows the holder to:",
+  "options": [
+   "write it only if other transactions still hold S locks on it",
+   "read it only, blocking just the other writers of the item",
+   "both read and write it, with no other lock held on it",
+   "only read it, sharing the item with any number of other readers"
+  ],
+  "answer": "C",
+  "explanation": "X (write) locks give sole access: they conflict with both S and X requests."
+ },
+ {
+  "id": 22,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "Which combination of locks held by two different transactions on the same item is compatible?",
+  "options": [
+   "S and X",
+   "S and S",
+   "X and S",
+   "X and X"
+  ],
+  "answer": "B",
+  "explanation": "Only S-S is compatible. Any combination involving an X lock conflicts."
+ },
+ {
+  "id": 23,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "T1 holds an S-lock on item Q. T2 requests an X-lock on Q. The lock manager will:",
+  "options": [
+   "grant T2 and make T1 wait",
+   "grant T2 immediately and abort T1",
+   "make T2 wait until T1 releases its lock",
+   "grant T2 and let T1 continue reading"
+  ],
+  "answer": "C",
+  "explanation": "S and X are incompatible, so the later requester T2 waits until the conflicting lock is released."
+ },
+ {
+  "id": 24,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "The two phases of the Two-Phase Locking (2PL) protocol are:",
+  "options": [
+   "growing phase (acquire locks) followed by shrinking phase (release locks)",
+   "validation phase (conflict check) followed by commit phase (log flush)",
+   "locking phase (S and X locks) followed by timestamp phase (ordering)",
+   "read phase (local copies) followed by write phase (database update)"
+  ],
+  "answer": "A",
+  "explanation": "In 2PL a transaction first only acquires locks, then only releases them."
+ },
+ {
+  "id": 25,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "In basic 2PL, after a transaction releases its first lock, it:",
+  "options": [
+   "cannot acquire any new lock",
+   "can acquire any lock after waiting",
+   "can acquire only shared locks",
+   "must commit immediately"
+  ],
+  "answer": "A",
+  "explanation": "Releasing a lock starts the shrinking phase, in which no new lock may be requested."
+ },
+ {
+  "id": 26,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "Basic 2PL guarantees:",
+  "options": [
+   "schedules free of cascading rollbacks",
+   "conflict serializable schedules",
+   "that only serial schedules are produced",
+   "that no transaction is ever rolled back"
+  ],
+  "answer": "B",
+  "explanation": "2PL ensures serializability but not cascadeless schedules. Strict 2PL is needed for that."
+ },
+ {
+  "id": 27,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "In strict 2PL, a transaction holds all its _____ locks until it commits or aborts.",
+  "options": [
+   "no",
+   "binary",
+   "shared",
+   "exclusive"
+  ],
+  "answer": "D",
+  "explanation": "Keeping X locks until the end stops others from reading uncommitted writes, so cascading rollbacks are avoided."
+ },
+ {
+  "id": 28,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "The lock point of a transaction in 2PL is the:",
+  "options": [
+   "moment at which it first starts waiting for a lock",
+   "moment at which it requests its first lock",
+   "point at which the transaction obtains its final lock",
+   "moment at which it finally commits"
+  ],
+  "answer": "C",
+  "explanation": "The lock point ends the growing phase. Ordering transactions by lock points gives an equivalent serial order."
+ },
+ {
+  "id": 29,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "Converting an S-lock held by a transaction on an item into an X-lock is called lock:",
+  "options": [
+   "inheritance",
+   "upgrade",
+   "downgrade",
+   "release"
+  ],
+  "answer": "B",
+  "explanation": "Upgrade is S to X (allowed only in the growing phase of 2PL); downgrade is X to S."
+ },
+ {
+  "id": 30,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "A binary lock on a data item has how many possible states?",
+  "options": [
+   "One: locked only",
+   "Two: locked and unlocked",
+   "Three: shared, exclusive and unlocked",
+   "Four: read, write, shared and exclusive"
+  ],
+  "answer": "B",
+  "explanation": "A binary lock is simply locked or unlocked. S/X locks are multiple-mode locks."
+ },
+ {
+  "id": 31,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "Choosing a finer lock granularity (e.g., a single record instead of a whole table) generally:",
+  "options": [
+   "decreases both concurrency and locking overhead",
+   "has no effect on concurrency but increases overhead",
+   "increases concurrency and also reduces locking overhead",
+   "increases concurrency but increases locking overhead"
+  ],
+  "answer": "D",
+  "explanation": "Smaller locked units allow more parallel work, but more locks must be managed."
+ },
+ {
+  "id": 32,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "In basic 2PL, lock upgrades and lock downgrades are allowed respectively in:",
+  "options": [
+   "the growing phase only and the shrinking phase only",
+   "the shrinking phase only, for both operations",
+   "the growing phase only, for both operations",
+   "the shrinking phase only and the growing phase only"
+  ],
+  "answer": "A",
+  "explanation": "Upgrade (S to X) acquires stronger rights, so it belongs to the growing phase. Downgrade (X to S) is a release, so it belongs to the shrinking phase."
+ },
+ {
+  "id": 33,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "The lock table maintained by the lock manager records:",
+  "options": [
+   "which transactions hold or wait for locks on each data item, and in which mode",
+   "the read timestamp and the write timestamp of every data item, along with the owner transaction",
+   "the validation result of every active transaction, with its start and finish times",
+   "the old versions of every data item that exists in the database, with their creators"
+  ],
+  "answer": "A",
+  "explanation": "The lock table maps each locked item to its holders, requested modes and the queue of waiting transactions."
+ },
+ {
+  "id": 34,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "In conservative (static) 2PL, a transaction:",
+  "options": [
+   "releases all of its locks before it starts executing, and then runs",
+   "acquires its locks only at the time of commit, not before it",
+   "acquires all the locks it needs before it begins execution",
+   "acquires only shared locks throughout its execution, never exclusive ones"
+  ],
+  "answer": "C",
+  "explanation": "Conservative 2PL pre-declares its read and write sets and locks everything first, so it has no growing phase during execution."
+ },
+ {
+  "id": 35,
+  "level": "Basic",
+  "type": "Concept",
+  "topic": "Locks and Lock Compatibility",
+  "question": "Schedules produced by strict 2PL are always:",
+  "options": [
+   "conflict serializable and cascadeless",
+   "conflict serializable but may have cascading rollbacks",
+   "non-serializable but recoverable",
+   "serial schedules only"
+  ],
+  "answer": "A",
+  "explanation": "Strict 2PL keeps 2PL's serializability and holds X-locks until commit, so no transaction reads uncommitted data."
+ },
+ {
+  "id": 36,
+  "level": "Basic",
+  "type": "Scenario-Based",
+  "topic": "Locks and Lock Compatibility",
+  "question": "T1 holds an X-lock on A. T2 and T3 request S-locks on A. When T1 releases its lock:",
+  "options": [
+   "only T2 can be granted, and T3 must wait for T2",
+   "both T2 and T3 can be granted S-locks together",
+   "neither T2 nor T3 can ever obtain the lock",
+   "T2 and T3 must both take X-locks instead"
+  ],
+  "answer": "B",
+  "explanation": "S-S is compatible, so both waiting readers can share A once the conflicting X-lock is gone."
+ },
+ {
+  "id": 37,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "In timestamp-based concurrency control, a timestamp is:",
+  "options": [
+   "the total number of data items that a transaction has accessed so far during its execution",
+   "a lock mode that is granted to a transaction when an item is read by it, for later reuse",
+   "the clock time at which the last full database backup was taken, kept for later recovery",
+   "a unique value given to a transaction at its start, used to order transactions"
+  ],
+  "answer": "D",
+  "explanation": "Timestamps (system clock or logical counter) fix a serial order: older transaction = smaller timestamp."
+ },
+ {
+  "id": 38,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "In timestamp ordering, if TS(Ti) &lt; TS(Tj), the protocol ensures the result is equivalent to a serial schedule in which:",
+  "options": [
+   "the order is chosen randomly at commit time",
+   "Ti executes before Tj",
+   "Ti and Tj run in parallel with no fixed order",
+   "Tj executes before Ti"
+  ],
+  "answer": "B",
+  "explanation": "The serializability order is the timestamp order."
+ },
+ {
+  "id": 39,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "W-timestamp(Q) denotes:",
+  "options": [
+   "the largest timestamp of any transaction that successfully executed write(Q)",
+   "the smallest timestamp of any transaction that has ever successfully written Q",
+   "the system time at which the data item Q was first created in the database",
+   "the timestamp of the transaction that most recently read the item Q successfully"
+  ],
+  "answer": "A",
+  "explanation": "R-ts(Q) and W-ts(Q) keep the largest timestamps of successful readers and writers of Q."
+ },
+ {
+  "id": 40,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "Under basic timestamp ordering, T issues read(Q) with TS(T) &lt; W-ts(Q). The result is:",
+  "options": [
+   "the read is allowed and W-ts(Q) is set to TS(T)",
+   "T waits until Q is unlocked",
+   "the read is rejected and T is rolled back",
+   "the read is allowed and R-ts(Q) is updated"
+  ],
+  "answer": "C",
+  "explanation": "T needs a value of Q that a younger transaction has already overwritten, so T must be rolled back."
+ },
+ {
+  "id": 41,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "Under basic timestamp ordering, T issues write(Q) with TS(T) &lt; R-ts(Q). The result is:",
+  "options": [
+   "the write is allowed and W-ts(Q) = TS(T)",
+   "the write is ignored (Thomas write rule)",
+   "T waits for the younger reader to commit",
+   "the write is rejected and T is rolled back"
+  ],
+  "answer": "D",
+  "explanation": "A younger transaction has already read Q, so T's write would be too late. The Thomas rule applies only when TS(T) &lt; W-ts(Q)."
+ },
+ {
+  "id": 42,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "The Thomas write rule can allow schedules that are:",
+  "options": [
+   "conflict serializable but never view serializable",
+   "view serializable but not conflict serializable",
+   "strictly serial schedules only",
+   "neither view serializable nor conflict serializable"
+  ],
+  "answer": "B",
+  "explanation": "Ignoring obsolete writes admits more schedules than basic TO, which allows only conflict serializable ones."
+ },
+ {
+  "id": 43,
+  "level": "Advanced",
+  "type": "Scenario-Based",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "TS(T) = 10, R-ts(Q) = 5, W-ts(Q) = 12. T issues read(Q). Outcome under basic TO?",
+  "options": [
+   "Allowed; R-ts(Q) becomes 10",
+   "Allowed; W-ts(Q) becomes 10",
+   "Rejected; T is rolled back",
+   "Allowed; R-ts(Q) remains 5"
+  ],
+  "answer": "C",
+  "explanation": "TS(T) = 10 &lt; W-ts(Q) = 12, so a younger transaction already wrote Q; the read is rejected."
+ },
+ {
+  "id": 44,
+  "level": "Advanced",
+  "type": "Scenario-Based",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "TS(T) = 20, R-ts(Q) = 15, W-ts(Q) = 10. T issues write(Q). Outcome under basic TO?",
+  "options": [
+   "Rejected because TS(T) &gt; R-ts(Q)",
+   "Allowed; W-ts(Q) becomes 20",
+   "Ignored because W-ts(Q) &lt; TS(T)",
+   "Allowed; R-ts(Q) becomes 20"
+  ],
+  "answer": "B",
+  "explanation": "TS(T) is not less than R-ts(Q) or W-ts(Q), so the write is executed and W-ts(Q) is set to TS(T)."
+ },
+ {
+  "id": 45,
+  "level": "Advanced",
+  "type": "Scenario-Based",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "TS(T) = 8, R-ts(Q) = 6, W-ts(Q) = 10. T issues write(Q) under the Thomas write rule. Outcome?",
+  "options": [
+   "The write is performed and W-ts(Q) becomes 8",
+   "R-ts(Q) becomes 8 and T waits",
+   "T is rolled back",
+   "The write is ignored and T continues"
+  ],
+  "answer": "D",
+  "explanation": "TS(T) = 8 &gt; R-ts = 6, so no reader is affected. TS(T) &lt; W-ts = 10, so the write is obsolete and skipped (basic TO would roll back)."
+ },
+ {
+  "id": 46,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "Which statement is true of the timestamp-ordering protocol?",
+  "options": [
+   "It uses a separate read, validation and write phase before every commit",
+   "It uses shared and exclusive locks on every item that each transaction accesses",
+   "It does not use locks; conflicts are resolved by rolling back transactions",
+   "It makes younger transactions wait for older ones until they unlock all items"
+  ],
+  "answer": "C",
+  "explanation": "Transactions never wait for locks in TO. A transaction that arrives too late is rolled back and restarted."
+ },
+ {
+  "id": 47,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "A transaction rolled back by the timestamp-ordering protocol is restarted with:",
+  "options": [
+   "a new, larger timestamp",
+   "the timestamp of the transaction that caused the rollback",
+   "timestamp 0",
+   "its old timestamp"
+  ],
+  "answer": "A",
+  "explanation": "Restarting with the old timestamp would cause the same conflict again."
+ },
+ {
+  "id": 48,
+  "level": "Advanced",
+  "type": "Concept",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "After T successfully executes read(Q), R-ts(Q) is set to:",
+  "options": [
+   "min(R-ts(Q), TS(T))",
+   "W-ts(Q)",
+   "always TS(T)",
+   "max(R-ts(Q), TS(T))"
+  ],
+  "answer": "D",
+  "explanation": "R-ts(Q) must always hold the largest timestamp of any successful reader, so it never decreases."
+ },
+ {
+  "id": 49,
+  "level": "Advanced",
+  "type": "Scenario-Based",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "TS(T) = 12, R-ts(Q) = 15, W-ts(Q) = 10. T issues read(Q). Outcome under basic TO?",
+  "options": [
+   "Allowed; R-ts(Q) stays 15",
+   "Allowed; R-ts(Q) becomes 12",
+   "Allowed; W-ts(Q) becomes 12",
+   "Rejected because 12 &lt; R-ts(Q)"
+  ],
+  "answer": "A",
+  "explanation": "A read is checked only against W-ts(Q): 12 &gt;= 10, so it is allowed. R-ts(Q) = max(15, 12) = 15."
+ },
+ {
+  "id": 50,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "When T is rolled back under basic timestamp ordering, transactions that have read values written by T:",
+  "options": [
+   "must also be rolled back (cascading rollback)",
+   "are only delayed until T restarts",
+   "are converted into read-only transactions",
+   "continue unaffected because timestamps protect them"
+  ],
+  "answer": "A",
+  "explanation": "Basic TO does not guarantee cascadeless schedules, so dependent transactions must also be aborted."
+ },
+ {
+  "id": 51,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "Timestamps for transactions can be generated using:",
+  "options": [
+   "the size of the lock table",
+   "the largest data item value in the database",
+   "the system clock or a logical counter",
+   "random numbers generated for every operation"
+  ],
+  "answer": "C",
+  "explanation": "A clock value or a counter incremented per transaction gives unique, increasing values."
+ },
+ {
+  "id": 52,
+  "level": "Advanced",
+  "type": "Concept",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "Under basic timestamp ordering, write(Q) by T is executed when:",
+  "options": [
+   "TS(T) &lt; R-ts(Q) and TS(T) &lt; W-ts(Q)",
+   "TS(T) &gt;= R-ts(Q) and TS(T) &lt; W-ts(Q)",
+   "TS(T) &lt; R-ts(Q) and TS(T) &gt;= W-ts(Q)",
+   "TS(T) &gt;= R-ts(Q) and TS(T) &gt;= W-ts(Q)"
+  ],
+  "answer": "D",
+  "explanation": "A younger reader or writer has not yet touched Q only if TS(T) is at least both timestamps."
+ },
+ {
+  "id": 53,
+  "level": "Advanced",
+  "type": "Scenario-Based",
+  "topic": "Timestamp-Based Concurrency Control",
+  "question": "TS(T1) = 15 and TS(T2) = 12. Initially R-ts(Q) = W-ts(Q) = 10. T1 executes write(Q), then T2 executes write(Q). Under basic TO, T2's write:",
+  "options": [
+   "is rejected and T2 is rolled back",
+   "waits until T1 commits",
+   "succeeds and R-ts(Q) becomes 12",
+   "succeeds and W-ts(Q) becomes 12"
+  ],
+  "answer": "A",
+  "explanation": "After T1's write W-ts(Q) = 15. T2's TS = 12 &lt; 15, so its write is too late and T2 is rolled back (Thomas rule would ignore it)."
+ },
+ {
+  "id": 54,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Optimistic Scheduling",
+  "question": "Optimistic concurrency control is based on the assumption that:",
+  "options": [
+   "conflicts among transactions are rare, so checking can be deferred until the end",
+   "every transaction conflicts with others, so all items must be locked first",
+   "all transactions are read-only",
+   "all transactions must run serially"
+  ],
+  "answer": "A",
+  "explanation": "Transactions run without locks and are checked only at the end, which pays off when conflicts are rare."
+ },
+ {
+  "id": 55,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Optimistic Scheduling",
+  "question": "The correct order of phases in optimistic scheduling is:",
+  "options": [
+   "Read, then Write, then Validation",
+   "Write, then Validation, then Read",
+   "Read, then Validation, then Write",
+   "Validation, then Read, then Write"
+  ],
+  "answer": "C",
+  "explanation": "Work is done on local copies (read), checked (validation), and applied to the database (write)."
+ },
+ {
+  "id": 56,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Optimistic Scheduling",
+  "question": "In the read phase of optimistic scheduling, a transaction:",
+  "options": [
+   "assigns fresh timestamps to all of the data items that it touches",
+   "waits for an exclusive lock on every item before it may read it",
+   "reads committed values and keeps its updates in private local copies",
+   "writes directly to the database after locking each item it updates"
+  ],
+  "answer": "C",
+  "explanation": "Nothing in the database is changed during the read phase, so aborting is cheap."
+ },
+ {
+  "id": 57,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Optimistic Scheduling",
+  "question": "The validation phase of optimistic scheduling checks whether:",
+  "options": [
+   "the transaction has the largest timestamp among all of the active transactions",
+   "the transaction's updates would break serializability with other transactions",
+   "the log records of the transaction have been flushed to stable disk storage",
+   "all of the locks that were held by other transactions have been released"
+  ],
+  "answer": "B",
+  "explanation": "Read/write sets are compared with those of concurrent transactions to decide if the transaction can safely commit."
+ },
+ {
+  "id": 58,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Optimistic Scheduling",
+  "question": "In optimistic scheduling, local updates are applied to the database:",
+  "options": [
+   "only if the transaction holds an X lock on the item",
+   "during the read phase, as each update is made",
+   "only after the transaction passes validation",
+   "before the validation phase has even begun"
+  ],
+  "answer": "C",
+  "explanation": "Only the write phase makes changes permanent, and it runs only after successful validation."
+ },
+ {
+  "id": 59,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Optimistic Scheduling",
+  "question": "If a transaction fails validation in optimistic scheduling, it is:",
+  "options": [
+   "allowed to commit anyway after a short wait",
+   "made to wait for an X lock on the conflicting item",
+   "converted into a read-only transaction and finished",
+   "aborted and restarted, discarding its local copies"
+  ],
+  "answer": "D",
+  "explanation": "No database changes were made, so abort just discards the local workspace."
+ },
+ {
+  "id": 60,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Optimistic Scheduling",
+  "question": "Optimistic scheduling is most suitable when:",
+  "options": [
+   "long update transactions compete for the same records",
+   "many transactions update the same hot items",
+   "conflicts are frequent and aborts are expensive",
+   "most transactions are read-only or conflicts are rare"
+  ],
+  "answer": "D",
+  "explanation": "Low contention means few validation failures, so lock overhead is saved at little cost."
+ },
+ {
+  "id": 61,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Optimistic Scheduling",
+  "question": "In the validation-based protocol, each transaction T has which three timestamps?",
+  "options": [
+   "Read(T), Lock(T) and Unlock(T)",
+   "R-ts(T), W-ts(T) and TS(T)",
+   "Start(T), Validation(T) and Finish(T)",
+   "Begin(T), Commit(T) and Abort(T)"
+  ],
+  "answer": "C",
+  "explanation": "Start marks the read phase beginning, Validation marks entry to validation, Finish marks end of the write phase."
+ },
+ {
+  "id": 62,
+  "level": "Intermediate",
+  "type": "Comparison",
+  "topic": "Optimistic Scheduling",
+  "question": "In the validation-based protocol, the serializability order of transactions is determined by:",
+  "options": [
+   "the Validation(T) timestamp",
+   "the Start(T) timestamp",
+   "the order in which locks are granted",
+   "the Finish(T) timestamp"
+  ],
+  "answer": "A",
+  "explanation": "The protocol uses Validation(T) as the transaction's timestamp for the equivalent serial order."
+ },
+ {
+  "id": 63,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Optimistic Scheduling",
+  "question": "The main drawback of optimistic scheduling under heavy contention is:",
+  "options": [
+   "many transactions fail validation, causing repeated aborts",
+   "older versions of every data item must be stored for readers",
+   "transactions must wait for locks for very long periods of time",
+   "timestamps overflow quickly and must be reassigned to all items"
+  ],
+  "answer": "A",
+  "explanation": "Conflicts are found only at the end, after all the work has been done, so the work is lost on abort."
+ },
+ {
+  "id": 64,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Optimistic Scheduling",
+  "question": "Optimistic concurrency control is also known as:",
+  "options": [
+   "pessimistic scheduling approach (lock first, then run)",
+   "two-phase locking approach with a lock point",
+   "lock-based approach (shared and exclusive locks)",
+   "validation-based (certification) approach"
+  ],
+  "answer": "D",
+  "explanation": "It is called validation- or certification-based because conflict checking happens at the validation step."
+ },
+ {
+  "id": 65,
+  "level": "Advanced",
+  "type": "Scenario-Based",
+  "topic": "Optimistic Scheduling",
+  "question": "Ti: Start = 1, Validation = 5, Finish = 9 and Tj: Start = 4, Validation = 11. Write-set(Ti) = {X}, read-set(Tj) = {Y}. Tj's validation against Ti:",
+  "options": [
+   "fails because Ti and Tj overlap in time during their execution phases",
+   "succeeds, since Finish(Ti) lies between Start(Tj) and Validation(Tj) and the sets do not overlap",
+   "succeeds only if Ti is rolled back first and then restarted again",
+   "fails because Finish(Ti) is greater than Start(Tj), so they overlapped"
+  ],
+  "answer": "B",
+  "explanation": "Overlap alone is allowed. Tj passes if Start(Tj) &lt; Finish(Ti) &lt; Validation(Tj) and write-set(Ti) does not intersect read-set(Tj)."
+ },
+ {
+  "id": 66,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Optimistic Scheduling",
+  "question": "In validation, which sets are compared to detect a conflict between an earlier transaction Ti and a later transaction Tj?",
+  "options": [
+   "only the write-sets of Ti and Tj",
+   "lock sets of Ti and Tj",
+   "write-set of Ti and read-set of Tj",
+   "read-set of Ti and read-set of Tj"
+  ],
+  "answer": "C",
+  "explanation": "If Tj read something that Ti wrote, Tj may have missed Ti's update, so Tj must be aborted."
+ },
+ {
+  "id": 67,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "Optimistic Scheduling",
+  "question": "During the read phase of optimistic scheduling, other transactions:",
+  "options": [
+   "can read only committed versions, and only with an S-lock held",
+   "are not blocked, since no locks are held on the items",
+   "must wait until the read phase of that transaction ends",
+   "are rolled back at once if they touch the same item in any mode"
+  ],
+  "answer": "B",
+  "explanation": "No locks are used in the read phase. Conflicts are handled later by validation."
+ },
+ {
+  "id": 68,
+  "level": "Intermediate",
+  "type": "Tricky",
+  "topic": "Optimistic Scheduling",
+  "question": "Which of the following is NOT a phase of optimistic scheduling?",
+  "options": [
+   "Write phase",
+   "Lock acquisition phase",
+   "Read phase",
+   "Validation phase"
+  ],
+  "answer": "B",
+  "explanation": "Optimistic scheduling is lock free; its phases are read, validation and write."
+ },
+ {
+  "id": 69,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "In a multiversion scheme, when a transaction writes a data item:",
+  "options": [
+   "a new version of the item is created and older versions are retained",
+   "the old value is simply overwritten in place by the new value",
+   "the item is locked permanently against all further access",
+   "the write is delayed until all the readers of the item finish"
+  ],
+  "answer": "A",
+  "explanation": "Multiple versions let readers use a version suited to their timestamp."
+ },
+ {
+  "id": 70,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "A key advantage of multiversion schemes is that:",
+  "options": [
+   "storage requirement is reduced because old values are discarded",
+   "write operations never conflict with each other at all",
+   "reads are never rejected, since a suitable version exists",
+   "timestamps are not needed by the protocol for ordering"
+  ],
+  "answer": "C",
+  "explanation": "A reader gets the proper older version instead of being rolled back. The price is extra storage."
+ },
+ {
+  "id": 71,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "In multiversion timestamp ordering, each version Qk stores:",
+  "options": [
+   "only the value and lock mode",
+   "only the value and the database commit time",
+   "the value and a validation timestamp",
+   "the value, W-timestamp(Qk) and R-timestamp(Qk)"
+  ],
+  "answer": "D",
+  "explanation": "W-ts is the creator's timestamp; R-ts is the largest timestamp of a transaction that read that version."
+ },
+ {
+  "id": 72,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "The W-timestamp of a version Qk equals:",
+  "options": [
+   "the timestamp of the oldest transaction that is still active",
+   "the timestamp of the transaction that created that version",
+   "the time of the last database checkpoint that was taken",
+   "the timestamp of the last transaction that read that version"
+  ],
+  "answer": "B",
+  "explanation": "Each version is stamped with its writer's timestamp."
+ },
+ {
+  "id": 73,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "Item Q has versions with W-ts 4, 9 and 15. T with TS(T) = 12 issues read(Q). T reads the version with W-ts:",
+  "options": [
+   "4",
+   "9",
+   "15",
+   "12"
+  ],
+  "answer": "B",
+  "explanation": "Read uses the version with the largest W-ts not exceeding TS(T). Here that is 9, since 15 &gt; 12."
+ },
+ {
+  "id": 74,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "Q has versions with W-ts 5 and 12. The version with W-ts 5 has R-ts 8. T with TS(T) = 10 issues write(Q). Outcome?",
+  "options": [
+   "Allowed; a new version with W-ts 10 is created",
+   "Rejected because 10 &gt; 8",
+   "Allowed; the version with W-ts 5 is overwritten",
+   "Rejected because 10 &lt; 12"
+  ],
+  "answer": "A",
+  "explanation": "The version selected is W-ts 5. TS(T) = 10 is not less than its R-ts 8, so a new version is created."
+ },
+ {
+  "id": 75,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "Q has versions with W-ts 5 and 12. The version with W-ts 5 has R-ts 11. T with TS(T) = 10 issues write(Q). Outcome?",
+  "options": [
+   "T is rolled back",
+   "A new version with W-ts 10 is created",
+   "The version with W-ts 12 is overwritten",
+   "The write is ignored"
+  ],
+  "answer": "A",
+  "explanation": "A reader with timestamp 11 already read version 5, but T (TS 10) would create a version it should have read. TS(T) &lt; R-ts(Q5), so T aborts."
+ },
+ {
+  "id": 76,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "A disadvantage of multiversion schemes is:",
+  "options": [
+   "every write requires an exclusive lock on the whole database",
+   "reads may be rolled back frequently because of old version use",
+   "extra storage for old versions and the need to remove obsolete ones",
+   "serializability can no longer be guaranteed by the protocol"
+  ],
+  "answer": "C",
+  "explanation": "Old versions pile up, so garbage collection of versions no longer needed is required."
+ },
+ {
+  "id": 77,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "In a multiversion scheme, read-only transactions:",
+  "options": [
+   "must wait until all of the active writers have committed, and only then read",
+   "can read the uncommitted versions that are made by any transaction",
+   "see a consistent snapshot without blocking, or being blocked by, writers",
+   "must acquire X locks on all of the items they read"
+  ],
+  "answer": "C",
+  "explanation": "Readers choose versions by timestamp, so they do not interfere with concurrent updates."
+ },
+ {
+  "id": 78,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "A version Qk can be safely deleted in a multiversion scheme when:",
+  "options": [
+   "a newer version exists whose W-ts is not greater than the oldest active transaction's timestamp",
+   "its W-ts is the largest among all of the versions of the item Q",
+   "its R-ts is zero, so no transaction has ever read it at all",
+   "it was created by the oldest transaction that exists in the system now"
+  ],
+  "answer": "A",
+  "explanation": "No active transaction can ever need the older version, since all of them would read the newer one instead."
+ },
+ {
+  "id": 79,
+  "level": "Intermediate",
+  "type": "Tricky",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "In multiversion timestamp ordering, which operation may be rolled back because of a timestamp conflict?",
+  "options": [
+   "A write operation only",
+   "Both reads and writes",
+   "Neither reads nor writes",
+   "A read operation only"
+  ],
+  "answer": "A",
+  "explanation": "Reads are served from a suitable version and never fail. A write fails if TS(T) &lt; R-ts of the version it would follow."
+ },
+ {
+  "id": 80,
+  "level": "Intermediate",
+  "type": "Comparison",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "Compared with single-version timestamp ordering, a multiversion scheme needs more ______ but rejects fewer ______.",
+  "options": [
+   "timestamps; write operations",
+   "storage; read operations",
+   "validation phases; read operations",
+   "memory for locks; write operations"
+  ],
+  "answer": "B",
+  "explanation": "Keeping old versions costs storage, but reads are always served from a suitable version."
+ },
+ {
+  "id": 81,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "In concurrency control, MVT stands for:",
+  "options": [
+   "Multiversion Timestamp Ordering",
+   "Multiple Validation Technique",
+   "Multi-Version Transaction Locking",
+   "Managed Version Tracking Table"
+  ],
+  "answer": "A",
+  "explanation": "MVT keeps several versions of each item and orders operations by transaction timestamps."
+ },
+ {
+  "id": 82,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "When T executes a successful write(Q) in MVT, the new version Qk gets:",
+  "options": [
+   "W-ts(Qk) = 0 and R-ts(Qk) = TS(T)",
+   "W-ts(Qk) = R-ts(Qk) = the largest timestamp in the system",
+   "W-ts(Qk) = R-ts(Qk) = TS(T)",
+   "W-ts(Qk) = TS(T) and R-ts(Qk) = 0"
+  ],
+  "answer": "C",
+  "explanation": "The creator's timestamp is stored as both the write and the initial read timestamp of the new version."
+ },
+ {
+  "id": 83,
+  "level": "Advanced",
+  "type": "Concept",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "T with TS(T) = 14 reads version Qk, whose R-ts(Qk) is 9. After the read, R-ts(Qk) is:",
+  "options": [
+   "23",
+   "0",
+   "9",
+   "14"
+  ],
+  "answer": "D",
+  "explanation": "R-ts(Qk) is raised to TS(T) when TS(T) is larger, so R-ts(Qk) = max(9, 14) = 14."
+ },
+ {
+  "id": 84,
+  "level": "Advanced",
+  "type": "Concept",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "T with TS(T) = 6 reads version Qk with W-ts 4 and R-ts 11. After the read, R-ts(Qk) is:",
+  "options": [
+   "11",
+   "4",
+   "6",
+   "17"
+  ],
+  "answer": "A",
+  "explanation": "R-ts(Qk) keeps the larger value, max(11, 6) = 11, so it never decreases."
+ },
+ {
+  "id": 85,
+  "level": "Intermediate",
+  "type": "Concept",
+  "topic": "MVT (Multiversion Timestamp Ordering)",
+  "question": "In MVT, T's write(Q) is rejected when TS(T) &lt; R-ts(Qk) of the selected version because:",
+  "options": [
+   "T does not hold an exclusive lock on the item",
+   "a younger transaction has already read that version, which T's new version would have replaced for it",
+   "the selected version is older than the database",
+   "T would overwrite the selected version in place"
+  ],
+  "answer": "B",
+  "explanation": "The younger reader should have seen T's version but read Qk instead, so the timestamp order would be violated."
+ },
+ {
+  "id": 86,
+  "level": "Advanced",
+  "type": "Schedule-Based",
+  "topic": "Transaction Schedule-Based Questions",
+  "question": "Identify the problem in the following schedule (A is the same item):\n\nSchedule (time flows downward):\nT1 | T2\nRead(A) | -\n- | Read(A)\nWrite(A) | -\n- | Write(A)\nCommit | -\n- | Commit",
+  "options": [
+   "Incorrect summary",
+   "Dirty read",
+   "Unrepeatable read",
+   "Lost update"
+  ],
+  "answer": "D",
+  "explanation": "Both read the old A, and T2's write overwrites T1's. T1's update is lost."
+ },
+ {
+  "id": 87,
+  "level": "Advanced",
+  "type": "Schedule-Based",
+  "topic": "Transaction Schedule-Based Questions",
+  "question": "Identify the problem in the following schedule:\n\nSchedule (time flows downward):\nT1 | T2\nWrite(A) | -\n- | Read(A)\nAbort | -\n- | Commit",
+  "options": [
+   "Lost update",
+   "Unrepeatable read",
+   "Phantom read",
+   "Dirty read"
+  ],
+  "answer": "D",
+  "explanation": "T2 read A written by T1 before T1 aborted. T2 used a value that was rolled back."
+ },
+ {
+  "id": 88,
+  "level": "Advanced",
+  "type": "Schedule-Based",
+  "topic": "Transaction Schedule-Based Questions",
+  "question": "Identify the problem in the following schedule:\n\nSchedule (time flows downward):\nT1 | T2\nRead(A) | -\n- | Write(A)\n- | Commit\nRead(A) | -\nCommit | -",
+  "options": [
+   "Dirty read",
+   "Unrepeatable read",
+   "Lost update",
+   "Phantom read"
+  ],
+  "answer": "B",
+  "explanation": "T1 gets different values for A on its two reads because T2 committed an update in between."
+ },
+ {
+  "id": 89,
+  "level": "Advanced",
+  "type": "Schedule-Based",
+  "topic": "Transaction Schedule-Based Questions",
+  "question": "T1 computes A + B while T2 transfers an amount from A to B. Identify the problem:\n\nSchedule (time flows downward):\nT1 | T2\nRead(A) | -\n- | Read(A); Write(A)\n- | Read(B); Write(B)\n- | Commit\nRead(B) | -\nCommit | -",
+  "options": [
+   "Lost update (write-write overwrite)",
+   "Unrepeatable read (item changed)",
+   "Dirty read (aborted writer)",
+   "Incorrect summary (inconsistent retrieval)"
+  ],
+  "answer": "D",
+  "explanation": "T1 read A before T2's update and B after it, so the sum mixes old and new values. T2 had committed before T1 read B, so it is not a dirty read."
+ },
+ {
+  "id": 90,
+  "level": "Advanced",
+  "type": "Schedule-Based",
+  "topic": "Transaction Schedule-Based Questions",
+  "question": "TS(T1) = 5 and TS(T2) = 10. Under basic timestamp ordering, what happens in this schedule?\n\nSchedule (time flows downward):\nT1 | T2\n- | Read(A)\nWrite(A) | -",
+  "options": [
+   "Write(A) of T1 is ignored by the Thomas rule",
+   "Write(A) of T1 succeeds and W-ts(A) becomes 5",
+   "Write(A) of T1 is rejected and T1 is rolled back",
+   "Read(A) of T2 is rejected"
+  ],
+  "answer": "C",
+  "explanation": "After T2's read, R-ts(A) = 10. T1's write has TS 5 &lt; 10, so T1 is too late and is rolled back."
+ },
+ {
+  "id": 91,
+  "level": "Advanced",
+  "type": "Scenario-Based",
+  "topic": "Transaction Schedule-Based Questions",
+  "question": "Which sequence of lock operations by a single transaction obeys 2PL?",
+  "options": [
+   "Lock(A), Lock(B), Unlock(B), Lock(C), Unlock(A), Unlock(C)",
+   "Lock(A), Lock(B), Unlock(A), Unlock(B)",
+   "Lock(A), Unlock(A), Lock(A), Unlock(A)",
+   "Lock(A), Unlock(A), Lock(B), Unlock(B)"
+  ],
+  "answer": "B",
+  "explanation": "All locks must be acquired before any is released. The other options lock again after an unlock."
+ },
+ {
+  "id": 92,
+  "level": "Advanced",
+  "type": "Schedule-Based",
+  "topic": "Transaction Schedule-Based Questions",
+  "question": "Requests arrive in this order on item A. Which requests are granted immediately?\n\nSchedule (time flows downward):\nT1 | T2 | T3\nLock-S(A) | - | -\n- | Lock-S(A) | -\n- | - | Lock-X(A)",
+  "options": [
+   "T1's and T3's requests; T2 waits",
+   "Only T1's request; T2 and T3 wait",
+   "All three requests at once",
+   "T1's and T2's S-locks only; T3 waits"
+  ],
+  "answer": "D",
+  "explanation": "S-S is compatible, so T1 and T2 share A. T3's X-lock conflicts with both, so it waits until both release."
+ },
+ {
+  "id": 93,
+  "level": "Advanced",
+  "type": "Schedule-Based",
+  "topic": "Transaction Schedule-Based Questions",
+  "question": "T1 and T2 follow optimistic scheduling as below. What happens when T1 is validated?\n\nSchedule (time flows downward):\nT1 | T2\nStart; Read(A) | -\n- | Start; Read(A)\n- | Validate; Write(A); Finish\nValidate | -",
+  "options": [
+   "T1 succeeds, because T1 only reads A and never writes",
+   "T1 fails, simply because T1 started before T2 did",
+   "T1 succeeds, because T2 finished its write phase first",
+   "T1 fails; T2 wrote A, which T1 read, after T1 had started"
+  ],
+  "answer": "D",
+  "explanation": "Finish(T2) &gt; Start(T1) and write-set(T2) overlaps read-set(T1), so T2 cannot precede T1. T1 is aborted."
+ },
+ {
+  "id": 94,
+  "level": "Advanced",
+  "type": "Schedule-Based",
+  "topic": "Transaction Schedule-Based Questions",
+  "question": "In multiversion timestamp ordering with TS(T1) = 5 and TS(T2) = 10, what does T1 read in this schedule (A0 = initial version, W-ts 0)?\n\nSchedule (time flows downward):\nT1 | T2\n- | Write(A)\nRead(A) | -",
+  "options": [
+   "The initial version A0",
+   "The version written by T2 (W-ts 10)",
+   "T1 waits until T2 commits and then writes Q",
+   "Nothing; T1 is rolled back as 5 &lt; 10"
+  ],
+  "answer": "A",
+  "explanation": "T1 reads the version with the largest W-ts &lt;= 5, which is A0. In basic TO this same read would be rejected."
+ },
+ {
+  "id": 95,
+  "level": "Advanced",
+  "type": "Concept",
+  "topic": "Transaction Schedule-Based Questions",
+  "question": "Consider S: R1(A), R2(A), W2(A), R1(B), W1(B). Which pair of operations conflicts?",
+  "options": [
+   "R1(A) and R2(A)",
+   "R1(A) and W2(A)",
+   "W2(A) and W1(B)",
+   "R1(A) and R1(B)"
+  ],
+  "answer": "B",
+  "explanation": "Operations conflict if they belong to different transactions, access the same item and at least one is a write."
+ },
+ {
+  "id": 96,
+  "level": "Advanced",
+  "type": "Schedule-Based",
+  "topic": "Transaction Schedule-Based Questions",
+  "question": "The following schedule is:\n\nSchedule (time flows downward):\nT1 | T2\nRead(A) | -\n- | Write(A)\n- | Read(B)\nWrite(B) | -",
+  "options": [
+   "a serial schedule",
+   "equivalent to the serial schedule T1 then T2",
+   "not conflict serializable",
+   "equivalent to the serial schedule T2 then T1"
+  ],
+  "answer": "C",
+  "explanation": "R1(A) before W2(A) forces T1 before T2, but R2(B) before W1(B) forces T2 before T1. This cycle means it is not conflict serializable."
+ },
+ {
+  "id": 97,
+  "level": "Advanced",
+  "type": "Schedule-Based",
+  "topic": "Transaction Schedule-Based Questions",
+  "question": "Classify the following schedule:\n\nSchedule (time flows downward):\nT1 | T2\nWrite(A) | -\n- | Read(A)\n- | Commit\nAbort | -",
+  "options": [
+   "Recoverable and cascadeless",
+   "A serial schedule",
+   "Recoverable but not cascadeless",
+   "Not recoverable"
+  ],
+  "answer": "D",
+  "explanation": "T2 read T1's uncommitted write and committed before T1 aborted. T2's commit cannot be undone, so the schedule is not recoverable."
+ },
+ {
+  "id": 98,
+  "level": "Advanced",
+  "type": "Schedule-Based",
+  "topic": "Transaction Schedule-Based Questions",
+  "question": "If T1 aborts in the schedule below, which transactions must also be rolled back?\n\nSchedule (time flows downward):\nT1 | T2 | T3\nWrite(A) | - | -\n- | Read(A) | -\n- | Write(B) | -\n- | - | Read(B)\nAbort | - | -",
+  "options": [
+   "T2 only",
+   "T2 and T3",
+   "None of them",
+   "T3 only"
+  ],
+  "answer": "B",
+  "explanation": "T2 read T1's uncommitted value of A, and T3 read T2's uncommitted value of B, so both depend on T1."
+ },
+ {
+  "id": 99,
+  "level": "Advanced",
+  "type": "Schedule-Based",
+  "topic": "Transaction Schedule-Based Questions",
+  "question": "The following schedule is:\n\nSchedule (time flows downward):\nT1 | T2\nRead(A); Write(A) | -\n- | Read(A); Write(A)\nRead(B); Write(B) | -\n- | Read(B); Write(B)",
+  "options": [
+   "a lost update schedule",
+   "conflict serializable, equivalent to T1 followed by T2",
+   "conflict serializable, equivalent to T2 followed by T1",
+   "not conflict serializable"
+  ],
+  "answer": "B",
+  "explanation": "Every conflicting pair (on A and on B) has T1's operation first, so the only precedence is T1 to T2."
+ },
+ {
+  "id": 100,
+  "level": "Advanced",
+  "type": "Concept",
+  "topic": "Transaction Schedule-Based Questions",
+  "question": "T1 executes: Lock-X(A), Write(A), Unlock(A), Lock-X(B), Write(B), Unlock(B). This violates 2PL because:",
+  "options": [
+   "T1 unlocks B at the very end of its own execution",
+   "T1 uses exclusive locks on the items for each of its writes",
+   "T1 locks A before it writes A, which is a normal step",
+   "T1 requests Lock-X(B) after releasing a lock on A"
+  ],
+  "answer": "D",
+  "explanation": "In 2PL no lock may be acquired after the first unlock, and Unlock(A) happens before Lock-X(B)."
+ },
+ {
+  "id": 101,
+  "level": "Advanced",
+  "type": "Schedule-Based",
+  "topic": "Transaction Schedule-Based Questions",
+  "question": "TS(T1) = 10 and TS(T2) = 20; initially R-ts(Q) = W-ts(Q) = 0. Under basic TO, what happens to T1's write(Q) in this schedule?\n\nSchedule (time flows downward):\nT1 | T2\nRead(Q) | -\n- | Write(Q)\nWrite(Q) | -",
+  "options": [
+   "T1 waits until T2 commits and then writes Q",
+   "T2 is rolled back instead, since T2 wrote last",
+   "T1 is rolled back, since TS(T1) is less than W-ts(Q) = 20",
+   "T1's write succeeds, and W-ts(Q) becomes 10 afterwards"
+  ],
+  "answer": "C",
+  "explanation": "After T1's read R-ts(Q) = 10, and after T2's write W-ts(Q) = 20. T1's write is then too late (10 &lt; 20)."
+ },
+ {
+  "id": 102,
+  "level": "Advanced",
+  "type": "Comparison",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "When a conflict arises, lock-based protocols typically ______, whereas timestamp ordering typically ______.",
+  "options": [
+   "ignore the operation; make a transaction wait",
+   "make a transaction wait; roll back a transaction",
+   "roll back a transaction; make a transaction wait",
+   "make a transaction wait; make a transaction wait"
+  ],
+  "answer": "B",
+  "explanation": "Locks resolve conflicts by blocking. Timestamp ordering has no waiting and rolls back late transactions."
+ },
+ {
+  "id": 103,
+  "level": "Advanced",
+  "type": "Statement-Based",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "Consider: I. Several transactions may hold S-locks on the same item. II. An X-lock lets several transactions read the item simultaneously. III. A dirty read involves reading uncommitted data. Which are correct?",
+  "options": [
+   "I, II and III",
+   "I and II only",
+   "I and III only",
+   "II and III only"
+  ],
+  "answer": "C",
+  "explanation": "X-locks are exclusive, so II is false. I and III are correct."
+ },
+ {
+  "id": 104,
+  "level": "Advanced",
+  "type": "Assertion-Reason",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "Assertion (A): Optimistic scheduling is preferred when conflicts are rare.\nReason (R): It avoids locking overhead and checks conflicts only at validation.",
+  "options": [
+   "Both A and R are true and R is the correct explanation of A",
+   "Both A and R are true but R is not the correct explanation of A",
+   "A is true but R is false",
+   "A is false but R is true"
+  ],
+  "answer": "A",
+  "explanation": "Because conflicts are rare, deferring checks to validation avoids lock overhead with few aborts."
+ },
+ {
+  "id": 105,
+  "level": "Advanced",
+  "type": "Assertion-Reason",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "Assertion (A): Basic 2PL guarantees conflict serializability.\nReason (R): In basic 2PL every transaction holds all its locks until it commits.",
+  "options": [
+   "Both A and R are true and R is the correct explanation of A",
+   "Both A and R are true but R is not the correct explanation of A",
+   "A is true but R is false",
+   "A is false but R is true"
+  ],
+  "answer": "C",
+  "explanation": "A is true, but R is false: holding all locks until commit is strict/rigorous 2PL. Basic 2PL only requires no lock after the first unlock."
+ },
+ {
+  "id": 106,
+  "level": "Advanced",
+  "type": "Assertion-Reason",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "Assertion (A): In optimistic scheduling, a transaction in its read phase writes directly to the database.\nReason (R): Validation is performed before the write phase.",
+  "options": [
+   "Both A and R are true and R is the correct explanation of A",
+   "Both A and R are true but R is not the correct explanation of A",
+   "A is true but R is false",
+   "A is false but R is true"
+  ],
+  "answer": "D",
+  "explanation": "A is false: updates go to local copies during the read phase. R is true: validation precedes the write phase."
+ },
+ {
+  "id": 107,
+  "level": "Advanced",
+  "type": "Match the Following",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "Match the concept with its description:\nP. Shared lock   Q. Thomas write rule   R. Validation phase   S. Version selection in MVT\n1. Ignores an obsolete write   2. Checks conflicts before updating the database   3. Allows multiple readers   4. Uses the version with largest W-ts not exceeding TS(T)",
+  "options": [
+   "P-1, Q-3, R-2, S-4",
+   "P-3, Q-1, R-2, S-4",
+   "P-3, Q-1, R-4, S-2",
+   "P-2, Q-1, R-3, S-4"
+  ],
+  "answer": "B",
+  "explanation": "Shared lock = many readers (3); Thomas rule ignores obsolete writes (1); validation checks before write (2); version selection uses W-ts &lt;= TS(T) (4)."
+ },
+ {
+  "id": 108,
+  "level": "Advanced",
+  "type": "Comparison",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "Which techniques do not use locks to control access while transactions execute?",
+  "options": [
+   "Timestamp ordering and the basic 2PL protocol",
+   "Two-phase locking (2PL) and strict 2PL protocols",
+   "Timestamp ordering and optimistic scheduling",
+   "Optimistic scheduling and the strict 2PL protocol"
+  ],
+  "answer": "C",
+  "explanation": "Timestamp ordering uses rollback, and optimistic scheduling uses validation. 2PL variants are lock based."
+ },
+ {
+  "id": 109,
+  "level": "Advanced",
+  "type": "Comparison",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "Aborting a transaction in optimistic scheduling does not require undoing database changes because:",
+  "options": [
+   "updates stay in private copies until the write phase",
+   "locks preserve the old values until the transaction ends",
+   "every write is first stored as a timestamp on the item",
+   "the database is read-only during all of the three phases"
+  ],
+  "answer": "A",
+  "explanation": "Nothing reaches the database before successful validation, so abort only discards local copies."
+ },
+ {
+  "id": 110,
+  "level": "Advanced",
+  "type": "Comparison",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "Which scheme is called pessimistic?",
+  "options": [
+   "Validation-based protocol",
+   "Optimistic scheduling",
+   "Snapshot read in multiversion schemes",
+   "Lock-based concurrency control"
+  ],
+  "answer": "D",
+  "explanation": "Locking assumes conflicts are likely, so it prevents them in advance by locking. Optimistic schemes assume the opposite."
+ },
+ {
+  "id": 111,
+  "level": "Advanced",
+  "type": "Comparison",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "A read(Q) by T with TS(T) &lt; W-ts(Q) is rejected in basic TO. In a multiversion scheme the same read:",
+  "options": [
+   "is served from the newest available version",
+   "is served from an older suitable version",
+   "waits for the writer to commit first",
+   "is also rejected and T is rolled back"
+  ],
+  "answer": "B",
+  "explanation": "Multiversion schemes keep old versions, so the reader gets the version matching its timestamp."
+ },
+ {
+  "id": 112,
+  "level": "Advanced",
+  "type": "Tricky",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "Which statement about multiversion schemes is FALSE?",
+  "options": [
+   "Writers overwrite the older version of the item in place",
+   "Each version carries a timestamp of its creator",
+   "Extra storage is needed for old versions",
+   "Reads need not be rejected because an older version can be used"
+  ],
+  "answer": "A",
+  "explanation": "Multiversion schemes create a new version on each write instead of overwriting, so the statement is false."
+ },
+ {
+  "id": 113,
+  "level": "Advanced",
+  "type": "Comparison",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "In which phase does optimistic scheduling detect conflicts?",
+  "options": [
+   "At start, when the timestamps are first assigned",
+   "Write phase, after updating the database items",
+   "Validation phase, at the end of the transaction",
+   "Read phase, at the time each item is accessed"
+  ],
+  "answer": "C",
+  "explanation": "Locking and timestamp ordering detect conflicts at access time. Optimistic scheduling detects them only at validation."
+ },
+ {
+  "id": 114,
+  "level": "Advanced",
+  "type": "Comparison",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "The equivalent serial order is decided by lock points in ______ and by timestamps in ______.",
+  "options": [
+   "optimistic scheduling; 2PL",
+   "multiversion scheme; optimistic scheduling",
+   "2PL; timestamp ordering",
+   "timestamp ordering; 2PL"
+  ],
+  "answer": "C",
+  "explanation": "2PL orders transactions by lock point and timestamp ordering by TS(T). The validation-based scheme uses Validation(T)."
+ },
+ {
+  "id": 115,
+  "level": "Advanced",
+  "type": "Statement-Based",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "Consider: I. Strict 2PL schedules are cascadeless. II. Basic timestamp ordering guarantees cascadeless schedules. III. Every recoverable schedule is cascadeless. IV. Every cascadeless schedule is recoverable. Which are correct?",
+  "options": [
+   "II and IV only",
+   "II and III only",
+   "I and III only",
+   "I and IV only"
+  ],
+  "answer": "D",
+  "explanation": "Cascadeless is a stricter property than recoverable, so IV is true and III is false. Basic TO allows cascading rollbacks (II false)."
+ },
+ {
+  "id": 116,
+  "level": "Advanced",
+  "type": "Tricky",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "Which statement about timestamp ordering is FALSE?",
+  "options": [
+   "A transaction with a larger timestamp is treated as the older transaction",
+   "A rolled-back transaction restarts with a new, larger timestamp",
+   "Conflicts are resolved by rollback and without using any locks",
+   "R-ts(Q) never decreases, since it keeps the largest reader timestamp"
+  ],
+  "answer": "A",
+  "explanation": "A smaller timestamp means an older transaction, which comes earlier in the equivalent serial order."
+ },
+ {
+  "id": 117,
+  "level": "Advanced",
+  "type": "Assertion-Reason",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "Assertion (A): Every cascadeless schedule is serializable.\nReason (R): Cascadeless schedules prevent dirty reads.",
+  "options": [
+   "Both A and R are true and R is the correct explanation of A",
+   "Both A and R are true but R is not the correct explanation of A",
+   "A is true but R is false",
+   "A is false but R is true"
+  ],
+  "answer": "D",
+  "explanation": "A is false: a cascadeless schedule can still be non-serializable. R is true, since reads only follow commits."
+ },
+ {
+  "id": 118,
+  "level": "Advanced",
+  "type": "Comparison",
+  "topic": "Comparisons and Tricky Questions",
+  "question": "Compared with locking, optimistic scheduling detects conflicts ______ and resolves them by ______.",
+  "options": [
+   "at the end of the transaction; aborting and restarting it",
+   "at each data access; making the transaction wait for a lock",
+   "at the start of the transaction; granting locks to it",
+   "at each data access; ignoring the write operation"
+  ],
+  "answer": "A",
+  "explanation": "Locking detects conflicts at access time and blocks. Optimistic detects them at validation and restarts the transaction."
+ },
+ {
+  "id": 119,
+  "level": "Advanced",
+  "type": "Tricky",
+  "topic": "Mixed OAVS TGT Practice Set",
+  "question": "T1 holds an S-lock on Q and is the only holder. T1 requests an upgrade to an X-lock. The lock manager will:",
+  "options": [
+   "make T1 wait until it releases its own S-lock first",
+   "abort T1 and restart it with a new timestamp",
+   "refuse, because an S-lock can never be upgraded to an X-lock",
+   "grant the upgrade, since no other transaction holds a lock on Q"
+  ],
+  "answer": "D",
+  "explanation": "An upgrade is granted when no other transaction holds a conflicting lock."
+ },
+ {
+  "id": 120,
+  "level": "Advanced",
+  "type": "Scenario-Based",
+  "topic": "Mixed OAVS TGT Practice Set",
+  "question": "Two users read seats_left = 1, both book and both write seats_left = 0, selling two seats. With locking, each booking transaction should:",
+  "options": [
+   "read the record twice before it finally writes the new value back",
+   "obtain only an S-lock on the record, and then write to it directly",
+   "obtain an X-lock on the seat record before reading it for update",
+   "release its lock immediately after reading the record, then update it"
+  ],
+  "answer": "C",
+  "explanation": "An X-lock before the read-update makes the second user wait, preventing the lost update."
+ },
+ {
+  "id": 121,
+  "level": "Advanced",
+  "type": "Scenario-Based",
+  "topic": "Mixed OAVS TGT Practice Set",
+  "question": "A bank runs long read-only audit queries while updates continue. Which approach lets audits run without blocking updates?",
+  "options": [
+   "X-locks on every audited item",
+   "A multiversion approach with snapshot reads",
+   "Running audits serially before any update",
+   "Strict 2PL with S-locks on all audited items"
+  ],
+  "answer": "B",
+  "explanation": "Readers use older versions, so they neither block nor are blocked by writers."
+ },
+ {
+  "id": 122,
+  "level": "Advanced",
+  "type": "Scenario-Based",
+  "topic": "Mixed OAVS TGT Practice Set",
+  "question": "An online catalogue is browsed by thousands of users and updated rarely. Which concurrency approach suits it best?",
+  "options": [
+   "Strict 2PL with X-locks even for reads",
+   "Serial execution of all transactions",
+   "Exclusive locks on every item viewed",
+   "Optimistic scheduling"
+  ],
+  "answer": "D",
+  "explanation": "Low conflict means optimistic validation rarely fails and no locking overhead is paid on reads."
+ },
+ {
+  "id": 123,
+  "level": "Advanced",
+  "type": "Assertion-Reason",
+  "topic": "Mixed OAVS TGT Practice Set",
+  "question": "Assertion (A): Strict 2PL avoids cascading rollbacks.\nReason (R): Basic 2PL guarantees serializability.",
+  "options": [
+   "Both A and R are true and R is the correct explanation of A",
+   "Both A and R are true but R is not the correct explanation of A",
+   "A is true but R is false",
+   "A is false but R is true"
+  ],
+  "answer": "B",
+  "explanation": "Strict 2PL holds X-locks until commit, which stops reads of uncommitted data. R is true but does not explain A."
+ },
+ {
+  "id": 124,
+  "level": "Advanced",
+  "type": "Match the Following",
+  "topic": "Mixed OAVS TGT Practice Set",
+  "question": "Match the problem with its description:\nP. Lost update   Q. Dirty read   R. Incorrect summary   S. Unrepeatable read\n1. Aggregate sees partial updates of another transaction   2. Value changes between two reads of the same item   3. One transaction's write is overwritten   4. Reads uncommitted data later rolled back",
+  "options": [
+   "P-3, Q-4, R-2, S-1",
+   "P-4, Q-3, R-1, S-2",
+   "P-3, Q-4, R-1, S-2",
+   "P-3, Q-1, R-4, S-2"
+  ],
+  "answer": "C",
+  "explanation": "Lost update = overwritten (3); dirty read = uncommitted data (4); incorrect summary = partial updates (1); unrepeatable read = changed between reads (2)."
+ },
+ {
+  "id": 125,
+  "level": "Advanced",
+  "type": "Assertion-Reason",
+  "topic": "Mixed OAVS TGT Practice Set",
+  "question": "Assertion (A): A transaction rolled back under timestamp ordering is restarted with a new timestamp.\nReason (R): With its old timestamp it would be rejected again by the same conflict.",
+  "options": [
+   "Both A and R are true and R is the correct explanation of A",
+   "Both A and R are true but R is not the correct explanation of A",
+   "A is true but R is false",
+   "A is false but R is true"
+  ],
+  "answer": "A",
+  "explanation": "The old timestamp is still too small for the conflicting item, so a new, larger timestamp is needed."
+ },
+ {
+  "id": 126,
+  "level": "Advanced",
+  "type": "Statement-Based",
+  "topic": "Mixed OAVS TGT Practice Set",
+  "question": "Consider: I. Strict 2PL releases all locks as early as possible. II. In optimistic scheduling, updates are applied only after successful validation. III. Multiversion schemes keep older versions of items. IV. The Thomas write rule rolls back T whenever TS(T) &lt; W-ts(Q). Which are correct?",
+  "options": [
+   "II and III only",
+   "I and II only",
+   "I and IV only",
+   "III and IV only"
+  ],
+  "answer": "A",
+  "explanation": "Strict 2PL holds X-locks until commit (I false). The Thomas rule ignores an obsolete write instead of rolling back (IV false)."
+ },
+ {
+  "id": 127,
+  "level": "Advanced",
+  "type": "Tricky",
+  "topic": "Mixed OAVS TGT Practice Set",
+  "question": "X-locks are held until commit, but S-locks are released immediately after reading. Which problem is prevented?",
+  "options": [
+   "Unrepeatable read",
+   "Incorrect summary",
+   "Lost update",
+   "Dirty read"
+  ],
+  "answer": "D",
+  "explanation": "No one can read uncommitted writes. But early S-lock release still allows lost update, unrepeatable read and incorrect summary."
+ },
+ {
+  "id": 128,
+  "level": "Advanced",
+  "type": "Tricky",
+  "topic": "Mixed OAVS TGT Practice Set",
+  "question": "In rigorous 2PL, a transaction releases its locks:",
+  "options": [
+   "only exclusive locks at commit; shared ones immediately",
+   "only at commit or abort, and this includes shared locks",
+   "as soon as it obtains its last lock",
+   "at the start of the validation phase"
+  ],
+  "answer": "B",
+  "explanation": "Rigorous 2PL holds both S and X locks to the end, so the serial order matches commit order."
+ },
+ {
+  "id": 129,
+  "level": "Advanced",
+  "type": "Tricky",
+  "topic": "Mixed OAVS TGT Practice Set",
+  "question": "In validation, Ti is validated before Tj and Finish(Ti) &lt; Start(Tj). Then:",
+  "options": [
+   "both transactions must be rolled back and restarted",
+   "Tj must be aborted and restarted by the system",
+   "no check is needed, since Ti finished before Tj started",
+   "Ti must be aborted and restarted by the system"
+  ],
+  "answer": "C",
+  "explanation": "Ti completed fully before Tj began, so the serial order Ti then Tj is preserved."
+ },
+ {
+  "id": 130,
+  "level": "Advanced",
+  "type": "Tricky",
+  "topic": "Mixed OAVS TGT Practice Set",
+  "question": "Repeated rollback and restart of the same transaction under timestamp ordering can cause:",
+  "options": [
+   "a phantom row in a query result",
+   "a dirty read of uncommitted data",
+   "a lost update on the item it writes",
+   "starvation"
+  ],
+  "answer": "D",
+  "explanation": "If a transaction keeps meeting conflicts with newer transactions, it may be restarted again and again without finishing."
+ },
+ {
+  "id": 131,
+  "level": "Advanced",
+  "type": "Scenario-Based",
+  "topic": "Mixed OAVS TGT Practice Set",
+  "question": "Many concurrent transactions repeatedly update the same hot item. Which approach is likely to waste the most completed work?",
+  "options": [
+   "Conservative 2PL, since locks are taken before execution",
+   "Multiversion snapshot reads, since readers never block",
+   "Strict 2PL, since writers queue for the X-lock",
+   "Optimistic scheduling, due to repeated validation failures"
+  ],
+  "answer": "D",
+  "explanation": "Optimistic transactions do all their work and then abort on validation. Lock-based writers wait but do not lose finished work."
+ },
+ {
+  "id": 132,
+  "level": "Advanced",
+  "type": "Scenario-Based",
+  "topic": "Mixed OAVS TGT Practice Set",
+  "question": "Under 2PL, T1 obtains its last lock at time 5 and T2 obtains its last lock at time 9. The equivalent serial order is:",
+  "options": [
+   "T1 followed by T2",
+   "T1 and T2 simultaneously",
+   "T2 followed by T1",
+   "It cannot be determined"
+  ],
+  "answer": "A",
+  "explanation": "2PL schedules are equivalent to a serial schedule ordered by lock points."
+ },
+ {
+  "id": 133,
+  "level": "Advanced",
+  "type": "Scenario-Based",
+  "topic": "Mixed OAVS TGT Practice Set",
+  "question": "Under locking, an item read twice in a transaction returns the same value if the transaction:",
+  "options": [
+   "validates its read-set at the start of the transaction",
+   "releases its S-lock on the item right after each of its reads",
+   "uses only X-locks for its writes and no S-locks for reads",
+   "holds its S-lock on the item until the end of the transaction"
+  ],
+  "answer": "D",
+  "explanation": "Holding the S-lock stops other transactions from writing the item in between, which prevents unrepeatable reads."
+ }
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

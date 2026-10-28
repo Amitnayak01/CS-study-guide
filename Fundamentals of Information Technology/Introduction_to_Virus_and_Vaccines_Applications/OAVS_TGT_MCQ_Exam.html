@@ -1,0 +1,4356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>OAVS TGT Computer Science — MCQ Exam Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+#refresh-warn{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--card);border:1.5px solid var(--amber);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;color:var(--amber);box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+@media(max-width:768px){body{font-size:14px}.navbar{padding:0 12px}.logo{font-size:14px}.nav-row1{height:48px;gap:8px}.q-body{padding:16px 14px 12px}.q-text{font-size:15px}.option-btn{font-size:13.5px;padding:10px 14px}.result-grid{grid-template-columns:repeat(3,1fr)}#app{padding:14px 12px 60px}}
+@media(max-width:480px){body{font-size:13px}.navbar{padding:0 10px}.logo{font-size:13px}.nav-row1{height:44px}.progress-label{display:none}.q-text{font-size:13.5px}.option-btn{font-size:12.5px;padding:9px 10px}.result-grid{grid-template-columns:repeat(2,1fr)}.kbd-hint{display:none}#app{padding:10px 8px 60px}}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">OAVS TGT CS — MCQ Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg></button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All</button>
+    </div>
+  </div>
+</div></div>
+<div id="app">
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation</button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+</div>
+<script>
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Computer Virus",
+    "question": "What is a computer virus?",
+    "options": [
+      "A type of hardware device",
+      "A malicious self-replicating program that attaches to host programs",
+      "A useful program that speeds up the computer",
+      "An operating system component"
+    ],
+    "answer": "B",
+    "explanation": "A computer virus is a malicious self-replicating program that attaches to legitimate programs and spreads, causing damage to data or systems."
+  },
+  {
+    "id": 2,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Computer Virus",
+    "question": "The term 'computer virus' was formally defined by:",
+    "options": [
+      "Charles Babbage",
+      "John von Neumann",
+      "Fred Cohen",
+      "Bill Gates"
+    ],
+    "answer": "C",
+    "explanation": "Fred Cohen formally defined the term 'computer virus' in 1983 in his academic paper on self-replicating programs."
+  },
+  {
+    "id": 3,
+    "level": "Basic",
+    "type": "Classification",
+    "topic": "Computer Virus",
+    "question": "A computer virus is classified as a type of:",
+    "options": [
+      "Hardware",
+      "Malware",
+      "Firmware",
+      "Middleware"
+    ],
+    "answer": "B",
+    "explanation": "A computer virus is classified as malware (malicious software) — software designed to disrupt, damage, or gain unauthorized access to computer systems."
+  },
+  {
+    "id": 4,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Computer Virus",
+    "question": "The main purpose of a computer virus is to:",
+    "options": [
+      "Improve system speed",
+      "Cause harm or disruption to the system",
+      "Backup important data",
+      "Optimize memory usage"
+    ],
+    "answer": "B",
+    "explanation": "The primary intent of a computer virus is to damage, disrupt, steal data, or gain unauthorized control over a computer system."
+  },
+  {
+    "id": 5,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Computer Virus",
+    "question": "Which of the following best describes a computer virus?",
+    "options": [
+      "A program that monitors system performance",
+      "A network communication protocol",
+      "A self-replicating malicious code that attaches to host programs",
+      "A diagnostic tool for hardware faults"
+    ],
+    "answer": "C",
+    "explanation": "A computer virus self-replicates by attaching its code to host programs and spreads when those infected programs are executed."
+  },
+  {
+    "id": 6,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "Computer Virus",
+    "question": "Which is the most fundamental characteristic of a computer virus?",
+    "options": [
+      "It only affects hardware",
+      "It requires user permission to spread",
+      "It improves system performance",
+      "It is self-replicating"
+    ],
+    "answer": "D",
+    "explanation": "Self-replication is the defining characteristic of a virus — it copies itself without user knowledge or consent."
+  },
+  {
+    "id": 7,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "Computer Virus",
+    "question": "A computer virus typically requires a ______ to replicate.",
+    "options": [
+      "Host program",
+      "Antivirus program",
+      "Network driver",
+      "Compiler"
+    ],
+    "answer": "A",
+    "explanation": "Unlike worms, viruses cannot spread independently. They must attach to a host program or file to replicate and spread."
+  },
+  {
+    "id": 8,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Virus vs Worm",
+    "question": "Which characteristic distinguishes a virus from a worm?",
+    "options": [
+      "Both always need a host file",
+      "Worms need a host file; viruses self-propagate independently",
+      "Viruses need a host file; worms self-propagate independently",
+      "Neither needs a host file"
+    ],
+    "answer": "C",
+    "explanation": "Viruses attach to host files to spread, while worms are standalone programs that self-propagate across networks without a host."
+  },
+  {
+    "id": 9,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "Computer Virus",
+    "question": "A dormant virus is one that:",
+    "options": [
+      "Is present but not yet activated",
+      "Has been deleted by antivirus",
+      "Is spreading across networks",
+      "Is actively destroying files"
+    ],
+    "answer": "A",
+    "explanation": "A dormant (latent) virus has infected a system but waits for a trigger condition — such as a date or user action — before activating."
+  },
+  {
+    "id": 10,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "Computer Virus",
+    "question": "Viruses are generally written using:",
+    "options": [
+      "SQL only",
+      "HTML only",
+      "Natural language only",
+      "Programming or assembly languages"
+    ],
+    "answer": "D",
+    "explanation": "Computer viruses are written in programming languages such as assembly, C, C++, Python, or scripting languages like VBScript."
+  },
+  {
+    "id": 11,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Computer Virus",
+    "question": "A non-resident virus:",
+    "options": [
+      "Only infects the boot sector",
+      "Executes, infects files, and exits without remaining in memory",
+      "Stays permanently in RAM",
+      "Is always harmless"
+    ],
+    "answer": "B",
+    "explanation": "A non-resident virus executes, finds and infects target files, then exits without installing itself permanently in memory."
+  },
+  {
+    "id": 12,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Computer Virus",
+    "question": "Which type of virus infects the boot sector of a hard disk?",
+    "options": [
+      "Polymorphic virus",
+      "Macro virus",
+      "Boot sector virus",
+      "File virus"
+    ],
+    "answer": "C",
+    "explanation": "A boot sector virus infects the Master Boot Record (MBR) or boot sector and loads itself every time the computer starts."
+  },
+  {
+    "id": 13,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Computer Virus",
+    "question": "A macro virus primarily affects:",
+    "options": [
+      "Hardware device drivers",
+      "Document files like Word or Excel",
+      "Operating system files",
+      "Boot sector of the disk"
+    ],
+    "answer": "B",
+    "explanation": "Macro viruses infect applications that support macros, most commonly Microsoft Word and Excel document files."
+  },
+  {
+    "id": 14,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Computer Virus",
+    "question": "Which virus changes its code with every replication to avoid detection?",
+    "options": [
+      "File virus",
+      "Polymorphic virus",
+      "Logic bomb",
+      "Boot sector virus"
+    ],
+    "answer": "B",
+    "explanation": "A polymorphic virus alters its signature code each time it replicates, defeating signature-based antivirus detection."
+  },
+  {
+    "id": 15,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Computer Virus",
+    "question": "A virus that disguises itself as legitimate software is called a:",
+    "options": [
+      "Trojan horse",
+      "Adware",
+      "Spyware",
+      "Worm"
+    ],
+    "answer": "A",
+    "explanation": "A Trojan horse masquerades as useful or legitimate software to trick users into installing it, then performs malicious actions."
+  },
+  {
+    "id": 16,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Computer Virus",
+    "question": "A stealth virus is designed to:",
+    "options": [
+      "Replicate as fast as possible",
+      "Improve system performance",
+      "Infect only email attachments",
+      "Hide its presence from antivirus tools"
+    ],
+    "answer": "D",
+    "explanation": "Stealth viruses intercept OS calls to conceal their presence from antivirus software and system monitoring tools."
+  },
+  {
+    "id": 17,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Computer Virus",
+    "question": "Which of the following is NOT a type of computer virus?",
+    "options": [
+      "Polymorphic virus",
+      "Firewall virus",
+      "Macro virus",
+      "Boot sector virus"
+    ],
+    "answer": "B",
+    "explanation": "A firewall is a security tool used to block unauthorized access — it is NOT a type of virus. The others are all real virus types."
+  },
+  {
+    "id": 18,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Computer Virus",
+    "question": "A multipartite virus:",
+    "options": [
+      "Spreads only through email",
+      "Is completely harmless",
+      "Infects only document files",
+      "Infects both boot sector and executable files simultaneously"
+    ],
+    "answer": "D",
+    "explanation": "A multipartite virus attacks both the boot sector and executable files, making it harder to detect and remove completely."
+  },
+  {
+    "id": 19,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Computer Virus",
+    "question": "Ransomware is malware that:",
+    "options": [
+      "Encrypts user files and demands payment for decryption",
+      "Manages disk resources automatically",
+      "Improves system security",
+      "Speeds up internet browsing"
+    ],
+    "answer": "A",
+    "explanation": "Ransomware encrypts the victim's files and demands a ransom (usually cryptocurrency) in exchange for the decryption key."
+  },
+  {
+    "id": 20,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Computer Virus",
+    "question": "A logic bomb is malicious code that:",
+    "options": [
+      "Spreads through email contacts",
+      "Infects the boot sector",
+      "Changes its code to avoid detection",
+      "Executes when specific conditions are met, such as a date"
+    ],
+    "answer": "D",
+    "explanation": "A logic bomb lies dormant and executes when a specific condition is met, such as a particular date, time, or user action."
+  },
+  {
+    "id": 21,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Computer Virus",
+    "question": "A resident virus:",
+    "options": [
+      "Installs itself into RAM to infect files at any time",
+      "Only infects boot sectors",
+      "Is easily detected by all antiviruses",
+      "Does not load into memory"
+    ],
+    "answer": "A",
+    "explanation": "A resident virus installs itself into RAM and can intercept OS operations to infect files even when the original infected program is not running."
+  },
+  {
+    "id": 22,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Malware",
+    "question": "Spyware secretly:",
+    "options": [
+      "Collects user information without consent",
+      "Protects against virus attacks",
+      "Defragments the hard disk",
+      "Speeds up internet browsing"
+    ],
+    "answer": "A",
+    "explanation": "Spyware secretly monitors user activity and collects personal data such as passwords, browsing habits, and keystrokes."
+  },
+  {
+    "id": 23,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Malware",
+    "question": "Adware is software that:",
+    "options": [
+      "Defends against malware",
+      "Repairs corrupted system files",
+      "Encrypts user data for safety",
+      "Automatically displays or downloads unwanted advertisements"
+    ],
+    "answer": "D",
+    "explanation": "Adware automatically displays unwanted advertisements and may track user behavior. It is often bundled with free software."
+  },
+  {
+    "id": 24,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Virus vs Worm",
+    "question": "A worm differs from a virus because it:",
+    "options": [
+      "Only infects boot sectors",
+      "Self-propagates across networks without needing a host file",
+      "Cannot replicate itself",
+      "Always deletes all files"
+    ],
+    "answer": "B",
+    "explanation": "Worms are standalone programs that self-propagate across networks without needing to attach to a host file, unlike viruses."
+  },
+  {
+    "id": 25,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Malware",
+    "question": "Which malware allows unauthorized remote access to a computer?",
+    "options": [
+      "Boot sector virus",
+      "Remote Access Trojan (RAT)",
+      "Adware",
+      "Spyware"
+    ],
+    "answer": "B",
+    "explanation": "A Remote Access Trojan (RAT) gives an attacker unauthorized remote control over the infected computer."
+  },
+  {
+    "id": 26,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Computer Virus",
+    "question": "A file infector virus attaches itself to:",
+    "options": [
+      "Only boot sectors",
+      "Only document files",
+      "Executable program files (.exe, .com)",
+      "Only email messages"
+    ],
+    "answer": "C",
+    "explanation": "A file infector virus attaches its code to executable program files (such as .exe or .com) and activates when those programs run."
+  },
+  {
+    "id": 27,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Malware",
+    "question": "Keylogger malware is used to:",
+    "options": [
+      "Speed up keyboard input",
+      "Translate keyboard shortcuts",
+      "Improve keyboard driver performance",
+      "Secretly record keystrokes to capture passwords and data"
+    ],
+    "answer": "D",
+    "explanation": "A keylogger records every keystroke made by the user, capturing sensitive data such as passwords, credit card numbers, and messages."
+  },
+  {
+    "id": 28,
+    "level": "Basic",
+    "type": "Effects",
+    "topic": "Computer Virus",
+    "question": "Which is a common effect of a computer virus?",
+    "options": [
+      "Faster processing speed",
+      "Data loss and file corruption",
+      "Improved network performance",
+      "Automatic system updates"
+    ],
+    "answer": "B",
+    "explanation": "Computer viruses can cause data loss, file corruption, system slowdown, unauthorized access, and complete system failure."
+  },
+  {
+    "id": 29,
+    "level": "Basic",
+    "type": "Effects",
+    "topic": "Computer Virus",
+    "question": "Slow computer performance can be a symptom of:",
+    "options": [
+      "A recently updated operating system",
+      "More RAM being added",
+      "A virus consuming system resources",
+      "A faster processor installed"
+    ],
+    "answer": "C",
+    "explanation": "Viruses often consume CPU and memory resources continuously, causing noticeably slower system performance."
+  },
+  {
+    "id": 30,
+    "level": "Basic",
+    "type": "Effects",
+    "topic": "Computer Virus",
+    "question": "A virus sending emails from the user's account without their knowledge is an example of:",
+    "options": [
+      "Formatting the hard disk",
+      "Unauthorized email propagation",
+      "Installing antivirus software",
+      "Deleting files"
+    ],
+    "answer": "B",
+    "explanation": "Some viruses (especially worms) use the infected system's email client to send copies of themselves to all contacts in the address book."
+  },
+  {
+    "id": 31,
+    "level": "Basic",
+    "type": "Effects",
+    "topic": "Computer Virus",
+    "question": "Which of the following is NOT a symptom of virus infection?",
+    "options": [
+      "Unexplained increase in file sizes",
+      "Computer reboots on its own",
+      "Faster boot time than usual",
+      "Programs not working correctly"
+    ],
+    "answer": "C",
+    "explanation": "Faster boot time is NOT a virus symptom. Viruses typically cause slowdowns, unexpected reboots, increased file sizes, and program malfunctions."
+  },
+  {
+    "id": 32,
+    "level": "Basic",
+    "type": "Effects",
+    "topic": "Computer Virus",
+    "question": "Computer viruses can spread through:",
+    "options": [
+      "Power cables",
+      "Monitor screens",
+      "Infected USB drives, email attachments, and downloads",
+      "Keyboard and mouse"
+    ],
+    "answer": "C",
+    "explanation": "Viruses spread via infected removable media (USB), email attachments, malicious downloads, and network connections."
+  },
+  {
+    "id": 33,
+    "level": "Intermediate",
+    "type": "Detection",
+    "topic": "Computer Virus",
+    "question": "Which detection method compares file code against a database of known virus patterns?",
+    "options": [
+      "Behavioral analysis",
+      "Sandboxing",
+      "Heuristic analysis",
+      "Signature-based detection"
+    ],
+    "answer": "D",
+    "explanation": "Signature-based detection compares file code against a database of known virus signatures — the most common antivirus detection method."
+  },
+  {
+    "id": 34,
+    "level": "Intermediate",
+    "type": "Detection",
+    "topic": "Computer Virus",
+    "question": "Heuristic analysis in antivirus is used to:",
+    "options": [
+      "Detect only known viruses",
+      "Automatically delete all infected files",
+      "Detect new or unknown viruses based on suspicious behavior",
+      "Update virus definition databases"
+    ],
+    "answer": "C",
+    "explanation": "Heuristic analysis examines code behavior and structure to identify potentially malicious activity, enabling detection of unknown or zero-day viruses."
+  },
+  {
+    "id": 35,
+    "level": "Intermediate",
+    "type": "Detection",
+    "topic": "Computer Virus",
+    "question": "Sandboxing in cybersecurity means:",
+    "options": [
+      "Building network firewalls",
+      "Encrypting sensitive user data",
+      "Running suspicious programs in an isolated environment to observe behavior",
+      "Backing up all system files"
+    ],
+    "answer": "C",
+    "explanation": "Sandboxing isolates a suspicious program in a controlled environment where it runs safely, allowing behavior observation without system risk."
+  },
+  {
+    "id": 36,
+    "level": "Intermediate",
+    "type": "Detection",
+    "topic": "Computer Virus",
+    "question": "Real-time scanning in antivirus means:",
+    "options": [
+      "Continuously monitoring all system activity for threats",
+      "Scanning only on weekends",
+      "Scanning only email attachments",
+      "Manual monthly scans only"
+    ],
+    "answer": "A",
+    "explanation": "Real-time (on-access) scanning monitors all file operations continuously and checks files as they are opened, created, or downloaded."
+  },
+  {
+    "id": 37,
+    "level": "Intermediate",
+    "type": "Detection",
+    "topic": "Computer Virus",
+    "question": "An unexplained increase in file sizes may indicate:",
+    "options": [
+      "Better compression is working",
+      "A virus has attached its code to existing files",
+      "System has more free space",
+      "New software was installed properly"
+    ],
+    "answer": "B",
+    "explanation": "When a virus attaches its code to an existing file, the file size increases unexpectedly — a classic sign of file-infector virus activity."
+  },
+  {
+    "id": 38,
+    "level": "Intermediate",
+    "type": "Detection",
+    "topic": "Computer Virus",
+    "question": "Behavioral detection in antivirus monitors:",
+    "options": [
+      "Internet connection speed",
+      "How programs behave at runtime to detect suspicious activity",
+      "Only file signatures",
+      "Only file extensions"
+    ],
+    "answer": "B",
+    "explanation": "Behavioral detection observes how programs act during execution, flagging actions typical of malware such as unexpected file modification or self-replication."
+  },
+  {
+    "id": 39,
+    "level": "Intermediate",
+    "type": "Prevention",
+    "topic": "Computer Virus",
+    "question": "The BEST way to prevent virus infection is to:",
+    "options": [
+      "Use the computer offline only",
+      "Install and regularly update antivirus software",
+      "Never use the internet",
+      "Delete all email accounts"
+    ],
+    "answer": "B",
+    "explanation": "Installing reputable antivirus software and keeping it regularly updated is the single most effective protection against virus infections."
+  },
+  {
+    "id": 40,
+    "level": "Intermediate",
+    "type": "Prevention",
+    "topic": "Computer Virus",
+    "question": "Regularly updating antivirus software is important because:",
+    "options": [
+      "New definitions are added to detect newly discovered viruses",
+      "It improves screen resolution",
+      "It reduces internet bills",
+      "It makes the computer faster"
+    ],
+    "answer": "A",
+    "explanation": "Virus definition updates ensure the antivirus can recognize and neutralize the latest viruses and malware variants as they emerge."
+  },
+  {
+    "id": 41,
+    "level": "Intermediate",
+    "type": "Prevention",
+    "topic": "Computer Virus",
+    "question": "Which email practice helps prevent virus spread?",
+    "options": [
+      "Forward all emails to contacts",
+      "Reply to all spam emails",
+      "Never open attachments from unknown senders",
+      "Disable antivirus before reading emails"
+    ],
+    "answer": "C",
+    "explanation": "Email attachments are a primary virus vector. Not opening attachments from unknown or suspicious senders significantly reduces infection risk."
+  },
+  {
+    "id": 42,
+    "level": "Intermediate",
+    "type": "Prevention",
+    "topic": "Computer Virus",
+    "question": "A firewall primarily helps in:",
+    "options": [
+      "Preventing unauthorized network access",
+      "Speeding up the processor",
+      "Increasing available disk space",
+      "Improving graphics quality"
+    ],
+    "answer": "A",
+    "explanation": "A firewall monitors and controls incoming/outgoing network traffic, blocking unauthorized access and protecting against network-based threats."
+  },
+  {
+    "id": 43,
+    "level": "Intermediate",
+    "type": "Prevention",
+    "topic": "Computer Virus",
+    "question": "Scanning a USB drive before accessing it helps prevent:",
+    "options": [
+      "Hardware malfunction",
+      "Virus infection via removable media",
+      "Battery drain on laptop",
+      "Slow internet connection"
+    ],
+    "answer": "B",
+    "explanation": "Scanning removable media with antivirus before accessing content prevents viruses that commonly spread via USB drives and external storage."
+  },
+  {
+    "id": 44,
+    "level": "Intermediate",
+    "type": "Prevention",
+    "topic": "Computer Virus",
+    "question": "Keeping the operating system updated helps because:",
+    "options": [
+      "It changes the desktop wallpaper",
+      "It adds new decorative themes",
+      "Security patches fix vulnerabilities that viruses exploit",
+      "It increases processor speed"
+    ],
+    "answer": "C",
+    "explanation": "OS updates include security patches that fix known vulnerabilities which viruses and malware are specifically designed to exploit."
+  },
+  {
+    "id": 45,
+    "level": "Intermediate",
+    "type": "Prevention",
+    "topic": "Computer Virus",
+    "question": "Which software download practice reduces virus risk?",
+    "options": [
+      "Share login credentials with others",
+      "Download only from trusted, official sources",
+      "Disable OS updates",
+      "Download from any free website"
+    ],
+    "answer": "B",
+    "explanation": "Downloading software only from official, trusted sources greatly reduces the risk of accidentally installing malware-bundled programs."
+  },
+  {
+    "id": 46,
+    "level": "Intermediate",
+    "type": "Prevention",
+    "topic": "Computer Virus",
+    "question": "Using strong, unique passwords helps prevent:",
+    "options": [
+      "Hardware failures",
+      "Monitor damage",
+      "Power supply failures",
+      "Unauthorized account access used to install malware"
+    ],
+    "answer": "D",
+    "explanation": "Strong passwords reduce unauthorized account access which attackers exploit to install malware or viruses on target systems."
+  },
+  {
+    "id": 47,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Antivirus",
+    "question": "What is antivirus software?",
+    "options": [
+      "Software designed to detect, prevent, and remove malware",
+      "Software that formats hard disks",
+      "Software that creates viruses for testing",
+      "A type of operating system"
+    ],
+    "answer": "A",
+    "explanation": "Antivirus software (also called anti-malware) detects, prevents, quarantines, and eliminates malicious software from computer systems."
+  },
+  {
+    "id": 48,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Antivirus",
+    "question": "Which is a popular antivirus software?",
+    "options": [
+      "VLC Media Player",
+      "Microsoft Word",
+      "Norton Antivirus",
+      "Adobe Photoshop"
+    ],
+    "answer": "C",
+    "explanation": "Norton Antivirus is one of the most well-known security products. Others include Kaspersky, Avast, McAfee, and Bitdefender."
+  },
+  {
+    "id": 49,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Antivirus",
+    "question": "What does 'quarantine' mean in antivirus?",
+    "options": [
+      "Permanently deleting all infected files",
+      "Encrypting all user files",
+      "Sharing files with the antivirus vendor",
+      "Isolating infected files to prevent further spread"
+    ],
+    "answer": "D",
+    "explanation": "Quarantine isolates suspicious or infected files in a secure location where they cannot harm the system, allowing the user to review them."
+  },
+  {
+    "id": 50,
+    "level": "Basic",
+    "type": "Functions",
+    "topic": "Antivirus",
+    "question": "Which is NOT a function of antivirus software?",
+    "options": [
+      "Scanning files for malware",
+      "Providing real-time protection",
+      "Creating computer viruses",
+      "Removing detected viruses"
+    ],
+    "answer": "C",
+    "explanation": "Antivirus software detects, prevents, and removes viruses. Creating viruses is a criminal act — the complete opposite of antivirus purpose."
+  },
+  {
+    "id": 51,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Antivirus",
+    "question": "Antivirus identifies known viruses using:",
+    "options": [
+      "Virus definition databases (signature files)",
+      "Browser cookies",
+      "Encryption keys",
+      "Random number generators"
+    ],
+    "answer": "A",
+    "explanation": "Antivirus programs maintain databases of known virus signatures and compare file code against these patterns to detect infections."
+  },
+  {
+    "id": 52,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Antivirus",
+    "question": "What is a 'false positive' in antivirus?",
+    "options": [
+      "A new type of virus",
+      "A safe file incorrectly identified as malware",
+      "A corrupted antivirus database",
+      "A virus that escapes detection"
+    ],
+    "answer": "B",
+    "explanation": "A false positive occurs when antivirus software incorrectly flags a legitimate, harmless file or program as malicious."
+  },
+  {
+    "id": 53,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Antivirus",
+    "question": "'On-demand scanning' means:",
+    "options": [
+      "Scanning emails only",
+      "Scanning only at system startup",
+      "Continuous automatic scanning",
+      "A manual scan initiated by the user at a chosen time"
+    ],
+    "answer": "D",
+    "explanation": "On-demand scanning allows users to manually start a scan of specific files, folders, or the entire system whenever they choose."
+  },
+  {
+    "id": 54,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "Antivirus",
+    "question": "Which antivirus feature automatically checks email for malicious attachments?",
+    "options": [
+      "Screen saver activation",
+      "Disk defragmentation",
+      "File compression utility",
+      "Email scanning"
+    ],
+    "answer": "D",
+    "explanation": "Email scanning is an antivirus feature that inspects email messages and attachments for malware before they reach the inbox."
+  },
+  {
+    "id": 55,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Antivirus",
+    "question": "The process of updating antivirus definitions is called:",
+    "options": [
+      "Virus definition update",
+      "Compilation",
+      "Defragmentation",
+      "Disk formatting"
+    ],
+    "answer": "A",
+    "explanation": "Updating virus definitions (signature updates) ensures the antivirus can recognize newly discovered malware variants."
+  },
+  {
+    "id": 56,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Antivirus",
+    "question": "An antivirus that is not updated regularly will:",
+    "options": [
+      "Work even better over time",
+      "Fail to detect viruses created after the last update",
+      "Automatically generate new definitions",
+      "Become faster over time"
+    ],
+    "answer": "B",
+    "explanation": "Without regular updates, antivirus software cannot detect viruses created after its last definition update, leaving the system vulnerable."
+  },
+  {
+    "id": 57,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Antivirus",
+    "question": "Which best describes a 'computer vaccine'?",
+    "options": [
+      "Hardware that prevents virus entry",
+      "A firewall for network protection",
+      "Antivirus software that immunizes against known viruses",
+      "A backup copy of all files"
+    ],
+    "answer": "C",
+    "explanation": "A computer vaccine (antivirus) is software that detects and immunizes the system against known viruses, analogous to biological vaccines."
+  },
+  {
+    "id": 58,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "Antivirus",
+    "question": "Features of a good antivirus program include:",
+    "options": [
+      "Slowing down the computer intentionally",
+      "Only scanning on demand",
+      "Deleting all unknown files",
+      "Real-time protection, automatic updates, email scanning, and quarantine"
+    ],
+    "answer": "D",
+    "explanation": "A good antivirus provides real-time protection, scheduled scanning, automatic definition updates, email scanning, and quarantine capabilities."
+  },
+  {
+    "id": 59,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Antivirus",
+    "question": "Kaspersky, Norton, McAfee, and Avast are all examples of:",
+    "options": [
+      "Antivirus software",
+      "Web browsers",
+      "Programming languages",
+      "Operating systems"
+    ],
+    "answer": "A",
+    "explanation": "These are all leading antivirus and internet security software products used to protect computers from malware and cyber threats."
+  },
+  {
+    "id": 60,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Antivirus",
+    "question": "Assertion (A): Antivirus software should be updated regularly.\nReason (R): New viruses are created continuously and updated definitions detect them.",
+    "options": [
+      "Both A and R are true, and R is the correct explanation of A",
+      "A is false but R is true",
+      "A is true but R is false",
+      "Both A and R are true, but R is NOT the correct explanation of A"
+    ],
+    "answer": "A",
+    "explanation": "Both are true. Regular updates are essential because cybercriminals constantly create new viruses requiring updated definitions to detect and neutralize."
+  },
+  {
+    "id": 61,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Computer Virus",
+    "question": "Assertion (A): A polymorphic virus is difficult to detect.\nReason (R): It changes its code signature with each replication.",
+    "options": [
+      "A is true but R is false",
+      "A is false but R is true",
+      "Both A and R are true, but R is NOT the correct explanation of A",
+      "Both A and R are true, and R is the correct explanation of A"
+    ],
+    "answer": "D",
+    "explanation": "Polymorphic viruses mutate their code each replication cycle, changing their signature and making signature-based detection ineffective."
+  },
+  {
+    "id": 62,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Computer Virus",
+    "question": "Assertion (A): A firewall alone fully protects a computer from all viruses.\nReason (R): Firewalls block all types of malware automatically.",
+    "options": [
+      "Both A and R are true, and R is the correct explanation of A",
+      "Both A and R are true, but R is NOT the correct explanation of A",
+      "Both A and R are false",
+      "A is true but R is false"
+    ],
+    "answer": "C",
+    "explanation": "A firewall controls network traffic but does not scan files for viruses. Both antivirus and firewall are needed for comprehensive protection."
+  },
+  {
+    "id": 63,
+    "level": "Advanced",
+    "type": "Match-Following",
+    "topic": "Computer Virus",
+    "question": "Match the virus type with its characteristic:\n(i) Boot Sector  (ii) Macro  (iii) Trojan  (iv) Worm",
+    "options": [
+      "(i)-Disguises, (ii)-Self-propagates, (iii)-Affects Office docs, (iv)-Infects MBR",
+      "(i)-Self-propagates, (ii)-Infects MBR, (iii)-Affects Office docs, (iv)-Disguises",
+      "(i)-Infects MBR, (ii)-Affects Office docs, (iii)-Disguises as legit software, (iv)-Self-propagates on network",
+      "(i)-Affects Office docs, (ii)-Self-propagates, (iii)-Infects MBR, (iv)-Disguises"
+    ],
+    "answer": "C",
+    "explanation": "Boot Sector infects MBR, Macro infects Office docs, Trojan disguises as legit software, Worm self-propagates across networks independently."
+  },
+  {
+    "id": 64,
+    "level": "Advanced",
+    "type": "Match-Following",
+    "topic": "Antivirus",
+    "question": "Match antivirus term with its definition:\n(i) Quarantine  (ii) False Positive  (iii) Heuristic  (iv) Signature",
+    "options": [
+      "(i)-Safe file flagged, (ii)-Behavior-based, (iii)-Virus code pattern, (iv)-Isolate files",
+      "(i)-Behavior-based, (ii)-Virus code pattern, (iii)-Isolate files, (iv)-Safe file flagged",
+      "(i)-Isolate infected files, (ii)-Safe file flagged as malware, (iii)-Behavior-based detection, (iv)-Virus code pattern",
+      "(i)-Virus code pattern, (ii)-Isolate files, (iii)-Safe file flagged, (iv)-Behavior-based"
+    ],
+    "answer": "C",
+    "explanation": "Quarantine=isolate infected files, False Positive=safe file wrongly flagged, Heuristic=behavior-based detection, Signature=virus code pattern."
+  },
+  {
+    "id": 65,
+    "level": "Advanced",
+    "type": "Scenario",
+    "topic": "Computer Virus",
+    "question": "Ravi downloads a free game from an untrusted website. Next day his computer sends emails to all his contacts automatically. This is most likely:",
+    "options": [
+      "His contacts spammed him",
+      "His computer is infected with a virus or worm",
+      "His email app auto-updated",
+      "His internet speed increased"
+    ],
+    "answer": "B",
+    "explanation": "This is classic virus/worm behavior — spreading through the victim's email address book after entering via an untrusted download."
+  },
+  {
+    "id": 66,
+    "level": "Advanced",
+    "type": "Scenario",
+    "topic": "Computer Virus",
+    "question": "Priya's screen shows: 'Your files are encrypted. Pay Bitcoin to get them back.' This malware is:",
+    "options": [
+      "Ransomware",
+      "Boot sector virus",
+      "Adware",
+      "Spyware"
+    ],
+    "answer": "A",
+    "explanation": "This is ransomware — it encrypts user files and demands a ransom payment for the decryption key to restore access."
+  },
+  {
+    "id": 67,
+    "level": "Advanced",
+    "type": "Scenario",
+    "topic": "Computer Virus",
+    "question": "An antivirus scan shows no threats, but the computer still behaves strangely. The virus is likely a:",
+    "options": [
+      "Macro virus",
+      "Logic bomb",
+      "Stealth virus",
+      "Boot sector virus"
+    ],
+    "answer": "C",
+    "explanation": "A stealth virus hides from detection tools, explaining why a scan returns clean results despite visible symptoms of infection."
+  },
+  {
+    "id": 68,
+    "level": "Advanced",
+    "type": "Scenario",
+    "topic": "Computer Virus",
+    "question": "A computer virus that activates every year on April 1st is an example of a:",
+    "options": [
+      "Boot sector virus",
+      "Polymorphic virus",
+      "Stealth virus",
+      "Logic bomb"
+    ],
+    "answer": "D",
+    "explanation": "A logic bomb triggers on a specific condition — here a calendar date (April 1st) — making it a time-triggered logic bomb."
+  },
+  {
+    "id": 69,
+    "level": "Advanced",
+    "type": "History",
+    "topic": "Computer Virus",
+    "question": "The ILOVEYOU virus (2000) spread primarily through:",
+    "options": [
+      "Wi-Fi networks",
+      "Bluetooth",
+      "Email with infected attachment",
+      "USB drives"
+    ],
+    "answer": "C",
+    "explanation": "The ILOVEYOU virus spread via email with subject 'ILOVEYOU' and an infected VBS attachment, infecting millions of computers worldwide."
+  },
+  {
+    "id": 70,
+    "level": "Advanced",
+    "type": "History",
+    "topic": "Computer Virus",
+    "question": "Which is considered one of the first known self-replicating computer programs?",
+    "options": [
+      "Creeper",
+      "Conficker",
+      "WannaCry",
+      "Stuxnet"
+    ],
+    "answer": "A",
+    "explanation": "Creeper (1971) is one of the earliest self-replicating programs, spreading via ARPANET and displaying 'I'm the creeper, catch me if you can!'"
+  },
+  {
+    "id": 71,
+    "level": "Advanced",
+    "type": "History",
+    "topic": "Computer Virus",
+    "question": "The WannaCry ransomware attack (2017) exploited a vulnerability in:",
+    "options": [
+      "Apple macOS",
+      "Linux Ubuntu",
+      "Google Android",
+      "Microsoft Windows"
+    ],
+    "answer": "D",
+    "explanation": "WannaCry exploited the EternalBlue vulnerability in Microsoft Windows SMB protocol, affecting hundreds of thousands of computers worldwide."
+  },
+  {
+    "id": 72,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Antivirus",
+    "question": "The primary difference between antivirus and anti-malware software is:",
+    "options": [
+      "They are completely identical",
+      "Anti-malware only works on mobile devices",
+      "Antivirus is always free; anti-malware is always paid",
+      "Antivirus focuses on viruses; anti-malware covers broader malware types including spyware and ransomware"
+    ],
+    "answer": "D",
+    "explanation": "Traditional antivirus focused on viruses, while modern anti-malware covers a broader range including spyware, ransomware, adware, and trojans."
+  },
+  {
+    "id": 73,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Applications",
+    "question": "What is application software?",
+    "options": [
+      "Software designed to help users perform specific tasks",
+      "Software that manages computer hardware resources",
+      "The operating system of the computer",
+      "Software that manages network connections"
+    ],
+    "answer": "A",
+    "explanation": "Application software (apps) are end-user programs designed to perform specific tasks such as word processing, playing music, or browsing the web."
+  },
+  {
+    "id": 74,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Which is an example of application software?",
+    "options": [
+      "BIOS",
+      "Windows OS",
+      "Microsoft Word",
+      "Device drivers"
+    ],
+    "answer": "C",
+    "explanation": "Microsoft Word is application software for word processing. Windows OS, BIOS, and device drivers are system software, not application software."
+  },
+  {
+    "id": 75,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Applications",
+    "question": "System software differs from application software in that:",
+    "options": [
+      "Application software is always more important",
+      "System software performs user tasks; application software manages hardware",
+      "System software manages hardware and resources; application software performs user tasks",
+      "Both serve exactly the same purpose"
+    ],
+    "answer": "C",
+    "explanation": "System software (OS, drivers) manages hardware and system resources, while application software performs specific end-user tasks."
+  },
+  {
+    "id": 76,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Which is word processing software?",
+    "options": [
+      "Adobe Photoshop",
+      "VLC Media Player",
+      "Microsoft Word",
+      "Microsoft Excel"
+    ],
+    "answer": "C",
+    "explanation": "Microsoft Word is a word processing application used to create, edit, format, and print text documents."
+  },
+  {
+    "id": 77,
+    "level": "Intermediate",
+    "type": "Uses",
+    "topic": "Applications",
+    "question": "Spreadsheet software is primarily used for:",
+    "options": [
+      "Creating presentations",
+      "Browsing the internet",
+      "Organizing and analyzing data in rows and columns",
+      "Playing video files"
+    ],
+    "answer": "C",
+    "explanation": "Spreadsheet software like Microsoft Excel is used to organize, calculate, and analyze tabular data arranged in rows and columns."
+  },
+  {
+    "id": 78,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Microsoft Excel is an example of:",
+    "options": [
+      "Presentation software",
+      "Database software",
+      "Word processing software",
+      "Spreadsheet software"
+    ],
+    "answer": "D",
+    "explanation": "Microsoft Excel is a spreadsheet application used for data organization, calculations, charting, and financial analysis."
+  },
+  {
+    "id": 79,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Which application creates slideshows and presentations?",
+    "options": [
+      "Microsoft PowerPoint",
+      "Microsoft Word",
+      "Microsoft Excel",
+      "Notepad"
+    ],
+    "answer": "A",
+    "explanation": "Microsoft PowerPoint is a presentation application for creating slideshows with text, images, charts, and multimedia content."
+  },
+  {
+    "id": 80,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Applications",
+    "question": "Which is NOT application software?",
+    "options": [
+      "Adobe Photoshop",
+      "VLC Media Player",
+      "Microsoft Excel",
+      "Linux OS"
+    ],
+    "answer": "D",
+    "explanation": "Linux OS is system software (an operating system). Adobe Photoshop, VLC Media Player, and Excel are all application software."
+  },
+  {
+    "id": 81,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Applications",
+    "question": "Custom software is:",
+    "options": [
+      "Open-source software free for all",
+      "Software developed specifically for a particular organization's unique needs",
+      "Pre-installed software on computers",
+      "Software available for everyone to purchase"
+    ],
+    "answer": "B",
+    "explanation": "Custom software is specifically developed to meet the unique requirements of a particular organization, unlike generic off-the-shelf software."
+  },
+  {
+    "id": 82,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Applications",
+    "question": "General-purpose software can be used:",
+    "options": [
+      "Only on mainframe computers",
+      "Only for one specific task",
+      "For a wide variety of tasks by different users",
+      "Only by expert programmers"
+    ],
+    "answer": "C",
+    "explanation": "General-purpose software like word processors, spreadsheets, and browsers serve many different tasks across various industries and users."
+  },
+  {
+    "id": 83,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Adobe Photoshop is an example of:",
+    "options": [
+      "Spreadsheet software",
+      "Image editing / graphics software",
+      "Word processing software",
+      "Antivirus software"
+    ],
+    "answer": "B",
+    "explanation": "Adobe Photoshop is a professional graphics and image editing application for photo manipulation, digital art, and graphic design."
+  },
+  {
+    "id": 84,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Tally is an example of:",
+    "options": [
+      "Antivirus software",
+      "Educational software",
+      "Media player software",
+      "Accounting software"
+    ],
+    "answer": "D",
+    "explanation": "Tally is a widely used accounting software for financial accounting, inventory management, and business operations."
+  },
+  {
+    "id": 85,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Applications",
+    "question": "Which type of software has freely available and modifiable source code?",
+    "options": [
+      "Shareware",
+      "Proprietary software",
+      "Adware",
+      "Open-source software"
+    ],
+    "answer": "D",
+    "explanation": "Open-source software has source code freely available for anyone to view, modify, and redistribute."
+  },
+  {
+    "id": 86,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Applications",
+    "question": "Freeware is software that:",
+    "options": [
+      "Is always open source",
+      "Costs money to use",
+      "Is available at no cost, though source code may not be provided",
+      "Can only be used once"
+    ],
+    "answer": "C",
+    "explanation": "Freeware is available free of charge, but unlike open-source software, the source code may not be provided or modifiable."
+  },
+  {
+    "id": 87,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Applications",
+    "question": "Utility software is used to:",
+    "options": [
+      "Browse the internet",
+      "Create computer viruses",
+      "Perform creative tasks like word processing",
+      "Help manage, maintain, and optimize computer resources"
+    ],
+    "answer": "D",
+    "explanation": "Utility software helps maintain and optimize the computer system. Examples: disk defragmenters, antivirus, file compressors, and backup tools."
+  },
+  {
+    "id": 88,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Applications",
+    "question": "Shareware is:",
+    "options": [
+      "Open-source software",
+      "Free software with all features unlocked",
+      "Software distributed freely for trial with limited features or time",
+      "Software shared illegally"
+    ],
+    "answer": "C",
+    "explanation": "Shareware is distributed freely for a trial period or with limited features, requiring payment to unlock full functionality."
+  },
+  {
+    "id": 89,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Which application software is used for database management?",
+    "options": [
+      "Winamp",
+      "Microsoft Access",
+      "VLC Media Player",
+      "Microsoft Word"
+    ],
+    "answer": "B",
+    "explanation": "Microsoft Access is a DBMS (Database Management System) used to create, manage, query, and report on structured databases."
+  },
+  {
+    "id": 90,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Which is an educational application software?",
+    "options": [
+      "Khan Academy App",
+      "Tally",
+      "Adobe Photoshop",
+      "VLC Player"
+    ],
+    "answer": "A",
+    "explanation": "Educational software is designed for learning. Khan Academy is a well-known educational platform providing courses and exercises."
+  },
+  {
+    "id": 91,
+    "level": "Intermediate",
+    "type": "Uses",
+    "topic": "Applications",
+    "question": "A media player application is used to:",
+    "options": [
+      "Create database records",
+      "Play audio and video files",
+      "Browse websites",
+      "Write text documents"
+    ],
+    "answer": "B",
+    "explanation": "Media player applications like VLC, Windows Media Player, and iTunes play audio and video files in various formats."
+  },
+  {
+    "id": 92,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Which is an accounting application?",
+    "options": [
+      "MS Paint",
+      "Adobe Reader",
+      "Tally ERP 9",
+      "Google Chrome"
+    ],
+    "answer": "C",
+    "explanation": "Tally ERP 9 is a popular accounting application used for financial management, GST compliance, and business reporting."
+  },
+  {
+    "id": 93,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Applications",
+    "question": "Proprietary software is software that:",
+    "options": [
+      "Is owned by a company and requires a license",
+      "Is always free to use",
+      "Is written in assembly language only",
+      "Can be freely modified and distributed"
+    ],
+    "answer": "A",
+    "explanation": "Proprietary software is owned by a developer or company and requires purchase of a license. Users cannot view or modify its source code."
+  },
+  {
+    "id": 94,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "Applications",
+    "question": "A feature of application software is that it:",
+    "options": [
+      "Directly manages hardware components",
+      "Provides a user-friendly interface for specific productive tasks",
+      "Is always free of cost",
+      "Controls the operating system"
+    ],
+    "answer": "B",
+    "explanation": "Application software provides user-friendly interfaces enabling users to perform specific productive tasks efficiently."
+  },
+  {
+    "id": 95,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "MS Paint is an example of:",
+    "options": [
+      "Database software",
+      "Spreadsheet software",
+      "Basic graphics/painting software",
+      "Word processing software"
+    ],
+    "answer": "C",
+    "explanation": "MS Paint is a basic graphics application bundled with Windows, used for simple drawing, painting, and image editing tasks."
+  },
+  {
+    "id": 96,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Google Chrome and Mozilla Firefox are examples of:",
+    "options": [
+      "Word processing software",
+      "Web browser applications",
+      "Accounting software",
+      "DTP software"
+    ],
+    "answer": "B",
+    "explanation": "Google Chrome and Mozilla Firefox are web browser applications used to access and navigate the World Wide Web."
+  },
+  {
+    "id": 97,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Applications",
+    "question": "Assertion (A): Application software depends on system software to function.\nReason (R): System software provides the environment in which application software operates.",
+    "options": [
+      "A is false but R is true",
+      "Both A and R are true, and R is the correct explanation of A",
+      "Both A and R are true, but R is NOT the correct explanation of A",
+      "A is true but R is false"
+    ],
+    "answer": "B",
+    "explanation": "Application software cannot function without an underlying OS (system software) that manages hardware and provides a runtime environment."
+  },
+  {
+    "id": 98,
+    "level": "Advanced",
+    "type": "Scenario",
+    "topic": "Applications",
+    "question": "A school needs software for managing student records, fees, and attendance. They should use:",
+    "options": [
+      "Custom application software",
+      "Firmware",
+      "System software",
+      "Off-the-shelf general software"
+    ],
+    "answer": "A",
+    "explanation": "Custom software is developed specifically for unique organizational needs — ideal for managing school-specific records, fees, and attendance."
+  },
+  {
+    "id": 99,
+    "level": "Advanced",
+    "type": "Match-Following",
+    "topic": "Applications",
+    "question": "Match software with its type:\n(i) MS Word  (ii) Adobe Photoshop  (iii) VLC Player  (iv) Tally",
+    "options": [
+      "(i)-Word Processor, (ii)-Image Editor, (iii)-Media Player, (iv)-Accounting",
+      "(i)-Spreadsheet, (ii)-Media Player, (iii)-Accounting, (iv)-Word Processor",
+      "(i)-Media Player, (ii)-Word Processor, (iii)-Image Editor, (iv)-Spreadsheet",
+      "(i)-Image Editor, (ii)-Accounting, (iii)-Word Processor, (iv)-Spreadsheet"
+    ],
+    "answer": "A",
+    "explanation": "MS Word=Word Processor, Adobe Photoshop=Image Editor, VLC=Media Player, Tally=Accounting software."
+  },
+  {
+    "id": 100,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Applications",
+    "question": "Firmware is software that:",
+    "options": [
+      "Is permanently embedded in hardware devices like printers and routers",
+      "Runs only on mobile phones",
+      "Can be easily modified by users",
+      "Is installed by users on demand"
+    ],
+    "answer": "A",
+    "explanation": "Firmware is software permanently embedded in hardware devices like printers, routers, and cameras to control their basic functions."
+  },
+  {
+    "id": 101,
+    "level": "Advanced",
+    "type": "Scenario",
+    "topic": "Applications",
+    "question": "A hospital using software to manage patient records and appointments is an example of:",
+    "options": [
+      "Custom application software use",
+      "Media player software use",
+      "Painting software use",
+      "DTP software use"
+    ],
+    "answer": "A",
+    "explanation": "Custom application software is developed to meet specific operational needs — here, managing hospital patient records and appointments."
+  },
+  {
+    "id": 102,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Applications",
+    "question": "Which of the following is an example of system software?",
+    "options": [
+      "Adobe Photoshop",
+      "Windows 10 OS",
+      "Microsoft Word",
+      "VLC Media Player"
+    ],
+    "answer": "B",
+    "explanation": "Windows 10 OS is system software that manages hardware and provides the platform for application software to run."
+  },
+  {
+    "id": 103,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "DTP",
+    "question": "What does DTP stand for?",
+    "options": [
+      "Data Transfer Protocol",
+      "Document Transfer Program",
+      "Digital Text Processing",
+      "Desktop Publishing"
+    ],
+    "answer": "D",
+    "explanation": "DTP stands for Desktop Publishing — the process of creating professional-quality documents using a personal computer and specialized software."
+  },
+  {
+    "id": 104,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "DTP",
+    "question": "Desktop Publishing is best defined as:",
+    "options": [
+      "Managing database records",
+      "Sending electronic messages",
+      "Writing code for websites",
+      "Using software to design and produce professional print and digital publications"
+    ],
+    "answer": "D",
+    "explanation": "DTP involves using computer software to combine text and graphics into professional layouts for print or digital distribution."
+  },
+  {
+    "id": 105,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "DTP",
+    "question": "Which is a popular DTP software?",
+    "options": [
+      "Tally",
+      "Adobe InDesign",
+      "Microsoft Excel",
+      "VLC Media Player"
+    ],
+    "answer": "B",
+    "explanation": "Adobe InDesign is a leading DTP software. Others include QuarkXPress, Adobe PageMaker, Scribus, and Microsoft Publisher."
+  },
+  {
+    "id": 106,
+    "level": "Advanced",
+    "type": "History",
+    "topic": "DTP",
+    "question": "The first widely used DTP software was:",
+    "options": [
+      "CorelDRAW",
+      "Adobe PageMaker",
+      "Adobe Photoshop",
+      "Microsoft Word"
+    ],
+    "answer": "B",
+    "explanation": "Aldus PageMaker (1985), later acquired by Adobe, is credited as the first widely used desktop publishing application."
+  },
+  {
+    "id": 107,
+    "level": "Advanced",
+    "type": "History",
+    "topic": "DTP",
+    "question": "Desktop publishing emerged in the:",
+    "options": [
+      "Late 1990s",
+      "Mid-1980s",
+      "1970s",
+      "2000s"
+    ],
+    "answer": "B",
+    "explanation": "Desktop publishing emerged in the mid-1980s with the Apple Macintosh, laser printers, and software like PageMaker."
+  },
+  {
+    "id": 108,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "DTP",
+    "question": "Which is an application of DTP?",
+    "options": [
+      "Sending emails",
+      "Writing computer programs",
+      "Creating newspapers, magazines, brochures, and books",
+      "Playing video games"
+    ],
+    "answer": "C",
+    "explanation": "DTP is used to produce professional printed and digital materials such as newspapers, magazines, brochures, flyers, books, and posters."
+  },
+  {
+    "id": 109,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "DTP",
+    "question": "The DTP feature where on-screen display matches final print output is called:",
+    "options": [
+      "Time-sharing",
+      "Batch processing",
+      "WYSIWYG (What You See Is What You Get)",
+      "Real-time processing"
+    ],
+    "answer": "C",
+    "explanation": "WYSIWYG (What You See Is What You Get) is a core DTP feature — the on-screen view accurately represents the final printed output."
+  },
+  {
+    "id": 110,
+    "level": "Basic",
+    "type": "Advantages",
+    "topic": "DTP",
+    "question": "An advantage of DTP over traditional printing is:",
+    "options": [
+      "Faster and cheaper production with professional quality",
+      "Requires large printing presses",
+      "Requires specialized typesetting expertise",
+      "Cannot produce color output"
+    ],
+    "answer": "A",
+    "explanation": "DTP offers faster production, lower costs, easy editing and revision, and professional-quality output compared to traditional typesetting."
+  },
+  {
+    "id": 111,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "DTP",
+    "question": "In DTP, 'layout' refers to:",
+    "options": [
+      "The printing mechanism used",
+      "The arrangement of text and graphics on a page",
+      "The file format of the document",
+      "The programming code of the software"
+    ],
+    "answer": "B",
+    "explanation": "Layout in DTP is the visual arrangement of text, images, columns, headers, and other design elements to create a structured, professional page."
+  },
+  {
+    "id": 112,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "DTP",
+    "question": "Which DTP characteristic allows combining text and images in one document?",
+    "options": [
+      "Only images are supported",
+      "Requires separate software for text and images",
+      "Only text is supported",
+      "Integration of text and graphics in a single document"
+    ],
+    "answer": "D",
+    "explanation": "DTP software integrates text and graphics (photos, charts, illustrations) into a single document, enabling professional page layouts."
+  },
+  {
+    "id": 113,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "DTP",
+    "question": "'Typography' in DTP refers to:",
+    "options": [
+      "Image resolution",
+      "Printing speed",
+      "The art of arranging typefaces and fonts for readability",
+      "File compression ratio"
+    ],
+    "answer": "C",
+    "explanation": "Typography is the art of selecting and arranging fonts, sizes, spacing, and styles to make text visually appealing and easy to read."
+  },
+  {
+    "id": 114,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "DTP",
+    "question": "Which DTP feature allows newspaper-style multiple columns of text?",
+    "options": [
+      "Bold text formatting",
+      "Bullet point formatting",
+      "Multi-column layout",
+      "Auto page numbering"
+    ],
+    "answer": "C",
+    "explanation": "DTP software supports multi-column layouts enabling newspaper and magazine-style formatting with two or more text columns per page."
+  },
+  {
+    "id": 115,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "DTP",
+    "question": "A 'master page' in DTP is used to:",
+    "options": [
+      "Import external images",
+      "Create a template with repeating elements like headers, footers, and page numbers",
+      "Print multiple copies at once",
+      "Set the document's main color scheme"
+    ],
+    "answer": "B",
+    "explanation": "A master page defines consistent repeating elements (headers, footers, page numbers, borders) applied automatically across all document pages."
+  },
+  {
+    "id": 116,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "DTP",
+    "question": "Image resolution in DTP is measured in:",
+    "options": [
+      "Gigahertz (GHz)",
+      "Kilobytes (KB)",
+      "Dots Per Inch (DPI)",
+      "Megabytes (MB)"
+    ],
+    "answer": "C",
+    "explanation": "Image resolution in DTP is measured in DPI (Dots Per Inch). 300 DPI is the standard for professional-quality printing."
+  },
+  {
+    "id": 117,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "DTP",
+    "question": "The standard file format for final print-ready DTP documents is:",
+    "options": [
+      "EXE",
+      "MP4",
+      "MP3",
+      "PDF (Portable Document Format)"
+    ],
+    "answer": "D",
+    "explanation": "PDF is the industry standard for print-ready documents as it preserves fonts, images, and layout perfectly across all systems."
+  },
+  {
+    "id": 118,
+    "level": "Advanced",
+    "type": "History",
+    "topic": "DTP",
+    "question": "Which printing technology made DTP practical in the 1980s?",
+    "options": [
+      "Dot matrix printing",
+      "Thermal printing",
+      "Laser printing",
+      "Inkjet printing"
+    ],
+    "answer": "C",
+    "explanation": "The laser printer, especially the Apple LaserWriter (1985), made desktop publishing practical by providing high-quality, affordable output."
+  },
+  {
+    "id": 119,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "DTP",
+    "question": "Which is NOT a DTP software?",
+    "options": [
+      "Microsoft Publisher",
+      "Adobe InDesign",
+      "QuarkXPress",
+      "MySQL"
+    ],
+    "answer": "D",
+    "explanation": "MySQL is a database management system, not DTP software. InDesign, QuarkXPress, and Microsoft Publisher are all DTP applications."
+  },
+  {
+    "id": 120,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "DTP",
+    "question": "In DTP, 'bleed' refers to:",
+    "options": [
+      "An oversized font",
+      "Ink running low in the printer",
+      "Text overflow into another column",
+      "Artwork extending beyond the page edge to prevent white borders after trimming"
+    ],
+    "answer": "D",
+    "explanation": "Bleed is printing that extends beyond the trim edge of the page, ensuring no white borders appear after the page is cut to final size."
+  },
+  {
+    "id": 121,
+    "level": "Intermediate",
+    "type": "Uses",
+    "topic": "DTP",
+    "question": "DTP is most useful for creating:",
+    "options": [
+      "Brochures, flyers, newsletters, and magazines",
+      "Network configuration files",
+      "Computer programming code",
+      "Database queries"
+    ],
+    "answer": "A",
+    "explanation": "DTP is specifically designed for creating visually rich publications such as brochures, newsletters, magazines, books, and posters."
+  },
+  {
+    "id": 122,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "DTP",
+    "question": "'Leading' in DTP typography refers to:",
+    "options": [
+      "Space between pages",
+      "Vertical space between lines of text",
+      "Kerning between letters",
+      "Space between columns"
+    ],
+    "answer": "B",
+    "explanation": "Leading (pronounced 'ledding') is the vertical space between lines of text — a key typography concept for readability in DTP."
+  },
+  {
+    "id": 123,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "DTP",
+    "question": "'Kerning' in DTP refers to:",
+    "options": [
+      "Space between pages",
+      "Space between individual letter pairs",
+      "Space between paragraphs",
+      "Space between columns"
+    ],
+    "answer": "B",
+    "explanation": "Kerning is the adjustment of space between individual letter pairs to improve the visual appearance and readability of text."
+  },
+  {
+    "id": 124,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "DTP",
+    "question": "DTP software supports which color model for professional printing?",
+    "options": [
+      "CMYK (Cyan, Magenta, Yellow, Black)",
+      "Grayscale only",
+      "RGB only",
+      "HSB only"
+    ],
+    "answer": "A",
+    "explanation": "DTP software supports CMYK color model — the standard for professional printing using Cyan, Magenta, Yellow, and Key (Black) inks."
+  },
+  {
+    "id": 125,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "DTP",
+    "question": "A 'gutter' in DTP page layout refers to:",
+    "options": [
+      "The inner margin between two facing pages in a spread",
+      "A type of font",
+      "A type of page border",
+      "The outer edge of a page"
+    ],
+    "answer": "A",
+    "explanation": "A gutter is the inner margin (binding side) between two facing pages in a spread, providing space for the binding of books and magazines."
+  },
+  {
+    "id": 126,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "DTP",
+    "question": "Scribus is DTP software that is:",
+    "options": [
+      "Part of Microsoft Office",
+      "Only available for mobile devices",
+      "Expensive proprietary software",
+      "Free and open-source DTP software"
+    ],
+    "answer": "D",
+    "explanation": "Scribus is a free, open-source desktop publishing application available for Windows, macOS, and Linux."
+  },
+  {
+    "id": 127,
+    "level": "Basic",
+    "type": "Advantages",
+    "topic": "DTP",
+    "question": "DTP allows easy editing before printing. This primarily saves:",
+    "options": [
+      "Only paper costs",
+      "Only ink costs",
+      "Time and material costs by reducing the need for physical proofs",
+      "Electricity costs only"
+    ],
+    "answer": "C",
+    "explanation": "WYSIWYG preview allows designers to review and correct layouts on screen before printing, saving significant time and material costs."
+  },
+  {
+    "id": 128,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "DTP",
+    "question": "Assertion (A): DTP has replaced traditional typesetting in modern publishing.\nReason (R): DTP offers faster, more flexible, and cost-effective document production.",
+    "options": [
+      "A is true but R is false",
+      "A is false but R is true",
+      "Both A and R are true, but R is NOT the correct explanation of A",
+      "Both A and R are true, and R is the correct explanation of A"
+    ],
+    "answer": "D",
+    "explanation": "DTP has largely replaced traditional typesetting due to its speed, flexibility, lower cost, and the ability to easily edit and revise layouts."
+  },
+  {
+    "id": 129,
+    "level": "Advanced",
+    "type": "Scenario",
+    "topic": "DTP",
+    "question": "Scenario: A school wants to publish its annual magazine. The most appropriate software is:",
+    "options": [
+      "DTP software",
+      "Word processing software",
+      "Database software",
+      "Spreadsheet software"
+    ],
+    "answer": "A",
+    "explanation": "DTP software is ideal for publishing complex layouts combining text, images, and design elements — perfect for a school magazine."
+  },
+  {
+    "id": 130,
+    "level": "Advanced",
+    "type": "Match-Following",
+    "topic": "DTP",
+    "question": "Match DTP software with its developer:\n(i) Adobe InDesign  (ii) Microsoft Publisher  (iii) QuarkXPress  (iv) Scribus",
+    "options": [
+      "(i)-Adobe, (ii)-Microsoft, (iii)-Quark Inc., (iv)-Open Source",
+      "(i)-Quark Inc., (ii)-Adobe, (iii)-Microsoft, (iv)-Open Source",
+      "(i)-Open Source, (ii)-Quark Inc., (iii)-Adobe, (iv)-Microsoft",
+      "(i)-Microsoft, (ii)-Adobe, (iii)-Open Source, (iv)-Quark Inc."
+    ],
+    "answer": "A",
+    "explanation": "Adobe InDesign→Adobe, Publisher→Microsoft, QuarkXPress→Quark Inc., Scribus→free open-source community."
+  },
+  {
+    "id": 131,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "DTP",
+    "question": "Which DTP feature allows text to flow automatically from one text box to the next?",
+    "options": [
+      "Manual text entry only",
+      "Text cannot flow between boxes",
+      "Only one text box per page",
+      "Threaded / linked text frames"
+    ],
+    "answer": "D",
+    "explanation": "Threaded (linked) text frames allow text to flow automatically across multiple frames and pages — essential for magazine and book layouts."
+  },
+  {
+    "id": 132,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "DTP",
+    "question": "A newspaper, a book cover, and a wedding invitation are all examples of:",
+    "options": [
+      "Database software output",
+      "Media player output",
+      "Spreadsheet software output",
+      "DTP software output"
+    ],
+    "answer": "D",
+    "explanation": "Newspapers, book covers, and wedding invitations are typical professional publications created using DTP software."
+  },
+  {
+    "id": 133,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "E-Mail",
+    "question": "What does E-Mail stand for?",
+    "options": [
+      "Electrical Mail",
+      "Electronic Mail",
+      "Extended Mail",
+      "External Mail"
+    ],
+    "answer": "B",
+    "explanation": "E-Mail stands for Electronic Mail — a system for sending and receiving digital messages over a computer network or the Internet."
+  },
+  {
+    "id": 134,
+    "level": "Advanced",
+    "type": "History",
+    "topic": "E-Mail",
+    "question": "Who is credited with inventing email?",
+    "options": [
+      "Ray Tomlinson",
+      "Bill Gates",
+      "Vint Cerf",
+      "Tim Berners-Lee"
+    ],
+    "answer": "A",
+    "explanation": "Ray Tomlinson invented email in 1971. He also introduced the @ symbol to separate the username from the host computer name."
+  },
+  {
+    "id": 135,
+    "level": "Basic",
+    "type": "Components",
+    "topic": "E-Mail",
+    "question": "Which symbol separates the username from the domain in an email address?",
+    "options": [
+      "!",
+      "&",
+      "@",
+      "#"
+    ],
+    "answer": "C",
+    "explanation": "The @ (at) symbol separates the username (local part) from the domain name in an email address, e.g., user@example.com."
+  },
+  {
+    "id": 136,
+    "level": "Basic",
+    "type": "Components",
+    "topic": "E-Mail",
+    "question": "In 'student@school.edu', the username is:",
+    "options": [
+      "@",
+      "student",
+      "edu",
+      "school.edu"
+    ],
+    "answer": "B",
+    "explanation": "The username is the part before the @ symbol. Here 'student' is the username identifying the specific mail account."
+  },
+  {
+    "id": 137,
+    "level": "Basic",
+    "type": "Components",
+    "topic": "E-Mail",
+    "question": "In 'student@school.edu', the domain name is:",
+    "options": [
+      "school.edu",
+      "edu",
+      "@",
+      "student"
+    ],
+    "answer": "A",
+    "explanation": "The domain name is everything after the @ symbol. Here 'school.edu' represents the mail server address."
+  },
+  {
+    "id": 138,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "E-Mail",
+    "question": "'CC' in email stands for:",
+    "options": [
+      "Computer Copy",
+      "Complete Copy",
+      "Carbon Copy",
+      "Confidential Copy"
+    ],
+    "answer": "C",
+    "explanation": "CC stands for Carbon Copy. It sends a visible copy of the email to additional recipients beyond those in the primary To field."
+  },
+  {
+    "id": 139,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "E-Mail",
+    "question": "'BCC' in email stands for:",
+    "options": [
+      "Blind Carbon Copy",
+      "Basic Carbon Copy",
+      "Broadcast Carbon Copy",
+      "Binary Carbon Copy"
+    ],
+    "answer": "A",
+    "explanation": "BCC stands for Blind Carbon Copy. BCC recipients receive the email but their addresses are hidden from all other recipients."
+  },
+  {
+    "id": 140,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "E-Mail",
+    "question": "The key difference between CC and BCC is:",
+    "options": [
+      "CC is for important emails; BCC is for spam",
+      "CC recipients are visible to all; BCC recipients are hidden from others",
+      "There is no difference between them",
+      "BCC recipients can reply-all; CC cannot"
+    ],
+    "answer": "B",
+    "explanation": "CC shows all recipient addresses to everyone, while BCC hides BCC recipients' identities from all other recipients."
+  },
+  {
+    "id": 141,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "E-Mail",
+    "question": "The 'Inbox' folder contains:",
+    "options": [
+      "Emails you have sent",
+      "Received incoming emails",
+      "Unsent draft emails",
+      "Deleted emails"
+    ],
+    "answer": "B",
+    "explanation": "The Inbox is the primary folder where all received emails are delivered by default."
+  },
+  {
+    "id": 142,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "E-Mail",
+    "question": "The 'Sent Items' folder contains:",
+    "options": [
+      "Spam emails",
+      "Received emails",
+      "Successfully sent emails",
+      "Draft emails"
+    ],
+    "answer": "C",
+    "explanation": "The Sent folder stores copies of all emails you have successfully sent to recipients."
+  },
+  {
+    "id": 143,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "E-Mail",
+    "question": "Which folder stores composed but not yet sent emails?",
+    "options": [
+      "Sent Items",
+      "Drafts",
+      "Inbox",
+      "Trash"
+    ],
+    "answer": "B",
+    "explanation": "The Drafts folder stores email messages that have been composed and saved but not yet transmitted to recipients."
+  },
+  {
+    "id": 144,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "E-Mail",
+    "question": "Spam email refers to:",
+    "options": [
+      "Encrypted secure emails",
+      "Emails with large file attachments",
+      "Important official correspondence",
+      "Unsolicited bulk emails sent without recipient consent"
+    ],
+    "answer": "D",
+    "explanation": "Spam is unsolicited bulk email (junk mail) typically sent for commercial or phishing purposes without the recipient's permission."
+  },
+  {
+    "id": 145,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "E-Mail",
+    "question": "An email 'attachment' is:",
+    "options": [
+      "A file sent along with the email message",
+      "The email subject line",
+      "The email signature block",
+      "The recipient list"
+    ],
+    "answer": "A",
+    "explanation": "An email attachment is a file (document, image, audio, video, etc.) attached to and sent along with an email message."
+  },
+  {
+    "id": 146,
+    "level": "Basic",
+    "type": "Components",
+    "topic": "E-Mail",
+    "question": "The 'Subject' field in an email:",
+    "options": [
+      "Contains the sender's address",
+      "Briefly describes the topic or purpose of the email",
+      "Contains the full body text",
+      "Lists all recipients"
+    ],
+    "answer": "B",
+    "explanation": "The Subject field provides a brief description of the email's topic, helping recipients understand its content before opening."
+  },
+  {
+    "id": 147,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "E-Mail",
+    "question": "Which protocol is used to send emails?",
+    "options": [
+      "POP3",
+      "FTP",
+      "HTTP",
+      "SMTP"
+    ],
+    "answer": "D",
+    "explanation": "SMTP (Simple Mail Transfer Protocol) is the standard protocol used to send email messages from a client to a mail server."
+  },
+  {
+    "id": 148,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "E-Mail",
+    "question": "Which protocol retrieves emails from a mail server?",
+    "options": [
+      "FTP",
+      "POP3 / IMAP",
+      "SMTP",
+      "HTTP"
+    ],
+    "answer": "B",
+    "explanation": "POP3 (Post Office Protocol 3) and IMAP (Internet Message Access Protocol) retrieve email messages from a mail server to a client."
+  },
+  {
+    "id": 149,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "E-Mail",
+    "question": "Which is a free web-based email service?",
+    "options": [
+      "Gmail",
+      "VLC Media Player",
+      "Microsoft Word",
+      "Adobe Photoshop"
+    ],
+    "answer": "A",
+    "explanation": "Gmail is a free web-based email service by Google. Others include Yahoo Mail, Outlook.com, and Hotmail."
+  },
+  {
+    "id": 150,
+    "level": "Basic",
+    "type": "Advantages",
+    "topic": "E-Mail",
+    "question": "An advantage of email over traditional postal mail is:",
+    "options": [
+      "Slower delivery times",
+      "Instant global delivery at near-zero cost",
+      "Requires physical postage",
+      "Can only carry text"
+    ],
+    "answer": "B",
+    "explanation": "Email delivers messages instantly worldwide at virtually no cost and can include file attachments of various types."
+  },
+  {
+    "id": 151,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "E-Mail",
+    "question": "Email can be accessed through:",
+    "options": [
+      "Only a telephone",
+      "Only a fax machine",
+      "Only a desktop computer",
+      "Web browser, desktop email client, or mobile app"
+    ],
+    "answer": "D",
+    "explanation": "Email is accessible through webmail in browsers, dedicated email client software (Outlook, Thunderbird), or mobile apps on smartphones."
+  },
+  {
+    "id": 152,
+    "level": "Intermediate",
+    "type": "Security",
+    "topic": "E-Mail",
+    "question": "Phishing email tries to:",
+    "options": [
+      "Automatically organize your inbox",
+      "Trick recipients into revealing personal or financial information",
+      "Block spam messages",
+      "Deliver breaking news updates"
+    ],
+    "answer": "B",
+    "explanation": "Phishing emails impersonate legitimate organizations to trick users into revealing passwords, credit card numbers, or personal data."
+  },
+  {
+    "id": 153,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "E-Mail",
+    "question": "The 'Reply All' feature:",
+    "options": [
+      "Forwards the email to new contacts",
+      "Sends reply to all recipients in the To and CC fields",
+      "Deletes the email after replying",
+      "Sends reply only to the original sender"
+    ],
+    "answer": "B",
+    "explanation": "Reply All sends the response to the original sender and all recipients in the To and CC fields of the original email."
+  },
+  {
+    "id": 154,
+    "level": "Basic",
+    "type": "Components",
+    "topic": "E-Mail",
+    "question": "Which is NOT a component of an email address?",
+    "options": [
+      "Postal/ZIP code",
+      "@ symbol",
+      "Domain name",
+      "Username"
+    ],
+    "answer": "A",
+    "explanation": "An email address consists of username + @ + domain name. Postal codes belong to physical mail, not email addresses."
+  },
+  {
+    "id": 155,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "E-Mail",
+    "question": "An email signature is:",
+    "options": [
+      "An encryption security key",
+      "A virus embedded in emails",
+      "A handwritten signature scanned into the email",
+      "A block of text automatically appended to outgoing emails with sender details"
+    ],
+    "answer": "D",
+    "explanation": "An email signature is a block of contact information (name, title, phone) automatically added to the end of outgoing email messages."
+  },
+  {
+    "id": 156,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "E-Mail",
+    "question": "'Forward' in email means:",
+    "options": [
+      "Send the received email to a new recipient not in the original thread",
+      "Reply to the original sender",
+      "Move email to drafts",
+      "Delete the email"
+    ],
+    "answer": "A",
+    "explanation": "Forwarding sends a received email message to a new recipient who was not part of the original email conversation."
+  },
+  {
+    "id": 157,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "E-Mail",
+    "question": "Email organizes messages into:",
+    "options": [
+      "Only alphabetical order",
+      "Folders or labels by category",
+      "One large unsorted pile",
+      "Only chronological order"
+    ],
+    "answer": "B",
+    "explanation": "Email clients organize messages into folders (Inbox, Sent, Drafts, Spam) or labels, allowing efficient sorting and management."
+  },
+  {
+    "id": 158,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "E-Mail",
+    "question": "IMAP vs POP3: which keeps email on the server and syncs across multiple devices?",
+    "options": [
+      "SMTP",
+      "HTTP",
+      "IMAP",
+      "POP3"
+    ],
+    "answer": "C",
+    "explanation": "IMAP keeps email on the server and syncs across multiple devices, unlike POP3 which downloads and removes email from the server."
+  },
+  {
+    "id": 159,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "E-Mail",
+    "question": "What is the 'Trash' or 'Deleted Items' folder?",
+    "options": [
+      "Where deleted emails are temporarily stored before permanent removal",
+      "Where draft emails are saved",
+      "Where spam goes automatically",
+      "Where sent emails are stored"
+    ],
+    "answer": "A",
+    "explanation": "The Trash folder temporarily holds deleted emails before they are permanently removed from the mail system."
+  },
+  {
+    "id": 160,
+    "level": "Intermediate",
+    "type": "Security",
+    "topic": "E-Mail",
+    "question": "Which email security practice helps avoid phishing?",
+    "options": [
+      "Reply to all unknown senders",
+      "Share your email password with trusted colleagues",
+      "Click all links in suspicious emails",
+      "Verify sender identity before clicking links or sharing information"
+    ],
+    "answer": "D",
+    "explanation": "Verifying sender identity and never clicking suspicious links or sharing personal information via email prevents phishing attacks."
+  },
+  {
+    "id": 161,
+    "level": "Basic",
+    "type": "Advantages",
+    "topic": "E-Mail",
+    "question": "An advantage of email for business communication is:",
+    "options": [
+      "It requires no internet connection",
+      "It is always less secure than phone calls",
+      "It can only be used within the same city",
+      "It creates a written record and is globally instant and cost-effective"
+    ],
+    "answer": "D",
+    "explanation": "Email creates documented records, delivers instantly worldwide, supports file attachments, and is extremely cost-effective for business."
+  },
+  {
+    "id": 162,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "E-Mail",
+    "question": "Assertion (A): BCC protects recipient privacy in bulk emails.\nReason (R): BCC hides each recipient's address from all other recipients.",
+    "options": [
+      "A is true but R is false",
+      "Both A and R are true, and R is the correct explanation of A",
+      "A is false but R is true",
+      "Both A and R are true, but R is NOT the correct explanation of A"
+    ],
+    "answer": "B",
+    "explanation": "BCC is ideal for mass emails — it protects recipient privacy by hiding addresses from each other in the email thread."
+  },
+  {
+    "id": 163,
+    "level": "Advanced",
+    "type": "Scenario",
+    "topic": "E-Mail",
+    "question": "Mohan wants to email his resume to an employer. Which feature should he use to include the file?",
+    "options": [
+      "BCC",
+      "Attachment",
+      "Subject line",
+      "CC"
+    ],
+    "answer": "B",
+    "explanation": "The Attachment feature allows Mohan to include his resume file along with the email message body."
+  },
+  {
+    "id": 164,
+    "level": "Advanced",
+    "type": "Match-Following",
+    "topic": "E-Mail",
+    "question": "Match email term with definition:\n(i) To  (ii) CC  (iii) BCC  (iv) Draft",
+    "options": [
+      "(i)-Unsent email, (ii)-Hidden copy, (iii)-Visible copy, (iv)-Primary",
+      "(i)-Primary recipient, (ii)-Visible copy, (iii)-Hidden copy, (iv)-Unsent saved email",
+      "(i)-Hidden copy, (ii)-Primary, (iii)-Visible copy, (iv)-Sent email",
+      "(i)-Visible copy, (ii)-Hidden copy, (iii)-Draft, (iv)-Primary"
+    ],
+    "answer": "B",
+    "explanation": "To=primary recipient, CC=visible copy to others, BCC=hidden copy recipient, Draft=composed but unsent email."
+  },
+  {
+    "id": 165,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Internet",
+    "question": "What is the Internet?",
+    "options": [
+      "A type of application software",
+      "A global network of interconnected computers and networks",
+      "A wireless technology for phones only",
+      "A single very large computer"
+    ],
+    "answer": "B",
+    "explanation": "The Internet is a global system of interconnected computer networks using the TCP/IP protocol suite to communicate between billions of devices."
+  },
+  {
+    "id": 166,
+    "level": "Advanced",
+    "type": "History",
+    "topic": "Internet",
+    "question": "The Internet evolved from which early network?",
+    "options": [
+      "NSFNET",
+      "ARPANET",
+      "CSNET",
+      "BITNET"
+    ],
+    "answer": "B",
+    "explanation": "The Internet evolved from ARPANET (Advanced Research Projects Agency Network), developed in the late 1960s for military and academic research."
+  },
+  {
+    "id": 167,
+    "level": "Advanced",
+    "type": "History",
+    "topic": "Internet",
+    "question": "Who are credited as 'Fathers of the Internet'?",
+    "options": [
+      "Ray Tomlinson and Dennis Ritchie",
+      "Bill Gates and Steve Jobs",
+      "Tim Berners-Lee and Marc Andreessen",
+      "Vint Cerf and Bob Kahn"
+    ],
+    "answer": "D",
+    "explanation": "Vint Cerf and Bob Kahn developed TCP/IP — the foundational communication protocols on which the Internet operates."
+  },
+  {
+    "id": 168,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Internet",
+    "question": "WWW stands for:",
+    "options": [
+      "World Wide Web",
+      "World Wide Wire",
+      "Wireless World Web",
+      "Wide World Web"
+    ],
+    "answer": "A",
+    "explanation": "WWW stands for World Wide Web — a system of interlinked hypertext documents and multimedia content accessed via the Internet."
+  },
+  {
+    "id": 169,
+    "level": "Advanced",
+    "type": "History",
+    "topic": "Internet",
+    "question": "Who invented the World Wide Web?",
+    "options": [
+      "Tim Berners-Lee",
+      "Mark Zuckerberg",
+      "Bill Gates",
+      "Vint Cerf"
+    ],
+    "answer": "A",
+    "explanation": "Tim Berners-Lee invented the World Wide Web in 1989 at CERN, creating HTML, HTTP, and the first web browser."
+  },
+  {
+    "id": 170,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "HTTP stands for:",
+    "options": [
+      "HyperText Transfer Protocol",
+      "Home Transfer Transmission Protocol",
+      "HyperText Translation Program",
+      "High Technology Transfer Protocol"
+    ],
+    "answer": "A",
+    "explanation": "HTTP (HyperText Transfer Protocol) is the foundational protocol for data communication on the World Wide Web."
+  },
+  {
+    "id": 171,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "HTTPS differs from HTTP because it:",
+    "options": [
+      "Uses SSL/TLS encryption for secure communication",
+      "Is used only for email",
+      "Is always faster than HTTP",
+      "Works without an internet connection"
+    ],
+    "answer": "A",
+    "explanation": "HTTPS (HTTP Secure) uses SSL/TLS encryption to protect data transmitted between browser and server, securing sensitive information."
+  },
+  {
+    "id": 172,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "A URL (Uniform Resource Locator) is:",
+    "options": [
+      "The address used to locate a specific resource on the Web",
+      "A type of computer virus",
+      "An internet service provider",
+      "A programming language"
+    ],
+    "answer": "A",
+    "explanation": "A URL is the address used to locate specific resources on the internet. Example: https://www.example.com"
+  },
+  {
+    "id": 173,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Internet",
+    "question": "Which is a web browser?",
+    "options": [
+      "Google Chrome",
+      "VLC Media Player",
+      "Microsoft Word",
+      "Adobe Photoshop"
+    ],
+    "answer": "A",
+    "explanation": "Google Chrome is a web browser for accessing the World Wide Web. Others include Firefox, Safari, Microsoft Edge, and Opera."
+  },
+  {
+    "id": 174,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "An ISP (Internet Service Provider) is:",
+    "options": [
+      "A type of antivirus software",
+      "A company that provides internet access to users",
+      "A web browser",
+      "A hardware component"
+    ],
+    "answer": "B",
+    "explanation": "An ISP is a company that provides individuals and organizations with access to the Internet through broadband, fiber, or wireless connections."
+  },
+  {
+    "id": 175,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "FTP stands for:",
+    "options": [
+      "Folder Transfer Protocol",
+      "Fast Transfer Protocol",
+      "File Transmission Program",
+      "File Transfer Protocol"
+    ],
+    "answer": "D",
+    "explanation": "FTP (File Transfer Protocol) is an Internet protocol used to transfer files between computers over a network."
+  },
+  {
+    "id": 176,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "VoIP stands for:",
+    "options": [
+      "Virtual over Internet Protocol",
+      "Volume over IP",
+      "Voice over Internet Protocol",
+      "Video over IP"
+    ],
+    "answer": "C",
+    "explanation": "VoIP (Voice over Internet Protocol) enables voice calls and communication over the Internet instead of traditional telephone lines."
+  },
+  {
+    "id": 177,
+    "level": "Intermediate",
+    "type": "Uses",
+    "topic": "Internet",
+    "question": "A primary use of the Internet is:",
+    "options": [
+      "Online communication, research, and e-commerce",
+      "Installing hardware drivers",
+      "Defragmenting the hard disk",
+      "Increasing RAM capacity"
+    ],
+    "answer": "A",
+    "explanation": "The Internet enables communication, research, online shopping, banking, entertainment, and education on a global scale."
+  },
+  {
+    "id": 178,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "Downloading refers to:",
+    "options": [
+      "Deleting files from a server",
+      "Creating new files on the internet",
+      "Transferring files from an internet server to your local computer",
+      "Sending files from your computer to the internet"
+    ],
+    "answer": "C",
+    "explanation": "Downloading is transferring data (files, software, media) from a remote server or internet to your local computer."
+  },
+  {
+    "id": 179,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "Uploading refers to:",
+    "options": [
+      "Checking email",
+      "Browsing websites",
+      "Sending files from your local computer to a server",
+      "Transferring files from server to your computer"
+    ],
+    "answer": "C",
+    "explanation": "Uploading is sending data from your local computer to a remote server or the internet."
+  },
+  {
+    "id": 180,
+    "level": "Intermediate",
+    "type": "Limitations",
+    "topic": "Internet",
+    "question": "A limitation of the Internet is:",
+    "options": [
+      "Global communication capabilities",
+      "Privacy risks and cybersecurity threats",
+      "Fast access to global information",
+      "Access to unlimited digital resources"
+    ],
+    "answer": "B",
+    "explanation": "Despite many benefits, the Internet poses risks including privacy breaches, cybercrime, data theft, and exposure to harmful content."
+  },
+  {
+    "id": 181,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "Bandwidth refers to:",
+    "options": [
+      "The physical size of the network cable",
+      "The maximum data transfer rate of a network connection",
+      "Storage capacity of the hard disk",
+      "Number of web pages visited per hour"
+    ],
+    "answer": "B",
+    "explanation": "Bandwidth is the maximum rate at which data can be transmitted over a network connection, typically measured in Mbps or Gbps."
+  },
+  {
+    "id": 182,
+    "level": "Intermediate",
+    "type": "Services",
+    "topic": "Internet",
+    "question": "A search engine is used to:",
+    "options": [
+      "Find and index information on the World Wide Web",
+      "Transfer files via FTP",
+      "Create and host websites",
+      "Send and receive emails"
+    ],
+    "answer": "A",
+    "explanation": "A search engine (like Google, Bing) indexes web content and allows users to find information using keyword searches."
+  },
+  {
+    "id": 183,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Internet",
+    "question": "Which is a popular search engine?",
+    "options": [
+      "Adobe Flash",
+      "Internet Explorer",
+      "Google",
+      "Microsoft Office"
+    ],
+    "answer": "C",
+    "explanation": "Google is the world's most widely used search engine. Others include Bing, Yahoo Search, DuckDuckGo, and Baidu."
+  },
+  {
+    "id": 184,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "The domain extension '.edu' is used by:",
+    "options": [
+      "Educational institutions",
+      "Commercial companies",
+      "Government organizations",
+      "Non-profit organizations"
+    ],
+    "answer": "A",
+    "explanation": "The .edu TLD (Top-Level Domain) is reserved for educational institutions, primarily colleges and universities."
+  },
+  {
+    "id": 185,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "The domain extension '.gov' is used by:",
+    "options": [
+      "International organizations",
+      "Commercial companies",
+      "Educational institutions",
+      "Government organizations"
+    ],
+    "answer": "D",
+    "explanation": "The .gov TLD is reserved for official government organizations and agencies."
+  },
+  {
+    "id": 186,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "The domain extension '.com' is used by:",
+    "options": [
+      "Government bodies",
+      "Military organizations",
+      "Commercial / business organizations",
+      "Educational institutions"
+    ],
+    "answer": "C",
+    "explanation": "The .com TLD is the most widely used generic TLD, originally for commercial organizations and now used globally."
+  },
+  {
+    "id": 187,
+    "level": "Intermediate",
+    "type": "Services",
+    "topic": "Internet",
+    "question": "Which is NOT an Internet service?",
+    "options": [
+      "RAM upgrade",
+      "Email",
+      "VoIP",
+      "FTP"
+    ],
+    "answer": "A",
+    "explanation": "RAM upgrade is a hardware operation, not an Internet service. Email, FTP, and VoIP are all Internet-based services."
+  },
+  {
+    "id": 188,
+    "level": "Intermediate",
+    "type": "Services",
+    "topic": "Internet",
+    "question": "Video conferencing over the Internet enables:",
+    "options": [
+      "Automatic software installation",
+      "Faster hard disk performance",
+      "Improved antivirus scanning",
+      "Real-time face-to-face communication between users worldwide"
+    ],
+    "answer": "D",
+    "explanation": "Video conferencing (Zoom, Google Meet, Teams) enables real-time audio and video communication between participants anywhere in the world."
+  },
+  {
+    "id": 189,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "The Internet operates on which core protocol suite?",
+    "options": [
+      "SMTP",
+      "HTTP",
+      "FTP",
+      "TCP/IP"
+    ],
+    "answer": "D",
+    "explanation": "TCP/IP (Transmission Control Protocol/Internet Protocol) is the foundational protocol suite governing all data transmission on the Internet."
+  },
+  {
+    "id": 190,
+    "level": "Intermediate",
+    "type": "Services",
+    "topic": "Internet",
+    "question": "Cloud computing over the Internet involves:",
+    "options": [
+      "Using Bluetooth for file transfer",
+      "Installing software from a CD",
+      "Storing data only on your local hard disk",
+      "Storing and accessing data on remote servers via the Internet"
+    ],
+    "answer": "D",
+    "explanation": "Cloud computing stores data and runs applications on remote Internet-based servers, accessible from anywhere on any Internet-connected device."
+  },
+  {
+    "id": 191,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "An IP address is used to:",
+    "options": [
+      "Speed up internet connection",
+      "Protect against viruses",
+      "Uniquely identify a device on a network",
+      "Name a website"
+    ],
+    "answer": "C",
+    "explanation": "An IP (Internet Protocol) address is a unique numerical label assigned to each device on a network to enable communication."
+  },
+  {
+    "id": 192,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "IPv4 addresses consist of:",
+    "options": [
+      "4 groups of numbers separated by dots (e.g., 192.168.1.1)",
+      "8 alphabetic characters",
+      "6 groups of hexadecimal numbers",
+      "16 binary digits only"
+    ],
+    "answer": "A",
+    "explanation": "IPv4 addresses consist of four groups of numbers (0–255) separated by dots, e.g., 192.168.1.1."
+  },
+  {
+    "id": 193,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "Web pages are written using:",
+    "options": [
+      "HTML (HyperText Markup Language)",
+      "C programming language",
+      "Assembly language",
+      "SQL"
+    ],
+    "answer": "A",
+    "explanation": "Web pages are created using HTML (HyperText Markup Language), the standard markup language for documents displayed in web browsers."
+  },
+  {
+    "id": 194,
+    "level": "Intermediate",
+    "type": "Uses",
+    "topic": "Internet",
+    "question": "Online banking is an Internet service that enables:",
+    "options": [
+      "Entertainment only",
+      "Creating websites",
+      "Playing online games",
+      "Financial transactions like fund transfers and bill payments"
+    ],
+    "answer": "D",
+    "explanation": "Online banking allows users to perform financial transactions (check balances, transfer funds, pay bills) securely via the Internet."
+  },
+  {
+    "id": 195,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "Internet",
+    "question": "The Internet is available:",
+    "options": [
+      "Only during office hours",
+      "24 hours a day, 7 days a week globally",
+      "Only on weekdays",
+      "Only in urban areas"
+    ],
+    "answer": "B",
+    "explanation": "The Internet is a 24/7 global service — continuously available, allowing users to access information and services at any time, from anywhere."
+  },
+  {
+    "id": 196,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Internet",
+    "question": "Assertion (A): The Internet has transformed education globally.\nReason (R): It provides access to online courses, e-books, research papers, and educational videos worldwide.",
+    "options": [
+      "A is false but R is true",
+      "A is true but R is false",
+      "Both A and R are true, but R is NOT the correct explanation of A",
+      "Both A and R are true, and R is the correct explanation of A"
+    ],
+    "answer": "D",
+    "explanation": "The Internet has revolutionized education by making vast learning resources globally accessible through e-learning and digital libraries."
+  },
+  {
+    "id": 197,
+    "level": "Advanced",
+    "type": "Scenario",
+    "topic": "Internet",
+    "question": "Sunita wants to buy a book from home without visiting a store. Which Internet service enables this?",
+    "options": [
+      "VoIP",
+      "FTP",
+      "E-Commerce / Online Shopping",
+      "Email"
+    ],
+    "answer": "C",
+    "explanation": "E-Commerce (electronic commerce) enables buying and selling of goods and services over the Internet from the convenience of home."
+  },
+  {
+    "id": 198,
+    "level": "Advanced",
+    "type": "Match-Following",
+    "topic": "Internet",
+    "question": "Match the Internet term:\n(i) WWW  (ii) URL  (iii) HTTP  (iv) ISP",
+    "options": [
+      "(i)-Web address, (ii)-Web protocol, (iii)-Internet provider, (iv)-Web system",
+      "(i)-Web protocol, (ii)-Internet provider, (iii)-Web system, (iv)-Web address",
+      "(i)-World Wide Web, (ii)-Web address, (iii)-Web protocol, (iv)-Internet provider",
+      "(i)-Internet provider, (ii)-Web system, (iii)-Web address, (iv)-Web protocol"
+    ],
+    "answer": "C",
+    "explanation": "WWW=World Wide Web, URL=web resource address, HTTP=web transfer protocol, ISP=Internet Service Provider."
+  },
+  {
+    "id": 199,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "A hyperlink on a web page is:",
+    "options": [
+      "A clickable element linking to another web page or resource",
+      "An internet protocol",
+      "A programming language",
+      "A type of computer virus"
+    ],
+    "answer": "A",
+    "explanation": "A hyperlink is a clickable reference in a web page that takes the user to another web page, file, or internet resource when clicked."
+  },
+  {
+    "id": 200,
+    "level": "Intermediate",
+    "type": "Services",
+    "topic": "Internet",
+    "question": "Instant Messaging (IM) allows:",
+    "options": [
+      "Real-time text and multimedia communication over the Internet",
+      "Only voice calls",
+      "Only file transfers",
+      "Only email communication"
+    ],
+    "answer": "A",
+    "explanation": "Instant Messaging allows real-time text (and often video/audio) communication between users over the Internet."
+  },
+  {
+    "id": 201,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "The '.org' domain extension is typically used by:",
+    "options": [
+      "Non-profit organizations and NGOs",
+      "Government agencies",
+      "Educational institutions",
+      "Commercial companies"
+    ],
+    "answer": "A",
+    "explanation": "The .org TLD is traditionally used by non-profit organizations, NGOs, open-source projects, and communities."
+  },
+  {
+    "id": 202,
+    "level": "Intermediate",
+    "type": "Uses",
+    "topic": "Internet",
+    "question": "E-learning is an Internet application used for:",
+    "options": [
+      "Video gaming",
+      "Banking",
+      "Online education and training",
+      "Online shopping"
+    ],
+    "answer": "C",
+    "explanation": "E-learning uses the Internet to deliver educational content, courses, and training to learners anywhere in the world."
+  },
+  {
+    "id": 203,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "Internet",
+    "question": "Which Internet feature allows multiple users to collaborate on a document simultaneously?",
+    "options": [
+      "Offline document editing only",
+      "FTP file transfer",
+      "POP3 email retrieval",
+      "Real-time collaboration tools like Google Docs"
+    ],
+    "answer": "D",
+    "explanation": "Real-time collaboration tools (Google Docs, Office 365) allow multiple users to view and edit the same document simultaneously via the Internet."
+  },
+  {
+    "id": 204,
+    "level": "Basic",
+    "type": "Advantages",
+    "topic": "Internet",
+    "question": "The advantage of the Internet for global communication is:",
+    "options": [
+      "Enables instant, low-cost communication with anyone worldwide",
+      "Requires physical mail for attachments",
+      "Requires expensive infrastructure for every message",
+      "Works only within a single country"
+    ],
+    "answer": "A",
+    "explanation": "The Internet enables instant, nearly free communication with anyone globally through email, messaging, video calls, and other platforms."
+  },
+  {
+    "id": 205,
+    "level": "Intermediate",
+    "type": "Prevention",
+    "topic": "Computer Virus",
+    "question": "Which of the following is a virus protection method?",
+    "options": [
+      "Downloading software from any website",
+      "Sharing passwords with all users",
+      "Opening all email attachments immediately",
+      "Installing antivirus and keeping OS and software updated"
+    ],
+    "answer": "D",
+    "explanation": "Key virus protection methods: install antivirus, update regularly, patch OS, handle emails carefully, and download only from trusted sources."
+  },
+  {
+    "id": 206,
+    "level": "Basic",
+    "type": "Effects",
+    "topic": "Computer Virus",
+    "question": "A computer infected with a virus may show which of the following?",
+    "options": [
+      "Unexpected pop-up messages appearing on screen",
+      "Programs open faster than usual",
+      "Improved battery life on laptop",
+      "Automatic increase in RAM"
+    ],
+    "answer": "A",
+    "explanation": "Unexpected pop-ups are a common visual symptom of virus infection, along with slow performance, missing files, and unusual network activity."
+  },
+  {
+    "id": 207,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Antivirus",
+    "question": "Which type of antivirus scan checks every file on the entire hard disk?",
+    "options": [
+      "Boot scan",
+      "Quick scan",
+      "Email scan",
+      "Full system scan"
+    ],
+    "answer": "D",
+    "explanation": "A full system scan checks every file and folder on the hard disk, providing thorough but time-consuming protection."
+  },
+  {
+    "id": 208,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Malware",
+    "question": "The full form of 'RAT' in cybersecurity is:",
+    "options": [
+      "Random Access Trojan",
+      "Recurring Antivirus Tool",
+      "Rapid Attack Threat",
+      "Remote Access Trojan"
+    ],
+    "answer": "D",
+    "explanation": "RAT stands for Remote Access Trojan — malware that gives an attacker unauthorized remote control over an infected computer."
+  },
+  {
+    "id": 209,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Computer Virus",
+    "question": "Which of the following best describes 'zero-day' virus?",
+    "options": [
+      "A virus that attacks on New Year's Day",
+      "A virus that only infects new computers",
+      "A newly discovered virus for which no antivirus definition exists yet",
+      "A virus that deletes files in zero seconds"
+    ],
+    "answer": "C",
+    "explanation": "A zero-day virus exploits a vulnerability on the same day it becomes known, before antivirus vendors can create a definition to detect it."
+  },
+  {
+    "id": 210,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "Antivirus",
+    "question": "Antivirus software that uses cloud-based detection means:",
+    "options": [
+      "All user files are uploaded to the cloud",
+      "The internet is required to turn on the computer",
+      "Virus definitions and analysis are performed on remote cloud servers",
+      "The antivirus stores all files in the cloud"
+    ],
+    "answer": "C",
+    "explanation": "Cloud-based antivirus sends suspicious file data to remote servers for analysis, enabling faster detection of new threats."
+  },
+  {
+    "id": 211,
+    "level": "Intermediate",
+    "type": "Prevention",
+    "topic": "Computer Virus",
+    "question": "Which action does NOT help protect against virus infection?",
+    "options": [
+      "Disabling antivirus to speed up the computer",
+      "Using a firewall",
+      "Enabling automatic OS updates",
+      "Avoiding suspicious email attachments"
+    ],
+    "answer": "A",
+    "explanation": "Disabling antivirus significantly increases vulnerability. Enabling updates, firewall, and careful email handling are all protective measures."
+  },
+  {
+    "id": 212,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Malware",
+    "question": "Assertion (A): Spyware is considered a type of malware.\nReason (R): Spyware secretly collects user information without consent.",
+    "options": [
+      "Both A and R are true, but R is NOT the correct explanation of A",
+      "A is false but R is true",
+      "A is true but R is false",
+      "Both A and R are true, and R is the correct explanation of A"
+    ],
+    "answer": "D",
+    "explanation": "Spyware qualifies as malware because it maliciously collects user data (passwords, keystrokes, browsing history) without the user's knowledge."
+  },
+  {
+    "id": 213,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Computer Virus",
+    "question": "A virus that only activates when a specific program is run is known as a:",
+    "options": [
+      "Triggered file virus",
+      "Logic bomb",
+      "Resident virus",
+      "Boot sector virus"
+    ],
+    "answer": "A",
+    "explanation": "Some file infector viruses only activate and replicate when their specific host program is executed, making them harder to detect."
+  },
+  {
+    "id": 214,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Computer Virus",
+    "question": "Which of the following is an example of social engineering used to spread viruses?",
+    "options": [
+      "Infecting the boot sector",
+      "Using polymorphic code",
+      "Exploiting OS vulnerabilities",
+      "Tricking users into clicking malicious links via fake messages"
+    ],
+    "answer": "D",
+    "explanation": "Social engineering manipulates users psychologically — e.g., fake urgent messages — to click malicious links that install viruses."
+  },
+  {
+    "id": 215,
+    "level": "Advanced",
+    "type": "History",
+    "topic": "Computer Virus",
+    "question": "The 'Conficker' worm primarily targeted:",
+    "options": [
+      "Android smartphones",
+      "Apple macOS",
+      "Linux servers",
+      "Microsoft Windows operating systems"
+    ],
+    "answer": "D",
+    "explanation": "Conficker (2008–2009) was a notorious worm that exploited Windows vulnerabilities, infecting millions of computers worldwide."
+  },
+  {
+    "id": 216,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "Antivirus",
+    "question": "Which of the following is NOT a characteristic of good antivirus software?",
+    "options": [
+      "Automatic updates",
+      "Consuming all system resources permanently",
+      "Quarantine capability",
+      "Real-time protection"
+    ],
+    "answer": "B",
+    "explanation": "Good antivirus should have minimal system impact. Consuming all resources makes the computer unusable, which is NOT a desired feature."
+  },
+  {
+    "id": 217,
+    "level": "Basic",
+    "type": "Effects",
+    "topic": "Computer Virus",
+    "question": "A virus can potentially damage which of the following?",
+    "options": [
+      "Only floppy disks",
+      "Only the keyboard",
+      "Files, operating system, BIOS, and hard disk data",
+      "Only the monitor display"
+    ],
+    "answer": "C",
+    "explanation": "Advanced viruses can damage files, corrupt the OS, overwrite BIOS firmware, and destroy data stored on hard disks."
+  },
+  {
+    "id": 218,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "Malware",
+    "question": "Which of the following malware collects banking credentials specifically?",
+    "options": [
+      "Adware",
+      "Banking Trojan",
+      "Polymorphic virus",
+      "Boot sector virus"
+    ],
+    "answer": "B",
+    "explanation": "A Banking Trojan is specialized malware designed to steal online banking credentials, credit card numbers, and financial information."
+  },
+  {
+    "id": 219,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Computer Virus",
+    "question": "What does 'virus hoax' mean?",
+    "options": [
+      "An antivirus software",
+      "A very powerful virus",
+      "A real virus that hides itself",
+      "A false alarm about a non-existent virus spread to cause unnecessary fear"
+    ],
+    "answer": "D",
+    "explanation": "A virus hoax is a false claim (usually via email or social media) warning about a non-existent virus, designed to cause panic and waste time."
+  },
+  {
+    "id": 220,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Which software category includes MS Word, Excel, and PowerPoint together?",
+    "options": [
+      "System software suite",
+      "Utility software",
+      "Microsoft Office productivity suite",
+      "Open-source software"
+    ],
+    "answer": "C",
+    "explanation": "Microsoft Office is a productivity software suite that includes Word (word processing), Excel (spreadsheet), and PowerPoint (presentations)."
+  },
+  {
+    "id": 221,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Which of the following is an example of open-source office software?",
+    "options": [
+      "Adobe Acrobat",
+      "LibreOffice",
+      "Microsoft Office",
+      "Tally"
+    ],
+    "answer": "B",
+    "explanation": "LibreOffice is a free, open-source office productivity suite that includes word processor, spreadsheet, and presentation applications."
+  },
+  {
+    "id": 222,
+    "level": "Intermediate",
+    "type": "Uses",
+    "topic": "Applications",
+    "question": "CAD software is primarily used for:",
+    "options": [
+      "Browsing the internet",
+      "Managing accounts",
+      "Playing music",
+      "Computer-Aided Design — creating technical drawings and 3D models"
+    ],
+    "answer": "D",
+    "explanation": "CAD (Computer-Aided Design) software like AutoCAD is used by engineers and architects to create precise technical drawings and 3D models."
+  },
+  {
+    "id": 223,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Which type of application software is used by graphic designers?",
+    "options": [
+      "Spreadsheet software",
+      "Database software",
+      "Graphic design software like CorelDRAW or Illustrator",
+      "Accounting software"
+    ],
+    "answer": "C",
+    "explanation": "Graphic design applications like Adobe Illustrator, CorelDRAW, and Photoshop are used by designers to create visual content."
+  },
+  {
+    "id": 224,
+    "level": "Intermediate",
+    "type": "Uses",
+    "topic": "Applications",
+    "question": "The purpose of presentation software is to:",
+    "options": [
+      "Store and query data",
+      "Write and edit text documents",
+      "Manage financial accounts",
+      "Create and display visual slideshows for audiences"
+    ],
+    "answer": "D",
+    "explanation": "Presentation software (PowerPoint, Google Slides) is used to create visual slideshows combining text, images, and multimedia for audiences."
+  },
+  {
+    "id": 225,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Which application is used to read PDF files?",
+    "options": [
+      "VLC Media Player",
+      "Tally",
+      "Microsoft Word",
+      "Adobe Acrobat Reader"
+    ],
+    "answer": "D",
+    "explanation": "Adobe Acrobat Reader is the standard application for viewing, printing, and annotating PDF (Portable Document Format) files."
+  },
+  {
+    "id": 226,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Google Docs, Google Sheets, and Google Slides are examples of:",
+    "options": [
+      "System software",
+      "Antivirus software",
+      "Cloud-based web application software",
+      "Offline desktop software"
+    ],
+    "answer": "C",
+    "explanation": "Google Docs, Sheets, and Slides are cloud-based web applications accessible via browser, stored online, and enabling real-time collaboration."
+  },
+  {
+    "id": 227,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Which of the following is a video editing application?",
+    "options": [
+      "Adobe Premiere Pro",
+      "Norton Antivirus",
+      "Tally",
+      "Microsoft Access"
+    ],
+    "answer": "A",
+    "explanation": "Adobe Premiere Pro is a professional video editing application used for editing, producing, and publishing video content."
+  },
+  {
+    "id": 228,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Applications",
+    "question": "Assertion (A): Open-source software is always free of charge.\nReason (R): Open-source software has freely available source code.",
+    "options": [
+      "Both A and R are true, and R is the correct explanation of A",
+      "Both A and R are true, but R is NOT the correct explanation of A",
+      "Both A and R are partially incorrect",
+      "A is true but R is false"
+    ],
+    "answer": "B",
+    "explanation": "Open-source means source code is freely available, but the software may still have costs (support, packaging). Free availability of code ≠ free price."
+  },
+  {
+    "id": 229,
+    "level": "Advanced",
+    "type": "Match-Following",
+    "topic": "Applications",
+    "question": "Match the application with its category:\n(i) AutoCAD  (ii) Audacity  (iii) GIMP  (iv) Notepad",
+    "options": [
+      "(i)-Image Editor, (ii)-CAD, (iii)-Text Editor, (iv)-Audio Editor",
+      "(i)-CAD, (ii)-Audio Editor, (iii)-Image Editor, (iv)-Text Editor",
+      "(i)-Audio Editor, (ii)-Image Editor, (iii)-CAD, (iv)-Text Editor",
+      "(i)-Text Editor, (ii)-Image Editor, (iii)-Audio Editor, (iv)-CAD"
+    ],
+    "answer": "B",
+    "explanation": "AutoCAD=CAD software, Audacity=Audio editor, GIMP=Image editor (open-source), Notepad=simple text editor."
+  },
+  {
+    "id": 230,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "Applications",
+    "question": "Which application software helps students learn programming interactively?",
+    "options": [
+      "Scratch (MIT) or Code.org",
+      "Tally ERP",
+      "Adobe Photoshop",
+      "Microsoft Excel"
+    ],
+    "answer": "A",
+    "explanation": "Scratch (by MIT) and Code.org are interactive educational platforms that teach programming concepts to students through visual coding."
+  },
+  {
+    "id": 231,
+    "level": "Advanced",
+    "type": "Scenario",
+    "topic": "Applications",
+    "question": "Scenario: A journalist wants to write and format a news article for publication. Which software is most appropriate?",
+    "options": [
+      "AutoCAD",
+      "Microsoft Word or a similar word processor",
+      "Tally ERP 9",
+      "VLC Media Player"
+    ],
+    "answer": "B",
+    "explanation": "A word processor like Microsoft Word is ideal for writing, formatting, and proofreading text-based documents such as news articles."
+  },
+  {
+    "id": 232,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "DTP",
+    "question": "Which DTP element controls the visual hierarchy of a document?",
+    "options": [
+      "File size",
+      "Printer brand",
+      "Heading styles and font sizes",
+      "Number of pages"
+    ],
+    "answer": "C",
+    "explanation": "Visual hierarchy in DTP is established through heading styles, font sizes, weight, and color to guide the reader's eye through the content."
+  },
+  {
+    "id": 233,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "DTP",
+    "question": "'White space' in DTP refers to:",
+    "options": [
+      "Empty space around content that improves readability and visual balance",
+      "Blank pages inserted between chapters",
+      "White-colored text boxes",
+      "White paper used for printing"
+    ],
+    "answer": "A",
+    "explanation": "White space (negative space) is the empty area around design elements. It improves readability, reduces clutter, and creates visual balance."
+  },
+  {
+    "id": 234,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "DTP",
+    "question": "Which DTP software is included in Microsoft Office?",
+    "options": [
+      "Adobe InDesign",
+      "Microsoft Publisher",
+      "QuarkXPress",
+      "Scribus"
+    ],
+    "answer": "B",
+    "explanation": "Microsoft Publisher is a DTP application included in some Microsoft Office suites, used for creating flyers, brochures, and newsletters."
+  },
+  {
+    "id": 235,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "DTP",
+    "question": "In DTP, 'font' refers to:",
+    "options": [
+      "The paper size used for printing",
+      "The color of the page background",
+      "The number of columns on a page",
+      "A specific typeface design used for text"
+    ],
+    "answer": "D",
+    "explanation": "A font is a specific typeface design (e.g., Arial, Times New Roman) used for displaying or printing text in a document."
+  },
+  {
+    "id": 236,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "DTP",
+    "question": "A 'serif' font is a font that:",
+    "options": [
+      "Is used only for digital screens",
+      "Has small decorative strokes (serifs) at the ends of letters",
+      "Has no decorative strokes at letter ends",
+      "Is used only for headings"
+    ],
+    "answer": "B",
+    "explanation": "Serif fonts (e.g., Times New Roman, Georgia) have small decorative strokes at the ends of letters, traditionally used in printed books."
+  },
+  {
+    "id": 237,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "DTP",
+    "question": "A 'sans-serif' font is a font that:",
+    "options": [
+      "Is used only for body text",
+      "Has decorative strokes at letter ends",
+      "Is used only in newspapers",
+      "Has clean letter forms without decorative strokes"
+    ],
+    "answer": "D",
+    "explanation": "Sans-serif fonts (e.g., Arial, Helvetica) have clean, modern letter forms without decorative strokes — common in digital media."
+  },
+  {
+    "id": 238,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "DTP",
+    "question": "DTP is used extensively in:",
+    "options": [
+      "Database administration",
+      "Network configuration",
+      "Publishing, advertising, marketing, and education sectors",
+      "Scientific laboratory research"
+    ],
+    "answer": "C",
+    "explanation": "DTP is widely used across publishing, advertising, marketing, education, and media industries to create professional visual materials."
+  },
+  {
+    "id": 239,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "DTP",
+    "question": "Which DTP feature helps maintain consistent margins and alignment across all pages?",
+    "options": [
+      "Random margin tool",
+      "Auto-spell check",
+      "Grid and ruler guides",
+      "Page numbering"
+    ],
+    "answer": "C",
+    "explanation": "Grid and ruler guides in DTP software help designers maintain consistent margins, alignment, and spacing across all document pages."
+  },
+  {
+    "id": 240,
+    "level": "Advanced",
+    "type": "Scenario",
+    "topic": "DTP",
+    "question": "Scenario: A company wants to create 1000 copies of a product brochure with photos and text. Which process should they use?",
+    "options": [
+      "Use a spreadsheet",
+      "Use DTP software to design, then send to professional printer",
+      "Send emails",
+      "Use a word processor only"
+    ],
+    "answer": "B",
+    "explanation": "DTP software is used to design the professional layout, which is then exported as print-ready PDF and sent to a commercial printer for mass printing."
+  },
+  {
+    "id": 241,
+    "level": "Intermediate",
+    "type": "Uses",
+    "topic": "DTP",
+    "question": "Which of the following is a use of DTP in education?",
+    "options": [
+      "Managing student fees",
+      "Creating textbooks, worksheets, and educational posters",
+      "Managing examination databases",
+      "Writing computer programs"
+    ],
+    "answer": "B",
+    "explanation": "DTP is used in education to design and produce textbooks, worksheets, certificates, educational posters, and school newsletters."
+  },
+  {
+    "id": 242,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "DTP",
+    "question": "Assertion (A): Higher DPI means better print quality in DTP.\nReason (R): More dots per inch means finer detail and sharper images in print.",
+    "options": [
+      "Both A and R are true, and R is the correct explanation of A",
+      "A is true but R is false",
+      "Both A and R are true, but R is NOT the correct explanation of A",
+      "A is false but R is true"
+    ],
+    "answer": "A",
+    "explanation": "Higher DPI means more ink dots per inch, resulting in finer detail, smoother gradients, and sharper, more professional printed images."
+  },
+  {
+    "id": 243,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "E-Mail",
+    "question": "Which of the following is an official email domain used by government?",
+    "options": [
+      "@gmail.com",
+      "@yahoo.com",
+      "@gov.in or @nic.in (India government domains)",
+      "@hotmail.com"
+    ],
+    "answer": "C",
+    "explanation": "In India, government officials use email domains like @gov.in or @nic.in (National Informatics Centre), distinguishing official from personal email."
+  },
+  {
+    "id": 244,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "E-Mail",
+    "question": "What is the maximum typical size limit for a single email attachment?",
+    "options": [
+      "25 MB (standard for most providers like Gmail)",
+      "1 TB",
+      "100 GB",
+      "500 KB"
+    ],
+    "answer": "A",
+    "explanation": "Most email providers (like Gmail) have an attachment size limit of around 25 MB per email to prevent server overload."
+  },
+  {
+    "id": 245,
+    "level": "Intermediate",
+    "type": "Features",
+    "topic": "E-Mail",
+    "question": "Which feature allows automatic sorting of incoming emails?",
+    "options": [
+      "CC feature",
+      "BCC feature",
+      "Manual sorting only",
+      "Email filters / rules"
+    ],
+    "answer": "D",
+    "explanation": "Email filters (rules) automatically sort, label, forward, or delete incoming messages based on sender, subject, or keywords."
+  },
+  {
+    "id": 246,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "E-Mail",
+    "question": "'Mailing list' in email refers to:",
+    "options": [
+      "A list of draft emails",
+      "A group email address that sends messages to multiple subscribers simultaneously",
+      "A list of deleted emails",
+      "A list of spam emails"
+    ],
+    "answer": "B",
+    "explanation": "A mailing list is a group email address that allows sending a single message to all subscribers/members of the list simultaneously."
+  },
+  {
+    "id": 247,
+    "level": "Intermediate",
+    "type": "Security",
+    "topic": "E-Mail",
+    "question": "Which of the following is an email security measure?",
+    "options": [
+      "Clicking all links in emails",
+      "Using two-factor authentication (2FA) for email accounts",
+      "Sharing passwords with colleagues",
+      "Disabling spam filter"
+    ],
+    "answer": "B",
+    "explanation": "Two-factor authentication (2FA) adds an extra security layer by requiring a second verification step beyond just the password."
+  },
+  {
+    "id": 248,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "E-Mail",
+    "question": "'Email thread' refers to:",
+    "options": [
+      "A chain of related email messages and replies on the same topic",
+      "A type of email attachment",
+      "A physical wire used for email",
+      "An email filter rule"
+    ],
+    "answer": "A",
+    "explanation": "An email thread is a conversation chain showing the original message and all subsequent replies organized together in one view."
+  },
+  {
+    "id": 249,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "E-Mail",
+    "question": "Which of the following best describes 'email etiquette'?",
+    "options": [
+      "Sending the same email repeatedly",
+      "Following professional and respectful guidelines when writing emails",
+      "Using as many capital letters as possible",
+      "Using emojis in all business emails"
+    ],
+    "answer": "B",
+    "explanation": "Email etiquette refers to professional standards for composing emails: clear subject, polite tone, proper grammar, appropriate CC/BCC use, and timely replies."
+  },
+  {
+    "id": 250,
+    "level": "Advanced",
+    "type": "Scenario",
+    "topic": "E-Mail",
+    "question": "Scenario: A teacher wants to send the same announcement to 50 students without revealing their email addresses to each other. Which feature should be used?",
+    "options": [
+      "To field",
+      "CC field",
+      "BCC field",
+      "Forward feature"
+    ],
+    "answer": "C",
+    "explanation": "BCC (Blind Carbon Copy) is ideal — it sends to all 50 students while keeping each student's email address hidden from the others."
+  },
+  {
+    "id": 251,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "E-Mail",
+    "question": "Assertion (A): Email has largely replaced traditional postal mail for business communication.\nReason (R): Email is faster, cheaper, and creates a permanent digital record.",
+    "options": [
+      "A is false but R is true",
+      "Both A and R are true, but R is NOT the correct explanation of A",
+      "A is true but R is false",
+      "Both A and R are true, and R is the correct explanation of A"
+    ],
+    "answer": "D",
+    "explanation": "Email has replaced postal mail in business because it is instant, nearly free, can carry attachments, and creates a searchable digital record."
+  },
+  {
+    "id": 252,
+    "level": "Basic",
+    "type": "Components",
+    "topic": "E-Mail",
+    "question": "Which of the following symbols is valid in an email address?",
+    "options": [
+      "Hash (#)",
+      "Exclamation (!)",
+      "Period (.) in the username part",
+      "Space ( )"
+    ],
+    "answer": "C",
+    "explanation": "A period (.) is a valid character in the username part of an email address (e.g., first.last@example.com). Spaces and most special symbols are not allowed."
+  },
+  {
+    "id": 253,
+    "level": "Advanced",
+    "type": "Match-Following",
+    "topic": "E-Mail",
+    "question": "Match the email protocol with its function:\n(i) SMTP  (ii) POP3  (iii) IMAP  (iv) HTTPS",
+    "options": [
+      "(i)-Sync email, (ii)-Secure web, (iii)-Send email, (iv)-Download email",
+      "(i)-Secure web, (ii)-Sync email, (iii)-Download email, (iv)-Send email",
+      "(i)-Download email, (ii)-Send email, (iii)-Secure web, (iv)-Sync email",
+      "(i)-Send email, (ii)-Download email to device, (iii)-Sync email across devices, (iv)-Secure web access"
+    ],
+    "answer": "D",
+    "explanation": "SMTP sends email, POP3 downloads email to device removing from server, IMAP syncs email across multiple devices, HTTPS secures web communication."
+  },
+  {
+    "id": 254,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "The '.in' domain extension represents which country?",
+    "options": [
+      "Italy",
+      "Indonesia",
+      "Iran",
+      "India"
+    ],
+    "answer": "D",
+    "explanation": "The .in is the country-code TLD (ccTLD) for India, used by Indian websites, organizations, and government portals."
+  },
+  {
+    "id": 255,
+    "level": "Intermediate",
+    "type": "Services",
+    "topic": "Internet",
+    "question": "Which Internet service allows publishing personal journals and articles online?",
+    "options": [
+      "FTP",
+      "Blog (Web Log)",
+      "Email",
+      "VoIP"
+    ],
+    "answer": "C",
+    "explanation": "A blog (web log) is a type of website or online journal where individuals or organizations regularly publish articles, opinions, and updates."
+  },
+  {
+    "id": 256,
+    "level": "Intermediate",
+    "type": "Uses",
+    "topic": "Internet",
+    "question": "Social networking sites like Facebook use the Internet to:",
+    "options": [
+      "Install antivirus updates",
+      "Defragment hard disks",
+      "Replace all telephone services",
+      "Connect people globally to share content, messages, and updates"
+    ],
+    "answer": "D",
+    "explanation": "Social networking platforms use the Internet to connect people worldwide, enabling sharing of text, photos, videos, and real-time communication."
+  },
+  {
+    "id": 257,
+    "level": "Intermediate",
+    "type": "Uses",
+    "topic": "Internet",
+    "question": "Online streaming services like YouTube use the Internet for:",
+    "options": [
+      "Printing documents",
+      "Defragmenting hard disks",
+      "Delivering audio and video content on demand over the Internet",
+      "Storing physical DVDs"
+    ],
+    "answer": "C",
+    "explanation": "Online streaming services deliver audio/video content on demand via the Internet, eliminating the need for physical media."
+  },
+  {
+    "id": 258,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "Which Internet concept allows a website to remember your login between sessions?",
+    "options": [
+      "Cookies stored in the browser",
+      "IP address",
+      "VoIP protocol",
+      "FTP connection"
+    ],
+    "answer": "A",
+    "explanation": "Browser cookies are small data files stored on your device that remember login sessions, preferences, and browsing history across visits."
+  },
+  {
+    "id": 259,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "'Broadband' internet refers to:",
+    "options": [
+      "An internet service that only allows email",
+      "A slow dial-up connection",
+      "High-speed internet with wide bandwidth for fast data transfer",
+      "An internet connection that only works on mobile"
+    ],
+    "answer": "C",
+    "explanation": "Broadband is a high-speed internet connection technology (DSL, fiber, cable, satellite) providing much faster speeds than dial-up."
+  },
+  {
+    "id": 260,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "Wi-Fi allows devices to:",
+    "options": [
+      "Only print documents wirelessly",
+      "Only transfer files via Bluetooth",
+      "Connect to the internet only via cables",
+      "Connect wirelessly to a local network and the internet"
+    ],
+    "answer": "D",
+    "explanation": "Wi-Fi allows devices to connect wirelessly to a local network router, which provides internet access without physical cables."
+  },
+  {
+    "id": 261,
+    "level": "Intermediate",
+    "type": "Limitations",
+    "topic": "Internet",
+    "question": "Which of the following is a cybersecurity threat on the Internet?",
+    "options": [
+      "Phishing, hacking, and identity theft",
+      "Better search results",
+      "Faster download speeds",
+      "Improved video streaming quality"
+    ],
+    "answer": "A",
+    "explanation": "Cybersecurity threats on the Internet include phishing attacks, hacking, identity theft, ransomware, and unauthorized data access."
+  },
+  {
+    "id": 262,
+    "level": "Advanced",
+    "type": "Match-Following",
+    "topic": "Internet",
+    "question": "Match Internet domain extension with its user type:\n(i) .com  (ii) .edu  (iii) .gov  (iv) .org",
+    "options": [
+      "(i)-Non-profit, (ii)-Government, (iii)-Educational, (iv)-Commercial",
+      "(i)-Educational, (ii)-Commercial, (iii)-Non-profit, (iv)-Government",
+      "(i)-Commercial, (ii)-Educational, (iii)-Government, (iv)-Non-profit",
+      "(i)-Government, (ii)-Non-profit, (iii)-Commercial, (iv)-Educational"
+    ],
+    "answer": "C",
+    "explanation": ".com=Commercial, .edu=Educational institutions, .gov=Government agencies, .org=Non-profit organizations."
+  },
+  {
+    "id": 263,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Internet",
+    "question": "Assertion (A): The Internet requires TCP/IP to function.\nReason (R): TCP/IP is the fundamental communication protocol suite of the Internet.",
+    "options": [
+      "A is false but R is true",
+      "A is true but R is false",
+      "Both A and R are true, and R is the correct explanation of A",
+      "Both A and R are true, but R is NOT the correct explanation of A"
+    ],
+    "answer": "C",
+    "explanation": "TCP/IP is the foundational protocol suite that enables all Internet communication. Without it, devices cannot exchange data on the Internet."
+  },
+  {
+    "id": 264,
+    "level": "Intermediate",
+    "type": "Services",
+    "topic": "Internet",
+    "question": "Which Internet service is used to transfer files between computers using commands?",
+    "options": [
+      "FTP (File Transfer Protocol)",
+      "VoIP",
+      "HTTP",
+      "Email"
+    ],
+    "answer": "A",
+    "explanation": "FTP (File Transfer Protocol) is an Internet service specifically designed to transfer files between computers on a network."
+  },
+  {
+    "id": 265,
+    "level": "Intermediate",
+    "type": "Uses",
+    "topic": "Internet",
+    "question": "The Internet supports 'e-governance' which means:",
+    "options": [
+      "Electronic voting machines",
+      "Internet service for government employees only",
+      "Electronic gaming over the internet",
+      "Government services delivered to citizens via the internet"
+    ],
+    "answer": "D",
+    "explanation": "E-governance uses the Internet to deliver government services, information, and transactions to citizens efficiently and transparently."
+  },
+  {
+    "id": 266,
+    "level": "Advanced",
+    "type": "Scenario",
+    "topic": "Internet",
+    "question": "Scenario: A student in a rural area wants to attend classes from a city school without traveling. Which Internet service helps?",
+    "options": [
+      "Online video conferencing and e-learning platforms",
+      "Email only",
+      "Internet banking",
+      "FTP file transfer"
+    ],
+    "answer": "A",
+    "explanation": "Video conferencing and e-learning platforms allow students anywhere to attend virtual classes, bridging geographic barriers through the Internet."
+  },
+  {
+    "id": 267,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "Which Internet feature ensures that data reaches its destination intact and in order?",
+    "options": [
+      "URL system",
+      "DNS system",
+      "HTTP protocol",
+      "TCP (Transmission Control Protocol)"
+    ],
+    "answer": "D",
+    "explanation": "TCP (Transmission Control Protocol) ensures reliable data delivery — it breaks data into packets, ensures they arrive correctly, and reassembles them."
+  },
+  {
+    "id": 268,
+    "level": "Intermediate",
+    "type": "Concepts",
+    "topic": "Internet",
+    "question": "DNS (Domain Name System) converts:",
+    "options": [
+      "IP addresses to physical addresses",
+      "HTML to PDF",
+      "Domain names (like www.example.com) to IP addresses",
+      "Email addresses to URLs"
+    ],
+    "answer": "C",
+    "explanation": "DNS (Domain Name System) translates human-readable domain names (e.g., www.google.com) into numerical IP addresses that computers use to connect."
+  }
+];
+const S={filtered:[],idx:0,answers:{},bookmarks:new Set(),dark:false,jumpOpen:false,expVisible:false,startTime:Date.now(),timerInterval:null,phase:'quiz',reviewFilter:'all',showBookmarkOnly:false,viewAll:false};
+const OPT=['A','B','C','D'];
+const $=id=>document.getElementById(id);
+function init(){populateFilters();applyFilters();buildJumpGrid();startTimer();render();updateStats();const d=localStorage.getItem('mcq-dark');toggleDark(d===null?true:d==='1');}
+function populateFilters(){['topic','type'].forEach(k=>{const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();const el=$('filter-'+k);vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});});}
+function applyFilters(){const lv=$('filter-level').value,tp=$('filter-topic').value,ty=$('filter-type').value;S.filtered=QUESTIONS.filter(q=>(lv==='all'||q.level===lv)&&(tp==='all'||q.topic===tp)&&(ty==='all'||q.type===ty)&&(!S.showBookmarkOnly||S.bookmarks.has(q.id)));S.idx=0;buildJumpGrid();S.viewAll?renderAllQuestions():render();updateStats();}
+function render(){const card=$('question-card'),noRes=document.querySelector('.no-results');if(!S.filtered.length){card.style.display='none';if(!noRes){const d=document.createElement('div');d.className='no-results';d.textContent=QUESTIONS.length===0?'No questions loaded.':'No questions match your filters.';card.parentNode.insertBefore(d,card.nextSibling);}$('q-counter').textContent='0 / 0';$('prog-label').textContent='No questions';$('progress-fill').style.width='0%';$('prog-pct').textContent='0%';return;}if(noRes)noRes.remove();card.style.display='';const q=S.filtered[S.idx],ans=S.answers[q.id],done=ans&&ans.selected;card.style.animation='none';void card.offsetWidth;card.style.animation='';const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';$('card-header').innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span><button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})"><svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>`;
+$('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+const ol=$('options-list');ol.innerHTML='';q.options.forEach((opt,i)=>{const lbl=OPT[i];let cls='option-btn',icon='';if(done){if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}}const btn=document.createElement('button');btn.className=cls;btn.disabled=!!done;btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));ol.appendChild(btn);});
+const expBox=$('explanation-box'),expBtn=$('show-exp-btn');expBox.classList.add('hidden');expBtn.classList.add('hidden');S.expVisible=false;setExpBtnText(false);if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+const total=S.filtered.length,cur=S.idx+1;$('q-counter').textContent=`${cur} / ${total}`;$('prog-label').textContent=`Question ${cur} of ${total}`;const pct=Math.round(cur/total*100);$('progress-fill').style.width=pct+'%';$('prog-pct').textContent=pct+'%';$('s-total').textContent=total;document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));}
+function setExpBtnText(v){const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';$('show-exp-btn').innerHTML=ico+(v?' Hide Explanation':' Show Explanation');}
+function selectAnswer(qid,selected,correct){if(S.answers[qid]?.selected)return;const ok=selected===correct;S.answers[qid]={selected,correct:ok};const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}updateStats();if(ok){render();setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);}else{S.expVisible=true;render();}}
+function showExplanation(q){$('explanation-box').className='explanation-box';$('explanation-box').innerHTML=`<div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div><div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;setExpBtnText(true);}
+function hideExplanation(){$('explanation-box').className='explanation-box hidden';setExpBtnText(false);}
+function goTo(idx){if(idx<0||idx>=S.filtered.length)return;S.idx=idx;S.expVisible=false;render();window.scrollTo({top:0,behavior:'smooth'});}
+function buildJumpGrid(){const grid=$('jump-grid');grid.innerHTML='';S.filtered.forEach((q,i)=>{const btn=document.createElement('button');btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;if(i===S.idx)btn.classList.add('current');const a=S.answers[q.id];if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});grid.appendChild(btn);});}
+function toggleBookmark(qid){S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);render();buildJumpGrid();}
+function updateStats(){const ans=Object.values(S.answers).filter(a=>a?.selected);const ok=ans.filter(a=>a.correct).length;$('s-attempted').textContent=ans.length;$('s-correct').textContent=ok;$('s-wrong').textContent=ans.length-ok;$('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';}
+function finishQuiz(){stopTimer();const total=S.filtered.length;const ans=Object.values(S.answers).filter(a=>a?.selected);const ok=ans.filter(a=>a.correct).length;const pct=ans.length?Math.round(ok/total*100):0;const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];$('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];$('res-msg').textContent=`You scored ${ok} out of ${total}`;$('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;$('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;$('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;showScreen('result-screen');}
+function renderReview(){const list=$('review-list');list.innerHTML='';const rf=S.reviewFilter;S.filtered.forEach(q=>{const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);if(rf==='correct'&&(!a||!ok))return;if(rf==='wrong'&&(!a||ok||skip))return;if(rf==='skipped'&&!skip)return;if(rf==='bookmarked'&&!bm)return;const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';const card=document.createElement('div');card.className='review-card';const optsH=q.options.map((opt,i)=>{const l=OPT[i];let c='review-opt';if(l===q.answer)c+=' correct-ans';else if(l===sel&&sel!==q.answer)c+=' user-wrong';return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;}).join('');card.innerHTML=`<div class="review-header"><span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span><span class="review-status">${skip?'—':ok?'✅':'❌'}</span></div><div class="review-body"><div class="review-q">${q.question.replace(/\n/g,'<br>')}</div><div class="review-opts">${optsH}</div><div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div><div class="review-exp">${q.explanation}</div></div>`;list.appendChild(card);});if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function startTimer(){S.startTime=Date.now();S.timerInterval=setInterval(()=>{const e=Math.floor((Date.now()-S.startTime)/1000);const el=$('timer-display');el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');el.classList.toggle('warn',e>3600);},1000);}
+function stopTimer(){clearInterval(S.timerInterval);}
+function toggleDark(force){S.dark=force!==undefined?force:!S.dark;document.body.toggleAttribute('data-dark',S.dark);localStorage.setItem('mcq-dark',S.dark?'1':'0');const p=document.querySelector('#dark-toggle svg path');p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');}
+function restartQuiz(){S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;$('quiz-body').style.display='';$('all-panel').style.display='none';resetViewAllBtn();stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();}
+function resetViewAllBtn(){const btn=$('view-all-btn');btn.style.cssText='';btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';}
+function renderAllQuestions(){const list=$('all-list');list.innerHTML='';const qs=S.filtered;const hdr=document.createElement('div');hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;list.appendChild(hdr);if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}qs.forEach(q=>list.appendChild(buildAllCard(q)));}
+function buildAllCard(q){const ans=S.answers[q.id],done=ans?.selected;const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';const bm=S.bookmarks.has(q.id);const card=document.createElement('div');card.className='all-q-card';card.id='allcard-'+q.id;const hdr=document.createElement('div');hdr.className='all-q-header';hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span><button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto"><svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>`;hdr.querySelector('.bookmark-btn').addEventListener('click',function(){const qid=parseInt(this.dataset.qid);S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);if(S.showBookmarkOnly){renderAllQuestions();return;}const a=S.bookmarks.has(qid);this.classList.toggle('active',a);this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');});const body=document.createElement('div');body.className='all-q-body';const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');body.appendChild(qt);const ol=document.createElement('div');ol.className='all-opts';OPT.forEach((lbl,i)=>{const btn=document.createElement('button');btn.className='all-opt';let icon='';if(done){btn.disabled=true;if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}}btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;if(!done){btn.addEventListener('click',()=>{const ok=lbl===q.answer;S.answers[q.id]={selected:lbl,correct:ok};updateStats();const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}card.replaceWith(buildAllCard(q));});}ol.appendChild(btn);});body.appendChild(ol);const exp=document.createElement('div');exp.className='all-exp'+(done?' visible':'');exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;body.appendChild(exp);card.appendChild(hdr);card.appendChild(body);return card;}
+function toggleViewAll(){const btn=$('view-all-btn');if(S.viewAll){$('quiz-body').style.display='none';$('all-panel').style.display='block';btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';renderAllQuestions();const currentQ=S.filtered[S.idx];if(currentQ){setTimeout(()=>{const card=document.getElementById('allcard-'+currentQ.id);if(card){const navH=$('top-bar').offsetHeight;const top=card.getBoundingClientRect().top+window.scrollY-navH-12;window.scrollTo({top,behavior:'smooth'});}},150);}}else{$('quiz-body').style.display='';$('all-panel').style.display='none';resetViewAllBtn();render();window.scrollTo({top:0,behavior:'smooth'});}}
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{S.reviewFilter='all';document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));renderReview();showScreen('review-screen');});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{const q=S.filtered[S.idx];if(!q)return;S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();});
+$('bookmark-filter-btn').addEventListener('click',function(){S.showBookmarkOnly=!S.showBookmarkOnly;this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';applyFilters();});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();}));
+document.addEventListener('keydown',e=>{if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;const q=S.filtered[S.idx];if(!q)return;if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}if(e.key==='ArrowRight'){goTo(S.idx+1);return;}if(e.key==='e'||e.key==='E'){if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}return;}const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);});
+function hasProgress(){return Object.keys(S.answers).length>0;}
+window.addEventListener('beforeunload',function(e){if(hasProgress()){e.preventDefault();e.returnValue='You have quiz progress that will be lost. Leave anyway?';return e.returnValue;}});
+document.addEventListener('keydown',function(e){if(!hasProgress())return;const isRefresh=e.key==='F5'||((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='r');if(isRefresh){e.preventDefault();showRefreshWarn();}},true);
+function showRefreshWarn(){let el=document.getElementById('refresh-warn');if(!el){el=document.createElement('div');el.id='refresh-warn';el.textContent='⚠ Refresh blocked – quiz in progress!';document.body.appendChild(el);}el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),2800);}
+init();
+</script>
+</body>
+</html>

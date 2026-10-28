@@ -1,0 +1,3319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Programming Concepts of Basic Java — MCQ Exam Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;max-width:230px}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px;max-width:150px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:12px;letter-spacing:0;max-width:105px}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">Programming Concepts of Basic Java</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Identifiers and Keywords",
+    "question": "What is a Java identifier?",
+    "options": [
+      "A type of Java operator",
+      "A built-in Java data type",
+      "A name given to variables, methods, classes, and other user-defined elements",
+      "A reserved word used by the Java compiler"
+    ],
+    "answer": "C",
+    "explanation": "An identifier is simply the name a programmer chooses for a variable, method, class, or other program element."
+  },
+  {
+    "id": 2,
+    "level": "Basic",
+    "type": "Naming Rule",
+    "topic": "Identifiers and Keywords",
+    "question": "Which of the following is a valid Java identifier?",
+    "options": [
+      "2value",
+      "class",
+      "my-value",
+      "total_amount"
+    ],
+    "answer": "D",
+    "explanation": "total_amount begins with a letter, contains only letters and underscore, and is not a reserved keyword."
+  },
+  {
+    "id": 3,
+    "level": "Basic",
+    "type": "Naming Rule",
+    "topic": "Identifiers and Keywords",
+    "question": "Which identifier is INVALID because it starts with a digit?",
+    "options": [
+      "10value",
+      "value10",
+      "value_10",
+      "_10value"
+    ],
+    "answer": "A",
+    "explanation": "Java identifiers cannot begin with a digit; they must start with a letter, underscore, or dollar sign."
+  },
+  {
+    "id": 4,
+    "level": "Basic",
+    "type": "Keyword Recognition",
+    "topic": "Identifiers and Keywords",
+    "question": "Which of the following is a Java keyword?",
+    "options": [
+      "println",
+      "void",
+      "main",
+      "System"
+    ],
+    "answer": "B",
+    "explanation": "'void' is a reserved keyword used to indicate that a method returns no value."
+  },
+  {
+    "id": 5,
+    "level": "Basic",
+    "type": "Naming Rule",
+    "topic": "Identifiers and Keywords",
+    "question": "Which statement about Java identifier naming rules is TRUE?",
+    "options": [
+      "An identifier can start with a digit",
+      "An identifier can be the same as a reserved keyword",
+      "An identifier can start with an underscore",
+      "An identifier can contain spaces"
+    ],
+    "answer": "C",
+    "explanation": "Java allows identifiers to begin with a letter, underscore (_), or dollar sign ($), but not a digit or space."
+  },
+  {
+    "id": 6,
+    "level": "Basic",
+    "type": "Case Sensitivity",
+    "topic": "Identifiers and Keywords",
+    "question": "Java identifiers are case-sensitive. Which pair represents two DIFFERENT identifiers?",
+    "options": [
+      "total and Total",
+      "num and num",
+      "sum and sum",
+      "data and data"
+    ],
+    "answer": "A",
+    "explanation": "Since Java is case-sensitive, 'total' and 'Total' are treated as two distinct identifiers."
+  },
+  {
+    "id": 7,
+    "level": "Basic",
+    "type": "Keyword Recognition",
+    "topic": "Identifiers and Keywords",
+    "question": "Which of the following is NOT a Java keyword?",
+    "options": [
+      "final",
+      "Boolean",
+      "this",
+      "static"
+    ],
+    "answer": "B",
+    "explanation": "'boolean' (lowercase) is a keyword, but 'Boolean' (capital B) is only a class name, not a reserved keyword."
+  },
+  {
+    "id": 8,
+    "level": "Basic",
+    "type": "Naming Rule",
+    "topic": "Identifiers and Keywords",
+    "question": "Which of the following is a valid Java identifier?",
+    "options": [
+      "2ndValue",
+      "my value",
+      "class",
+      "$total"
+    ],
+    "answer": "D",
+    "explanation": "Java allows identifiers to begin with a dollar sign ($); '$total' follows all naming rules."
+  },
+  {
+    "id": 9,
+    "level": "Basic",
+    "type": "Identifier vs Keyword",
+    "topic": "Identifiers and Keywords",
+    "question": "Which of these can legally be used as a variable name, even though it is poor practice?",
+    "options": [
+      "class",
+      "String",
+      "void",
+      "int"
+    ],
+    "answer": "B",
+    "explanation": "'String' is a class name, not a reserved keyword, so it is technically a legal (though discouraged) identifier."
+  },
+  {
+    "id": 10,
+    "level": "Basic",
+    "type": "Rule",
+    "topic": "Identifiers and Keywords",
+    "question": "Which of the following statements about Java keywords is TRUE?",
+    "options": [
+      "Keywords cannot be used as identifiers",
+      "Keywords can start with a digit",
+      "Keywords can be freely used as variable names",
+      "Keywords are optional in Java programs"
+    ],
+    "answer": "A",
+    "explanation": "Keywords are reserved by the language and can never be used as identifiers such as variable or class names."
+  },
+  {
+    "id": 11,
+    "level": "Basic",
+    "type": "Naming Rule",
+    "topic": "Identifiers and Keywords",
+    "question": "Which of the following identifiers is INVALID?",
+    "options": [
+      "student1",
+      "student_1",
+      "_student1",
+      "student#1"
+    ],
+    "answer": "D",
+    "explanation": "The '#' symbol is not permitted in Java identifiers; only letters, digits, underscore, and dollar sign are allowed."
+  },
+  {
+    "id": 12,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Identifiers and Keywords",
+    "question": "Which word in the list below is a reserved Java keyword?",
+    "options": [
+      "switchCase",
+      "Switch",
+      "switch",
+      "SWITCH"
+    ],
+    "answer": "C",
+    "explanation": "'switch' in lowercase is a reserved keyword used for the switch decision-making statement."
+  },
+  {
+    "id": 13,
+    "level": "Basic",
+    "type": "Naming Rule",
+    "topic": "Identifiers and Keywords",
+    "question": "What is the maximum restriction Java places on the FIRST character of an identifier?",
+    "options": [
+      "It cannot be a letter",
+      "It cannot be a dollar sign",
+      "It cannot be a digit",
+      "It cannot be an underscore"
+    ],
+    "answer": "C",
+    "explanation": "Java identifiers may start with a letter, underscore, or dollar sign, but never with a digit."
+  },
+  {
+    "id": 14,
+    "level": "Basic",
+    "type": "Keyword Recognition",
+    "topic": "Identifiers and Keywords",
+    "question": "Which of the following is a valid Java keyword related to control flow?",
+    "options": [
+      "BREAK",
+      "Break",
+      "breakLoop",
+      "break"
+    ],
+    "answer": "D",
+    "explanation": "'break' is a reserved keyword used to exit loops and switch statements."
+  },
+  {
+    "id": 15,
+    "level": "Basic",
+    "type": "Naming Convention",
+    "topic": "Identifiers and Keywords",
+    "question": "Which identifier correctly represents a constant using standard Java rules?",
+    "options": [
+      "MAX_VALUE",
+      "MAX VALUE",
+      "1MAX",
+      "Max-Value"
+    ],
+    "answer": "A",
+    "explanation": "MAX_VALUE uses only letters and underscore and does not start with a digit, so it is a valid identifier."
+  },
+  {
+    "id": 16,
+    "level": "Basic",
+    "type": "Rule-Based",
+    "topic": "Identifiers and Keywords",
+    "question": "Why is 'float' an invalid identifier in Java?",
+    "options": [
+      "It contains an invalid character",
+      "It is a reserved keyword for a primitive data type",
+      "It exceeds the maximum identifier length",
+      "It starts with a digit"
+    ],
+    "answer": "B",
+    "explanation": "'float' is reserved as a keyword denoting a primitive data type, so it cannot be reused as an identifier."
+  },
+  {
+    "id": 17,
+    "level": "Basic",
+    "type": "Error Identification",
+    "topic": "Identifiers and Keywords",
+    "question": "Identify the incorrect declaration based on identifier rules.",
+    "options": [
+      "int second = 5;",
+      "int second2 = 5;",
+      "int _second = 5;",
+      "int 2nd = 5;"
+    ],
+    "answer": "D",
+    "explanation": "'2nd' is invalid because identifiers cannot begin with a digit."
+  },
+  {
+    "id": 18,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Identifiers and Keywords",
+    "question": "Which of the following BEST distinguishes a keyword from an identifier?",
+    "options": [
+      "A keyword is longer than an identifier",
+      "A keyword can be changed by the programmer",
+      "A keyword has a predefined meaning in Java; an identifier is a name chosen by the programmer",
+      "An identifier must start with a capital letter"
+    ],
+    "answer": "C",
+    "explanation": "Keywords are fixed, reserved words with special meaning to the compiler, while identifiers are user-chosen names."
+  },
+  {
+    "id": 19,
+    "level": "Basic",
+    "type": "Naming Rule",
+    "topic": "Identifiers and Keywords",
+    "question": "Which of the following identifiers is valid?",
+    "options": [
+      "marks 2024",
+      "_marks2024",
+      "marks-2024",
+      "2024marks"
+    ],
+    "answer": "B",
+    "explanation": "An identifier may start with an underscore and contain digits after the first character, making '_marks2024' valid."
+  },
+  {
+    "id": 20,
+    "level": "Basic",
+    "type": "Assertion-Reason",
+    "topic": "Identifiers and Keywords",
+    "question": "Assertion (A): 'class' cannot be used as a variable name.\nReason (R): 'class' is a reserved keyword in Java.",
+    "options": [
+      "Both A and R are true, and R correctly explains A",
+      "A is false but R is true",
+      "Both A and R are false",
+      "A is true but R is false"
+    ],
+    "answer": "A",
+    "explanation": "'class' is indeed a reserved keyword, which is exactly why it cannot be used as a variable name."
+  },
+  {
+    "id": 21,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Data Types in Java",
+    "question": "What is the primary purpose of a data type in Java?",
+    "options": [
+      "To control the flow of a program",
+      "To define the name of a variable",
+      "To specify the visibility of a class",
+      "To specify the kind of value a variable can hold and the operations allowed on it"
+    ],
+    "answer": "D",
+    "explanation": "A data type tells the compiler what kind of value a variable stores and what operations are valid on it."
+  },
+  {
+    "id": 22,
+    "level": "Basic",
+    "type": "Primitive Types",
+    "topic": "Data Types in Java",
+    "question": "Which of the following is NOT a primitive data type in Java?",
+    "options": [
+      "String",
+      "boolean",
+      "char",
+      "int"
+    ],
+    "answer": "A",
+    "explanation": "String is a reference (class) type in Java, not one of the eight primitive data types."
+  },
+  {
+    "id": 23,
+    "level": "Basic",
+    "type": "Integer Types",
+    "topic": "Data Types in Java",
+    "question": "Which primitive data type occupies the LEAST memory in Java?",
+    "options": [
+      "short",
+      "byte",
+      "long",
+      "int"
+    ],
+    "answer": "B",
+    "explanation": "byte is stored in 1 byte (8 bits), making it the smallest of Java's integer primitive types."
+  },
+  {
+    "id": 24,
+    "level": "Basic",
+    "type": "Integer Types",
+    "topic": "Data Types in Java",
+    "question": "What is the size of the 'int' data type in Java?",
+    "options": [
+      "1 byte (8 bits)",
+      "8 bytes (64 bits)",
+      "4 bytes (32 bits)",
+      "2 bytes (16 bits)"
+    ],
+    "answer": "C",
+    "explanation": "Java's int type is a fixed 32-bit signed integer regardless of the platform."
+  },
+  {
+    "id": 25,
+    "level": "Basic",
+    "type": "Floating-Point",
+    "topic": "Data Types in Java",
+    "question": "Which data type is used to store a decimal number with double precision?",
+    "options": [
+      "double",
+      "int",
+      "long",
+      "float"
+    ],
+    "answer": "A",
+    "explanation": "'double' provides double-precision (64-bit) floating-point storage, offering more precision than 'float'."
+  },
+  {
+    "id": 26,
+    "level": "Basic",
+    "type": "Character Type",
+    "topic": "Data Types in Java",
+    "question": "How much memory does the 'char' data type occupy in Java?",
+    "options": [
+      "8 bytes",
+      "4 bytes",
+      "2 bytes",
+      "1 byte"
+    ],
+    "answer": "C",
+    "explanation": "Java's char is 2 bytes because it uses Unicode encoding to represent a wide range of characters."
+  },
+  {
+    "id": 27,
+    "level": "Basic",
+    "type": "Boolean Type",
+    "topic": "Data Types in Java",
+    "question": "What are the only two possible values of a boolean variable in Java?",
+    "options": [
+      "yes and no",
+      "high and low",
+      "0 and 1",
+      "true and false"
+    ],
+    "answer": "D",
+    "explanation": "A boolean variable in Java can only hold the literal values true or false, not numeric 0/1."
+  },
+  {
+    "id": 28,
+    "level": "Basic",
+    "type": "Default Values",
+    "topic": "Data Types in Java",
+    "question": "What is the default value of an int instance variable in Java?",
+    "options": [
+      "1",
+      "0",
+      "undefined",
+      "null"
+    ],
+    "answer": "B",
+    "explanation": "Uninitialized int instance variables are automatically set to 0 by the JVM."
+  },
+  {
+    "id": 29,
+    "level": "Basic",
+    "type": "Default Values",
+    "topic": "Data Types in Java",
+    "question": "What is the default value of a boolean instance variable in Java?",
+    "options": [
+      "true",
+      "0",
+      "false",
+      "null"
+    ],
+    "answer": "C",
+    "explanation": "Boolean instance variables default to false when not explicitly initialized."
+  },
+  {
+    "id": 30,
+    "level": "Basic",
+    "type": "Range",
+    "topic": "Data Types in Java",
+    "question": "Which data type would be MOST appropriate to store a person's age (e.g., 0-120)?",
+    "options": [
+      "boolean",
+      "double",
+      "long",
+      "byte"
+    ],
+    "answer": "D",
+    "explanation": "Since byte can hold values from -128 to 127, it comfortably and efficiently stores typical age values."
+  },
+  {
+    "id": 31,
+    "level": "Basic",
+    "type": "Range",
+    "topic": "Data Types in Java",
+    "question": "Which data type should be used to store very large whole numbers beyond the range of int?",
+    "options": [
+      "byte",
+      "long",
+      "short",
+      "float"
+    ],
+    "answer": "B",
+    "explanation": "'long' is a 64-bit integer type designed to hold much larger values than int can accommodate."
+  },
+  {
+    "id": 32,
+    "level": "Basic",
+    "type": "Declaration",
+    "topic": "Data Types in Java",
+    "question": "Which of the following is a correct declaration of a float variable in Java?",
+    "options": [
+      "float price = 99.5f;",
+      "float price = 99.5;",
+      "float price = 99.5d;",
+      "float price = \"99.5\";"
+    ],
+    "answer": "A",
+    "explanation": "A float literal must be suffixed with 'f' or 'F'; without it, the value is treated as a double by default."
+  },
+  {
+    "id": 33,
+    "level": "Basic",
+    "type": "Declaration",
+    "topic": "Data Types in Java",
+    "question": "Which declaration correctly stores a single character?",
+    "options": [
+      "char grade = A;",
+      "char grade = \"A\";",
+      "char grade = 65.0;",
+      "char grade = 'A';"
+    ],
+    "answer": "D",
+    "explanation": "Character literals in Java must be enclosed in single quotes, not double quotes."
+  },
+  {
+    "id": 34,
+    "level": "Basic",
+    "type": "Type Identification",
+    "topic": "Data Types in Java",
+    "question": "Which data type would be most suitable to represent whether a student has passed or failed?",
+    "options": [
+      "byte",
+      "boolean",
+      "String",
+      "char"
+    ],
+    "answer": "B",
+    "explanation": "A pass/fail status has only two possible states, which boolean directly represents as true/false."
+  },
+  {
+    "id": 35,
+    "level": "Basic",
+    "type": "Comparison",
+    "topic": "Data Types in Java",
+    "question": "Which of the following correctly orders integer types from SMALLEST to LARGEST range?",
+    "options": [
+      "short, byte, long, int",
+      "int, byte, short, long",
+      "byte, short, int, long",
+      "long, int, short, byte"
+    ],
+    "answer": "C",
+    "explanation": "Java's integer types increase in size and range in the order: byte (1B) < short (2B) < int (4B) < long (8B)."
+  },
+  {
+    "id": 36,
+    "level": "Basic",
+    "type": "Code-Based",
+    "topic": "Data Types in Java",
+    "question": "What will be the default value of a double instance variable that is declared but not initialized?",
+    "options": [
+      "0.0",
+      "NaN",
+      "0",
+      "null"
+    ],
+    "answer": "A",
+    "explanation": "Uninitialized double instance variables default to 0.0, not integer 0."
+  },
+  {
+    "id": 37,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Data Types in Java",
+    "question": "Which of the following is classified as a reference data type in Java (at introductory level)?",
+    "options": [
+      "Array",
+      "boolean",
+      "char",
+      "int"
+    ],
+    "answer": "A",
+    "explanation": "Arrays are reference types in Java because array variables store a reference to the array object, unlike primitives."
+  },
+  {
+    "id": 38,
+    "level": "Basic",
+    "type": "Range/Precision",
+    "topic": "Data Types in Java",
+    "question": "Which data type provides greater precision for decimal calculations, float or double?",
+    "options": [
+      "Both provide equal precision",
+      "Neither supports decimals",
+      "double",
+      "float"
+    ],
+    "answer": "C",
+    "explanation": "double uses 64 bits and offers roughly twice the precision of the 32-bit float type."
+  },
+  {
+    "id": 39,
+    "level": "Basic",
+    "type": "Type Selection",
+    "topic": "Data Types in Java",
+    "question": "Which data type is most appropriate for storing a bank account balance requiring high decimal precision?",
+    "options": [
+      "char",
+      "double",
+      "byte",
+      "boolean"
+    ],
+    "answer": "B",
+    "explanation": "double offers sufficient precision and range for monetary values with decimals, unlike small integer types."
+  },
+  {
+    "id": 40,
+    "level": "Basic",
+    "type": "Error Identification",
+    "topic": "Data Types in Java",
+    "question": "Identify the error in the following declaration:\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int marks = 99.5;</code>",
+    "options": [
+      "Semicolon is missing",
+      "'marks' is an invalid identifier",
+      "int cannot store numeric values",
+      "A decimal value cannot be assigned directly to an int variable"
+    ],
+    "answer": "D",
+    "explanation": "99.5 is a floating-point literal; assigning it to an int without explicit casting causes a compile-time error."
+  },
+  {
+    "id": 41,
+    "level": "Basic",
+    "type": "Class Naming",
+    "topic": "Java Coding Conventions",
+    "question": "According to standard Java coding conventions, how should class names be written?",
+    "options": [
+      "Starting with an uppercase letter, using CamelCase (e.g., StudentRecord)",
+      "Starting with an underscore (e.g., _StudentRecord)",
+      "Entirely in lowercase (e.g., studentrecord)",
+      "Entirely in uppercase (e.g., STUDENTRECORD)"
+    ],
+    "answer": "A",
+    "explanation": "Java convention requires class names to begin with an uppercase letter and follow CamelCase style."
+  },
+  {
+    "id": 42,
+    "level": "Basic",
+    "type": "Method Naming",
+    "topic": "Java Coding Conventions",
+    "question": "Which of the following method names follows standard Java naming conventions?",
+    "options": [
+      "calculate_total()",
+      "CALCULATETOTAL()",
+      "calculateTotal()",
+      "CalculateTotal()"
+    ],
+    "answer": "C",
+    "explanation": "Method names should start with a lowercase letter and use camelCase, as in calculateTotal()."
+  },
+  {
+    "id": 43,
+    "level": "Basic",
+    "type": "Variable Naming",
+    "topic": "Java Coding Conventions",
+    "question": "Which variable name follows Java coding conventions?",
+    "options": [
+      "StudentAge",
+      "studentAge",
+      "student_age_value_123abc",
+      "STUDENTAGE"
+    ],
+    "answer": "B",
+    "explanation": "Variable names conventionally start with a lowercase letter and use camelCase for readability."
+  },
+  {
+    "id": 44,
+    "level": "Basic",
+    "type": "Constant Naming",
+    "topic": "Java Coding Conventions",
+    "question": "How should constants typically be named in Java according to convention?",
+    "options": [
+      "With a leading dollar sign, e.g., $MAXSPEED",
+      "In PascalCase, e.g., MaxSpeed",
+      "In camelCase, e.g., maxSpeed",
+      "In uppercase letters with underscores, e.g., MAX_SPEED"
+    ],
+    "answer": "D",
+    "explanation": "Constants (declared with 'final') are conventionally written in uppercase with underscores separating words."
+  },
+  {
+    "id": 45,
+    "level": "Basic",
+    "type": "Formatting",
+    "topic": "Java Coding Conventions",
+    "question": "Why is consistent indentation considered an important Java coding convention?",
+    "options": [
+      "It is required by the Java compiler to run the code",
+      "It reduces the size of the compiled program",
+      "It increases the execution speed of the program",
+      "It improves code readability and helps show the logical structure of the program"
+    ],
+    "answer": "D",
+    "explanation": "Indentation is purely a readability practice; it has no effect on compilation or performance."
+  },
+  {
+    "id": 46,
+    "level": "Basic",
+    "type": "General Convention",
+    "topic": "Java Coding Conventions",
+    "question": "Which of these best reflects good Java coding convention for package names?",
+    "options": [
+      "All uppercase letters, e.g., COM.SCHOOL.APP",
+      "All lowercase letters, e.g., com.school.app",
+      "Mixed with underscores, e.g., com_school_app",
+      "CamelCase, e.g., Com.School.App"
+    ],
+    "answer": "B",
+    "explanation": "Java package names are conventionally written entirely in lowercase."
+  },
+  {
+    "id": 47,
+    "level": "Basic",
+    "type": "Naming Convention",
+    "topic": "Java Coding Conventions",
+    "question": "Which of the following class names correctly follows Java naming conventions?",
+    "options": [
+      "BankAccount",
+      "BANKACCOUNT",
+      "bank_account",
+      "bankAccount"
+    ],
+    "answer": "A",
+    "explanation": "Class names should begin with an uppercase letter and follow CamelCase, as in BankAccount."
+  },
+  {
+    "id": 48,
+    "level": "Basic",
+    "type": "Readability",
+    "topic": "Java Coding Conventions",
+    "question": "Which coding practice is recommended by Java conventions to improve readability of long methods?",
+    "options": [
+      "Removing all comments to reduce file size",
+      "Using single-letter variable names throughout",
+      "Breaking the method into smaller, well-named methods",
+      "Writing the entire logic in a single line"
+    ],
+    "answer": "C",
+    "explanation": "Breaking code into smaller, clearly named methods is a widely recommended convention for readability."
+  },
+  {
+    "id": 49,
+    "level": "Basic",
+    "type": "Comments",
+    "topic": "Java Coding Conventions",
+    "question": "According to Java coding conventions, comments should primarily be used to:",
+    "options": [
+      "Replace the need for meaningful variable names",
+      "Explain the purpose or logic of code that is not immediately obvious",
+      "Increase the file size for documentation purposes",
+      "Disable code permanently instead of deleting it"
+    ],
+    "answer": "B",
+    "explanation": "Comments are meant to clarify intent and logic, not substitute for clear naming or serve as permanent code disablers."
+  },
+  {
+    "id": 50,
+    "level": "Basic",
+    "type": "Naming Convention",
+    "topic": "Java Coding Conventions",
+    "question": "Which boolean variable name best follows Java naming conventions?",
+    "options": [
+      "isAvailable",
+      "available_Flag",
+      "Isavailable",
+      "IS_AVAILABLE_FLAG"
+    ],
+    "answer": "A",
+    "explanation": "Boolean variables are conventionally prefixed with 'is' or 'has' and follow camelCase, e.g., isAvailable."
+  },
+  {
+    "id": 51,
+    "level": "Basic",
+    "type": "Application",
+    "topic": "Java Coding Conventions",
+    "question": "A programmer names a class 'student_record'. Which convention does this VIOLATE?",
+    "options": [
+      "Class names cannot contain the letter 'r'",
+      "Class names must be written in a single case only",
+      "Class names should use CamelCase starting with an uppercase letter",
+      "Class names must be a single word"
+    ],
+    "answer": "C",
+    "explanation": "Using lowercase with underscores instead of CamelCase with a leading capital breaks Java's class naming convention."
+  },
+  {
+    "id": 52,
+    "level": "Basic",
+    "type": "Consistency",
+    "topic": "Java Coding Conventions",
+    "question": "Why do Java coding conventions recommend a CONSISTENT coding style across a project?",
+    "options": [
+      "It makes the compiled .class file smaller",
+      "It automatically improves the program's runtime speed",
+      "It is mandatory for the Java compiler to accept the code",
+      "It makes code easier to read, maintain, and collaborate on across a team"
+    ],
+    "answer": "D",
+    "explanation": "Consistent style is a readability and maintainability practice; it has no effect on compilation or runtime behavior."
+  },
+  {
+    "id": 53,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Expressions in Java",
+    "question": "What is a Java expression?",
+    "options": [
+      "A combination of variables, operators, and values that evaluates to a single value",
+      "A statement that always ends with a semicolon and does nothing else",
+      "A keyword used to define a class",
+      "A block of code enclosed in curly braces"
+    ],
+    "answer": "A",
+    "explanation": "An expression combines operands and operators and produces a resulting value when evaluated."
+  },
+  {
+    "id": 54,
+    "level": "Intermediate",
+    "type": "Components",
+    "topic": "Expressions in Java",
+    "question": "In the expression 'a + b', what are 'a' and 'b' called?",
+    "options": [
+      "Identifiers only",
+      "Operands",
+      "Literals only",
+      "Operators"
+    ],
+    "answer": "B",
+    "explanation": "The values or variables that an operator acts upon are called operands."
+  },
+  {
+    "id": 55,
+    "level": "Intermediate",
+    "type": "Arithmetic",
+    "topic": "Expressions in Java",
+    "question": "What is the result of the expression 10 % 3 in Java?",
+    "options": [
+      "0",
+      "3.33",
+      "1",
+      "3"
+    ],
+    "answer": "C",
+    "explanation": "The modulus operator (%) returns the remainder of division; 10 divided by 3 leaves a remainder of 1."
+  },
+  {
+    "id": 56,
+    "level": "Intermediate",
+    "type": "Arithmetic",
+    "topic": "Expressions in Java",
+    "question": "What is the output of the following expression?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int result = 7 / 2;</code>",
+    "options": [
+      "4",
+      "1",
+      "3.5",
+      "3"
+    ],
+    "answer": "D",
+    "explanation": "Since both operands are int, integer division is performed and the fractional part is discarded, giving 3."
+  },
+  {
+    "id": 57,
+    "level": "Intermediate",
+    "type": "Relational",
+    "topic": "Expressions in Java",
+    "question": "What does the expression (5 > 3) evaluate to?",
+    "options": [
+      "1",
+      "true",
+      "false",
+      "5"
+    ],
+    "answer": "B",
+    "explanation": "Relational operators like > always evaluate to a boolean result; since 5 is greater than 3, the result is true."
+  },
+  {
+    "id": 58,
+    "level": "Intermediate",
+    "type": "Logical",
+    "topic": "Expressions in Java",
+    "question": "What is the result of the expression (true && false)?",
+    "options": [
+      "1",
+      "true",
+      "0",
+      "false"
+    ],
+    "answer": "D",
+    "explanation": "The logical AND (&&) operator returns true only if both operands are true; here one operand is false."
+  },
+  {
+    "id": 59,
+    "level": "Intermediate",
+    "type": "Logical",
+    "topic": "Expressions in Java",
+    "question": "What is the result of the expression (false || true)?",
+    "options": [
+      "true",
+      "0",
+      "null",
+      "false"
+    ],
+    "answer": "A",
+    "explanation": "The logical OR (||) operator returns true if at least one operand is true."
+  },
+  {
+    "id": 60,
+    "level": "Intermediate",
+    "type": "Assignment",
+    "topic": "Expressions in Java",
+    "question": "What is the value of x after executing the following?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int x = 5;\nx += 3;</code>",
+    "options": [
+      "3",
+      "15",
+      "8",
+      "5"
+    ],
+    "answer": "C",
+    "explanation": "The compound assignment operator += adds the right operand to x, so x becomes 5 + 3 = 8."
+  },
+  {
+    "id": 61,
+    "level": "Intermediate",
+    "type": "Unary",
+    "topic": "Expressions in Java",
+    "question": "What is the value of x after the following code executes?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int x = 5;\nx++;</code>",
+    "options": [
+      "6",
+      "5",
+      "4",
+      "7"
+    ],
+    "answer": "A",
+    "explanation": "The post-increment operator (++) increases the value of x by 1, changing it from 5 to 6."
+  },
+  {
+    "id": 62,
+    "level": "Intermediate",
+    "type": "Unary",
+    "topic": "Expressions in Java",
+    "question": "What does the unary minus operator do in the expression '-x'?",
+    "options": [
+      "It converts x into a negative index",
+      "It negates the value of x",
+      "It divides x by -1 permanently",
+      "It decreases x by 1"
+    ],
+    "answer": "B",
+    "explanation": "The unary minus operator simply reverses the sign of the operand's value."
+  },
+  {
+    "id": 63,
+    "level": "Intermediate",
+    "type": "Precedence",
+    "topic": "Expressions in Java",
+    "question": "In the expression '10 + 5 * 2', which operation is performed FIRST?",
+    "options": [
+      "The whole expression left to right",
+      "2 is evaluated alone",
+      "10 + 5",
+      "5 * 2"
+    ],
+    "answer": "D",
+    "explanation": "Multiplication has higher precedence than addition, so 5 * 2 is evaluated before the addition."
+  },
+  {
+    "id": 64,
+    "level": "Intermediate",
+    "type": "Precedence",
+    "topic": "Expressions in Java",
+    "question": "What is the result of the expression: 20 - 4 / 2?",
+    "options": [
+      "10",
+      "16",
+      "18",
+      "8"
+    ],
+    "answer": "C",
+    "explanation": "Division has higher precedence than subtraction: 4 / 2 = 2, then 20 - 2 = 18."
+  },
+  {
+    "id": 65,
+    "level": "Intermediate",
+    "type": "Associativity",
+    "topic": "Expressions in Java",
+    "question": "In the expression 'a = b = c = 5;', in which direction does the assignment operator associate?",
+    "options": [
+      "Right to left",
+      "It cannot be chained in Java",
+      "Left to right",
+      "Top to bottom only"
+    ],
+    "answer": "A",
+    "explanation": "The assignment operator (=) is right-associative, so c is assigned first, then b, then a, all receiving 5."
+  },
+  {
+    "id": 66,
+    "level": "Intermediate",
+    "type": "Evaluation",
+    "topic": "Expressions in Java",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int a = 6, b = 4;\nSystem.out.println(a > b ? \"Yes\" : \"No\");</code>",
+    "options": [
+      "No",
+      "6",
+      "true",
+      "Yes"
+    ],
+    "answer": "D",
+    "explanation": "The ternary operator evaluates the condition a > b (true), so it returns the value before the colon, \"Yes\"."
+  },
+  {
+    "id": 67,
+    "level": "Intermediate",
+    "type": "Type-Related",
+    "topic": "Expressions in Java",
+    "question": "What is the result of the expression: 5 + 2.0 in Java?",
+    "options": [
+      "2.0",
+      "5.2",
+      "7.0",
+      "7"
+    ],
+    "answer": "C",
+    "explanation": "When an int is combined with a double using +, the int is implicitly promoted to double, producing 7.0."
+  },
+  {
+    "id": 68,
+    "level": "Intermediate",
+    "type": "Expression Identification",
+    "topic": "Expressions in Java",
+    "question": "Which of the following is a valid Java expression?",
+    "options": [
+      "int a;",
+      "a + b * c",
+      "class Test {}",
+      "if (a > b)"
+    ],
+    "answer": "B",
+    "explanation": "'a + b * c' combines operands with operators and produces a value, making it a true expression, unlike a declaration or statement."
+  },
+  {
+    "id": 69,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Expressions in Java",
+    "question": "What is printed by the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int a = 15;\nSystem.out.println(a % 4);</code>",
+    "options": [
+      "3",
+      "15",
+      "0",
+      "4"
+    ],
+    "answer": "A",
+    "explanation": "15 divided by 4 gives a quotient of 3 with a remainder of 3, so a % 4 evaluates to 3."
+  },
+  {
+    "id": 70,
+    "level": "Intermediate",
+    "type": "Relational/Logical",
+    "topic": "Expressions in Java",
+    "question": "What is the output of the following?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int x = 5;\nSystem.out.println(x != 5);</code>",
+    "options": [
+      "0",
+      "true",
+      "false",
+      "5"
+    ],
+    "answer": "C",
+    "explanation": "The != operator checks inequality; since x equals 5, the comparison x != 5 evaluates to false."
+  },
+  {
+    "id": 71,
+    "level": "Intermediate",
+    "type": "Correct/Incorrect",
+    "topic": "Expressions in Java",
+    "question": "Which of the following expressions is INCORRECT in Java?",
+    "options": [
+      "int x = 5 % 6;",
+      "int x = 5 = 6;",
+      "int x = (5 + 6) * 2;",
+      "int x = 5 + 6;"
+    ],
+    "answer": "B",
+    "explanation": "'5 = 6' attempts to assign a value to a literal, which is illegal because a literal is not a variable."
+  },
+  {
+    "id": 72,
+    "level": "Intermediate",
+    "type": "Operator-Based",
+    "topic": "Expressions in Java",
+    "question": "Which operator has the HIGHEST precedence among the following?",
+    "options": [
+      "+ (addition)",
+      "|| (logical OR)",
+      "= (assignment)",
+      "* (multiplication)"
+    ],
+    "answer": "D",
+    "explanation": "Among these, multiplication has the highest precedence, followed by addition, then logical OR, then assignment."
+  },
+  {
+    "id": 73,
+    "level": "Intermediate",
+    "type": "Code-Snippet",
+    "topic": "Expressions in Java",
+    "question": "What is the value of 'result' after execution?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int result = (2 + 3) * (4 - 1);</code>",
+    "options": [
+      "15",
+      "14",
+      "9",
+      "10"
+    ],
+    "answer": "A",
+    "explanation": "Parentheses are evaluated first: (2+3)=5 and (4-1)=3, then 5 * 3 = 15."
+  },
+  {
+    "id": 74,
+    "level": "Intermediate",
+    "type": "Evaluation",
+    "topic": "Expressions in Java",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">boolean flag = (10 == 10) && (5 < 3);</code>",
+    "options": [
+      "true",
+      "10",
+      "5",
+      "false"
+    ],
+    "answer": "D",
+    "explanation": "10==10 is true, but 5<3 is false; since && requires both to be true, the overall result is false."
+  },
+  {
+    "id": 75,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "What is the default flow of execution in a Java program without any control structures?",
+    "options": [
+      "Determined by variable names",
+      "Random order chosen by the JVM",
+      "Sequential, from top to bottom",
+      "Bottom to top"
+    ],
+    "answer": "C",
+    "explanation": "Without decision-making or looping constructs, Java statements execute sequentially in the order written."
+  },
+  {
+    "id": 76,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "What is the main purpose of a decision-making statement in Java?",
+    "options": [
+      "To define a new class",
+      "To alter the flow of execution based on a condition",
+      "To repeat a block of code indefinitely",
+      "To declare new variables"
+    ],
+    "answer": "B",
+    "explanation": "Decision-making statements like if and switch allow the program to choose between different execution paths."
+  },
+  {
+    "id": 77,
+    "level": "Intermediate",
+    "type": "if Statement",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "Which of the following is the correct syntax for an if statement in Java?",
+    "options": [
+      "if [condition] { }",
+      "if condition { }",
+      "if (condition) { }",
+      "if condition then { }"
+    ],
+    "answer": "C",
+    "explanation": "Java requires the condition of an if statement to be enclosed in parentheses."
+  },
+  {
+    "id": 78,
+    "level": "Intermediate",
+    "type": "if-else",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "What happens if the condition in an if-else statement is false?",
+    "options": [
+      "The program terminates",
+      "The else block is executed",
+      "Both blocks are executed",
+      "The if block is executed anyway"
+    ],
+    "answer": "B",
+    "explanation": "When the if condition evaluates to false, control passes to the else block, if present."
+  },
+  {
+    "id": 79,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int a = 10;\nif (a > 5)\n    System.out.println(\"High\");\nelse\n    System.out.println(\"Low\");</code>",
+    "options": [
+      "High",
+      "Low",
+      "10",
+      "No output"
+    ],
+    "answer": "A",
+    "explanation": "Since a (10) is greater than 5, the condition is true and \"High\" is printed."
+  },
+  {
+    "id": 80,
+    "level": "Intermediate",
+    "type": "else-if Ladder",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "In an else-if ladder, how many conditions can be evaluated in total?",
+    "options": [
+      "Exactly two",
+      "Unlimited, but only the last condition is checked",
+      "Only one",
+      "As many as the programmer defines using additional else if blocks"
+    ],
+    "answer": "D",
+    "explanation": "An else-if ladder can contain any number of else-if blocks, each checked in sequence until one is true."
+  },
+  {
+    "id": 81,
+    "level": "Intermediate",
+    "type": "Nested if",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "What is a nested if statement?",
+    "options": [
+      "An if statement that has no condition",
+      "An if statement placed inside another if or else block",
+      "An if statement used only with arrays",
+      "A loop that repeats an if block"
+    ],
+    "answer": "B",
+    "explanation": "A nested if is simply an if statement written inside the body of another if or else statement."
+  },
+  {
+    "id": 82,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "What is the output of the following nested if code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int a = 20;\nif (a > 10) {\n    if (a > 15)\n        System.out.println(\"A\");\n    else\n        System.out.println(\"B\");\n} else {\n    System.out.println(\"C\");\n}</code>",
+    "options": [
+      "C",
+      "No output",
+      "A",
+      "B"
+    ],
+    "answer": "C",
+    "explanation": "a (20) is greater than 10, entering the outer block; then a is also greater than 15, so \"A\" is printed."
+  },
+  {
+    "id": 83,
+    "level": "Intermediate",
+    "type": "switch",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "Which keyword is used to test multiple possible values of a variable in Java?",
+    "options": [
+      "while",
+      "for",
+      "if",
+      "switch"
+    ],
+    "answer": "D",
+    "explanation": "The switch statement is designed to test a variable against multiple possible constant values (cases)."
+  },
+  {
+    "id": 84,
+    "level": "Intermediate",
+    "type": "switch/case",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "What is the purpose of the 'break' statement inside a switch case?",
+    "options": [
+      "To exit the switch block and prevent fall-through to subsequent cases",
+      "To skip the next iteration of a loop",
+      "To terminate the entire program",
+      "To restart the switch statement"
+    ],
+    "answer": "A",
+    "explanation": "Without break, execution 'falls through' into the next case; break stops this by exiting the switch block."
+  },
+  {
+    "id": 85,
+    "level": "Intermediate",
+    "type": "switch/default",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "What is the role of the 'default' label in a switch statement?",
+    "options": [
+      "It always executes first regardless of matches",
+      "It stops the program if reached",
+      "It is mandatory in every switch statement",
+      "It executes when none of the case values match the switch expression"
+    ],
+    "answer": "D",
+    "explanation": "The default case runs only when no other case value matches; it is optional, not mandatory."
+  },
+  {
+    "id": 86,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int day = 3;\nswitch (day) {\n  case 1: System.out.println(\"Mon\"); break;\n  case 2: System.out.println(\"Tue\"); break;\n  case 3: System.out.println(\"Wed\"); break;\n  default: System.out.println(\"Invalid\");\n}</code>",
+    "options": [
+      "Tue",
+      "Invalid",
+      "Wed",
+      "Mon"
+    ],
+    "answer": "C",
+    "explanation": "Since day equals 3, case 3 matches and prints \"Wed\", then break exits the switch."
+  },
+  {
+    "id": 87,
+    "level": "Intermediate",
+    "type": "Fall-Through",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "What is the output of the following code (note the missing break)?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int x = 1;\nswitch (x) {\n  case 1: System.out.println(\"One\");\n  case 2: System.out.println(\"Two\"); break;\n  default: System.out.println(\"Other\");\n}</code>",
+    "options": [
+      "One\nTwo",
+      "Two",
+      "Other",
+      "One"
+    ],
+    "answer": "A",
+    "explanation": "Without a break after case 1, execution falls through into case 2, printing both \"One\" and \"Two\"."
+  },
+  {
+    "id": 88,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "What is a key difference between if-else and switch statements?",
+    "options": [
+      "switch can only be used with strings",
+      "switch compares a single variable against multiple discrete values, while if-else can test complex conditions",
+      "if-else cannot use relational operators",
+      "switch executes all cases every time"
+    ],
+    "answer": "B",
+    "explanation": "switch is best suited for matching one variable against fixed values; if-else handles more general boolean conditions."
+  },
+  {
+    "id": 89,
+    "level": "Intermediate",
+    "type": "Nested Decision",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int marks = 45;\nif (marks >= 90)\n    System.out.println(\"A\");\nelse if (marks >= 60)\n    System.out.println(\"B\");\nelse if (marks >= 40)\n    System.out.println(\"C\");\nelse\n    System.out.println(\"D\");</code>",
+    "options": [
+      "C",
+      "A",
+      "D",
+      "B"
+    ],
+    "answer": "A",
+    "explanation": "45 fails the first two conditions but satisfies marks >= 40, so \"C\" is printed."
+  },
+  {
+    "id": 90,
+    "level": "Intermediate",
+    "type": "Working",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "In an if-else-if ladder, how many blocks are executed if a matching condition is found in the middle?",
+    "options": [
+      "The entire ladder repeats",
+      "All blocks after it are also executed",
+      "Only that one block, and the rest are skipped",
+      "All blocks before and after it execute"
+    ],
+    "answer": "C",
+    "explanation": "Once a condition in the ladder is found true, its block executes and the remaining else-if/else branches are skipped."
+  },
+  {
+    "id": 91,
+    "level": "Intermediate",
+    "type": "Condition Evaluation",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int a = 7;\nif (a % 2 == 0)\n    System.out.println(\"Even\");\nelse\n    System.out.println(\"Odd\");</code>",
+    "options": [
+      "0",
+      "Odd",
+      "Even",
+      "7"
+    ],
+    "answer": "B",
+    "explanation": "7 % 2 evaluates to 1, which is not 0, so the condition is false and \"Odd\" is printed."
+  },
+  {
+    "id": 92,
+    "level": "Intermediate",
+    "type": "Identifying Structure",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "Which control structure would be MOST appropriate to check a single variable against many fixed integer values?",
+    "options": [
+      "while loop",
+      "for loop",
+      "do-while loop",
+      "switch statement"
+    ],
+    "answer": "D",
+    "explanation": "switch is specifically designed for matching one variable against several discrete constant values efficiently."
+  },
+  {
+    "id": 93,
+    "level": "Intermediate",
+    "type": "case Labels",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "Can two case labels in the same switch statement have the same value in Java?",
+    "options": [
+      "Yes, always",
+      "Yes, but only in nested switches",
+      "No, it causes a compile-time error",
+      "Yes, but only for integer values"
+    ],
+    "answer": "C",
+    "explanation": "Duplicate case values in the same switch block are not allowed and result in a compilation error."
+  },
+  {
+    "id": 94,
+    "level": "Intermediate",
+    "type": "switch Data Types",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "Which of the following data types CANNOT be directly used as a switch expression in basic Java (from this syllabus)?",
+    "options": [
+      "int",
+      "char",
+      "byte",
+      "boolean"
+    ],
+    "answer": "D",
+    "explanation": "switch works with types like byte, short, char, int, and String, but not boolean, since boolean has only two values better suited to if-else."
+  },
+  {
+    "id": 95,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">char grade = 'B';\nswitch (grade) {\n  case 'A': System.out.println(\"Excellent\"); break;\n  case 'B': System.out.println(\"Good\"); break;\n  case 'C': System.out.println(\"Average\"); break;\n}</code>",
+    "options": [
+      "Good",
+      "Average",
+      "No output",
+      "Excellent"
+    ],
+    "answer": "A",
+    "explanation": "The switch expression grade holds 'B', which matches case 'B', printing \"Good\"."
+  },
+  {
+    "id": 96,
+    "level": "Intermediate",
+    "type": "Sequential Execution",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "Which of the following best describes sequential execution?",
+    "options": [
+      "Statements are executed based on user input order",
+      "Statements are executed one after another in the order they appear",
+      "Statements are executed in reverse order",
+      "Statements are executed randomly"
+    ],
+    "answer": "B",
+    "explanation": "Sequential execution simply means each statement runs in the exact order it is written, unless altered by control statements."
+  },
+  {
+    "id": 97,
+    "level": "Intermediate",
+    "type": "Nested if Output",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int x = 5, y = 10;\nif (x > 0) {\n  if (y > 5)\n    System.out.println(\"Both\");\n}\nelse\n  System.out.println(\"None\");</code>",
+    "options": [
+      "x > 0",
+      "None",
+      "Both",
+      "No output"
+    ],
+    "answer": "C",
+    "explanation": "x > 0 is true, entering the outer if; y > 5 is also true, so the inner if prints \"Both\"."
+  },
+  {
+    "id": 98,
+    "level": "Intermediate",
+    "type": "break Behavior",
+    "topic": "Control Structures & Decision-Making Statements",
+    "question": "What happens if 'break' is omitted from EVERY case in a switch statement, and the matched case is not the last one?",
+    "options": [
+      "The program skips the entire switch block",
+      "Only the matched case executes and the switch exits automatically",
+      "The switch statement throws a compile-time error",
+      "Execution continues into all subsequent cases until a break or the end of the switch"
+    ],
+    "answer": "D",
+    "explanation": "Without break statements, Java falls through and executes all subsequent case blocks in sequence."
+  },
+  {
+    "id": 99,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Arrays and Their Methods",
+    "question": "What is an array in Java?",
+    "options": [
+      "A type of loop used for repeated execution",
+      "A collection of elements of the same data type stored in contiguous memory under a single name",
+      "A collection of methods grouped together",
+      "A single variable that can store only one value"
+    ],
+    "answer": "B",
+    "explanation": "An array groups multiple values of the same type together, accessible through a common variable name and index."
+  },
+  {
+    "id": 100,
+    "level": "Intermediate",
+    "type": "Purpose",
+    "topic": "Arrays and Their Methods",
+    "question": "What is the main advantage of using an array instead of separate variables?",
+    "options": [
+      "It allows storing and managing multiple related values efficiently using a single variable name",
+      "It converts data types automatically",
+      "It removes the need for loops entirely",
+      "It automatically sorts the values"
+    ],
+    "answer": "A",
+    "explanation": "Arrays let a programmer manage many values of the same type together instead of declaring separate variables."
+  },
+  {
+    "id": 101,
+    "level": "Intermediate",
+    "type": "Declaration",
+    "topic": "Arrays and Their Methods",
+    "question": "Which of the following correctly declares an array of integers in Java?",
+    "options": [
+      "int[] numbers;",
+      "int numbers[5];",
+      "int numbers = [];",
+      "array int numbers;"
+    ],
+    "answer": "A",
+    "explanation": "'int[] numbers;' is valid Java array declaration syntax; the size is specified during array creation, not declaration."
+  },
+  {
+    "id": 102,
+    "level": "Intermediate",
+    "type": "Creation",
+    "topic": "Arrays and Their Methods",
+    "question": "Which statement correctly creates an array of 5 integers?",
+    "options": [
+      "int[] numbers = new int(5);",
+      "int[] numbers = int[5];",
+      "int[] numbers = new int[5];",
+      "int[5] numbers = new int();"
+    ],
+    "answer": "C",
+    "explanation": "The 'new' keyword followed by the type and size in square brackets correctly allocates array memory."
+  },
+  {
+    "id": 103,
+    "level": "Intermediate",
+    "type": "Initialization",
+    "topic": "Arrays and Their Methods",
+    "question": "Which of the following correctly initializes an array with values at the time of declaration?",
+    "options": [
+      "int[] arr = new int[]{10, 20, 30]",
+      "int[] arr = [10, 20, 30];",
+      "int arr[] = (10, 20, 30);",
+      "int[] arr = {10, 20, 30};"
+    ],
+    "answer": "D",
+    "explanation": "Curly braces {} are used for array initializer lists in Java when declaring and assigning values together."
+  },
+  {
+    "id": 104,
+    "level": "Intermediate",
+    "type": "Indexing",
+    "topic": "Arrays and Their Methods",
+    "question": "In Java, what is the index of the FIRST element of an array?",
+    "options": [
+      "1",
+      "0",
+      "It depends on the array size",
+      "-1"
+    ],
+    "answer": "B",
+    "explanation": "Java arrays are zero-indexed, meaning the first element is always accessed using index 0."
+  },
+  {
+    "id": 105,
+    "level": "Intermediate",
+    "type": "Length",
+    "topic": "Arrays and Their Methods",
+    "question": "Which of the following correctly retrieves the number of elements in an array named 'arr'?",
+    "options": [
+      "arr.length",
+      "arr.size()",
+      "arr.size",
+      "arr.length()"
+    ],
+    "answer": "A",
+    "explanation": "For arrays, 'length' is a property (not a method), accessed without parentheses, unlike String's length() method."
+  },
+  {
+    "id": 106,
+    "level": "Intermediate",
+    "type": "Accessing Elements",
+    "topic": "Arrays and Their Methods",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] arr = {5, 10, 15, 20};\nSystem.out.println(arr[2]);</code>",
+    "options": [
+      "10",
+      "5",
+      "15",
+      "20"
+    ],
+    "answer": "C",
+    "explanation": "Index 2 refers to the third element (since indexing starts at 0), which is 15."
+  },
+  {
+    "id": 107,
+    "level": "Intermediate",
+    "type": "Array Length",
+    "topic": "Arrays and Their Methods",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] arr = {1, 2, 3, 4, 5};\nSystem.out.println(arr.length);</code>",
+    "options": [
+      "6",
+      "4",
+      "0",
+      "5"
+    ],
+    "answer": "D",
+    "explanation": "The array contains 5 elements, so arr.length returns 5."
+  },
+  {
+    "id": 108,
+    "level": "Intermediate",
+    "type": "Traversal",
+    "topic": "Arrays and Their Methods",
+    "question": "Which loop construct is most commonly used to traverse all elements of an array?",
+    "options": [
+      "single System.out.println statement",
+      "for loop",
+      "switch statement",
+      "if statement"
+    ],
+    "answer": "B",
+    "explanation": "A for loop, often using arr.length as the bound, is the standard way to iterate through every array element."
+  },
+  {
+    "id": 109,
+    "level": "Intermediate",
+    "type": "Error Identification",
+    "topic": "Arrays and Their Methods",
+    "question": "What is wrong with the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] arr = new int[5];\nSystem.out.println(arr[5]);</code>",
+    "options": [
+      "It causes an ArrayIndexOutOfBoundsException since valid indices are 0 to 4",
+      "It automatically resizes the array",
+      "It prints 0 successfully",
+      "It causes a compile-time error"
+    ],
+    "answer": "A",
+    "explanation": "An array of size 5 has valid indices 0 through 4; accessing index 5 is out of bounds and throws a runtime exception."
+  },
+  {
+    "id": 110,
+    "level": "Intermediate",
+    "type": "Default Values",
+    "topic": "Arrays and Their Methods",
+    "question": "What is the default value of each element in a newly created int array?",
+    "options": [
+      "Undefined/garbage value",
+      "1",
+      "null",
+      "0"
+    ],
+    "answer": "D",
+    "explanation": "Java automatically initializes numeric array elements to 0 (and boolean to false, object references to null)."
+  },
+  {
+    "id": 111,
+    "level": "Intermediate",
+    "type": "Multidimensional",
+    "topic": "Arrays and Their Methods",
+    "question": "Which of the following declares a basic two-dimensional array in Java?",
+    "options": [
+      "int matrix[3,3] = new int();",
+      "int[][] matrix = new int[3][3];",
+      "int[] matrix = new int[3,3];",
+      "int[3][3] matrix = new int();"
+    ],
+    "answer": "B",
+    "explanation": "A 2D array is declared using two sets of square brackets, as in int[][] matrix = new int[3][3];."
+  },
+  {
+    "id": 112,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Arrays and Their Methods",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] arr = {2, 4, 6, 8};\nint sum = 0;\nfor (int i = 0; i < arr.length; i++) {\n    sum += arr[i];\n}\nSystem.out.println(sum);</code>",
+    "options": [
+      "24",
+      "8",
+      "20",
+      "10"
+    ],
+    "answer": "C",
+    "explanation": "The loop adds all elements: 2 + 4 + 6 + 8 = 20."
+  },
+  {
+    "id": 113,
+    "level": "Intermediate",
+    "type": "Array Elements",
+    "topic": "Arrays and Their Methods",
+    "question": "What is the value of arr[3] in the following declaration?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] arr = {11, 22, 33, 44, 55};</code>",
+    "options": [
+      "55",
+      "44",
+      "11",
+      "33"
+    ],
+    "answer": "B",
+    "explanation": "Index 3 refers to the fourth element in the array (0-indexed), which is 44."
+  },
+  {
+    "id": 114,
+    "level": "Intermediate",
+    "type": "Basic Operations",
+    "topic": "Arrays and Their Methods",
+    "question": "Which of the following correctly updates the value at index 2 of an existing array 'arr' to 100?",
+    "options": [
+      "arr[2] = 100;",
+      "arr(2) = 100;",
+      "arr.set(2, 100);",
+      "arr.2 = 100;"
+    ],
+    "answer": "A",
+    "explanation": "Array elements are accessed and modified using square-bracket index notation, as in arr[2] = 100;."
+  },
+  {
+    "id": 115,
+    "level": "Intermediate",
+    "type": "Traversal Output",
+    "topic": "Arrays and Their Methods",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] arr = {1, 2, 3};\nfor (int i = 0; i < arr.length; i++) {\n    System.out.print(arr[i] + \" \");\n}</code>",
+    "options": [
+      "3 2 1",
+      "1 2 3 4",
+      "0 1 2",
+      "1 2 3"
+    ],
+    "answer": "D",
+    "explanation": "The loop prints each element from index 0 to length-1 in order, producing '1 2 3 '."
+  },
+  {
+    "id": 116,
+    "level": "Intermediate",
+    "type": "Array Length Method",
+    "topic": "Arrays and Their Methods",
+    "question": "How is the length of an array 'names' correctly accessed in Java?",
+    "options": [
+      "names.length()",
+      "length(names)",
+      "names.length",
+      "names.count"
+    ],
+    "answer": "C",
+    "explanation": "Unlike String's length() method, an array's length is accessed as a public field without parentheses."
+  },
+  {
+    "id": 117,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Arrays and Their Methods",
+    "question": "Which of the following statements about Java arrays is TRUE?",
+    "options": [
+      "Array indices in Java start from 1",
+      "Once created, the size of an array cannot be changed",
+      "Arrays automatically grow in size when new elements are added",
+      "Arrays can store elements of different data types by default"
+    ],
+    "answer": "B",
+    "explanation": "Java arrays have a fixed size once created; a new array must be created to hold more elements."
+  },
+  {
+    "id": 118,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Arrays and Their Methods",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] arr = new int[4];\nSystem.out.println(arr[0]);</code>",
+    "options": [
+      "Compilation error",
+      "Garbage value",
+      "null",
+      "0"
+    ],
+    "answer": "D",
+    "explanation": "An int array's elements are automatically initialized to 0, so arr[0] prints 0 even without explicit assignment."
+  },
+  {
+    "id": 119,
+    "level": "Intermediate",
+    "type": "Array Traversal",
+    "topic": "Arrays and Their Methods",
+    "question": "What is the output of the following code that finds the largest element?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] arr = {4, 9, 2, 7};\nint max = arr[0];\nfor (int i = 1; i < arr.length; i++) {\n    if (arr[i] > max)\n        max = arr[i];\n}\nSystem.out.println(max);</code>",
+    "options": [
+      "4",
+      "2",
+      "9",
+      "7"
+    ],
+    "answer": "C",
+    "explanation": "The loop compares each element with the current max; 9 is the largest value in the array, so it is printed."
+  },
+  {
+    "id": 120,
+    "level": "Intermediate",
+    "type": "Mixed: Identifiers+Types",
+    "topic": "Code and Output-Based Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int age = 25;\nString name = \"OAVS\";\nSystem.out.println(name + age);</code>",
+    "options": [
+      "OAVS25",
+      "25OAVS",
+      "OAVS + 25",
+      "Compilation error"
+    ],
+    "answer": "A",
+    "explanation": "When a String is concatenated with an int using +, Java converts the int to its string form and joins them: \"OAVS\" + 25 = \"OAVS25\"."
+  },
+  {
+    "id": 121,
+    "level": "Intermediate",
+    "type": "Mixed: Expressions+Control",
+    "topic": "Code and Output-Based Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int a = 4, b = 5;\nif ((a + b) % 2 == 0)\n    System.out.println(\"Even Sum\");\nelse\n    System.out.println(\"Odd Sum\");</code>",
+    "options": [
+      "9",
+      "Even Sum",
+      "0",
+      "Odd Sum"
+    ],
+    "answer": "D",
+    "explanation": "a + b = 9, and 9 % 2 = 1 (not 0), so the condition is false and \"Odd Sum\" is printed."
+  },
+  {
+    "id": 122,
+    "level": "Intermediate",
+    "type": "Mixed: Arrays+Loops",
+    "topic": "Code and Output-Based Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] arr = {3, 6, 9};\nint product = 1;\nfor (int i = 0; i < arr.length; i++)\n    product *= arr[i];\nSystem.out.println(product);</code>",
+    "options": [
+      "9",
+      "18",
+      "162",
+      "27"
+    ],
+    "answer": "C",
+    "explanation": "product accumulates as 1*3=3, 3*6=18, 18*9=162, so the final printed value is 162."
+  },
+  {
+    "id": 123,
+    "level": "Intermediate",
+    "type": "Mixed: switch+Arrays",
+    "topic": "Code and Output-Based Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] scores = {70, 85, 90};\nint s = scores[1];\nswitch (s / 10) {\n  case 8: System.out.println(\"Grade B\"); break;\n  case 9: System.out.println(\"Grade A\"); break;\n  default: System.out.println(\"Grade C\");\n}</code>",
+    "options": [
+      "Grade B",
+      "Grade A",
+      "85",
+      "Grade C"
+    ],
+    "answer": "A",
+    "explanation": "scores[1] is 85; 85 / 10 (integer division) equals 8, matching case 8 and printing \"Grade B\"."
+  },
+  {
+    "id": 124,
+    "level": "Intermediate",
+    "type": "Mixed: Data Types+Expressions",
+    "topic": "Code and Output-Based Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">double avg = (int) (15 / 4);\nSystem.out.println(avg);</code>",
+    "options": [
+      "3",
+      "3.0",
+      "4.0",
+      "3.75"
+    ],
+    "answer": "B",
+    "explanation": "15 / 4 performs integer division first, giving 3; casting to int keeps it 3, and assigning to a double prints 3.0."
+  },
+  {
+    "id": 125,
+    "level": "Intermediate",
+    "type": "Mixed: Nested if+Arrays",
+    "topic": "Code and Output-Based Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] nums = {12, 45, 7};\nif (nums[0] < nums[1]) {\n    if (nums[2] < nums[0])\n        System.out.println(\"X\");\n    else\n        System.out.println(\"Y\");\n} else {\n    System.out.println(\"Z\");\n}</code>",
+    "options": [
+      "No output",
+      "X",
+      "Z",
+      "Y"
+    ],
+    "answer": "B",
+    "explanation": "nums[0]=12 is less than nums[1]=45, so the outer if runs; nums[2]=7 is less than nums[0]=12, so the inner if is true and \"X\" is printed."
+  },
+  {
+    "id": 126,
+    "level": "Intermediate",
+    "type": "Mixed: Coding Convention+Types",
+    "topic": "Code and Output-Based Questions",
+    "question": "Which of the following variable declarations follows BOTH correct Java data type usage and naming conventions?",
+    "options": [
+      "int 95marks = totalMarks;",
+      "Int Total_Marks = 95;",
+      "int totalMarks = 95;",
+      "int TOTALMARKS = 95;"
+    ],
+    "answer": "C",
+    "explanation": "'int totalMarks = 95;' uses a valid lowercase primitive type keyword and a camelCase identifier as per convention."
+  },
+  {
+    "id": 127,
+    "level": "Intermediate",
+    "type": "Mixed: Loops+Expressions",
+    "topic": "Code and Output-Based Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int count = 0;\nfor (int i = 1; i <= 5; i++) {\n    if (i % 2 == 0)\n        count++;\n}\nSystem.out.println(count);</code>",
+    "options": [
+      "2",
+      "4",
+      "3",
+      "5"
+    ],
+    "answer": "A",
+    "explanation": "Among 1 to 5, the even numbers are 2 and 4, so count is incremented twice, resulting in 2."
+  },
+  {
+    "id": 128,
+    "level": "Intermediate",
+    "type": "Mixed: Arrays+Expressions",
+    "topic": "Code and Output-Based Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] arr = {10, 20, 30};\nSystem.out.println(arr[0] + arr[arr.length - 1]);</code>",
+    "options": [
+      "60",
+      "50",
+      "30",
+      "40"
+    ],
+    "answer": "D",
+    "explanation": "arr.length - 1 is 2, so arr[2] is 30; arr[0] is 10; 10 + 30 = 40."
+  },
+  {
+    "id": 129,
+    "level": "Intermediate",
+    "type": "Mixed: switch fall-through",
+    "topic": "Code and Output-Based Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int n = 2;\nswitch (n) {\n  case 1:\n  case 2:\n  case 3:\n    System.out.println(\"Low\");\n    break;\n  default:\n    System.out.println(\"High\");\n}</code>",
+    "options": [
+      "High",
+      "Low",
+      "1",
+      "3"
+    ],
+    "answer": "B",
+    "explanation": "Cases 1, 2, and 3 share the same block (grouped cases); since n is 2, it matches and prints \"Low\"."
+  },
+  {
+    "id": 130,
+    "level": "Intermediate",
+    "type": "Mixed: Data Types+Arrays",
+    "topic": "Code and Output-Based Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">char[] letters = {'J', 'A', 'V', 'A'};\nSystem.out.println(letters[1]);</code>",
+    "options": [
+      "J",
+      "V",
+      "letters[1]",
+      "A"
+    ],
+    "answer": "D",
+    "explanation": "Index 1 in the char array refers to the second element, which is 'A'."
+  },
+  {
+    "id": 131,
+    "level": "Intermediate",
+    "type": "Mixed: Expressions+if-else",
+    "topic": "Code and Output-Based Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int x = 3, y = 3;\nSystem.out.println(x == y ? \"Equal\" : \"Not Equal\");</code>",
+    "options": [
+      "Equal",
+      "true",
+      "3",
+      "Not Equal"
+    ],
+    "answer": "A",
+    "explanation": "x == y evaluates to true since both are 3, so the ternary operator returns \"Equal\"."
+  },
+  {
+    "id": 132,
+    "level": "Intermediate",
+    "type": "Mixed: Loops+Arrays",
+    "topic": "Code and Output-Based Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] arr = {5, 10, 15, 20, 25};\nint count = 0;\nfor (int i = 0; i < arr.length; i++) {\n    if (arr[i] > 10)\n        count++;\n}\nSystem.out.println(count);</code>",
+    "options": [
+      "4",
+      "2",
+      "3",
+      "5"
+    ],
+    "answer": "C",
+    "explanation": "Elements greater than 10 are 15, 20, and 25 — three elements in total, so count becomes 3."
+  },
+  {
+    "id": 133,
+    "level": "Intermediate",
+    "type": "Mixed: Identifiers+Expressions",
+    "topic": "Code and Output-Based Questions",
+    "question": "Which of the following code snippets contains an ERROR?",
+    "options": [
+      "int total1 = a + b;",
+      "int Total1 = a + b;",
+      "int total_1 = a + b;",
+      "int 1total = a + b;"
+    ],
+    "answer": "D",
+    "explanation": "'1total' is an invalid identifier because it begins with a digit, causing a compile-time error."
+  },
+  {
+    "id": 134,
+    "level": "Intermediate",
+    "type": "Mixed: Control+Data Types",
+    "topic": "Code and Output-Based Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">boolean isPass = true;\nint marks = 35;\nif (isPass && marks >= 40)\n    System.out.println(\"Pass\");\nelse\n    System.out.println(\"Fail\");</code>",
+    "options": [
+      "true",
+      "35",
+      "Fail",
+      "Pass"
+    ],
+    "answer": "C",
+    "explanation": "Although isPass is true, marks >= 40 is false (35 < 40); since && needs both true, the result is \"Fail\"."
+  },
+  {
+    "id": 135,
+    "level": "Intermediate",
+    "type": "Mixed: Arrays+switch",
+    "topic": "Code and Output-Based Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] vals = {1, 2, 3};\nfor (int v : vals) {\n    switch (v) {\n      case 2: System.out.print(\"Two\"); break;\n      default: System.out.print(\"-\");\n    }\n}</code>",
+    "options": [
+      "-Two-",
+      "Two--",
+      "--Two",
+      "TwoTwoTwo"
+    ],
+    "answer": "A",
+    "explanation": "The enhanced for loop visits 1, 2, 3 in order; only 2 matches case 2 ('Two'), while 1 and 3 fall to default ('-'), giving \"-Two-\"."
+  },
+  {
+    "id": 136,
+    "level": "Advanced",
+    "type": "Tricky: Type Promotion",
+    "topic": "Difficult & Tricky Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">byte b = 10;\nb = b + 5;\nSystem.out.println(b);</code>",
+    "options": [
+      "10",
+      "Compilation error",
+      "5",
+      "15"
+    ],
+    "answer": "B",
+    "explanation": "b + 5 is promoted to int automatically; assigning an int back to a byte without an explicit cast causes a compile-time error."
+  },
+  {
+    "id": 137,
+    "level": "Advanced",
+    "type": "Tricky: Operator Precedence",
+    "topic": "Difficult & Tricky Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int a = 5;\nint b = a++ + ++a;\nSystem.out.println(b);</code>",
+    "options": [
+      "13",
+      "12",
+      "11",
+      "10"
+    ],
+    "answer": "B",
+    "explanation": "a++ uses 5 then makes a=6; ++a makes a=7 then uses 7; so b = 5 + 7 = 12."
+  },
+  {
+    "id": 138,
+    "level": "Advanced",
+    "type": "Tricky: switch without break",
+    "topic": "Difficult & Tricky Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int x = 2;\nswitch (x) {\n  case 1: System.out.print(\"A\");\n  case 2: System.out.print(\"B\");\n  case 3: System.out.print(\"C\"); break;\n  case 4: System.out.print(\"D\");\n}</code>",
+    "options": [
+      "ABC",
+      "BCD",
+      "B",
+      "BC"
+    ],
+    "answer": "D",
+    "explanation": "Execution starts at case 2 ('B') and falls through into case 3 ('C'), then hits break, so output is \"BC\"."
+  },
+  {
+    "id": 139,
+    "level": "Advanced",
+    "type": "Tricky: Array Default",
+    "topic": "Difficult & Tricky Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">boolean[] flags = new boolean[3];\nSystem.out.println(flags[1]);</code>",
+    "options": [
+      "null",
+      "0",
+      "false",
+      "true"
+    ],
+    "answer": "C",
+    "explanation": "Boolean array elements default to false automatically when the array is created without explicit initialization."
+  },
+  {
+    "id": 140,
+    "level": "Advanced",
+    "type": "Tricky: Nested Ternary",
+    "topic": "Difficult & Tricky Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int n = 0;\nSystem.out.println(n > 0 ? \"Positive\" : n == 0 ? \"Zero\" : \"Negative\");</code>",
+    "options": [
+      "Zero",
+      "0",
+      "Positive",
+      "Negative"
+    ],
+    "answer": "A",
+    "explanation": "n > 0 is false, so the nested ternary checks n == 0, which is true, returning \"Zero\"."
+  },
+  {
+    "id": 141,
+    "level": "Advanced",
+    "type": "Tricky: Expression Evaluation",
+    "topic": "Difficult & Tricky Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int a = 5;\nint b = 2;\nSystem.out.println(a / b + a % b);</code>",
+    "options": [
+      "5",
+      "2.5",
+      "1",
+      "3"
+    ],
+    "answer": "D",
+    "explanation": "a / b (integer division) = 2, and a % b = 1; adding gives 2 + 1 = 3."
+  },
+  {
+    "id": 142,
+    "level": "Advanced",
+    "type": "Tricky: Identifier Rule",
+    "topic": "Difficult & Tricky Questions",
+    "question": "Which of the following is a legal Java identifier, despite looking unusual?",
+    "options": [
+      "$_value2",
+      "value#2",
+      "val ue2",
+      "2$value"
+    ],
+    "answer": "A",
+    "explanation": "'$_value2' starts with a dollar sign (allowed) followed by underscore, letters, and digits — all legal identifier characters."
+  },
+  {
+    "id": 143,
+    "level": "Advanced",
+    "type": "Tricky: Array Bounds",
+    "topic": "Difficult & Tricky Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] arr = {1, 2, 3};\nint i = arr.length;\nSystem.out.println(arr[i - 1]);</code>",
+    "options": [
+      "ArrayIndexOutOfBoundsException",
+      "Compilation error",
+      "3",
+      "0"
+    ],
+    "answer": "C",
+    "explanation": "arr.length is 3, so i-1 is 2, a valid index; arr[2] holds the value 3."
+  },
+  {
+    "id": 144,
+    "level": "Advanced",
+    "type": "Tricky: Logical Short-Circuit",
+    "topic": "Difficult & Tricky Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int x = 5;\nboolean result = (x > 10) && (x++ > 0);\nSystem.out.println(x);</code>",
+    "options": [
+      "6",
+      "5",
+      "10",
+      "11"
+    ],
+    "answer": "B",
+    "explanation": "Since x > 10 is false, the && operator short-circuits and never evaluates x++, so x remains 5."
+  },
+  {
+    "id": 145,
+    "level": "Advanced",
+    "type": "Tricky: Data Type Range",
+    "topic": "Difficult & Tricky Questions",
+    "question": "What is most likely to happen when a value larger than int's range is assigned directly to an int variable as a literal?",
+    "options": [
+      "The value is stored correctly without issue",
+      "Java automatically converts it to a long",
+      "The value silently wraps around at runtime",
+      "A compile-time error occurs because the literal is out of range"
+    ],
+    "answer": "D",
+    "explanation": "If an integer literal exceeds int's range and is not properly typed as long, the compiler flags it as an error."
+  },
+  {
+    "id": 146,
+    "level": "Advanced",
+    "type": "Tricky: Assertion-Reason",
+    "topic": "Difficult & Tricky Questions",
+    "question": "Assertion (A): The expression 5 / 2 evaluates to 2 in Java.\nReason (R): Division between two integers performs integer division, discarding the remainder.",
+    "options": [
+      "A is true but R is false",
+      "A is false but R is true",
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are false"
+    ],
+    "answer": "C",
+    "explanation": "5/2 does equal 2 in integer division, and this is precisely because Java truncates the fractional part in int/int division."
+  },
+  {
+    "id": 147,
+    "level": "Advanced",
+    "type": "Tricky: Coding Convention Edge Case",
+    "topic": "Difficult & Tricky Questions",
+    "question": "A programmer declares a variable as 'int Class1 = 10;'. Is this valid Java, and does it follow convention?",
+    "options": [
+      "It is valid Java syntax, but it violates standard naming convention since it isn't camelCase",
+      "It is valid and fully follows convention",
+      "It is invalid because identifiers cannot contain digits",
+      "It is invalid because 'Class1' resembles the keyword 'class'"
+    ],
+    "answer": "A",
+    "explanation": "'Class1' is a legal identifier (not the reserved word 'class'), but starting with uppercase breaks Java's variable naming convention."
+  },
+  {
+    "id": 148,
+    "level": "Advanced",
+    "type": "Tricky: Array Length vs Index",
+    "topic": "Difficult & Tricky Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] arr = new int[5];\nSystem.out.println(arr.length - arr[0]);</code>",
+    "options": [
+      "4",
+      "5",
+      "Compilation error",
+      "0"
+    ],
+    "answer": "B",
+    "explanation": "arr.length is 5 and arr[0] defaults to 0 (uninitialized int), so 5 - 0 = 5."
+  },
+  {
+    "id": 149,
+    "level": "Advanced",
+    "type": "Tricky: Multiple Conditions",
+    "topic": "Difficult & Tricky Questions",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int a = 10, b = 20, c = 30;\nif (a < b && b < c || a > c)\n    System.out.println(\"True Path\");\nelse\n    System.out.println(\"False Path\");</code>",
+    "options": [
+      "10",
+      "False Path",
+      "30",
+      "True Path"
+    ],
+    "answer": "D",
+    "explanation": "a < b (true) && b < c (true) evaluates to true; since one side of || is already true, the overall condition is true."
+  },
+  {
+    "id": 150,
+    "level": "Intermediate",
+    "type": "Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which of the following is a valid Java identifier commonly used for a loop counter?",
+    "options": [
+      "in dex",
+      "i-1",
+      "i",
+      "1i"
+    ],
+    "answer": "C",
+    "explanation": "A single letter like 'i' is a short but perfectly valid and common identifier for loop counters."
+  },
+  {
+    "id": 151,
+    "level": "Intermediate",
+    "type": "Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which primitive data type would best store a true/false flag indicating whether a student is present?",
+    "options": [
+      "byte",
+      "boolean",
+      "int",
+      "char"
+    ],
+    "answer": "B",
+    "explanation": "A presence flag has exactly two states, making boolean the natural and most appropriate choice."
+  },
+  {
+    "id": 152,
+    "level": "Intermediate",
+    "type": "Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "According to Java coding conventions, how should the method name 'get student marks' be correctly written?",
+    "options": [
+      "getStudentMarks",
+      "get_student_marks",
+      "GetStudentMarks",
+      "GETSTUDENTMARKS"
+    ],
+    "answer": "A",
+    "explanation": "Method names follow camelCase starting with a lowercase letter, so 'getStudentMarks' is correct."
+  },
+  {
+    "id": 153,
+    "level": "Intermediate",
+    "type": "Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int a = 8, b = 3;\nSystem.out.println(a - b * 2);</code>",
+    "options": [
+      "-2",
+      "2",
+      "13",
+      "10"
+    ],
+    "answer": "B",
+    "explanation": "Multiplication happens first: b*2=6, then a-6 = 8-6 = 2."
+  },
+  {
+    "id": 154,
+    "level": "Intermediate",
+    "type": "Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int marks = 55;\nif (marks >= 90) System.out.println(\"A\");\nelse if (marks >= 70) System.out.println(\"B\");\nelse if (marks >= 50) System.out.println(\"C\");\nelse System.out.println(\"D\");</code>",
+    "options": [
+      "A",
+      "B",
+      "D",
+      "C"
+    ],
+    "answer": "D",
+    "explanation": "55 fails the first two checks but satisfies marks >= 50, so \"C\" is printed."
+  },
+  {
+    "id": 155,
+    "level": "Intermediate",
+    "type": "Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "What is the output of the following switch code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">char c = 'Z';\nswitch (c) {\n  case 'X': System.out.println(1); break;\n  case 'Y': System.out.println(2); break;\n  default: System.out.println(3);\n}</code>",
+    "options": [
+      "Compilation error",
+      "2",
+      "3",
+      "1"
+    ],
+    "answer": "C",
+    "explanation": "Since 'Z' matches neither 'X' nor 'Y', the default case executes and prints 3."
+  },
+  {
+    "id": 156,
+    "level": "Intermediate",
+    "type": "Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int[] arr = {2, 4, 6};\nint total = 0;\nfor (int i = 0; i < arr.length; i++)\n    total = total + arr[i];\nSystem.out.println(total);</code>",
+    "options": [
+      "12",
+      "10",
+      "6",
+      "8"
+    ],
+    "answer": "A",
+    "explanation": "Summing all elements: 2 + 4 + 6 = 12."
+  },
+  {
+    "id": 157,
+    "level": "Intermediate",
+    "type": "Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which of the following statements about Java is correct regarding data type sizes?",
+    "options": [
+      "long occupies more memory than int",
+      "short occupies more memory than int",
+      "byte occupies more memory than short",
+      "double occupies less memory than float"
+    ],
+    "answer": "A",
+    "explanation": "long (8 bytes) is larger than int (4 bytes); the other listed comparisons are all false."
+  },
+  {
+    "id": 158,
+    "level": "Intermediate",
+    "type": "Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "What is the output of the following code?\n<code style=\"display:block;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85em;line-height:1.5;margin:8px 0;white-space:pre-wrap\">int x = 4;\nx *= x + 1;\nSystem.out.println(x);</code>",
+    "options": [
+      "5",
+      "16",
+      "17",
+      "20"
+    ],
+    "answer": "D",
+    "explanation": "x *= x + 1 means x = x * (x+1) = 4 * 5 = 20 (the right side is fully evaluated before multiplying)."
+  },
+  {
+    "id": 159,
+    "level": "Intermediate",
+    "type": "Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which of the following is TRUE about array indices in Java?",
+    "options": [
+      "Array indices start from 1 by default",
+      "Array indices can be negative",
+      "The last valid index of an array is (length - 1)",
+      "The last valid index equals the array length"
+    ],
+    "answer": "C",
+    "explanation": "Since indexing starts at 0, the final valid index of an array is always one less than its length."
+  }
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

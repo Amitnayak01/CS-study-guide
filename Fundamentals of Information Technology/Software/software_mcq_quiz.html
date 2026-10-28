@@ -1,0 +1,2739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+@media(max-width:1024px){body{font-size:15px}.q-text{font-size:16px}.option-btn{font-size:14px}.all-q-text{font-size:15px}.all-opt{font-size:14px}.result-stat .val{font-size:28px}.result-title{font-size:26px}}
+@media(max-width:768px){body{font-size:14px}.navbar{padding:0 12px}.logo{font-size:14px}.nav-row1{height:48px;gap:8px}.progress-label{font-size:9px}#timer-display{font-size:11px;padding:3px 8px}.stat-pill{font-size:11px;padding:3px 8px}.filter-select{font-size:12px;min-width:80px}.nav-btn{font-size:13px;padding:8px 14px}.nav-btn svg{width:14px;height:14px}.q-number{font-size:11px}.badge{font-size:10px;padding:2px 7px}.q-body{padding:16px 14px 12px}.q-text{font-size:15px;line-height:1.5}.option-btn{font-size:13.5px;padding:10px 14px;gap:10px}.option-label{width:22px;height:22px;font-size:11px}.exp-body{font-size:13px}.exp-answer{font-size:13px}.show-exp-btn{font-size:12px}.q-counter{font-size:12px}.skip-btn{font-size:11px}.kbd-hint{font-size:10px}.jump-btn{width:32px;height:32px;font-size:11px}.result-grid{grid-template-columns:repeat(3,1fr)}.result-title{font-size:24px}.result-msg{font-size:14px}.result-stat .val{font-size:26px}.result-stat .lbl{font-size:11px}.review-q{font-size:14px}.review-opt{font-size:12.5px}.review-exp{font-size:12px}.all-q-text{font-size:14.5px}.all-opt{font-size:13.5px;padding:9px 12px}.all-exp{font-size:12.5px}.rfbtn{font-size:12px;padding:6px 12px}#app{padding:14px 12px 60px}}
+@media(max-width:480px){body{font-size:13px}.navbar{padding:0 10px}.logo{font-size:13px;letter-spacing:0}.nav-row1{height:44px;gap:6px}.progress-label{display:none}#timer-display{font-size:10px;padding:2px 7px}.icon-btn{width:30px;height:30px}.icon-btn svg{width:15px;height:15px}.nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}.stat-pill{font-size:10px;padding:2px 7px}.nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}.filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}.nav-filter-btns{width:100%;gap:4px}.nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}.card-header{padding:8px 10px;gap:5px}.q-number{font-size:10px;padding:2px 8px}.badge{font-size:9px;padding:2px 6px}.bookmark-btn{width:24px;height:24px}.q-body{padding:12px 10px 10px}.q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}.option-btn{font-size:12.5px;padding:9px 10px;gap:8px}.option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}.option-icon{font-size:14px}.show-exp-btn{font-size:11px;margin:8px 12px}.exp-header{font-size:12px;padding:8px 12px}.exp-body{font-size:12px;padding:10px 12px}.exp-answer{font-size:12.5px}.nav-row{gap:6px;margin-top:10px}.nav-btn{font-size:12px;padding:8px 12px;gap:4px}.nav-btn svg{width:13px;height:13px}.q-counter{font-size:11px}.skip-btn{font-size:10px}.kbd-hint{display:none}.jump-btn{width:28px;height:28px;font-size:10px}.jump-label{font-size:11px}.jump-legend{font-size:10px;gap:8px}.result-hero{padding:20px 14px 16px}.result-emoji{font-size:40px}.result-title{font-size:20px}.result-msg{font-size:13px}.result-grid{grid-template-columns:repeat(2,1fr)}.result-stat{padding:14px 10px}.result-stat .val{font-size:22px}.result-stat .lbl{font-size:10px}.result-actions{padding:12px;gap:8px}.review-q{font-size:13px}.review-opt{font-size:12px;padding:6px 10px}.review-exp{font-size:11.5px;padding:8px 10px}.rfbtn{font-size:11px;padding:5px 10px}.section-title{font-size:17px}.back-link{font-size:12px}.all-q-text{font-size:13px}.all-opt{font-size:12.5px;padding:8px 10px;gap:8px}.all-opt-lbl{width:20px;height:20px;font-size:10px}.all-exp{font-size:11.5px;padding:8px 10px}.all-exp-ans{font-size:12px}#app{padding:10px 8px 60px}}
+@media(max-width:360px){.logo{font-size:12px}.q-text{font-size:13px}.option-btn{font-size:12px;padding:8px 9px}.nav-btn{font-size:11px;padding:7px 10px}.filter-select{font-size:10px}.result-stat .val{font-size:20px}.result-title{font-size:18px}}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+<div id="app">
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+</div>
+<script>
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Intro to Programming",
+    "question": "What is a computer program?",
+    "options": [
+      "A set of instructions for hardware",
+      "A set of instructions that directs a computer to perform specific tasks",
+      "A type of hardware component",
+      "An operating system feature"
+    ],
+    "answer": "B",
+    "explanation": "A computer program is a set of coded instructions that directs a computer to perform specific operations or solve a problem."
+  },
+  {
+    "id": 2,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Flowchart",
+    "question": "A flowchart is a:",
+    "options": [
+      "Programming language",
+      "Diagrammatic representation of an algorithm",
+      "Type of database",
+      "Hardware circuit diagram"
+    ],
+    "answer": "B",
+    "explanation": "A flowchart is a graphical/pictorial representation of an algorithm using standard symbols."
+  },
+  {
+    "id": 3,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Algorithm",
+    "question": "Which of the following is NOT a property of a good algorithm?",
+    "options": [
+      "Finiteness",
+      "Definiteness",
+      "Infinity",
+      "Effectiveness"
+    ],
+    "answer": "C",
+    "explanation": "A good algorithm must be finite, definite, effective, and have proper input/output. Infinity is NOT a property."
+  },
+  {
+    "id": 4,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "System Software",
+    "question": "Which of the following is system software?",
+    "options": [
+      "MS Word",
+      "Operating System",
+      "Tally",
+      "VLC Player"
+    ],
+    "answer": "B",
+    "explanation": "System software includes OS, device drivers, utilities. MS Word, VLC, Tally are application software."
+  },
+  {
+    "id": 5,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "System Software",
+    "question": "System software is defined as:",
+    "options": [
+      "Software used for business applications",
+      "Software that manages hardware and provides platform for application software",
+      "Software used for gaming",
+      "Software that connects the internet"
+    ],
+    "answer": "B",
+    "explanation": "System software manages and controls hardware resources and provides a platform for running application software."
+  },
+  {
+    "id": 6,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Application Software",
+    "question": "Application software is designed to:",
+    "options": [
+      "Manage computer hardware",
+      "Perform specific tasks for the end user",
+      "Control the operating system",
+      "Compile programs"
+    ],
+    "answer": "B",
+    "explanation": "Application software performs specific tasks directly for end users — word processing, spreadsheets, browsing, etc."
+  },
+  {
+    "id": 7,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Firmware",
+    "question": "Firmware is stored in:",
+    "options": [
+      "RAM",
+      "Hard Disk",
+      "ROM/Flash memory",
+      "Cache memory"
+    ],
+    "answer": "C",
+    "explanation": "Firmware is stored in non-volatile memory (ROM or Flash). It provides low-level control for hardware devices."
+  },
+  {
+    "id": 8,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Assembly Language",
+    "question": "Assembly language uses _____ to represent machine instructions.",
+    "options": [
+      "Binary digits",
+      "Hexadecimal only",
+      "Mnemonics",
+      "English sentences"
+    ],
+    "answer": "C",
+    "explanation": "Assembly language uses mnemonics (symbolic codes like MOV, ADD, SUB) instead of binary 0s and 1s."
+  },
+  {
+    "id": 9,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "High-Level Language",
+    "question": "High-level languages are closer to:",
+    "options": [
+      "Machine language",
+      "Assembly language",
+      "Human language",
+      "Firmware"
+    ],
+    "answer": "C",
+    "explanation": "High-level languages (Python, Java, C++) use English-like syntax and are closer to human language."
+  },
+  {
+    "id": 10,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Stored Program Concept",
+    "question": "The stored program concept was proposed by:",
+    "options": [
+      "Charles Babbage",
+      "Alan Turing",
+      "John von Neumann",
+      "Dennis Ritchie"
+    ],
+    "answer": "C",
+    "explanation": "John von Neumann proposed the stored program concept — program instructions and data stored in the same memory."
+  },
+  {
+    "id": 11,
+    "level": "Basic",
+    "type": "Fill-Blank",
+    "topic": "MS Office",
+    "question": "The default file extension for MS Word 2016 and later is _____.",
+    "options": [
+      ".doc",
+      ".docx",
+      ".txt",
+      ".odt"
+    ],
+    "answer": "B",
+    "explanation": "MS Word 2007 and later uses .docx (Office Open XML format). The older .doc was used in Word"
+  },
+  {
+    "id": 12,
+    "level": "Basic",
+    "type": "Fill-Blank",
+    "topic": "MS Office",
+    "question": "MS Excel is used primarily for _____.",
+    "options": [
+      "Word processing",
+      "Presentations",
+      "Spreadsheet and data analysis",
+      "Database management"
+    ],
+    "answer": "C",
+    "explanation": "MS Excel is a spreadsheet application used for data entry, calculations, charts, and data analysis."
+  },
+  {
+    "id": 13,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Flowchart",
+    "question": "Which symbol is used for a decision in a flowchart?",
+    "options": [
+      "Rectangle",
+      "Oval/Ellipse",
+      "Diamond",
+      "Parallelogram"
+    ],
+    "answer": "C",
+    "explanation": "The diamond (rhombus) shape represents a decision (Yes/No or True/False) in a flowchart."
+  },
+  {
+    "id": 14,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Flowchart",
+    "question": "The oval/ellipse symbol in a flowchart represents:",
+    "options": [
+      "Process",
+      "Decision",
+      "Input/Output",
+      "Start/Stop (Terminal)"
+    ],
+    "answer": "D",
+    "explanation": "The oval or ellipse symbol represents the terminal (Start or Stop) in a flowchart."
+  },
+  {
+    "id": 15,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Flowchart",
+    "question": "The parallelogram symbol in a flowchart represents:",
+    "options": [
+      "Process",
+      "Input/Output",
+      "Decision",
+      "Connector"
+    ],
+    "answer": "B",
+    "explanation": "The parallelogram represents Input or Output operations in a flowchart."
+  },
+  {
+    "id": 16,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Algorithm",
+    "question": "An algorithm is:",
+    "options": [
+      "A programming language",
+      "A step-by-step procedure to solve a problem",
+      "A flowchart only",
+      "A binary code"
+    ],
+    "answer": "B",
+    "explanation": "An algorithm is a finite, well-defined, step-by-step procedure to solve a particular problem."
+  },
+  {
+    "id": 17,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Machine Language",
+    "question": "Machine language uses:",
+    "options": [
+      "Mnemonics",
+      "English words",
+      "Binary digits (0s and 1s)",
+      "Symbols only"
+    ],
+    "answer": "C",
+    "explanation": "Machine language (1st generation) uses binary digits (0s and 1s) and is directly understood by the CPU."
+  },
+  {
+    "id": 18,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "MS Office",
+    "question": "Which MS Office application is used for presentations?",
+    "options": [
+      "MS Word",
+      "MS Excel",
+      "MS Access",
+      "MS PowerPoint"
+    ],
+    "answer": "D",
+    "explanation": "MS PowerPoint is the presentation software in the MS Office suite."
+  },
+  {
+    "id": 19,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "MS Office",
+    "question": "MS Access is a:",
+    "options": [
+      "Spreadsheet application",
+      "Word processor",
+      "Database management system",
+      "Presentation tool"
+    ],
+    "answer": "C",
+    "explanation": "MS Access is a relational database management system (RDBMS) included in MS Office."
+  },
+  {
+    "id": 20,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Firmware",
+    "question": "BIOS is an example of:",
+    "options": [
+      "Application software",
+      "System software",
+      "Firmware",
+      "Freeware"
+    ],
+    "answer": "C",
+    "explanation": "BIOS (Basic Input/Output System) is firmware stored on a chip on the motherboard."
+  },
+  {
+    "id": 21,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Algorithm",
+    "question": "Pseudo-code is:",
+    "options": [
+      "A programming language like C",
+      "An informal high-level description of algorithm logic",
+      "Binary code",
+      "A type of flowchart"
+    ],
+    "answer": "B",
+    "explanation": "Pseudo-code is an informal, human-readable description of an algorithm using plain English constructs."
+  },
+  {
+    "id": 22,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "MS Office",
+    "question": "Which of the following is NOT part of the MS Office suite?",
+    "options": [
+      "MS Word",
+      "MS Excel",
+      "Adobe Photoshop",
+      "MS PowerPoint"
+    ],
+    "answer": "C",
+    "explanation": "Adobe Photoshop is a product of Adobe Inc., not Microsoft."
+  },
+  {
+    "id": 23,
+    "level": "Basic",
+    "type": "Fill-Blank",
+    "topic": "Algorithm",
+    "question": "The _____ of an algorithm refers to its ability to produce the correct output.",
+    "options": [
+      "Efficiency",
+      "Correctness",
+      "Finiteness",
+      "Input"
+    ],
+    "answer": "B",
+    "explanation": "Correctness means the algorithm must produce the right output for all valid inputs."
+  },
+  {
+    "id": 24,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Machine Language",
+    "question": "Machine language belongs to which generation of programming languages?",
+    "options": [
+      "1GL",
+      "2GL",
+      "3GL",
+      "4GL"
+    ],
+    "answer": "A",
+    "explanation": "Machine language (binary: 0s and 1s) is the first generation language (1GL)."
+  },
+  {
+    "id": 25,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Assembly Language",
+    "question": "Assembly language belongs to which generation?",
+    "options": [
+      "1GL",
+      "2GL",
+      "3GL",
+      "5GL"
+    ],
+    "answer": "B",
+    "explanation": "Assembly language (using mnemonics) is the second generation language (2GL)."
+  },
+  {
+    "id": 26,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "MS Office",
+    "question": "The extension of an MS PowerPoint file (2007 and later) is:",
+    "options": [
+      ".ppt",
+      ".pptx",
+      ".ppsx",
+      ".pot"
+    ],
+    "answer": "B",
+    "explanation": ".pptx is the default extension for PowerPoint presentations in Office 2007 and later."
+  },
+  {
+    "id": 27,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "MS Office",
+    "question": "MS Outlook is primarily used for:",
+    "options": [
+      "Spreadsheets",
+      "Email and calendar management",
+      "Presentations",
+      "Database management"
+    ],
+    "answer": "B",
+    "explanation": "MS Outlook handles email, calendar events, contacts, and tasks."
+  },
+  {
+    "id": 28,
+    "level": "Basic",
+    "type": "Fill-Blank",
+    "topic": "MS Office",
+    "question": "In MS Excel, the formula to add a range of cells A1 to A10 is _____.",
+    "options": [
+      "=ADD(A1:A10)",
+      "=SUM(A1:A10)",
+      "=TOTAL(A1:A10)",
+      "=PLUS(A1:A10)"
+    ],
+    "answer": "B",
+    "explanation": "=SUM(A1:A10) is the correct Excel formula to add all values in the range A1 to A10."
+  },
+  {
+    "id": 29,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "High-Level Language",
+    "question": "Which was the first high-level programming language?",
+    "options": [
+      "COBOL",
+      "FORTRAN",
+      "BASIC",
+      "Pascal"
+    ],
+    "answer": "B",
+    "explanation": "FORTRAN (FORmula TRANslation), developed by IBM in 1957, is the first high-level programming language."
+  },
+  {
+    "id": 30,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Software",
+    "question": "What distinguishes hardware from software?",
+    "options": [
+      "Hardware is intangible; software is tangible",
+      "Hardware is tangible physical components; software is intangible programs and data",
+      "They are identical",
+      "Hardware needs no electricity"
+    ],
+    "answer": "B",
+    "explanation": "Hardware = physical tangible components (CPU, RAM). Software = intangible programs and instructions."
+  },
+  {
+    "id": 31,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Software",
+    "question": "Which of the following is an example of utility software?",
+    "options": [
+      "MS Word",
+      "Disk Defragmenter",
+      "Mozilla Firefox",
+      "Photoshop"
+    ],
+    "answer": "B",
+    "explanation": "Utility software (Disk Defragmenter, Antivirus, File Manager) maintains and optimizes the system."
+  },
+  {
+    "id": 32,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "MS Office",
+    "question": "The shortcut key to create a new slide in MS PowerPoint is:",
+    "options": [
+      "Ctrl+N",
+      "Ctrl+M",
+      "Ctrl+S",
+      "Ctrl+T"
+    ],
+    "answer": "B",
+    "explanation": "Ctrl+M inserts a new slide in MS PowerPoint. Ctrl+N creates a new presentation."
+  },
+  {
+    "id": 33,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Flowchart",
+    "question": "The connector symbol in a flowchart (small circle) is used to:",
+    "options": [
+      "Represent a decision",
+      "Connect two parts of a flowchart on the same or different pages",
+      "Mark the start",
+      "Represent input"
+    ],
+    "answer": "B",
+    "explanation": "The small circle (connector) links different parts of a flowchart, especially across pages."
+  },
+  {
+    "id": 34,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Algorithm",
+    "question": "What does 'debugging' mean?",
+    "options": [
+      "Writing a program",
+      "Finding and fixing errors in a program",
+      "Compiling a program",
+      "Designing an algorithm"
+    ],
+    "answer": "B",
+    "explanation": "Debugging is the process of finding, analyzing, and fixing errors (bugs) in a program."
+  },
+  {
+    "id": 35,
+    "level": "Basic",
+    "type": "Fill-Blank",
+    "topic": "MS Office",
+    "question": "The rectangle symbol in a flowchart represents a _____.",
+    "options": [
+      "Decision",
+      "Process/Operation",
+      "Start/Stop",
+      "Input/Output"
+    ],
+    "answer": "B",
+    "explanation": "The rectangle represents a Process or Operation step (e.g., Compute, Set, Calculate)."
+  },
+  {
+    "id": 36,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "MS Office",
+    "question": "Which shortcut key in MS Word is used for 'Undo'?",
+    "options": [
+      "Ctrl+Y",
+      "Ctrl+Z",
+      "Ctrl+X",
+      "Ctrl+U"
+    ],
+    "answer": "B",
+    "explanation": "Ctrl+Z is the Undo shortcut across all MS Office applications."
+  },
+  {
+    "id": 37,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "MS Office",
+    "question": "Which shortcut key is used for 'Redo' in MS Office?",
+    "options": [
+      "Ctrl+Z",
+      "Ctrl+R",
+      "Ctrl+Y",
+      "Ctrl+D"
+    ],
+    "answer": "C",
+    "explanation": "Ctrl+Y performs the Redo operation in MS Office applications."
+  },
+  {
+    "id": 38,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Software Types",
+    "question": "Which generation of software uses natural language processing?",
+    "options": [
+      "1st generation",
+      "2nd generation",
+      "3rd generation",
+      "5th generation"
+    ],
+    "answer": "D",
+    "explanation": "5th generation software uses AI and natural language processing, such as voice assistants and expert systems."
+  },
+  {
+    "id": 39,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Algorithm",
+    "question": "The number of comparisons in binary search for n=16 elements (worst case) is:",
+    "options": [
+      "4",
+      "5",
+      "8",
+      "16"
+    ],
+    "answer": "B",
+    "explanation": "Binary search worst case = log2(n) comparisons. log2(16) = 4... actually log2(16)+1 = 5 comparisons. Correct: 5."
+  },
+  {
+    "id": 40,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "MS Office",
+    "question": "Which tab in MS Word contains the 'Page Margins' option?",
+    "options": [
+      "Home",
+      "Insert",
+      "Layout/Page Layout",
+      "Review"
+    ],
+    "answer": "C",
+    "explanation": "Page margins are set under the Layout (or Page Layout) tab in MS Word."
+  },
+  {
+    "id": 41,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Software Types",
+    "question": "Which of the following is NOT a type of system software?",
+    "options": [
+      "Operating System",
+      "Device Driver",
+      "Compiler",
+      "MS Excel"
+    ],
+    "answer": "D",
+    "explanation": "MS Excel is application software. OS, device drivers, and compilers are all system software."
+  },
+  {
+    "id": 42,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Algorithm",
+    "question": "Which symbol represents a 'connector on a different page' in a flowchart?",
+    "options": [
+      "Circle",
+      "Pentagon",
+      "Rectangle",
+      "Diamond"
+    ],
+    "answer": "B",
+    "explanation": "An off-page connector is represented by a pentagon (house shape) or a specific off-page connector symbol."
+  },
+  {
+    "id": 43,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "MS Office",
+    "question": "What is the maximum number of rows in MS Excel 2016?",
+    "options": [
+      "65,536",
+      "1,048,576",
+      "524,288",
+      "2,097,152"
+    ],
+    "answer": "B",
+    "explanation": "MS Excel 2007 and later supports 1,048,576 rows and 16,384 columns per worksheet."
+  },
+  {
+    "id": 44,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "MS Office",
+    "question": "Which key is used to start a presentation (slideshow) from the beginning in MS PowerPoint?",
+    "options": [
+      "F1",
+      "F5",
+      "F7",
+      "F10"
+    ],
+    "answer": "B",
+    "explanation": "F5 starts the slideshow from the first slide. Shift+F5 starts from the current slide."
+  },
+  {
+    "id": 45,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Software",
+    "question": "Which of the following best defines 'software'?",
+    "options": [
+      "Physical parts of a computer",
+      "A set of programs, data, and instructions that tell a computer what to do",
+      "The monitor and keyboard",
+      "The power supply unit"
+    ],
+    "answer": "B",
+    "explanation": "Software is the collection of programs, data, and instructions that direct the hardware to perform tasks. It is intangible."
+  },
+  {
+    "id": 46,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Algorithm",
+    "question": "Which of the following is the correct sequence of steps in problem-solving using a computer? fi fi fi",
+    "options": [
+      "Coding Algorithm Flowchart Testing",
+      "Problem Definition Algorithm Flowchart Coding Testing",
+      "Flowchart Problem Coding Algorithm",
+      "Testing Coding Algorithm Flowchart"
+    ],
+    "answer": "B",
+    "explanation": "fi fi fi fi fi fi fi fi fi fi fi fi fi fi fi The correct sequence is: Problem Definition Algorithm Flowchart Coding Testing Documentation."
+  },
+  {
+    "id": 47,
+    "level": "Basic",
+    "type": "Fill-Blank",
+    "topic": "MS Office",
+    "question": "In MS Word, the shortcut key to insert a page break is _____.",
+    "options": [
+      "Ctrl+Enter",
+      "Ctrl+P",
+      "Ctrl+B",
+      "Ctrl+N"
+    ],
+    "answer": "A",
+    "explanation": "Ctrl+Enter inserts a manual page break in MS Word, forcing the next content to start on a new page."
+  },
+  {
+    "id": 48,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "High-Level Language",
+    "question": "Which of the following is a scripting language used for web development?",
+    "options": [
+      "C",
+      "FORTRAN",
+      "PHP",
+      "COBOL"
+    ],
+    "answer": "C",
+    "explanation": "PHP (Hypertext Preprocessor) is a popular server-side scripting language used for web development."
+  },
+  {
+    "id": 49,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "System Software",
+    "question": "Which of the following is an example of an open-source operating system?",
+    "options": [
+      "Windows 11",
+      "macOS",
+      "Linux",
+      "MS-DOS"
+    ],
+    "answer": "C",
+    "explanation": "Linux is a free, open-source operating system kernel. Its distributions (Ubuntu, Fedora) are widely used."
+  },
+  {
+    "id": 50,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Flowchart",
+    "question": "In a flowchart, which symbol is used to represent a process that is defined elsewhere (a sub-process)?",
+    "options": [
+      "Diamond",
+      "Rectangle with double vertical lines (Pre-defined process)",
+      "Oval",
+      "Parallelogram"
+    ],
+    "answer": "B",
+    "explanation": "The pre-defined process symbol (rectangle with double vertical bars on sides) represents a named process defined elsewhere, such as a subroutine or function."
+  },
+  {
+    "id": 51,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Assembly Language",
+    "question": "A mnemonic is:",
+    "options": [
+      "A type of hardware register",
+      "A memory-aiding abbreviation used in assembly language (e.g., MOV, ADD)",
+      "A type of compiler",
+      "A machine language instruction"
+    ],
+    "answer": "B",
+    "explanation": "A mnemonic is a short, human-readable abbreviation for a machine instruction used in assembly language, e.g., MOV for move, ADD for addition."
+  },
+  {
+    "id": 52,
+    "level": "Basic",
+    "type": "Fill-Blank",
+    "topic": "MS Office",
+    "question": "The default file extension for MS Excel 2007 and later is _____.",
+    "options": [
+      ".xls",
+      ".xlsx",
+      ".csv",
+      ".xlsm"
+    ],
+    "answer": "B",
+    "explanation": ".xlsx is the default Excel format from Office 2007 onwards (Open XML). .xls was the older Excel"
+  },
+  {
+    "id": 53,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Stored Program Concept",
+    "question": "In a computer system, which component stores currently running programs and data?",
+    "options": [
+      "Hard Disk Drive",
+      "ROM",
+      "RAM (Primary Memory)",
+      "Cache only"
+    ],
+    "answer": "C",
+    "explanation": "RAM (Random Access Memory) is the primary/main memory that stores currently running programs and data. It is volatile — data is lost when power is off."
+  },
+  {
+    "id": 54,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Software Types",
+    "question": "Which of the following best describes middleware?",
+    "options": [
+      "Software between OS and hardware",
+      "Software that connects different applications or services",
+      "Software used in the middle of programming",
+      "A type of firmware"
+    ],
+    "answer": "B",
+    "explanation": "Middleware bridges different applications/services, enabling communication and data management."
+  },
+  {
+    "id": 55,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Language Translator",
+    "question": "An assembler translates:",
+    "options": [
+      "High-level language to machine code",
+      "Assembly language to machine code",
+      "Machine code to assembly",
+      "High-level to assembly"
+    ],
+    "answer": "B",
+    "explanation": "An assembler translates assembly language (mnemonics) into machine language (binary code)."
+  },
+  {
+    "id": 56,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Language Translator",
+    "question": "A compiler:",
+    "options": [
+      "Translates one line at a time",
+      "Translates the entire program at once before execution",
+      "Is used only for assembly language",
+      "Is slower than interpreter for repeated execution"
+    ],
+    "answer": "B",
+    "explanation": "A compiler translates the entire source code into object code at once. Execution is then fast."
+  },
+  {
+    "id": 57,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Language Translator",
+    "question": "An interpreter:",
+    "options": [
+      "Translates the whole program before running",
+      "Translates and executes one line at a time",
+      "Generates object code",
+      "Is faster than a compiler for repeated execution"
+    ],
+    "answer": "B",
+    "explanation": "An interpreter translates and executes the program line by line — slower for repeated runs but easier to debug."
+  },
+  {
+    "id": 58,
+    "level": "Intermediate",
+    "type": "Statement",
+    "topic": "Stored Program Concept",
+    "question": "Consider: (I) Program and data are stored in the same memory. (II) CPU fetches, decodes and executes instructions from memory. Which is/are correct?",
+    "options": [
+      "Only I",
+      "Only II",
+      "Both I and II",
+      "Neither I nor II"
+    ],
+    "answer": "C",
+    "explanation": "Both are correct. The stored program concept (von Neumann) stores program+data in main memory; CPU fetch-decode-executes."
+  },
+  {
+    "id": 59,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Algorithm",
+    "question": "What is the time complexity of a linear search algorithm?",
+    "options": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n^2)"
+    ],
+    "answer": "C",
+    "explanation": "Linear search examines each element one by one: O(n) time complexity."
+  },
+  {
+    "id": 60,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Software Types",
+    "question": "Which of the following is general-purpose application software?",
+    "options": [
+      "Payroll software",
+      "Airline reservation system",
+      "MS Word",
+      "Inventory management system"
+    ],
+    "answer": "C",
+    "explanation": "General-purpose software (MS Word, Excel) serves a wide range of users."
+  },
+  {
+    "id": 61,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "High-Level Language",
+    "question": "Which of the following is a 4th generation language (4GL)?",
+    "options": [
+      "Assembly",
+      "FORTRAN",
+      "SQL",
+      "C++"
+    ],
+    "answer": "C",
+    "explanation": "SQL is a 4GL — non-procedural, closer to natural language. FORTRAN is 3GL; Assembly is 2GL."
+  },
+  {
+    "id": 62,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "MS Office",
+    "question": "Which shortcut key is used to save a file in MS Office?",
+    "options": [
+      "Ctrl+P",
+      "Ctrl+S",
+      "Ctrl+X",
+      "Ctrl+Z"
+    ],
+    "answer": "B",
+    "explanation": "Ctrl+S is the universal shortcut to save a file in all MS Office applications."
+  },
+  {
+    "id": 63,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "MS Office",
+    "question": "The function VLOOKUP in MS Excel is used to:",
+    "options": [
+      "Add values vertically",
+      "Look up a value in the leftmost column of a table",
+      "Format cells",
+      "Sort data"
+    ],
+    "answer": "B",
+    "explanation": "VLOOKUP searches for a value in the first column of a range and returns a value in the same row."
+  },
+  {
+    "id": 64,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Flowchart",
+    "question": "A system flowchart shows:",
+    "options": [
+      "Detailed logic of a single program",
+      "Overall data flow through an entire system",
+      "Only input/output operations",
+      "Source code logic"
+    ],
+    "answer": "B",
+    "explanation": "A system flowchart shows overall data flow through an entire system without implementation details."
+  },
+  {
+    "id": 65,
+    "level": "Intermediate",
+    "type": "Assertion-Reason",
+    "topic": "Software",
+    "question": "Assertion (A): Open-source software can be freely used, modified, and distributed. Reason (R): Open-source software has no source code. Choose the correct option:",
+    "options": [
+      "Both A and R are true, R explains A",
+      "A is true but R is false",
+      "Both A and R are false",
+      "A is false but R is true"
+    ],
+    "answer": "B",
+    "explanation": "Open-source CAN be freely used/modified/distributed (A true). But it DOES have source code — R is false."
+  },
+  {
+    "id": 66,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Software Types",
+    "question": "Freeware is:",
+    "options": [
+      "Free software with source code",
+      "Software available free of cost but without source code",
+      "Open-source software",
+      "Trial software"
+    ],
+    "answer": "B",
+    "explanation": "Freeware is available free of cost, but source code is NOT provided. Examples: Skype, Adobe Reader."
+  },
+  {
+    "id": 67,
+    "level": "Intermediate",
+    "type": "Match",
+    "topic": "Language Translator",
+    "question": "Match the translator with the language: P. Assembler Q. Compiler R. Interpreter 1. Python 2. Assembly 3. C program",
+    "options": [
+      "P-2, Q-3, R-1",
+      "P-1, Q-2, R-3",
+      "P-3, Q-1, R-2",
+      "P-2, Q-1, R-3"
+    ],
+    "answer": "A",
+    "explanation": "Assembler: Assembly(2); Compiler: C(3); Interpreter: Python(1)."
+  },
+  {
+    "id": 68,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Algorithm",
+    "question": "Which data structure is used in Breadth First Search (BFS)?",
+    "options": [
+      "Stack",
+      "Queue",
+      "Tree",
+      "Graph only"
+    ],
+    "answer": "B",
+    "explanation": "BFS uses a Queue (FIFO) to explore nodes level by level. DFS uses a Stack."
+  },
+  {
+    "id": 69,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "MS Office",
+    "question": "In MS PowerPoint, the 'Slide Transition' feature controls:",
+    "options": [
+      "Font style changes",
+      "Animation within a single slide",
+      "Movement from one slide to another",
+      "Adding background music"
+    ],
+    "answer": "C",
+    "explanation": "Slide Transition controls how one slide changes to the next during a presentation."
+  },
+  {
+    "id": 70,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Firmware",
+    "question": "UEFI is the modern replacement for:",
+    "options": [
+      "RAM",
+      "BIOS",
+      "ROM",
+      "Hard Disk"
+    ],
+    "answer": "B",
+    "explanation": "UEFI (Unified Extensible Firmware Interface) replaces traditional BIOS. It supports larger drives and secure boot."
+  },
+  {
+    "id": 71,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Software Types",
+    "question": "Shareware is:",
+    "options": [
+      "Completely free software",
+      "Software distributed free for trial, then requires purchase",
+      "Software with open source code",
+      "Malicious software"
+    ],
+    "answer": "B",
+    "explanation": "Shareware is distributed free for a limited trial period, after which payment is required."
+  },
+  {
+    "id": 72,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "MS Office",
+    "question": "Which function in Excel counts only non-empty cells?",
+    "options": [
+      "COUNT",
+      "COUNTA",
+      "COUNTBLANK",
+      "COUNTIF"
+    ],
+    "answer": "B",
+    "explanation": "COUNTA counts all non-empty cells. COUNT counts only numeric values."
+  },
+  {
+    "id": 73,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Language Translator",
+    "question": "Which phase of a compiler checks for grammatical errors in source code?",
+    "options": [
+      "Lexical analysis",
+      "Syntax analysis (Parsing)",
+      "Semantic analysis",
+      "Code generation"
+    ],
+    "answer": "B",
+    "explanation": "Syntax analysis (parsing) checks if the source code conforms to grammar rules of the programming language."
+  },
+  {
+    "id": 74,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "High-Level Language",
+    "question": "COBOL was developed for:",
+    "options": [
+      "Scientific computations",
+      "Business data processing",
+      "System programming",
+      "Web development"
+    ],
+    "answer": "B",
+    "explanation": "COBOL (Common Business-Oriented Language) was developed in 1959 for business data processing."
+  },
+  {
+    "id": 75,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "High-Level Language",
+    "question": "Which of the following is an object-oriented programming language?",
+    "options": [
+      "FORTRAN",
+      "COBOL",
+      "Java",
+      "Assembly"
+    ],
+    "answer": "C",
+    "explanation": "Java is fully object-oriented. FORTRAN and COBOL are procedural; Assembly is low-level."
+  },
+  {
+    "id": 76,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "System Software",
+    "question": "Which of the following is NOT a function of an operating system?",
+    "options": [
+      "Memory management",
+      "File management",
+      "Word processing",
+      "Process management"
+    ],
+    "answer": "C",
+    "explanation": "Word processing is application software. OS handles memory, files, processes, devices."
+  },
+  {
+    "id": 77,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "MS Office",
+    "question": "Macro in MS Office is used to:",
+    "options": [
+      "Format text manually",
+      "Automate repetitive tasks using recorded/programmed sequences",
+      "Create tables",
+      "Print documents"
+    ],
+    "answer": "B",
+    "explanation": "A Macro records/programs a sequence of commands to automate repetitive tasks."
+  },
+  {
+    "id": 78,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Software Types",
+    "question": "Which type of software license allows study, change, and distribution freely?",
+    "options": [
+      "Proprietary license",
+      "Freeware license",
+      "Open-source license",
+      "Shareware license"
+    ],
+    "answer": "C",
+    "explanation": "Open-source licenses (GPL, MIT, Apache) allow users to view, modify, and distribute source code freely."
+  },
+  {
+    "id": 79,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "MS Office",
+    "question": "Mail Merge in MS Word is used to:",
+    "options": [
+      "Merge two Word documents",
+      "Create personalized letters/documents for multiple recipients",
+      "Format email attachments",
+      "Send emails directly"
+    ],
+    "answer": "B",
+    "explanation": "Mail Merge combines a template with a data source to create personalized documents for multiple recipients."
+  },
+  {
+    "id": 80,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "MS Office",
+    "question": "Which view in MS Word shows the document exactly as it will print?",
+    "options": [
+      "Draft view",
+      "Web layout view",
+      "Print Layout view",
+      "Outline view"
+    ],
+    "answer": "C",
+    "explanation": "Print Layout view shows the document as it will appear when printed, with margins and page breaks."
+  },
+  {
+    "id": 81,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Software Types",
+    "question": "Malware is short for:",
+    "options": [
+      "Machine language software",
+      "Malicious software",
+      "Multi-layered software",
+      "Management software"
+    ],
+    "answer": "B",
+    "explanation": "Malware = Malicious Software. Examples: viruses, worms, ransomware, spyware."
+  },
+  {
+    "id": 82,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Language Translator",
+    "question": "Which of the following generates intermediate code?",
+    "options": [
+      "Assembler",
+      "Linker",
+      "Compiler",
+      "Loader"
+    ],
+    "answer": "C",
+    "explanation": "A compiler generates intermediate code (e.g., bytecode in Java) as part of compilation."
+  },
+  {
+    "id": 83,
+    "level": "Intermediate",
+    "type": "Statement",
+    "topic": "Algorithm",
+    "question": "A flowchart MUST always be drawn before writing an algorithm. This statement is:",
+    "options": [
+      "Always true",
+      "False — an algorithm can be expressed as pseudo-code or flowchart, either is valid",
+      "True for competitive exams only",
+      "True only in structured programming"
+    ],
+    "answer": "B",
+    "explanation": "False — an algorithm can be expressed as a flowchart OR pseudo-code. Neither is mandatory first."
+  },
+  {
+    "id": 84,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "MS Office",
+    "question": "Which MS Excel function returns the current date and time?",
+    "options": [
+      "=TODAY()",
+      "=NOW()",
+      "=DATE()",
+      "=TIME()"
+    ],
+    "answer": "B",
+    "explanation": "=NOW() returns the current date and time. =TODAY() returns only the current date."
+  },
+  {
+    "id": 85,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Software Types",
+    "question": "An ERP (Enterprise Resource Planning) system is an example of:",
+    "options": [
+      "General-purpose software",
+      "Specific-purpose application software",
+      "System software",
+      "Firmware"
+    ],
+    "answer": "B",
+    "explanation": "ERP systems (SAP, Oracle) are specific-purpose application software designed for enterprise business processes."
+  },
+  {
+    "id": 86,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Algorithm",
+    "question": "Which of the following traversal methods for a binary tree visits nodes in Left-Root-Right order?",
+    "options": [
+      "Pre-order",
+      "In-order",
+      "Post-order",
+      "Level-order"
+    ],
+    "answer": "B",
+    "explanation": "In-order traversal visits Left, then Root, then Right (LRootR). For BST, this gives sorted output."
+  },
+  {
+    "id": 87,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "High-Level Language",
+    "question": "Which feature of OOP restricts direct access to object components?",
+    "options": [
+      "Inheritance",
+      "Polymorphism",
+      "Encapsulation",
+      "Abstraction"
+    ],
+    "answer": "C",
+    "explanation": "Encapsulation bundles data and methods together and restricts direct access using access modifiers (private, public)."
+  },
+  {
+    "id": 88,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "MS Office",
+    "question": "Which MS Office feature automatically corrects common spelling errors as you type?",
+    "options": [
+      "Spell Check",
+      "AutoCorrect",
+      "Grammar Check",
+      "AutoComplete"
+    ],
+    "answer": "B",
+    "explanation": "AutoCorrect automatically fixes common typos and spelling errors as you type in MS Office."
+  },
+  {
+    "id": 89,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Flowchart",
+    "question": "Which of the following is an advantage of using a flowchart?",
+    "options": [
+      "It directly executes as code",
+      "It provides a clear visual representation of program logic",
+      "It replaces the need for an algorithm",
+      "It works only for simple programs"
+    ],
+    "answer": "B",
+    "explanation": "Flowcharts provide a clear visual representation of logic, aiding communication and debugging."
+  },
+  {
+    "id": 90,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Algorithm",
+    "question": "A stack data structure follows which principle?",
+    "options": [
+      "FIFO — First In First Out",
+      "LIFO — Last In First Out",
+      "Random Access",
+      "Priority-based access"
+    ],
+    "answer": "B",
+    "explanation": "A stack follows LIFO (Last In First Out). Push adds to top; Pop removes from top."
+  },
+  {
+    "id": 91,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "System Software",
+    "question": "Multitasking in an operating system refers to:",
+    "options": [
+      "Running multiple CPUs",
+      "Running multiple processes seemingly simultaneously on a single CPU",
+      "Using multiple RAM modules",
+      "Running software on multiple computers"
+    ],
+    "answer": "B",
+    "explanation": "Multitasking allows the OS to run multiple processes concurrently by rapidly switching CPU time between them."
+  },
+  {
+    "id": 92,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Language Translator",
+    "question": "Which programming language is typically used for scripting in web browsers?",
+    "options": [
+      "Java",
+      "C++",
+      "JavaScript",
+      "Python"
+    ],
+    "answer": "C",
+    "explanation": "JavaScript is the primary scripting language for web browsers, enabling dynamic web pages."
+  },
+  {
+    "id": 93,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "MS Office",
+    "question": "In MS Excel, the IF function syntax is:",
+    "options": [
+      "=IF(condition, value_if_true, value_if_false)",
+      "=IF(value_if_true, condition, value_if_false)",
+      "=IF(value_if_false, value_if_true, condition)",
+      "=IF(condition; value1; value2)"
+    ],
+    "answer": "A",
+    "explanation": "Correct syntax: =IF(logical_test, value_if_true, value_if_false). Example: =IF(A1>10,\"Pass\",\"Fail\")."
+  },
+  {
+    "id": 94,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "High-Level Language",
+    "question": "Which language is primarily used for statistical computing and data analysis?",
+    "options": [
+      "Java",
+      "R",
+      "C++",
+      "Assembly"
+    ],
+    "answer": "B",
+    "explanation": "R is a programming language designed for statistical computing and data analysis, widely used in data science."
+  },
+  {
+    "id": 95,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Software Types",
+    "question": "An antivirus program is classified as:",
+    "options": [
+      "Application software",
+      "Utility software (a type of system software)",
+      "Firmware",
+      "Middleware"
+    ],
+    "answer": "B",
+    "explanation": "Antivirus is utility software — a subcategory of system software that maintains and protects the computer."
+  },
+  {
+    "id": 96,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Algorithm",
+    "question": "For a sorted array of 1024 elements, binary search requires at most how many comparisons?",
+    "options": [
+      "10",
+      "11",
+      "512",
+      "1024"
+    ],
+    "answer": "A",
+    "explanation": "log2(1024) = 10 comparisons maximum. Binary search halves the search space each step."
+  },
+  {
+    "id": 97,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Stored Program Concept",
+    "question": "The Arithmetic Logic Unit (ALU) is responsible for:",
+    "options": [
+      "Storing programs in memory",
+      "Performing arithmetic and logical operations",
+      "Controlling the sequence of instructions",
+      "Managing input/output"
+    ],
+    "answer": "B",
+    "explanation": "The ALU performs all arithmetic (add, subtract, multiply) and logical (AND, OR, NOT) operations."
+  },
+  {
+    "id": 98,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "MS Office",
+    "question": "In MS Word, 'Track Changes' feature is used to:",
+    "options": [
+      "Change font automatically",
+      "Record edits made to a document for review",
+      "Track cursor movements",
+      "Print documents"
+    ],
+    "answer": "B",
+    "explanation": "Track Changes records insertions, deletions, and formatting changes made to a document, useful for collaborative editing."
+  },
+  {
+    "id": 99,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "System Software",
+    "question": "Spooling (Simultaneous Peripheral Operations On-Line) is used to:",
+    "options": [
+      "Speed up the CPU",
+      "Manage slow I/O devices by queuing jobs (e.g., print queue)",
+      "Increase RAM size",
+      "Compress files on disk"
+    ],
+    "answer": "B",
+    "explanation": "Spooling queues I/O tasks (especially printing) so that the CPU doesn't have to wait for slow peripheral devices. Print spooling is the most common example."
+  },
+  {
+    "id": 100,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Language Translator",
+    "question": "Which of the following is NOT a phase of a compiler?",
+    "options": [
+      "Lexical Analysis",
+      "Syntax Analysis",
+      "Execution",
+      "Code Generation"
+    ],
+    "answer": "C",
+    "explanation": "fi fi Execution is not a compiler phase. Compiler phases: Lexical Analysis Syntax Analysis fi fi fi Semantic Analysis Intermediate Code Generation Optimization Code Generation."
+  },
+  {
+    "id": 101,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Algorithm",
+    "question": "What is the worst-case time complexity of Quick Sort?",
+    "options": [
+      "O(n log n)",
+      "O(n)",
+      "O(n^2)",
+      "O(log n)"
+    ],
+    "answer": "C",
+    "explanation": "Quick Sort's worst case is O(n^2), which occurs when the pivot is always the smallest or largest element (e.g., already sorted array with naive pivot selection)."
+  },
+  {
+    "id": 102,
+    "level": "Intermediate",
+    "type": "Assertion-Reason",
+    "topic": "Firmware",
+    "question": "Assertion (A): Firmware updates can 'brick' a device if interrupted. Reason (R): Firmware is written to non-volatile flash memory; a failed write can leave the device unbootable.",
+    "options": [
+      "Both A and R are true, R correctly explains A",
+      "A is true but R is false",
+      "Both are false",
+      "A is false, R is true"
+    ],
+    "answer": "A",
+    "explanation": "Both are true and R explains A. If firmware flashing is interrupted (power failure, crash), the flash memory may be partially written, leaving no valid boot firmware — 'bricking' the device."
+  },
+  {
+    "id": 103,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "High-Level Language",
+    "question": "Which of the following correctly describes 'abstraction' in OOP?",
+    "options": [
+      "Hiding the implementation and showing only the functionality to the user",
+      "Allowing one class to acquire properties of another",
+      "A single method having multiple forms",
+      "Binding data and functions together"
+    ],
+    "answer": "A",
+    "explanation": "Abstraction hides complex implementation details and exposes only what is necessary. It is implemented using abstract classes and interfaces."
+  },
+  {
+    "id": 104,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "MS Office",
+    "question": "In MS Excel, which function returns the largest value in a range?",
+    "options": [
+      "=LARGE()",
+      "=MAX()",
+      "=HIGH()",
+      "=TOP()"
+    ],
+    "answer": "B",
+    "explanation": "=MAX(range) returns the largest numeric value in a specified range. =LARGE(range, k) returns the k-th largest value."
+  },
+  {
+    "id": 105,
+    "level": "Intermediate",
+    "type": "Statement",
+    "topic": "Algorithm",
+    "question": "Statement 1: A queue follows FIFO (First In First Out) discipline. Statement 2: A stack follows FIFO discipline. Which is/are correct?",
+    "options": [
+      "Only Statement 1",
+      "Only Statement 2",
+      "Both are correct",
+      "Both are incorrect"
+    ],
+    "answer": "A",
+    "explanation": "Only Statement 1 is correct. A queue follows FIFO. A stack follows LIFO (Last In First Out), not FIFO."
+  },
+  {
+    "id": 106,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Software Types",
+    "question": "Which of the following is a characteristic of proprietary software?",
+    "options": [
+      "Source code is freely available",
+      "Can be freely distributed and modified",
+      "Source code is kept secret; users must pay a license fee",
+      "Developed by volunteer communities"
+    ],
+    "answer": "C",
+    "explanation": "Proprietary (closed-source) software keeps its source code secret and typically requires payment of a license fee. Examples: Microsoft Windows, Adobe Photoshop."
+  },
+  {
+    "id": 107,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "MS Office",
+    "question": "Which of the following is NOT a valid chart type in MS Excel?",
+    "options": [
+      "Bar chart",
+      "Pie chart",
+      "Scatter chart",
+      "Paragraph chart"
+    ],
+    "answer": "D",
+    "explanation": "'Paragraph chart' is not a chart type. MS Excel supports Bar, Pie, Scatter, Line, Column, Area, Doughnut, Radar, and other standard chart types."
+  },
+  {
+    "id": 108,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Stored Program Concept",
+    "question": "The Memory Address Register (MAR) in a CPU holds:",
+    "options": [
+      "The result of the last arithmetic operation",
+      "The address of the memory location being accessed",
+      "The current instruction being executed",
+      "The next instruction to be fetched"
+    ],
+    "answer": "B",
+    "explanation": "MAR holds the address of the memory location from which data is to be read or to which data is to be written. It interfaces between CPU and memory bus."
+  },
+  {
+    "id": 109,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Stored Program Concept",
+    "question": "In von Neumann architecture, the bottleneck between CPU and memory is called:",
+    "options": [
+      "Cache miss",
+      "Von Neumann bottleneck",
+      "Pipeline stall",
+      "Memory leak"
+    ],
+    "answer": "B",
+    "explanation": "The von Neumann bottleneck refers to limited data transfer between CPU and memory sharing the same bus."
+  },
+  {
+    "id": 110,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Language Translator",
+    "question": "A JIT (Just-In-Time) compiler:",
+    "options": [
+      "Compiles code before execution",
+      "Compiles code at runtime, combining interpreter and compiler benefits",
+      "Only interprets code",
+      "Is used for assembly language"
+    ],
+    "answer": "B",
+    "explanation": "JIT compilation occurs at runtime — combines flexibility of interpretation with speed of compilation (Java JVM, .NET CLR)."
+  },
+  {
+    "id": 111,
+    "level": "Advanced",
+    "type": "Application",
+    "topic": "Algorithm",
+    "question": "Which algorithm design paradigm does merge sort use?",
+    "options": [
+      "Greedy",
+      "Dynamic Programming",
+      "Divide and Conquer",
+      "Backtracking"
+    ],
+    "answer": "C",
+    "explanation": "Merge Sort uses Divide and Conquer — recursively divides, sorts sub-arrays, then merges. O(n log n)."
+  },
+  {
+    "id": 112,
+    "level": "Advanced",
+    "type": "Statement",
+    "topic": "High-Level Language",
+    "question": "Statement 1: Python is an interpreted language. Statement 2: Java source code is compiled to bytecode, then interpreted by JVM. Which is/are correct?",
+    "options": [
+      "Only Statement 1",
+      "Only Statement 2",
+      "Both are correct",
+      "Both are incorrect"
+    ],
+    "answer": "C",
+    "explanation": "Both correct. Python is interpreted. Java is compiled to platform-independent bytecode, then JVM interprets/JIT-compiles."
+  },
+  {
+    "id": 113,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "High-Level Language",
+    "question": "Assertion (A): High-level languages are machine-independent. Reason (R): HLL programs need a translator to convert to machine code.",
+    "options": [
+      "Both A and R are true, R correctly explains A",
+      "Both A and R are true, R does not explain A",
+      "A is true, R is false",
+      "A is false, R is true"
+    ],
+    "answer": "A",
+    "explanation": "HLL programs run on any machine with a suitable translator (A true). Because they need translation, they are machine-independent (R explains A)."
+  },
+  {
+    "id": 114,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Firmware",
+    "question": "Device drivers differ from firmware because:",
+    "options": [
+      "Firmware is software, drivers are hardware",
+      "Drivers run in OS context and can be updated via OS; firmware is embedded in",
+      "Firmware is in RAM, drivers are in ROM",
+      "Both are identical"
+    ],
+    "answer": "B",
+    "explanation": "hardware Drivers are OS-level software, installable/updatable via OS. Firmware is embedded in hardware (ROM/Flash)."
+  },
+  {
+    "id": 115,
+    "level": "Advanced",
+    "type": "Application",
+    "topic": "Stored Program Concept",
+    "question": "In the fetch-decode-execute cycle, which register holds the address of the next instruction?",
+    "options": [
+      "Accumulator",
+      "Program Counter (PC)",
+      "Memory Address Register (MAR)",
+      "Instruction Register (IR)"
+    ],
+    "answer": "B",
+    "explanation": "The Program Counter (PC) holds the memory address of the next instruction to fetch, then increments."
+  },
+  {
+    "id": 116,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Language Generations",
+    "question": "5th generation languages (5GL) are primarily based on:",
+    "options": [
+      "Object-oriented programming",
+      "Logic and constraints (AI-based)",
+      "Procedural programming",
+      "Assembly"
+    ],
+    "answer": "B",
+    "explanation": "5GLs (Prolog, LISP for AI) are based on solving constraints and logic — programmer defines WHAT, not HOW."
+  },
+  {
+    "id": 117,
+    "level": "Advanced",
+    "type": "Application",
+    "topic": "Algorithm",
+    "question": "An algorithm has recurrence T(n) = 2T(n/2) + n. Its time complexity is:",
+    "options": [
+      "O(n)",
+      "O(n log n)",
+      "O(n^2)",
+      "O(log n)"
+    ],
+    "answer": "B",
+    "explanation": "By Master Theorem (case 2): T(n) = O(n log n). This is Merge Sort's complexity."
+  },
+  {
+    "id": 118,
+    "level": "Advanced",
+    "type": "Match",
+    "topic": "Software",
+    "question": "Match the software category with the example: P. System Software Q. Application Software R. Firmware S. Utility Software 1. Norton Antivirus 2. BIOS 3. Windows OS 4. MS Excel",
+    "options": [
+      "P-3, Q-4, R-2, S-1",
+      "P-4, Q-3, R-1, S-2",
+      "P-2, Q-1, R-3, S-4",
+      "P-3, Q-2, R-4, S-1"
+    ],
+    "answer": "A",
+    "explanation": "Windows OS=System; MS Excel=Application; BIOS=Firmware; Norton Antivirus=Utility Software."
+  },
+  {
+    "id": 119,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Stored Program Concept",
+    "question": "Harvard architecture differs from von Neumann architecture in that:",
+    "options": [
+      "It uses no memory",
+      "It has separate memory and buses for instructions and data",
+      "It uses only one register",
+      "It does not use a CPU"
+    ],
+    "answer": "B",
+    "explanation": "Harvard architecture uses physically separate storage for instructions and data, avoiding von Neumann bottleneck."
+  },
+  {
+    "id": 120,
+    "level": "Advanced",
+    "type": "Application",
+    "topic": "Software",
+    "question": "Which of the following testing types checks if different modules work correctly together?",
+    "options": [
+      "Unit Testing",
+      "Integration Testing",
+      "System Testing",
+      "Acceptance Testing"
+    ],
+    "answer": "B",
+    "explanation": "Integration Testing verifies that individual modules work correctly when combined."
+  },
+  {
+    "id": 121,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "System Software",
+    "question": "The role of a linker in software development is to:",
+    "options": [
+      "Translate source code to machine code",
+      "Combine object files and libraries into a single executable",
+      "Load programs into memory",
+      "Debug the program"
+    ],
+    "answer": "B",
+    "explanation": "A linker combines multiple object files and resolves library references, producing a single executable file."
+  },
+  {
+    "id": 122,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "System Software",
+    "question": "A loader is responsible for:",
+    "options": [
+      "Translating source code",
+      "Linking object modules",
+      "Loading the executable program into RAM for execution",
+      "Compiling the program"
+    ],
+    "answer": "C",
+    "explanation": "The loader is part of the OS that loads an executable into RAM so the CPU can execute it."
+  },
+  {
+    "id": 123,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Algorithm",
+    "question": "Which of the following problems is NP-Complete?",
+    "options": [
+      "Sorting",
+      "Binary Search",
+      "Travelling Salesman Problem (decision version)",
+      "Matrix multiplication"
+    ],
+    "answer": "C",
+    "explanation": "TSP decision version is NP-Complete — no known polynomial-time algorithm. Sorting/searching are polynomial."
+  },
+  {
+    "id": 124,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Language Translator",
+    "question": "The symbol table in a compiler is used to:",
+    "options": [
+      "Store machine code",
+      "Store information about identifiers (variables, functions, types)",
+      "Generate object code",
+      "Handle runtime errors"
+    ],
+    "answer": "B",
+    "explanation": "The symbol table stores identifier info — name, type, scope, memory address — used throughout compilation."
+  },
+  {
+    "id": 125,
+    "level": "Advanced",
+    "type": "Application",
+    "topic": "Software",
+    "question": "In SDLC, which phase comes immediately after System Analysis?",
+    "options": [
+      "Coding",
+      "Testing",
+      "System Design",
+      "Implementation"
+    ],
+    "answer": "C",
+    "explanation": "SDLC: Planning -> Analysis -> Design -> Implementation -> Testing -> Deployment -> Maintenance."
+  },
+  {
+    "id": 126,
+    "level": "Advanced",
+    "type": "Application",
+    "topic": "Algorithm",
+    "question": "Which sorting algorithm has the best average-case time complexity?",
+    "options": [
+      "Bubble Sort - O(n^2)",
+      "Selection Sort - O(n^2)",
+      "Quick Sort - O(n log n)",
+      "Insertion Sort - O(n^2)"
+    ],
+    "answer": "C",
+    "explanation": "Quick Sort has average O(n log n) — fastest in practice. Bubble, Selection, Insertion are O(n^2) on average."
+  },
+  {
+    "id": 127,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Language Translator",
+    "question": "Semantic analysis in a compiler checks:",
+    "options": [
+      "Spelling of keywords",
+      "Grammar rules",
+      "Meaning and type consistency (e.g., type checking)",
+      "Machine code generation"
+    ],
+    "answer": "C",
+    "explanation": "Semantic analysis verifies type checking, scope resolution, and that operations are valid."
+  },
+  {
+    "id": 128,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "System Software",
+    "question": "Virtual memory allows a computer to:",
+    "options": [
+      "Increase ROM size",
+      "Use secondary storage as an extension of RAM",
+      "Speed up the CPU",
+      "Replace cache memory"
+    ],
+    "answer": "B",
+    "explanation": "Virtual memory uses hard disk space as an extension of RAM (via paging/swapping), managed by the OS."
+  },
+  {
+    "id": 129,
+    "level": "Advanced",
+    "type": "Statement",
+    "topic": "Stored Program Concept",
+    "question": "In the von Neumann model, the Control Unit (CU): (I) Controls the sequence of operations. (II) Performs arithmetic calculations.",
+    "options": [
+      "Only I is correct",
+      "Only II is correct",
+      "Both are correct",
+      "Neither is correct"
+    ],
+    "answer": "A",
+    "explanation": "CU controls/coordinates the sequence (fetch, decode, execute). Arithmetic is done by ALU, not CU."
+  },
+  {
+    "id": 130,
+    "level": "Advanced",
+    "type": "Application",
+    "topic": "Algorithm",
+    "question": "Dynamic programming differs from divide-and-conquer in that:",
+    "options": [
+      "DP cannot solve optimization problems",
+      "DP stores and reuses solutions to overlapping subproblems (memoization)",
+      "D&C; always has overlapping subproblems",
+      "DP never divides problems"
+    ],
+    "answer": "B",
+    "explanation": "DP stores solutions to subproblems (memoization/tabulation) to avoid redundant computation."
+  },
+  {
+    "id": 131,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Language Translator",
+    "question": "A cross-compiler is one that:",
+    "options": [
+      "Runs on a computer and generates code for the same machine",
+      "Runs on one platform and generates code for a different platform",
+      "Compiles two languages simultaneously",
+      "Is faster than a normal compiler"
+    ],
+    "answer": "B",
+    "explanation": "A cross-compiler runs on a host platform but generates executable code for a different target platform."
+  },
+  {
+    "id": 132,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "High-Level Language",
+    "question": "Assertion (A): Python is platform-independent. Reason (R): Python code is interpreted by a Python interpreter available for multiple OS platforms.",
+    "options": [
+      "Both A and R are true, R correctly explains A",
+      "A is true but R is false",
+      "Both are false",
+      "A is false, R is true"
+    ],
+    "answer": "A",
+    "explanation": "Python is platform-independent (A); because the interpreter exists for all platforms, the same code runs anywhere (R explains A)."
+  },
+  {
+    "id": 133,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Algorithm",
+    "question": "Which sorting algorithm has worst-case O(n^2) but is adaptive (best case O(n))?",
+    "options": [
+      "Merge Sort",
+      "Quick Sort",
+      "Insertion Sort",
+      "Heap Sort"
+    ],
+    "answer": "C",
+    "explanation": "Insertion Sort is adaptive — O(n) when already sorted, O(n^2) worst case. Ideal for small/nearly sorted data."
+  },
+  {
+    "id": 134,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Algorithm",
+    "question": "Which data structure is best suited for implementing a priority queue?",
+    "options": [
+      "Array",
+      "Linked List",
+      "Heap",
+      "Stack"
+    ],
+    "answer": "C",
+    "explanation": "A Heap (min-heap or max-heap) is the most efficient structure for a priority queue: O(log n) insert/delete."
+  },
+  {
+    "id": 135,
+    "level": "Advanced",
+    "type": "Application",
+    "topic": "Software",
+    "question": "In Agile methodology, a 'Sprint' refers to:",
+    "options": [
+      "A software testing phase",
+      "A fixed time-boxed development iteration (typically 1-4 weeks)",
+      "A type of algorithm",
+      "A deployment pipeline"
+    ],
+    "answer": "B",
+    "explanation": "In Agile/Scrum, a Sprint is a fixed-length iteration (usually 1-4 weeks) during which a product increment is developed."
+  },
+  {
+    "id": 136,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Language Translator",
+    "question": "Lexical analysis in a compiler converts source code into:",
+    "options": [
+      "Parse trees",
+      "Tokens (lexemes)",
+      "Object code",
+      "Symbol tables"
+    ],
+    "answer": "B",
+    "explanation": "Lexical analysis (scanning) breaks the source code into tokens — identifiers, keywords, operators, literals."
+  },
+  {
+    "id": 137,
+    "level": "Advanced",
+    "type": "Application",
+    "topic": "Algorithm",
+    "question": "The time complexity of Heap Sort is:",
+    "options": [
+      "O(n)",
+      "O(n log n)",
+      "O(n^2)",
+      "O(log n)"
+    ],
+    "answer": "B",
+    "explanation": "Heap Sort has O(n log n) time complexity in all cases (best, average, worst) — unlike Quick Sort's O(n^2) worst case."
+  },
+  {
+    "id": 138,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "System Software",
+    "question": "Thrashing in an operating system occurs when:",
+    "options": [
+      "CPU usage is very high and productive",
+      "The OS spends more time paging than executing processes",
+      "Multiple CPUs are used simultaneously",
+      "The system runs out of ROM"
+    ],
+    "answer": "B",
+    "explanation": "Thrashing occurs when excessive page faults cause the OS to spend more time swapping pages than executing useful work."
+  },
+  {
+    "id": 139,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "High-Level Language",
+    "question": "Which of the following best describes 'polymorphism' in OOP?",
+    "options": [
+      "One class inheriting from another",
+      "Hiding implementation details",
+      "One interface having multiple implementations",
+      "Grouping data and functions together"
+    ],
+    "answer": "C",
+    "explanation": "Polymorphism means one interface/method having multiple forms — method overloading (compile-time) and overriding (runtime)."
+  },
+  {
+    "id": 140,
+    "level": "Advanced",
+    "type": "Application",
+    "topic": "Software",
+    "question": "The Waterfall model is characterized by:",
+    "options": [
+      "Iterative development cycles",
+      "Strictly sequential phases with no going back",
+      "Continuous delivery",
+      "Rapid prototyping"
+    ],
+    "answer": "B",
+    "explanation": "The Waterfall model has sequential phases (Requirements -> Design -> Implementation -> Testing -> Maintenance) with no backtracking."
+  },
+  {
+    "id": 141,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Algorithm",
+    "question": "Dijkstra's algorithm is used to find:",
+    "options": [
+      "Maximum flow in a network",
+      "Shortest path from a source to all other vertices in a weighted graph",
+      "Minimum spanning tree",
+      "Topological ordering"
+    ],
+    "answer": "B",
+    "explanation": "Dijkstra's algorithm finds the shortest path from a single source to all vertices in a graph with non-negative weights."
+  },
+  {
+    "id": 142,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "System Software",
+    "question": "Which scheduling algorithm is used by most modern OS for interactive processes?",
+    "options": [
+      "First Come First Serve (FCFS)",
+      "Shortest Job First (SJF)",
+      "Round Robin",
+      "Priority Scheduling (non-preemptive)"
+    ],
+    "answer": "C",
+    "explanation": "Round Robin scheduling gives each process a fixed time quantum in cyclic order, suitable for interactive time-sharing systems."
+  },
+  {
+    "id": 143,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Language Translator",
+    "question": "An optimizing compiler differs from a regular compiler in that it:",
+    "options": [
+      "Translates faster",
+      "Improves code efficiency (speed/memory) without changing its behavior",
+      "Supports more programming languages",
+      "Generates human-readable code"
+    ],
+    "answer": "B",
+    "explanation": "An optimizing compiler applies transformations (dead code elimination, loop unrolling, inlining) to generate faster/smaller code."
+  },
+  {
+    "id": 144,
+    "level": "Advanced",
+    "type": "Application",
+    "topic": "Algorithm",
+    "question": "What is the space complexity of the recursive implementation of Fibonacci using memoization?",
+    "options": [
+      "O(1)",
+      "O(n)",
+      "O(n^2)",
+      "O(2^n)"
+    ],
+    "answer": "B",
+    "explanation": "With memoization, both time and space complexity become O(n) — storing n computed values in a memo table."
+  },
+  {
+    "id": 145,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Software",
+    "question": "In software testing, 'White Box Testing' means:",
+    "options": [
+      "Testing without any knowledge of internal code",
+      "Testing with full knowledge of internal code structure",
+      "Testing only the user interface",
+      "Testing by end users"
+    ],
+    "answer": "B",
+    "explanation": "White Box (glass box/structural) testing uses knowledge of internal code to design test cases covering code paths."
+  },
+  {
+    "id": 146,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "High-Level Language",
+    "question": "Which of the following is a functional programming language?",
+    "options": [
+      "C",
+      "Java",
+      "Haskell",
+      "Assembly"
+    ],
+    "answer": "C",
+    "explanation": "Haskell is a purely functional programming language. C and Java are imperative/OOP; Assembly is low-level."
+  },
+  {
+    "id": 147,
+    "level": "Advanced",
+    "type": "Application",
+    "topic": "MS Office",
+    "question": "In MS Excel, what does the $ symbol do in a cell reference like $A$1?",
+    "options": [
+      "Represents currency",
+      "Makes the reference absolute (does not change when copied)",
+      "Locks the worksheet",
+      "Marks a formula error"
+    ],
+    "answer": "B",
+    "explanation": "The $ sign creates an absolute reference — $A$1 does not change row or column when the formula is copied."
+  },
+  {
+    "id": 148,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "System Software",
+    "question": "Deadlock in operating systems occurs when:",
+    "options": [
+      "A process uses too much memory",
+      "Two or more processes wait indefinitely for resources held by each other",
+      "The CPU is overloaded",
+      "A program crashes"
+    ],
+    "answer": "B",
+    "explanation": "Deadlock occurs when processes form a circular wait — each holds a resource the other needs, and none can proceed."
+  },
+  {
+    "id": 149,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Algorithm",
+    "question": "Prim's and Kruskal's algorithms are used to find:",
+    "options": [
+      "Shortest path",
+      "Maximum flow",
+      "Minimum Spanning Tree (MST)",
+      "Topological sort"
+    ],
+    "answer": "C",
+    "explanation": "Both Prim's and Kruskal's algorithms find the Minimum Spanning Tree of a weighted undirected graph."
+  },
+  {
+    "id": 150,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Software",
+    "question": "Software that is distributed under a license requiring any derivative works to be released under the same license is called:",
+    "options": [
+      "MIT license",
+      "BSD license",
+      "Copyleft (GPL) license",
+      "Proprietary license"
+    ],
+    "answer": "C",
+    "explanation": "Copyleft (e.g., GNU GPL) requires derivative works to carry the same license — 'share-alike' clause. MIT/BSD are permissive."
+  },
+  {
+    "id": 151,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Algorithm",
+    "question": "In graph theory, topological sorting can be applied to:",
+    "options": [
+      "Any undirected graph",
+      "Only trees",
+      "Directed Acyclic Graphs (DAGs) only",
+      "Only weighted graphs"
+    ],
+    "answer": "C",
+    "explanation": "Topological sort is only valid for Directed Acyclic Graphs (DAGs). It produces a linear ordering of ufiv, vertices such that for every edge u comes before v."
+  },
+  {
+    "id": 152,
+    "level": "Advanced",
+    "type": "Application",
+    "topic": "Software",
+    "question": "In software engineering, 'refactoring' means:",
+    "options": [
+      "Rewriting software from scratch",
+      "Restructuring existing code without changing its external behavior to improve",
+      "Adding new features to software",
+      "Testing software after deployment"
+    ],
+    "answer": "B",
+    "explanation": "readability/maintainability Refactoring improves the internal structure of code (readability, simplicity, performance) without altering its observable behavior. It is not about adding features."
+  },
+  {
+    "id": 153,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Language Translator",
+    "question": "In compiler design, 'peephole optimization' operates on:",
+    "options": [
+      "The entire program at once",
+      "A small window of consecutive instructions to replace them with more efficient",
+      "Only loop structures",
+      "The symbol table entries"
+    ],
+    "answer": "B",
+    "explanation": "equivalents Peephole optimization examines a small 'window' (peephole) of generated code at a time and replaces instruction sequences with shorter or faster equivalents (e.g., removing redundant loads)."
+  },
+  {
+    "id": 154,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "System Software",
+    "question": "The 'Banker's Algorithm' in operating systems is used to:",
+    "options": [
+      "Manage file allocation",
+      "Avoid deadlock by ensuring the system stays in a safe state before granting resources",
+      "Schedule CPU processes",
+      "Manage virtual memory paging"
+    ],
+    "answer": "B",
+    "explanation": "The Banker's Algorithm (Dijkstra) is a deadlock avoidance algorithm. Before allocating resources, it checks whether the resulting state is 'safe' (all processes can eventually complete)."
+  },
+  {
+    "id": 155,
+    "level": "Advanced",
+    "type": "Application",
+    "topic": "Algorithm",
+    "question": "Which data structure is most efficient for implementing an LRU (Least Recently Used) cache?",
+    "options": [
+      "Array",
+      "Stack",
+      "HashMap + Doubly Linked List",
+      "Binary Search Tree"
+    ],
+    "answer": "C",
+    "explanation": "An LRU cache is optimally implemented using a HashMap (for O(1) lookups) combined with a Doubly Linked List (for O(1) insertions/deletions to track recency)."
+  },
+  {
+    "id": 156,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "High-Level Language",
+    "question": "In Python, what is a 'decorator'?",
+    "options": [
+      "A type of loop",
+      "A class that inherits from another",
+      "A function that takes another function as argument and extends its behavior without",
+      "A built-in sorting function"
+    ],
+    "answer": "C",
+    "explanation": "modifying it A Python decorator is a higher-order function that wraps another function to add behavior (logging, authentication, timing) without modifying the original function's code."
+  },
+  {
+    "id": 157,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "System Software",
+    "question": "Assertion (A): In a multithreaded program, a mutex (mutual exclusion lock) prevents race conditions. Reason (R): A mutex ensures only one thread accesses a shared resource at a time.",
+    "options": [
+      "Both A and R are true, R correctly explains A",
+      "A is true but R is false",
+      "Both are false",
+      "A is false, R is true"
+    ],
+    "answer": "A",
+    "explanation": "Both true. A mutex prevents race conditions (A) by allowing only one thread to hold the lock at a time, serializing access to shared resources (R explains A)."
+  },
+  {
+    "id": 158,
+    "level": "Advanced",
+    "type": "Application",
+    "topic": "Algorithm",
+    "question": "Floyd-Warshall algorithm is used to find:",
+    "options": [
+      "Single-source shortest path",
+      "Minimum spanning tree",
+      "All-pairs shortest paths in a weighted graph",
+      "Maximum flow in a network"
+    ],
+    "answer": "C",
+    "explanation": "Floyd-Warshall finds the shortest paths between ALL pairs of vertices in O(V^3) time. It works with negative edges (but not negative cycles). Dijkstra is single-source only."
+  },
+  {
+    "id": 159,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Software",
+    "question": "Which software design pattern provides a simplified interface to a complex subsystem?",
+    "options": [
+      "Observer",
+      "Singleton",
+      "Facade",
+      "Factory"
+    ],
+    "answer": "C",
+    "explanation": "The Facade pattern provides a simplified, unified interface to a set of interfaces in a complex subsystem, making it easier to use without exposing internal complexity."
+  },
+  {
+    "id": 160,
+    "level": "Advanced",
+    "type": "Statement",
+    "topic": "Stored Program Concept",
+    "question": "Consider the statements about RISC vs CISC architectures: (I) RISC has a small set of simple, fixed-length instructions. (II) CISC has complex instructions that can perform multi-step operations. Which is/are correct?",
+    "options": [
+      "Only I",
+      "Only II",
+      "Both I and II",
+      "Neither"
+    ],
+    "answer": "C",
+    "explanation": "Both correct. RISC (Reduced Instruction Set Computer) uses simple, uniform instructions for fast pipelining. CISC (Complex Instruction Set Computer) uses variable-length, multi-step instructions like x86. B B C B B B C C C C B C C D B B C D C C B C B A B B B B B B B B B B C C C C B B B B B A B C B B B B B C C B C B C B C B B B C C A B B B B A B B B C C B C C C B A B B A C B B B B B B C D B C B B B C B B B B C A C B B B B 0 C B B C B D B B B B 0 A B B B B C B B C C 0"
+  }
+];
+const S={filtered:[],idx:0,answers:{},bookmarks:new Set(),dark:false,jumpOpen:false,expVisible:false,startTime:Date.now(),timerInterval:null,phase:'quiz',reviewFilter:'all',showBookmarkOnly:false,viewAll:false};
+const OPT=['A','B','C','D'];
+const $=id=>document.getElementById(id);
+function init(){populateFilters();applyFilters();buildJumpGrid();startTimer();render();updateStats();const d=localStorage.getItem('mcq-dark');toggleDark(d===null?true:d==='1');}
+function populateFilters(){['topic','type'].forEach(k=>{const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();const el=$('filter-'+k);vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});});}
+function applyFilters(){const lv=$('filter-level').value,tp=$('filter-topic').value,ty=$('filter-type').value;S.filtered=QUESTIONS.filter(q=>(lv==='all'||q.level===lv)&&(tp==='all'||q.topic===tp)&&(ty==='all'||q.type===ty)&&(!S.showBookmarkOnly||S.bookmarks.has(q.id)));S.idx=0;buildJumpGrid();S.viewAll?renderAllQuestions():render();updateStats();}
+function render(){const card=$('question-card'),noRes=document.querySelector('.no-results');if(!S.filtered.length){card.style.display='none';if(!noRes){const d=document.createElement('div');d.className='no-results';d.textContent=QUESTIONS.length===0?'No questions loaded.':'No questions match your filters.';card.parentNode.insertBefore(d,card.nextSibling);}$('q-counter').textContent='0 / 0';$('prog-label').textContent='No questions';$('progress-fill').style.width='0%';$('prog-pct').textContent='0%';return;}if(noRes)noRes.remove();card.style.display='';const q=S.filtered[S.idx],ans=S.answers[q.id],done=ans&&ans.selected;card.style.animation='none';void card.offsetWidth;card.style.animation='';const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';$('card-header').innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span><button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})"><svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>`;$('q-text').innerHTML=q.question.replace(/\n/g,'<br>');const ol=$('options-list');ol.innerHTML='';q.options.forEach((opt,i)=>{const lbl=OPT[i];let cls='option-btn',icon='';if(done){if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}}const btn=document.createElement('button');btn.className=cls;btn.disabled=!!done;btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));ol.appendChild(btn);});const expBox=$('explanation-box'),expBtn=$('show-exp-btn');expBox.classList.add('hidden');expBtn.classList.add('hidden');S.expVisible=false;setExpBtnText(false);if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}const total=S.filtered.length,cur=S.idx+1;$('q-counter').textContent=`${cur} / ${total}`;$('prog-label').textContent=`Question ${cur} of ${total}`;const pct=Math.round(cur/total*100);$('progress-fill').style.width=pct+'%';$('prog-pct').textContent=pct+'%';$('s-total').textContent=total;document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));}
+function setExpBtnText(visible){const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';$('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');}
+function selectAnswer(qid,selected,correct){if(S.answers[qid]?.selected)return;const ok=selected===correct;S.answers[qid]={selected,correct:ok};const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}updateStats();if(ok){render();setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);}else{S.expVisible=true;render();}}
+function showExplanation(q){$('explanation-box').className='explanation-box';$('explanation-box').innerHTML=`<div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div><div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;setExpBtnText(true);}
+function hideExplanation(){$('explanation-box').className='explanation-box hidden';setExpBtnText(false);}
+function goTo(idx){if(idx<0||idx>=S.filtered.length)return;S.idx=idx;S.expVisible=false;render();window.scrollTo({top:0,behavior:'smooth'});}
+function buildJumpGrid(){const grid=$('jump-grid');grid.innerHTML='';S.filtered.forEach((q,i)=>{const btn=document.createElement('button');btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;if(i===S.idx)btn.classList.add('current');const a=S.answers[q.id];if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});grid.appendChild(btn);});}
+function toggleBookmark(qid){S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);render();buildJumpGrid();}
+function updateStats(){const ans=Object.values(S.answers).filter(a=>a?.selected);const ok=ans.filter(a=>a.correct).length;$('s-attempted').textContent=ans.length;$('s-correct').textContent=ok;$('s-wrong').textContent=ans.length-ok;$('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';}
+function finishQuiz(){stopTimer();const total=S.filtered.length;const ans=Object.values(S.answers).filter(a=>a?.selected);const ok=ans.filter(a=>a.correct).length;const pct=ans.length?Math.round(ok/total*100):0;const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];$('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];$('res-msg').textContent=`You scored ${ok} out of ${total}`;$('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;$('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;$('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;showScreen('result-screen');}
+function renderReview(){const list=$('review-list');list.innerHTML='';const rf=S.reviewFilter;S.filtered.forEach(q=>{const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);if(rf==='correct'&&(!a||!ok))return;if(rf==='wrong'&&(!a||ok||skip))return;if(rf==='skipped'&&!skip)return;if(rf==='bookmarked'&&!bm)return;const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';const card=document.createElement('div');card.className='review-card';const optsH=q.options.map((opt,i)=>{const l=OPT[i];let c='review-opt';if(l===q.answer)c+=' correct-ans';else if(l===sel&&sel!==q.answer)c+=' user-wrong';return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;}).join('');card.innerHTML=`<div class="review-header"><span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span><span class="review-status">${skip?'—':ok?'✅':'❌'}</span></div><div class="review-body"><div class="review-q">${q.question.replace(/\n/g,'<br>')}</div><div class="review-opts">${optsH}</div><div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div><div class="review-exp">${q.explanation}</div></div>`;list.appendChild(card);});if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function startTimer(){S.startTime=Date.now();S.timerInterval=setInterval(()=>{const e=Math.floor((Date.now()-S.startTime)/1000);const el=$('timer-display');el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');el.classList.toggle('warn',e>3600);},1000);}
+function stopTimer(){clearInterval(S.timerInterval);}
+function toggleDark(force){S.dark=force!==undefined?force:!S.dark;document.body.toggleAttribute('data-dark',S.dark);localStorage.setItem('mcq-dark',S.dark?'1':'0');const p=document.querySelector('#dark-toggle svg path');p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');}
+function restartQuiz(){S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;$('quiz-body').style.display='';$('all-panel').style.display='none';resetViewAllBtn();stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();}
+function resetViewAllBtn(){const btn=$('view-all-btn');btn.style.cssText='';btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';}
+function renderAllQuestions(){const list=$('all-list');list.innerHTML='';const qs=S.filtered;const hdr=document.createElement('div');hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;list.appendChild(hdr);if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}qs.forEach(q=>list.appendChild(buildAllCard(q)));}
+function buildAllCard(q){const ans=S.answers[q.id],done=ans?.selected;const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';const bm=S.bookmarks.has(q.id);const card=document.createElement('div');card.className='all-q-card';card.id='allcard-'+q.id;const hdr=document.createElement('div');hdr.className='all-q-header';hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span><button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto"><svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>`;hdr.querySelector('.bookmark-btn').addEventListener('click',function(){const qid=parseInt(this.dataset.qid);S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);if(S.showBookmarkOnly){renderAllQuestions();return;}const a=S.bookmarks.has(qid);this.classList.toggle('active',a);this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');});const body=document.createElement('div');body.className='all-q-body';const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');body.appendChild(qt);const ol=document.createElement('div');ol.className='all-opts';OPT.forEach((lbl,i)=>{const btn=document.createElement('button');btn.className='all-opt';let icon='';if(done){btn.disabled=true;if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}}btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;if(!done){btn.addEventListener('click',()=>{const ok=lbl===q.answer;S.answers[q.id]={selected:lbl,correct:ok};updateStats();const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}card.replaceWith(buildAllCard(q));});}ol.appendChild(btn);});body.appendChild(ol);const exp=document.createElement('div');exp.className='all-exp'+(done?' visible':'');exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;body.appendChild(exp);card.appendChild(hdr);card.appendChild(body);return card;}
+function toggleViewAll(){const btn=$('view-all-btn');if(S.viewAll){$('quiz-body').style.display='none';$('all-panel').style.display='block';btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';renderAllQuestions();const currentQ=S.filtered[S.idx];if(currentQ){setTimeout(()=>{const card=document.getElementById('allcard-'+currentQ.id);if(card){const navH=$('top-bar').offsetHeight;const top=card.getBoundingClientRect().top+window.scrollY-navH-12;window.scrollTo({top,behavior:'smooth'});}},150);}}else{$('quiz-body').style.display='';$('all-panel').style.display='none';resetViewAllBtn();render();window.scrollTo({top:0,behavior:'smooth'});}}
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{S.reviewFilter='all';document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));renderReview();showScreen('review-screen');});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{const q=S.filtered[S.idx];if(!q)return;S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();});
+$('bookmark-filter-btn').addEventListener('click',function(){S.showBookmarkOnly=!S.showBookmarkOnly;this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';applyFilters();});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();}));
+document.addEventListener('keydown',e=>{if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;const q=S.filtered[S.idx];if(!q)return;if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}if(e.key==='ArrowRight'){goTo(S.idx+1);return;}if(e.key==='e'||e.key==='E'){if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}return;}const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);});
+window.addEventListener('beforeunload', e => { e.preventDefault(); e.returnValue = ''; });
+init();
+</script>
+</body>
+</html>

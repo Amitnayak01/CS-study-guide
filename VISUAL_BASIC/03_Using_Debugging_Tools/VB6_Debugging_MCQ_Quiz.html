@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {"id": 1, "level": "Basic", "type": "Concept", "topic": "Types of Errors", "question": "Which type of error occurs when a statement violates the grammar rules of Visual Basic, for example a misspelled keyword or a missing <code>Then</code> in an <code>If</code> statement?", "options": ["Overflow error", "Runtime error", "Logical error", "Syntax error"], "answer": "D", "explanation": "A syntax error breaks the rules of the language and is reported by the editor or compiler before the program can run."},
+  {"id": 2, "level": "Basic", "type": "Concept", "topic": "Types of Errors", "question": "Which type of error is generally the hardest to detect, because VB shows no error message and the program keeps running?", "options": ["Runtime error", "Syntax error", "Compile error", "Logical error"], "answer": "D", "explanation": "A logical error gives wrong results without any warning. It is found only by testing the output and tracing the code."},
+  {"id": 3, "level": "Intermediate", "type": "Error ID", "topic": "Types of Errors", "question": "The code below is syntactically correct and compiles without any warning. What kind of error occurs when it is executed?<code style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,'Courier New',monospace;font-size:12.5px;font-weight:400;line-height:1.5;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin:8px 0 0\">Dim a As Integer, b As Integer\na = 20\nb = 0\nMsgBox a / b</code>", "options": ["Logical error with a wrong result", "Compile error (Variable not defined)", "Runtime error (Division by zero)", "Syntax error"], "answer": "C", "explanation": "Division by zero is detected only when the statement executes, so VB raises run-time error 11."},
+  {"id": 4, "level": "Basic", "type": "Concept", "topic": "Types of Errors", "question": "Which of the following is reported as a compile error when <code>Option Explicit</code> is in effect?", "options": ["Using a variable that has not been declared", "Assigning the text 'abc' to an Integer variable at run time", "Writing a wrong formula such as <code>Total = Qty + Rate</code>", "Dividing a number by zero"], "answer": "A", "explanation": "Option Explicit forces every variable to be declared. An undeclared name gives the compile error 'Variable not defined'."},
+  {"id": 5, "level": "Basic", "type": "Concept", "topic": "Types of Errors", "question": "Which setting on the Editor tab of Tools &gt; Options makes VB check the syntax of each line as soon as Enter is pressed?", "options": ["Require Variable Declaration", "Auto Syntax Check", "Auto List Members", "Auto Data Tips"], "answer": "B", "explanation": "With Auto Syntax Check on, VB displays a message and flags the line as soon as a syntax error is entered."},
+  {"id": 6, "level": "Intermediate", "type": "Error ID", "topic": "Types of Errors", "question": "A text value such as 'Hello' is assigned to an Integer variable at run time. Which run-time error is raised?", "options": ["Subscript out of range (Error 9)", "Division by zero (Error 11)", "Type mismatch (Error 13)", "Overflow (Error 6)"], "answer": "C", "explanation": "Type mismatch (Error 13) occurs when a value is not compatible with the data type it is assigned to."},
+  {"id": 7, "level": "Intermediate", "type": "Code Output", "topic": "Types of Errors", "question": "What happens when the following code is executed?<code style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,'Courier New',monospace;font-size:12.5px;font-weight:400;line-height:1.5;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin:8px 0 0\">Dim a As Integer, b As Integer, c As Integer\na = 30000\nb = 5000\nc = a + b</code>", "options": ["c becomes 35000", "Compile error: Variable not defined", "Run-time error 6 (Overflow)", "Run-time error 13 (Type mismatch)"], "answer": "C", "explanation": "Integer + Integer is evaluated as Integer. 35000 exceeds the Integer maximum of 32767, so Error 6 (Overflow) is raised."},
+  {"id": 8, "level": "Intermediate", "type": "Statement-Based", "topic": "Types of Errors", "question": "Which statement about syntax errors is TRUE?", "options": ["They must be corrected before the program can run", "They occur only while the program is running", "They are detected only by supplying test data", "They never produce any message"], "answer": "A", "explanation": "VB will not run code that contains syntax errors; they are flagged in the editor or when the code is compiled."},
+  {"id": 9, "level": "Basic", "type": "Concept", "topic": "Types of Errors", "question": "Which type of error may remain hidden until the faulty statement is actually executed, for example in a rarely used procedure?", "options": ["Runtime error", "Misspelled keyword typed in the code window", "Missing parenthesis in an expression", "Syntax error flagged by Auto Syntax Check"], "answer": "A", "explanation": "Run-time errors depend on the data and the execution path, so they appear only when the faulty statement is reached."},
+  {"id": 10, "level": "Basic", "type": "Concept", "topic": "Types of Errors", "question": "What is the main advantage of using Run &gt; Start With Full Compile (Ctrl+F5)?", "options": ["It converts the project into an .exe file", "It removes all breakpoints from the project", "It makes the program run faster by skipping error checks", "It finds compile errors in all procedures before the program starts"], "answer": "D", "explanation": "A normal run compiles on demand, so some compile errors show up only when a procedure is reached. Full compile checks all code first."},
+  {"id": 11, "level": "Basic", "type": "Concept", "topic": "Debug Menu", "question": "Which VB 6.0 menu contains the commands Step Into, Step Over, Step Out and Run To Cursor?", "options": ["Tools", "Debug", "Run", "Edit"], "answer": "B", "explanation": "The Debug menu groups the stepping, breakpoint and watch commands used to trace code in break mode."},
+  {"id": 12, "level": "Basic", "type": "Concept", "topic": "Debug Menu", "question": "Which key executes the next statement and also steps into any procedure that the statement calls?", "options": ["F8 (Step Into)", "Ctrl+F8 (Run To Cursor)", "F9 (Toggle Breakpoint)", "Shift+F8 (Step Over)"], "answer": "A", "explanation": "Step Into (F8) executes one statement at a time and traces inside called procedures."},
+  {"id": 13, "level": "Basic", "type": "Concept", "topic": "Debug Menu", "question": "Step Over (Shift+F8) differs from Step Into because it:", "options": ["Executes a called procedure as a single step without tracing through it", "Skips the current statement without executing it", "Returns control to the calling procedure", "Runs the program until the next breakpoint"], "answer": "A", "explanation": "Step Over runs the whole called procedure at once and stops at the next statement of the current procedure."},
+  {"id": 14, "level": "Basic", "type": "Concept", "topic": "Debug Menu", "question": "Which Debug command runs the rest of the current procedure and stops in the calling procedure?", "options": ["Run To Cursor", "Set Next Statement", "Step Over", "Step Out"], "answer": "D", "explanation": "Step Out (Ctrl+Shift+F8) finishes the current procedure and returns to the statement after the call in its caller."},
+  {"id": 15, "level": "Basic", "type": "Concept", "topic": "Debug Menu", "question": "Which Debug command executes code from the current point up to the line where the text cursor is placed and then enters break mode?", "options": ["Show Next Statement", "Run To Cursor", "Quick Watch", "Toggle Breakpoint"], "answer": "B", "explanation": "Run To Cursor (Ctrl+F8) acts like a temporary breakpoint at the cursor line, saving repeated stepping."},
+  {"id": 16, "level": "Basic", "type": "Concept", "topic": "Debug Menu", "question": "Pressing F9 on an executable line in the Code window will:", "options": ["Set or remove a breakpoint on that line", "Run the application", "Display the Quick Watch dialog", "Step into the next procedure"], "answer": "A", "explanation": "F9 is the shortcut for Toggle Breakpoint. Execution pauses before the marked line is executed."},
+  {"id": 17, "level": "Basic", "type": "Concept", "topic": "Debug Menu", "question": "Which Debug command lets you skip or repeat statements by moving the execution point to another line of the same procedure?", "options": ["Set Next Statement", "Clear All Breakpoints", "Add Watch", "Step Out"], "answer": "A", "explanation": "Set Next Statement (Ctrl+F9) moves the yellow arrow to the chosen line, which will be executed next. It works only within the current procedure."},
+  {"id": 18, "level": "Basic", "type": "Concept", "topic": "Debug Menu", "question": "In break mode, which command brings back the highlighted line that will execute next after you have scrolled elsewhere in the code?", "options": ["Run To Cursor", "Show Next Statement", "Quick Watch", "Edit Watch"], "answer": "B", "explanation": "Show Next Statement displays the statement marked with the yellow arrow that will run next."},
+  {"id": 19, "level": "Basic", "type": "Concept", "topic": "Debug Menu", "question": "Which keyboard shortcut opens the Quick Watch dialog box in break mode?", "options": ["Ctrl+Shift+F9", "Shift+F8", "Shift+F9", "Ctrl+F9"], "answer": "C", "explanation": "Quick Watch is Shift+F9. Ctrl+F9 is Set Next Statement and Ctrl+Shift+F9 is Clear All Breakpoints."},
+  {"id": 20, "level": "Basic", "type": "Concept", "topic": "Debug Menu", "question": "Which key combination removes all the breakpoints that have been set in the project?", "options": ["Ctrl+F9", "Ctrl+F8", "Ctrl+Shift+F9", "Shift+F9"], "answer": "C", "explanation": "Clear All Breakpoints (Ctrl+Shift+F9) removes every breakpoint at once; F9 toggles only the current line."},
+  {"id": 21, "level": "Basic", "type": "Concept", "topic": "Debug Menu", "question": "On which of the following lines can a breakpoint NOT be set?", "options": ["A comment line or a variable declaration line", "A line that calls another procedure", "A line containing a MsgBox call", "An assignment statement"], "answer": "A", "explanation": "Breakpoints can be set only on executable statements, not on comments or declarations."},
+  {"id": 22, "level": "Basic", "type": "Concept", "topic": "Debug Menu", "question": "What happens to the breakpoints when a VB 6.0 project is closed?", "options": ["They are saved in the form's .frm file", "They are stored permanently in the Windows registry", "They are saved in the .vbp project file", "They are not saved and are lost"], "answer": "D", "explanation": "Breakpoints are temporary debugging aids that last only for the current IDE session."},
+  {"id": 23, "level": "Basic", "type": "Concept", "topic": "Debug Menu", "question": "Which of the following is NOT a command of the Debug menu?", "options": ["Add Watch", "Toggle Breakpoint", "Clear All Breakpoints", "Start With Full Compile"], "answer": "D", "explanation": "Start With Full Compile belongs to the Run menu. Add Watch, Toggle Breakpoint and Clear All Breakpoints are Debug menu commands."},
+  {"id": 24, "level": "Basic", "type": "Concept", "topic": "Debug Menu", "question": "Which keyboard shortcut opens the Edit Watch dialog box for an existing watch expression?", "options": ["Ctrl+G", "Shift+F9", "Ctrl+W", "Ctrl+L"], "answer": "C", "explanation": "Debug &gt; Edit Watch (Ctrl+W) modifies the expression, context or watch type of a watch. Shift+F9 is Quick Watch, Ctrl+L is Call Stack and Ctrl+G is Immediate Window."},
+  {"id": 25, "level": "Basic", "type": "Concept", "topic": "Debug Menu", "question": "Which Debug menu command is used to define a new watch expression, choosing its context and watch type?", "options": ["Toggle Breakpoint", "Add Watch", "Step Over", "Quick Watch"], "answer": "B", "explanation": "Add Watch opens a dialog for the expression, context and watch type. Quick Watch only shows a one-time value."},
+  {"id": 26, "level": "Basic", "type": "Concept", "topic": "Immediate Window", "question": "Which window in Visual Basic 6.0 allows a programmer to evaluate expressions and execute statements during debugging?", "options": ["Properties Window", "Immediate Window", "Project Explorer", "Form Layout Window"], "answer": "B", "explanation": "The Immediate Window allows expressions to be evaluated and statements to be executed while debugging an application."},
+  {"id": 27, "level": "Basic", "type": "Concept", "topic": "Immediate Window", "question": "Which keyboard shortcut opens the Immediate Window in the VB 6.0 IDE?", "options": ["Ctrl+L", "Ctrl+W", "Ctrl+G", "Ctrl+R"], "answer": "C", "explanation": "Ctrl+G opens the Immediate Window (also View &gt; Immediate Window). Ctrl+L is Call Stack, Ctrl+W is Edit Watch and Ctrl+R is Project Explorer."},
+  {"id": 28, "level": "Basic", "type": "Concept", "topic": "Immediate Window", "question": "In the Immediate Window, the question mark <code>?</code> is a shortcut for:", "options": ["A comment marker", "The Help command", "The Print statement", "The Input statement"], "answer": "C", "explanation": "Typing <code>? x</code> is the same as <code>Print x</code> and displays the value of x in the Immediate Window."},
+  {"id": 29, "level": "Intermediate", "type": "Code Output", "topic": "Immediate Window", "question": "What will the Immediate Window display for the following entry?\n<code>? 2 + 3 * 4</code>", "options": ["9", "14", "24", "20"], "answer": "B", "explanation": "Multiplication has higher precedence than addition, so the result is 2 + 12 = 14."},
+  {"id": 30, "level": "Basic", "type": "Concept", "topic": "Immediate Window", "question": "Which statement written inside a procedure sends its output to the Immediate Window?", "options": ["Form1.Print", "MsgBox", "Debug.Print", "Immediate.Write"], "answer": "C", "explanation": "Debug.Print writes values to the Immediate Window while the program runs in the IDE, without disturbing the user interface."},
+  {"id": 31, "level": "Basic", "type": "Concept", "topic": "Immediate Window", "question": "What happens to <code>Debug.Print</code> statements in a compiled .exe file?", "options": ["They raise a run-time error", "They display a message box", "They write the output to a text file", "They are ignored and produce no output"], "answer": "D", "explanation": "Debug.Print is a design-time aid. It is not executed in a compiled executable."},
+  {"id": 32, "level": "Intermediate", "type": "Scenario", "topic": "Immediate Window", "question": "In break mode, the variable <code>count</code> holds a wrong value. What is the quickest way to reset it to 0 without editing the code?", "options": ["Change the value in the Form Layout window", "Edit the entry in the Project Explorer", "Type a new value in the Quick Watch dialog and press Enter", "Type <code>count = 0</code> in the Immediate Window and press Enter"], "answer": "D", "explanation": "Assignment statements can be executed directly in the Immediate Window, so values can be changed on the fly."},
+  {"id": 33, "level": "Basic", "type": "Concept", "topic": "Immediate Window", "question": "Which of the following is NOT allowed in the Immediate Window?", "options": ["Assigning a value to a variable in break mode", "Calling a Sub procedure", "Declaring a variable with a <code>Dim</code> statement", "Displaying a value using <code>?</code>"], "answer": "C", "explanation": "Declarations such as Dim are invalid in the Immediate pane. It accepts executable statements only, one line at a time."},
+  {"id": 34, "level": "Intermediate", "type": "Scenario", "topic": "Immediate Window", "question": "A Sub procedure named <code>ShowTotal</code> has to be tested without clicking through the whole application. While the project is in break mode, what can be done?", "options": ["Drag the procedure into the Watch Window", "Type <code>ShowTotal</code> in the Immediate Window and press Enter", "Use Edit Watch to run the procedure", "Press F9 on the procedure name"], "answer": "B", "explanation": "The Immediate Window can call Sub and Function procedures directly, which is useful for quick testing."},
+  {"id": 35, "level": "Basic", "type": "Concept", "topic": "Immediate Window", "question": "Which single-line entry correctly prints 1, 2 and 3 on separate lines from the Immediate Window?", "options": ["<code>For i = 1 To 3: Debug.Print i</code>", "<code>For i = 1 To 3 Debug.Print i Next i</code>", "<code>For i = 1 To 3: Debug.Print i: Next i</code>", "<code>Debug.Print 1 To 3</code>"], "answer": "C", "explanation": "Block statements must be typed on one line in the Immediate Window, with colons separating the statements."},
+  {"id": 36, "level": "Intermediate", "type": "Code Output", "topic": "Immediate Window", "question": "In <code>Debug.Print \"A\", \"B\"</code>, the comma between the two items causes B to be displayed:", "options": ["Immediately after A with no space", "In place of A", "In the next print zone on the same line", "On a new line"], "answer": "C", "explanation": "A comma moves the output to the next print zone (tab position); a semicolon would place the items next to each other."},
+  {"id": 37, "level": "Basic", "type": "Concept", "topic": "Debug and Locals Windows", "question": "What does the Locals Window display in break mode?", "options": ["Only the breakpoints that have been set", "All variables of the current procedure with their values", "The list of all forms in the project", "The sequence of procedure calls that led to the current line"], "answer": "B", "explanation": "The Locals Window automatically lists every variable declared in the current procedure along with its value and type."},
+  {"id": 38, "level": "Basic", "type": "Concept", "topic": "Debug and Locals Windows", "question": "The Locals Window shows variable values only when the application is in:", "options": ["Compiled .exe mode", "Run mode without any break", "Design mode", "Break mode"], "answer": "D", "explanation": "Variable values can be inspected only while execution is paused, that is, in break mode."},
+  {"id": 39, "level": "Basic", "type": "Concept", "topic": "Debug and Locals Windows", "question": "Which three columns are displayed in the Locals Window?", "options": ["Variable, Size and Address", "Name, Scope and Value", "Expression, Value and Type", "Expression, Value and Context"], "answer": "C", "explanation": "The Locals Window has Expression, Value and Type columns. The Watch Window has an extra Context column."},
+  {"id": 40, "level": "Intermediate", "type": "Scenario", "topic": "Debug and Locals Windows", "question": "While stepping with F8, execution moves into a called procedure. What happens to the Locals Window?", "options": ["It shows the variables of all procedures together", "It keeps showing the variables of the caller", "It now shows the variables of the called procedure", "It closes automatically"], "answer": "C", "explanation": "The Locals Window always reflects the procedure that is currently executing."},
+  {"id": 41, "level": "Basic", "type": "Concept", "topic": "Debug and Locals Windows", "question": "In the Locals Window of a form, where are the module-level (form-level) variables displayed?", "options": ["They are never displayed", "Under the <code>Me</code> entry, which can be expanded", "Under the <code>Project</code> entry", "In the Type column"], "answer": "B", "explanation": "The special entry Me represents the current form or class module and holds its module-level variables and controls."},
+  {"id": 42, "level": "Intermediate", "type": "Statement-Based", "topic": "Debug and Locals Windows", "question": "Which statement about the Locals Window is correct?", "options": ["It displays only global variables of standard modules", "A variable's value can be edited in the window during break mode", "It can be used only in design mode", "It displays variables of all procedures at the same time"], "answer": "B", "explanation": "In break mode, a value can be changed directly in the Locals Window to test how the program behaves."},
+  {"id": 43, "level": "Basic", "type": "Concept", "topic": "Debug and Locals Windows", "question": "Which window should be used to follow a variable across several procedures, when the Locals Window shows only the current procedure?", "options": ["Toolbox", "Project Explorer", "Properties Window", "Watch Window"], "answer": "D", "explanation": "A watch expression with a wide context (all procedures, all modules) can be monitored wherever execution is."},
+  {"id": 44, "level": "Basic", "type": "Concept", "topic": "Debug and Locals Windows", "question": "Which set contains only windows that have buttons on the VB 6.0 Debug toolbar?", "options": ["Toolbox, Properties and Locals", "Locals, Immediate and Watch", "Locals, Watch and Toolbox", "Project, Immediate and Form Layout"], "answer": "B", "explanation": "The Debug toolbar provides buttons for the Locals, Immediate and Watch windows, besides stepping and breakpoint buttons."},
+  {"id": 45, "level": "Basic", "type": "Concept", "topic": "Debug and Locals Windows", "question": "Which window displays the list of active procedure calls that led to the current statement in break mode?", "options": ["Project Explorer", "Immediate Window", "Locals Window", "Call Stack window"], "answer": "D", "explanation": "The Call Stack dialog (View &gt; Call Stack, Ctrl+L) shows the chain of procedures that are currently active, most recent first."},
+  {"id": 46, "level": "Intermediate", "type": "Scenario", "topic": "Debug and Locals Windows", "question": "Procedure A calls B and B calls C. Execution is paused inside C. What does the Call Stack window list?", "options": ["A only", "All procedures in the project", "C, B and A", "A and C only"], "answer": "C", "explanation": "The call stack lists only procedures that are active (called but not yet finished), so it shows C, B and A, with C at the top."},
+  {"id": 47, "level": "Basic", "type": "Concept", "topic": "Debug and Locals Windows", "question": "Which feature shows the value of a variable in a small tip when the mouse pointer is placed over it in break mode?", "options": ["Auto Data Tips", "Auto Syntax Check", "Auto Quick Info", "Auto List Members"], "answer": "A", "explanation": "Auto Data Tips (Tools &gt; Options &gt; Editor tab) displays the value of the variable under the pointer while debugging."},
+  {"id": 48, "level": "Basic", "type": "Concept", "topic": "Watch Expressions", "question": "A watch expression is:", "options": ["A line of code highlighted in red by the editor", "An expression that is evaluated only at compile time", "A statement that stops the program unconditionally", "An expression whose value is monitored in the Watch Window during debugging"], "answer": "D", "explanation": "Watch expressions let the programmer track variables or calculated values while the code runs or is stepped through."},
+  {"id": 49, "level": "Basic", "type": "Concept", "topic": "Watch Expressions", "question": "Which fields are present in the Add Watch dialog box?", "options": ["Name, Value and Type", "Expression, Context and Watch Type", "Variable, Scope and Data Type", "Expression, Breakpoint and Condition"], "answer": "B", "explanation": "Add Watch asks for the Expression, its Context (procedure and module) and the Watch Type."},
+  {"id": 50, "level": "Basic", "type": "Concept", "topic": "Watch Expressions", "question": "Which are the three Watch Types available in the Add Watch dialog box?", "options": ["Watch Expression, Break When Value Is False, Break When Value Increases", "Watch Variable, Break When Value Is True, Break On Error", "Watch Expression, Break At Line, Break When Value Changes", "Watch Expression, Break When Value Is True, Break When Value Changes"], "answer": "D", "explanation": "The three types are Watch Expression, Break When Value Is True and Break When Value Changes."},
+  {"id": 51, "level": "Intermediate", "type": "Scenario", "topic": "Watch Expressions", "question": "Execution should pause automatically as soon as <code>total &gt; 1000</code> becomes true. Which watch type should be used?", "options": ["Break When Value Is True", "Break When Value Changes", "Watch Expression", "Quick Watch"], "answer": "A", "explanation": "Break When Value Is True enters break mode when the watch expression evaluates to True (non-zero)."},
+  {"id": 52, "level": "Intermediate", "type": "Scenario", "topic": "Watch Expressions", "question": "A variable <code>flag</code> is being changed unexpectedly by some statement in the program. Which watch type helps to find that statement?", "options": ["Break When Value Is True", "Set Next Statement", "Break When Value Changes", "Watch Expression"], "answer": "C", "explanation": "Break When Value Changes pauses execution whenever the watched value is altered, pointing to the code that changed it."},
+  {"id": 53, "level": "Basic", "type": "Concept", "topic": "Watch Expressions", "question": "What does <code>&lt;Out of context&gt;</code> in the Watch Window indicate?", "options": ["The expression cannot be evaluated at the current execution point", "The expression has a syntax error", "The variable has not been declared", "The watch has been deleted"], "answer": "A", "explanation": "The watch expression was defined for a procedure or module that is not currently executing."},
+  {"id": 54, "level": "Basic", "type": "Concept", "topic": "Watch Expressions", "question": "Which statement about Quick Watch is correct?", "options": ["It continuously displays all variables of the current procedure", "It works only in design mode", "It executes the selected statement in the Immediate Window", "It shows the current value of the selected expression in a dialog box during break mode"], "answer": "D", "explanation": "Quick Watch (Shift+F9) gives a one-time look at an expression and has an Add button to move it to the Watch Window."},
+  {"id": 55, "level": "Basic", "type": "Concept", "topic": "Watch Expressions", "question": "In the Add Watch dialog, choosing the context '(All Procedures)' and '(All Modules)' allows the expression to be:", "options": ["Monitored only in the current procedure", "Evaluated only when the project is compiled to an .exe", "Evaluated only in the form's Load event", "Monitored whichever procedure or module is executing"], "answer": "D", "explanation": "The context decides where a watch is evaluated. A wide context avoids the 'Out of context' message."},
+  {"id": 56, "level": "Intermediate", "type": "Statement-Based", "topic": "Watch Expressions", "question": "Consider the statements:\n1. A watch expression can be a variable or any valid expression such as <code>x * 2 &gt; 50</code>.\n2. The Watch Window displays Expression, Value, Type and Context.\n3. Watch expressions can be added only in design mode.\nWhich statements are correct?", "options": ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"], "answer": "A", "explanation": "Watches can also be added in break mode (and edited with Edit Watch), so statement 3 is false."},
+  {"id": 57, "level": "Basic", "type": "Concept", "topic": "Watch Expressions", "question": "Which column appears in the Watch Window but NOT in the Locals Window?", "options": ["Value", "Context", "Expression", "Type"], "answer": "B", "explanation": "The Watch Window shows Expression, Value, Type and Context, whereas the Locals Window has no Context column."},
+  {"id": 58, "level": "Basic", "type": "Concept", "topic": "Testing and Debugging Applications", "question": "When the VB 6.0 title bar shows [break], the application is:", "options": ["Compiled into an .exe file", "Being designed", "Running normally", "Paused, so code and variables can be inspected"], "answer": "D", "explanation": "The three IDE modes are design, run and break. Break mode suspends execution so the programmer can debug."},
+  {"id": 59, "level": "Basic", "type": "Concept", "topic": "Testing and Debugging Applications", "question": "Which key combination interrupts a running application and switches to break mode?", "options": ["Ctrl+Break", "Ctrl+F5", "Shift+F5", "Ctrl+Alt+Del"], "answer": "A", "explanation": "Ctrl+Break pauses the running program at the current statement. Shift+F5 restarts it."},
+  {"id": 60, "level": "Intermediate", "type": "Scenario", "topic": "Testing and Debugging Applications", "question": "A program computes an average with <code>avg = a + b / 2</code>. For a = 10 and b = 20 it shows 20 instead of 15, with no error message. Which approach best locates the cause?", "options": ["Run the project using Start With Full Compile", "Step through with F8 and evaluate the expression in the Immediate Window", "Insert <code>On Error GoTo 0</code> before the statement", "Add <code>On Error Resume Next</code> before the statement"], "answer": "B", "explanation": "This is a logical error (operator precedence; it should be (a + b) / 2). Tracing and evaluating expressions reveals it, while error handlers do not."},
+  {"id": 61, "level": "Intermediate", "type": "Scenario", "topic": "Testing and Debugging Applications", "question": "To record variable values while the program runs at full speed, without stopping at every line, a programmer should insert:", "options": ["Breakpoints", "<code>Debug.Print</code> statements", "<code>Resume Next</code> statements", "<code>Set Next Statement</code> commands"], "answer": "B", "explanation": "Debug.Print writes a trace of values to the Immediate Window while the program keeps running."},
+  {"id": 62, "level": "Intermediate", "type": "Scenario", "topic": "Testing and Debugging Applications", "question": "In a long procedure, the error is suspected at one particular line. Which is the most efficient way to examine it?", "options": ["Set a breakpoint on that line and run the program with F5", "Press F8 from the first line of the project", "Delete the earlier statements and run again", "Use Set Next Statement on the first line"], "answer": "A", "explanation": "A breakpoint lets everything before the suspected line run normally and pauses just before it."},
+  {"id": 63, "level": "Basic", "type": "Concept", "topic": "Testing and Debugging Applications", "question": "In break mode, pressing F5 will:", "options": ["Continue running until the next breakpoint or the end of the program", "Execute only the next statement", "Restart the program from the beginning", "Remove all breakpoints"], "answer": "A", "explanation": "F5 (Run &gt; Continue) resumes normal execution; F8 would execute only one statement."},
+  {"id": 64, "level": "Intermediate", "type": "Scenario", "topic": "Testing and Debugging Applications", "question": "You changed the value of a variable in the Immediate Window and want to execute again the statement that has just been run. Which command helps?", "options": ["Show Next Statement", "Set Next Statement", "Step Out", "Clear All Breakpoints"], "answer": "B", "explanation": "Set Next Statement moves the execution arrow back to the earlier line so it can be re-executed."},
+  {"id": 65, "level": "Basic", "type": "Concept", "topic": "Testing and Debugging Applications", "question": "Testing a division program with inputs such as 0 and text is mainly done to:", "options": ["Detect syntax errors in the code window", "Expose run-time errors for which error handling is needed", "Turn off the Auto Syntax Check option", "Reduce the size of the compiled program"], "answer": "B", "explanation": "Unexpected or boundary inputs reveal run-time errors, so that suitable error handlers can then be written."},
+  {"id": 66, "level": "Basic", "type": "Concept", "topic": "Testing and Debugging Applications", "question": "What is the effect of the <code>Stop</code> statement placed in code when the program runs in the VB 6.0 IDE?", "options": ["Execution is suspended and the IDE enters break mode", "All breakpoints are cleared", "The error handler is disabled", "The project is closed immediately"], "answer": "A", "explanation": "Stop works like a breakpoint written in the code. It suspends execution so the programmer can examine the program."},
+  {"id": 67, "level": "Basic", "type": "Concept", "topic": "Testing and Debugging Applications", "question": "<code>Debug.Assert x &gt; 0</code> enters break mode when:", "options": ["x is declared without a data type", "The expression x &gt; 0 evaluates to True", "The expression x &gt; 0 evaluates to False", "x changes its value"], "answer": "C", "explanation": "Debug.Assert breaks when its condition is False. Like Debug.Print, it is not executed in a compiled .exe."},
+  {"id": 68, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "In a compiled .exe, what happens when a run-time error occurs and no error handler is enabled?", "options": ["VB shows the error message and the application terminates", "The statement is retried automatically", "The error is silently ignored", "VB switches to break mode"], "answer": "A", "explanation": "Without a handler VB displays the standard message and halts. Break mode exists only inside the IDE."},
+  {"id": 69, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "Which statement enables an error-handling routine that starts at a line label?", "options": ["On Error GoTo label", "Err.Raise", "Resume label", "Exit Sub"], "answer": "A", "explanation": "<code>On Error GoTo label</code> enables the handler; when an error occurs, control jumps to that label."},
+  {"id": 70, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "When a run-time error occurs, where does VB look for an enabled error handler?", "options": ["Starting from the first procedure of the project", "In the current procedure, then up the chain of calling procedures", "Only in the Form_Load event", "In the calling procedure only, never in the current one"], "answer": "B", "explanation": "If no handler is found anywhere in the call chain, VB displays the error message and halts execution."},
+  {"id": 71, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "Which property of the Err object returns a text message describing the error?", "options": ["Description", "Number", "HelpContext", "Source"], "answer": "A", "explanation": "Err.Number gives the numeric code, while Err.Description gives its message, such as 'Division by zero'."},
+  {"id": 72, "level": "Intermediate", "type": "Code Output", "topic": "Runtime Errors and Error Handlers", "question": "What message is displayed when the following procedure runs?<code style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,'Courier New',monospace;font-size:12.5px;font-weight:400;line-height:1.5;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin:8px 0 0\">Private Sub Command1_Click()\n    Dim a As Integer, b As Integer\n    On Error GoTo ErrHandler\n    a = 10: b = 0\n    MsgBox a / b\n    MsgBox \"Done\"\n    Exit Sub\nErrHandler:\n    MsgBox \"Error \" &amp; Err.Number &amp; \": \" &amp; Err.Description\nEnd Sub</code>", "options": ["Done", "Error 13: Type mismatch", "Error 6: Overflow", "Error 11: Division by zero"], "answer": "D", "explanation": "a / b raises error 11, control jumps to ErrHandler and the message built from Err.Number and Err.Description is shown."},
+  {"id": 73, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "Why is <code>Exit Sub</code> normally placed just before the error-handler label?", "options": ["To raise an error deliberately", "To enable the error handler", "To stop the handler code from running when no error has occurred", "To clear the Err object"], "answer": "C", "explanation": "Without Exit Sub, normal execution would flow into the handler code at the end of the procedure."},
+  {"id": 74, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "Which statement, used inside an error handler, re-executes the statement that caused the error?", "options": ["Resume Next", "On Error GoTo 0", "Resume", "Exit Sub"], "answer": "C", "explanation": "Resume retries the failing statement, so it should be used only after the cause has been corrected."},
+  {"id": 75, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "Which statement resumes execution at the statement immediately after the one that caused the error?", "options": ["Resume", "Err.Clear", "Exit Function", "Resume Next"], "answer": "D", "explanation": "Resume Next skips the faulty statement and continues with the following one."},
+  {"id": 76, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "What happens if a new run-time error occurs while an error handler is still active, before Resume or Exit Sub is executed?", "options": ["The same handler runs again automatically", "VB resumes at the first line of the procedure", "The same procedure's handler cannot trap it; VB looks for a handler in the calling procedure", "The error is ignored"], "answer": "C", "explanation": "An active handler cannot handle its own errors. The error is passed up to the calling procedure's handler, or it halts the program."},
+  {"id": 77, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "Which method of the Err object generates a run-time error deliberately, for example to test an error handler?", "options": ["Resume", "Err.Clear", "Err.Raise", "Err.Number"], "answer": "C", "explanation": "Err.Raise Number, Source, Description triggers a run-time error as if it had occurred naturally."},
+  {"id": 78, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "What does <code>Err.Clear</code> do?", "options": ["Raises a new run-time error", "Clears all entries in the Immediate Window", "Disables the current error handler", "Resets the Err object's Number to 0 and Description to an empty string"], "answer": "D", "explanation": "Err.Clear removes the details of the last error so that later checks do not detect it again."},
+  {"id": 79, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "In the IDE, which button of the run-time error dialog box takes the programmer to the offending statement in break mode?", "options": ["Debug", "Cancel", "Help", "End"], "answer": "A", "explanation": "Debug shows the statement that caused the error; End terminates the program; Help opens the help topic for that error."},
+  {"id": 80, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "Which of the following is the correct form of an error-handler line label?", "options": ["<code>ErrHandler;</code>", "<code>:ErrHandler</code>", "<code>ErrHandler()</code>", "<code>ErrHandler:</code>"], "answer": "D", "explanation": "A line label starts at the beginning of the line and ends with a colon."},
+  {"id": 81, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "What is the value of <code>Err.Number</code> when no run-time error has occurred?", "options": ["0", "-1", "Null", "1"], "answer": "A", "explanation": "Err.Number is 0 and Err.Description is an empty string when there is no pending error."},
+  {"id": 82, "level": "Intermediate", "type": "Code Output", "topic": "Runtime Errors and Error Handlers", "question": "What does this error handler display when <code>Err.Number</code> is 11?<code style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,'Courier New',monospace;font-size:12.5px;font-weight:400;line-height:1.5;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin:8px 0 0\">ErrHandler:\n    Select Case Err.Number\n        Case 11\n            MsgBox \"Divide by zero\"\n        Case 6\n            MsgBox \"Overflow\"\n        Case 13\n            MsgBox \"Type mismatch\"\n        Case Else\n            MsgBox \"Unknown error\"\n    End Select</code>", "options": ["Overflow", "Divide by zero", "Unknown error", "Type mismatch"], "answer": "B", "explanation": "Select Case on Err.Number lets one handler respond differently to each error. Number 11 matches the first Case."},
+  {"id": 83, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "Which function returns the line number of the statement that caused the last run-time error, if the code lines are numbered?", "options": ["Err.HelpContext", "Err.Source", "Erl", "Err.Number"], "answer": "C", "explanation": "Erl returns the number of the last numbered line executed before the error. It returns 0 if the lines are not numbered."},
+  {"id": 84, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "Which function returns the descriptive message for a given run-time error number, for example <code>Error(11)</code>?", "options": ["Err.Clear", "Error", "Erl", "MsgBox"], "answer": "B", "explanation": "Error(n) returns the message text for error number n, for example 'Division by zero' for 11."},
+  {"id": 85, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "To generate a user-defined error that does not clash with VB's own error numbers, the number passed to <code>Err.Raise</code> is usually based on:", "options": ["vbObjectError + n", "Err.Number - n", "vbRetry + n", "vbCritical + n"], "answer": "A", "explanation": "Adding the constant vbObjectError to a small number gives a user-defined error number outside the range reserved for VB errors."},
+  {"id": 86, "level": "Intermediate", "type": "Scenario", "topic": "Runtime Errors and Error Handlers", "question": "Procedure <code>Main</code> has an <code>On Error GoTo</code> handler and calls <code>Calc</code>, which has no handler. A division by zero occurs inside <code>Calc</code>. What happens?", "options": ["Control passes to the error handler of <code>Main</code>", "The error is stored and handled when <code>Calc</code> ends", "VB ignores the error and continues in <code>Calc</code>", "The program always terminates immediately"], "answer": "A", "explanation": "VB searches the calling procedures for an enabled handler. The handler in Main traps the error."},
+  {"id": 87, "level": "Basic", "type": "Concept", "topic": "Runtime Errors and Error Handlers", "question": "Which of the following is a valid way to enable an error handler without using a label name?", "options": ["<code>On Error GoTo 100:</code>, where 100 is a variable name", "<code>On Error GoTo 100</code>, where 100 is a line number in the procedure", "<code>On Error Resume 100</code>", "<code>On Error Goto Next</code>"], "answer": "B", "explanation": "On Error GoTo accepts a line label or a line number, and the target must be in the same procedure. GoTo 0 has the special meaning of disabling the handler."},
+  {"id": 88, "level": "Basic", "type": "Concept", "topic": "VB Error-Handling Options", "question": "Where are the Error Trapping options of the VB 6.0 IDE set?", "options": ["Project &gt; Properties &gt; Make tab", "Debug &gt; Options", "Run &gt; Properties", "Tools &gt; Options &gt; General tab"], "answer": "D", "explanation": "The Error Trapping group is on the General tab of the Options dialog box (Tools &gt; Options)."},
+  {"id": 89, "level": "Basic", "type": "Concept", "topic": "VB Error-Handling Options", "question": "Which are the three Error Trapping options in VB 6.0?", "options": ["Break on All Errors, Break in Class Module, Break on Unhandled Errors", "Break on All Errors, Break on Syntax Errors, Ignore Errors", "Break in Form Module, Break in Class Module, Break on Warnings", "Ignore All Errors, Break on Runtime Errors, Break on Handled Errors"], "answer": "A", "explanation": "These three options control when VB enters break mode because of a run-time error."},
+  {"id": 90, "level": "Basic", "type": "Concept", "topic": "VB Error-Handling Options", "question": "With the Break on Unhandled Errors option selected, VB enters break mode when:", "options": ["Any run-time error occurs, even when a handler is active", "A run-time error occurs and no error handler is active", "A syntax error is typed in the Code window", "A breakpoint is removed"], "answer": "B", "explanation": "Errors that have an active handler are trapped by it; only unhandled errors interrupt the program in the IDE."},
+  {"id": 91, "level": "Basic", "type": "Concept", "topic": "VB Error-Handling Options", "question": "Which option makes VB stop at the exact line inside a class module that raised an unhandled error, instead of at the calling line?", "options": ["Break on Unhandled Errors", "Require Variable Declaration", "Break in Class Module", "Break on All Errors"], "answer": "C", "explanation": "Break in Class Module shows the actual statement in the class module where the unhandled error occurred."},
+  {"id": 92, "level": "Basic", "type": "Concept", "topic": "VB Error-Handling Options", "question": "Besides the Options dialog, Error Trapping can be changed from the Code window's shortcut menu using:", "options": ["The Properties command", "The Toggle submenu", "The Watch command", "The Definition command"], "answer": "B", "explanation": "Right-clicking in the Code window and choosing Toggle offers the three error-trapping settings."},
+  {"id": 93, "level": "Basic", "type": "Concept", "topic": "VB Error-Handling Options", "question": "Which of the following is NOT a valid form of the <code>On Error</code> statement?", "options": ["<code>On Error Retry</code>", "<code>On Error GoTo 0</code>", "<code>On Error GoTo label</code>", "<code>On Error Resume Next</code>"], "answer": "A", "explanation": "VB has only three forms: On Error GoTo line, On Error Resume Next and On Error GoTo 0."},
+  {"id": 94, "level": "Basic", "type": "Concept", "topic": "Disabling Error Handlers", "question": "Which statement disables an enabled error handler in the current procedure?", "options": ["Resume 0", "Err.Clear", "On Error GoTo 0", "On Error Resume Next"], "answer": "C", "explanation": "On Error GoTo 0 turns off error handling, so later errors in that procedure produce the standard run-time error message."},
+  {"id": 95, "level": "Intermediate", "type": "Code Output", "topic": "Disabling Error Handlers", "question": "What happens when this procedure runs?<code style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,'Courier New',monospace;font-size:12.5px;font-weight:400;line-height:1.5;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin:8px 0 0\">Private Sub Test()\n    Dim n As Integer, d As Integer, r As Integer\n    n = 10: d = 0\n    On Error GoTo Oops\n    On Error GoTo 0\n    r = n / d\n    MsgBox \"Finished\"\n    Exit Sub\nOops:\n    MsgBox \"Handled\"\nEnd Sub</code>", "options": ["'Finished' is displayed", "'Handled' is displayed", "Run-time error 13 occurs", "VB displays the standard run-time error 11 message and the Oops handler does not run"], "answer": "D", "explanation": "On Error GoTo 0 disables the handler before the division, so the error is not trapped."},
+  {"id": 96, "level": "Basic", "type": "Concept", "topic": "Disabling Error Handlers", "question": "Which Error Trapping option makes VB enter break mode on every run-time error, even when an error handler is enabled?", "options": ["Break When Value Changes", "Break in Class Module", "Break on All Errors", "Break on Unhandled Errors"], "answer": "C", "explanation": "Break on All Errors effectively bypasses error handlers, so the exact line causing an error can be found while debugging."},
+  {"id": 97, "level": "Basic", "type": "Concept", "topic": "Disabling Error Handlers", "question": "After <code>On Error GoTo 0</code> has been executed, how can error handling be enabled again in the same procedure?", "options": ["By using Err.Clear", "It cannot be enabled again in that procedure", "By pressing F5", "By executing another On Error GoTo label or On Error Resume Next statement"], "answer": "D", "explanation": "Any new On Error statement enables error handling again from that point."},
+  {"id": 98, "level": "Basic", "type": "Concept", "topic": "Disabling Error Handlers", "question": "<code>On Error GoTo 0</code> placed in procedure B disables the error handler of:", "options": ["Procedure B only", "Every procedure in the same module", "Procedure B and its calling procedure", "Every procedure in the project"], "answer": "A", "explanation": "An On Error statement affects only the procedure in which it is executed."},
+  {"id": 99, "level": "Basic", "type": "Concept", "topic": "Inline Error Handling", "question": "Inline error handling is implemented using which statement?", "options": ["Resume label", "On Error Resume Next", "On Error GoTo 0", "On Error GoTo label"], "answer": "B", "explanation": "On Error Resume Next ignores the failure and continues; the code then checks Err.Number itself."},
+  {"id": 100, "level": "Basic", "type": "Concept", "topic": "Inline Error Handling", "question": "In inline error handling, when should the Err object be tested?", "options": ["Only at the end of the procedure", "Before the statement is executed", "Only in the Form_Unload event", "Immediately after the statement that may cause the error"], "answer": "D", "explanation": "Err keeps only the latest error, so it should be checked right after each risky statement."},
+  {"id": 101, "level": "Intermediate", "type": "Code Output", "topic": "Inline Error Handling", "question": "What does the following code print in the Immediate Window?<code style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,'Courier New',monospace;font-size:12.5px;font-weight:400;line-height:1.5;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin:8px 0 0\">Dim a As Integer, b As Integer, r As Integer\na = 5: b = 0\nOn Error Resume Next\nr = a / b\nr = a + b\nDebug.Print Err.Number</code>", "options": ["11", "A run-time error dialog box appears", "0", "5"], "answer": "A", "explanation": "Err.Number keeps the value 11 because a later successful statement does not reset the Err object."},
+  {"id": 102, "level": "Basic", "type": "Concept", "topic": "Inline Error Handling", "question": "Why is <code>Err.Clear</code> called after an error has been checked in inline error handling?", "options": ["To close the Immediate Window", "To skip the next statement", "So that later checks do not detect the old error again", "To enable the error handler"], "answer": "C", "explanation": "The Err object retains the last error until it is cleared, so a stale value could be mistaken for a new error."},
+  {"id": 103, "level": "Basic", "type": "Concept", "topic": "Inline Error Handling", "question": "What is the main disadvantage of inline error handling?", "options": ["It works only in compiled programs", "It stops the program at the first error", "It cannot detect any run-time error", "Err must be checked after every risky statement, which makes the code longer"], "answer": "D", "explanation": "Forgetting a check makes the error pass silently, and repeated checks clutter the code."},
+  {"id": 104, "level": "Basic", "type": "Concept", "topic": "Inline Error Handling", "question": "How does inline error handling differ from <code>On Error GoTo label</code>?", "options": ["Execution continues at the next statement and Err is tested in place, instead of jumping to a separate handler block", "Inline handling stops the program at the error, whereas GoTo label continues", "There is no difference", "Inline handling works only for syntax errors"], "answer": "A", "explanation": "On Error GoTo branches to a labelled routine. Inline handling stays in the normal flow and tests Err.Number after the statement."},
+  {"id": 105, "level": "Intermediate", "type": "Code Output", "topic": "Inline Error Handling", "question": "What happens when the following code is executed with the text box containing <code>abc</code>?<code style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,'Courier New',monospace;font-size:12.5px;font-weight:400;line-height:1.5;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin:8px 0 0\">On Error Resume Next\nn = CInt(Text1.Text)\nIf Err.Number &lt;&gt; 0 Then\n    MsgBox \"Invalid number\"\n    Err.Clear\nEnd If</code>", "options": ["n becomes 0 and nothing is displayed", "Run-time error 13 dialog box appears", "'Invalid number' is displayed", "The program terminates"], "answer": "C", "explanation": "CInt(\"abc\") raises error 13 (Type mismatch). Resume Next skips it and the test of Err.Number then shows the message."},
+  {"id": 106, "level": "Basic", "type": "Concept", "topic": "Inline Error Handling", "question": "Which statement about <code>On Error Resume Next</code> and called procedures is correct?", "options": ["It is permanently active until the project is closed", "It is cancelled only by the Err.Clear method", "It becomes inactive when another procedure is called, so each procedure needs its own statement", "It automatically applies to every procedure that is called"], "answer": "C", "explanation": "To use inline handling inside a called procedure, On Error Resume Next must be executed in that procedure also."},
+  {"id": 107, "level": "Advanced", "type": "Match", "topic": "Important and Tricky Questions", "question": "Match List I with List II.\nList I: 1. Step Into   2. Step Over   3. Step Out   4. Run To Cursor\nList II: a. Ctrl+F8   b. F8   c. Ctrl+Shift+F8   d. Shift+F8", "options": ["1-a, 2-b, 3-c, 4-d", "1-b, 2-d, 3-c, 4-a", "1-b, 2-c, 3-d, 4-a", "1-d, 2-b, 3-a, 4-c"], "answer": "B", "explanation": "Step Into = F8, Step Over = Shift+F8, Step Out = Ctrl+Shift+F8, Run To Cursor = Ctrl+F8."},
+  {"id": 108, "level": "Advanced", "type": "Match", "topic": "Important and Tricky Questions", "question": "Match List I with List II.\nList I: 1. Error 13   2. Error 6   3. Error 11   4. Error 9\nList II: a. Overflow   b. Subscript out of range   c. Type mismatch   d. Division by zero", "options": ["1-c, 2-a, 3-b, 4-d", "1-a, 2-c, 3-d, 4-b", "1-c, 2-a, 3-d, 4-b", "1-d, 2-b, 3-c, 4-a"], "answer": "C", "explanation": "Error 13 = Type mismatch, 6 = Overflow, 11 = Division by zero, 9 = Subscript out of range."},
+  {"id": 109, "level": "Advanced", "type": "Assertion-Reason", "topic": "Important and Tricky Questions", "question": "Assertion (A): Logical errors do not generate error messages in VB.\nReason (R): VB cannot know what result the programmer intended.", "options": ["Both A and R are true and R is the correct explanation of A", "Both A and R are true but R is not the correct explanation of A", "A is true but R is false", "A is false but R is true"], "answer": "A", "explanation": "The compiler checks only grammar and execution rules, not the programmer's intention, so wrong logic goes unreported."},
+  {"id": 110, "level": "Advanced", "type": "Assertion-Reason", "topic": "Important and Tricky Questions", "question": "Assertion (A): <code>On Error Resume Next</code> guarantees that a program is free from errors.\nReason (R): It only suppresses the error message and moves to the next statement.", "options": ["Both A and R are true and R is the correct explanation of A", "Both A and R are true but R is not the correct explanation of A", "A is true but R is false", "A is false but R is true"], "answer": "D", "explanation": "The error still occurs; Resume Next merely continues execution, so the Err object must be checked."},
+  {"id": 111, "level": "Advanced", "type": "Assertion-Reason", "topic": "Important and Tricky Questions", "question": "Assertion (A): A 'Break When Value Changes' watch can help locate the statement that wrongly modifies a variable.\nReason (R): A watch expression can be monitored only after the application is compiled into an .exe file.", "options": ["Both A and R are true and R is the correct explanation of A", "Both A and R are true but R is not the correct explanation of A", "A is true but R is false", "A is false but R is true"], "answer": "C", "explanation": "Watches work in the IDE during break mode and run mode. They are not related to compiling an .exe."},
+  {"id": 112, "level": "Advanced", "type": "Assertion-Reason", "topic": "Important and Tricky Questions", "question": "Assertion (A): <code>Exit Sub</code> is normally placed just before the error-handler label.\nReason (R): An error-handler label must end with a colon.", "options": ["Both A and R are true and R is the correct explanation of A", "Both A and R are true but R is not the correct explanation of A", "A is true but R is false", "A is false but R is true"], "answer": "B", "explanation": "Both facts are true, but the colon rule has nothing to do with why Exit Sub is needed (to avoid running the handler by accident)."},
+  {"id": 113, "level": "Intermediate", "type": "Statement-Based", "topic": "Important and Tricky Questions", "question": "Consider the statements:\n1. On Error GoTo 0 disables an enabled error handler.\n2. Resume Next re-executes the statement that caused the error.\n3. Err.Number is 0 when no error has occurred.\nWhich statements are correct?", "options": ["1 and 2 only", "1 and 3 only", "2 and 3 only", "1, 2 and 3"], "answer": "B", "explanation": "Resume re-executes the faulty statement; Resume Next continues with the statement after it, so statement 2 is false."},
+  {"id": 114, "level": "Advanced", "type": "Tricky", "topic": "Important and Tricky Questions", "question": "What happens when this code runs and the error occurs?<code style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,'Courier New',monospace;font-size:12.5px;font-weight:400;line-height:1.5;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin:8px 0 0\">Private Sub Command1_Click()\n    Dim d As Integer\n    On Error GoTo Fix\n    d = 0\n    MsgBox 10 / d\n    Exit Sub\nFix:\n    Resume\nEnd Sub</code>", "options": ["The procedure ends normally after the handler", "MsgBox shows Infinity", "MsgBox shows 0", "The error occurs again and again, causing an endless loop"], "answer": "D", "explanation": "Resume re-executes <code>10 / d</code>. Since d is still 0, error 11 occurs repeatedly unless the cause is corrected in the handler."},
+  {"id": 115, "level": "Advanced", "type": "Tricky", "topic": "Important and Tricky Questions", "question": "Which of the following automatically resets the properties of the Err object?", "options": ["A Resume Next statement executed inside an error handler", "Reading the value of Err.Number", "Displaying Err.Description in a MsgBox", "Opening the Quick Watch dialog"], "answer": "A", "explanation": "Err is reset by Resume Next or Exit Sub in a handler, by any On Error statement, or by Err.Clear. Reading its values does not reset it."},
+  {"id": 116, "level": "Advanced", "type": "Tricky", "topic": "Important and Tricky Questions", "question": "A procedure has a correct <code>On Error GoTo</code> handler, but in the IDE VB still stops at the faulty statement every time. What is the most likely reason?", "options": ["Error Trapping is set to Break on All Errors", "Option Explicit is turned off", "The Err object has been cleared", "Auto Syntax Check is disabled"], "answer": "A", "explanation": "Break on All Errors enters break mode on every error regardless of handlers. Switch to Break on Unhandled Errors to test the handler."},
+  {"id": 117, "level": "Intermediate", "type": "Code Output", "topic": "Important and Tricky Questions", "question": "What is displayed by the following code when it is run?<code style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,'Courier New',monospace;font-size:12.5px;font-weight:400;line-height:1.5;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin:8px 0 0\">Private Sub Test()\n10  Dim a As Integer\n20  On Error GoTo H\n30  a = 5 / 0\n40  Exit Sub\nH:\n    MsgBox Erl\nEnd Sub</code>", "options": ["11", "40", "0", "30"], "answer": "D", "explanation": "Erl returns the last numbered line executed before the error. The division by zero is on line 30. Line 40 is never reached."},
+  {"id": 118, "level": "Advanced", "type": "Tricky", "topic": "Important and Tricky Questions", "question": "<code>Err.Raise vbObjectError + 1001</code> is executed inside a procedure with an active handler. What happens next?", "options": ["A syntax error is reported", "The Err object is cleared", "The statement is ignored", "Control passes to the handler as for a normal run-time error"], "answer": "D", "explanation": "Err.Raise behaves exactly like a naturally occurring error, so the active On Error handler is triggered."},
+  {"id": 119, "level": "Intermediate", "type": "Scenario", "topic": "Mixed OAVS TGT Practice Set", "question": "In break mode, the variable <code>x</code> holds 5. You type <code>x = x + 10</code> in the Immediate Window and press F5. What value of x does the program use when it continues?", "options": ["5", "The program restarts and x is reset", "15", "10"], "answer": "C", "explanation": "Statements typed in the Immediate Window really change the variable, so execution continues with x = 15."},
+  {"id": 120, "level": "Advanced", "type": "Match", "topic": "Mixed OAVS TGT Practice Set", "question": "Match the window with its purpose.\nList I: 1. Immediate Window   2. Locals Window   3. Watch Window   4. Quick Watch\nList II: a. Shows the current value of one expression in a dialog   b. Lists all variables of the current procedure   c. Executes statements typed by the programmer   d. Monitors chosen expressions with their context", "options": ["1-c, 2-b, 3-a, 4-d", "1-b, 2-c, 3-d, 4-a", "1-a, 2-d, 3-c, 4-b", "1-c, 2-b, 3-d, 4-a"], "answer": "D", "explanation": "Immediate = executes statements, Locals = all variables of the current procedure, Watch = chosen expressions with context, Quick Watch = one-time value."},
+  {"id": 121, "level": "Intermediate", "type": "Code Output", "topic": "Mixed OAVS TGT Practice Set", "question": "What is displayed when the following procedure runs?<code style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,'Courier New',monospace;font-size:12.5px;font-weight:400;line-height:1.5;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin:8px 0 0\">Private Sub Command1_Click()\n    Dim s As String, n As Integer\n    On Error GoTo H\n    s = \"Ten\"\n    n = s\n    MsgBox \"OK\"\n    Exit Sub\nH:\n    MsgBox Err.Number\nEnd Sub</code>", "options": ["Overflow", "13", "0", "OK"], "answer": "B", "explanation": "Assigning the text \"Ten\" to an Integer variable raises error 13 (Type mismatch). The handler displays Err.Number."},
+  {"id": 122, "level": "Basic", "type": "Concept", "topic": "Mixed OAVS TGT Practice Set", "question": "Which statement transfers control to a specified line label inside the same procedure after an error has been handled?", "options": ["<code>Err.Resume Cleanup</code>", "<code>Exit Sub Cleanup</code>", "<code>Resume Cleanup</code> (Cleanup is a line label)", "<code>Resume Next Cleanup</code>"], "answer": "C", "explanation": "<code>Resume line</code> continues at the given label or line number, which must be in the same procedure as the error handler."},
+  {"id": 123, "level": "Intermediate", "type": "Scenario", "topic": "Mixed OAVS TGT Practice Set", "question": "A user types letters in a text box that should hold a number, and the program stops with run-time error 13. What is the best remedy?", "options": ["Change the watch type to Break When Value Changes", "Add an error handler, or an inline Err check, around the conversion and show a message", "Use Step Out when the error appears", "Set Error Trapping to Break on All Errors"], "answer": "B", "explanation": "Error handling lets the program respond gracefully to invalid input instead of terminating."},
+  {"id": 124, "level": "Intermediate", "type": "Scenario", "topic": "Mixed OAVS TGT Practice Set", "question": "While stepping through a procedure with F8, the next line is <code>Call Calculate</code>, a long procedure that has already been tested. Which command saves time?", "options": ["Step Over (Shift+F8)", "Step Into (F8)", "Set Next Statement", "Clear All Breakpoints"], "answer": "A", "explanation": "Step Over executes Calculate as one unit and stops at the following line of the current procedure."},
+  {"id": 125, "level": "Intermediate", "type": "Error ID", "topic": "Mixed OAVS TGT Practice Set", "question": "Identify the error types in order:\n(i) <code>If x &gt; 5</code> written without <code>Then</code>\n(ii) Division by zero when the user enters 0\n(iii) <code>Area = L + B</code> used instead of <code>L * B</code>", "options": ["Runtime, Syntax, Logical", "Logical, Runtime, Syntax", "Syntax, Logical, Runtime", "Syntax, Runtime, Logical"], "answer": "D", "explanation": "(i) breaks the grammar, (ii) fails during execution, (iii) runs but gives a wrong answer."},
+  {"id": 126, "level": "Basic", "type": "Concept", "topic": "Mixed OAVS TGT Practice Set", "question": "Which property of the Err object identifies the object or application that generated the error?", "options": ["Number", "Source", "HelpFile", "Description"], "answer": "B", "explanation": "Err.Source names the object or application that originally raised the error."},
+  {"id": 127, "level": "Intermediate", "type": "Error ID", "topic": "Mixed OAVS TGT Practice Set", "question": "Run-time error 91 'Object variable or With block variable not set' occurs when:", "options": ["A number is divided by zero", "An object variable is used before an object has been assigned to it", "A text value is assigned to a numeric variable", "An Integer variable exceeds 32767"], "answer": "B", "explanation": "Error 91 means the object variable contains Nothing, because no object was assigned to it with Set."},
+  {"id": 128, "level": "Basic", "type": "Concept", "topic": "Mixed OAVS TGT Practice Set", "question": "Which sequence correctly describes the working of an <code>On Error GoTo</code> handler?", "options": ["Error occurs &gt; handler enabled &gt; control jumps to label &gt; Resume or Exit Sub &gt; handler code runs", "Handler enabled &gt; control jumps to label &gt; error occurs &gt; handler code runs &gt; Resume or Exit Sub", "Control jumps to label &gt; handler enabled &gt; error occurs &gt; Resume or Exit Sub &gt; handler code runs", "Handler enabled &gt; error occurs &gt; control jumps to label &gt; handler code runs &gt; Resume or Exit Sub"], "answer": "D", "explanation": "The handler must first be enabled. When an error occurs, control jumps to the label, the handler code runs and then Resume or Exit Sub leaves it."}
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

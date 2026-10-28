@@ -1,0 +1,3934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "Definition-Based",
+    "topic": "The if Statement",
+    "question": "What is the primary purpose of the if statement in C?",
+    "options": [
+      "To repeat a block of code multiple times",
+      "To execute a block of code only when a specified condition is true",
+      "To define a function",
+      "To declare a variable"
+    ],
+    "answer": "B",
+    "explanation": "The if statement is a decision-control structure that executes a block of statements only when the given condition evaluates to true (non-zero)."
+  },
+  {
+    "id": 2,
+    "level": "Basic",
+    "type": "Syntax-Based",
+    "topic": "The if Statement",
+    "question": "Which of the following is the correct general syntax of a simple if statement in C?",
+    "options": [
+      "if condition { statement; }",
+      "if (condition) statement;",
+      "if [condition] statement;",
+      "if condition: statement;"
+    ],
+    "answer": "B",
+    "explanation": "The correct C syntax is if (condition) statement; — the condition must be enclosed in parentheses."
+  },
+  {
+    "id": 3,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "The if Statement",
+    "question": "In C, an if condition is considered true when its value is:",
+    "options": [
+      "Zero",
+      "Negative only",
+      "Any non-zero value",
+      "A string value"
+    ],
+    "answer": "C",
+    "explanation": "In C, any non-zero value (positive or negative) is treated as true; only zero is treated as false."
+  },
+  {
+    "id": 4,
+    "level": "Basic",
+    "type": "Working Mechanism",
+    "topic": "The if Statement",
+    "question": "If the condition in an if statement evaluates to false and no else part exists, what happens?",
+    "options": [
+      "The program terminates",
+      "Control skips the if-block and moves to the next statement after it",
+      "An error is generated at runtime",
+      "The if-block executes anyway"
+    ],
+    "answer": "B",
+    "explanation": "When the condition is false and there is no else, control simply skips the if-block and continues with the statement following it."
+  },
+  {
+    "id": 5,
+    "level": "Basic",
+    "type": "Flow of Execution",
+    "topic": "The if Statement",
+    "question": "What is the correct sequence of execution flow for a simple if statement?",
+    "options": [
+      "Evaluate condition → execute block regardless → exit",
+      "Execute block → evaluate condition → exit",
+      "Evaluate condition → if true, execute block → continue with next statement",
+      "Skip condition → execute block → evaluate condition"
+    ],
+    "answer": "C",
+    "explanation": "The condition is evaluated first; only if it is true does the block execute, after which control proceeds to the next statement."
+  },
+  {
+    "id": 6,
+    "level": "Intermediate",
+    "type": "Code-Based",
+    "topic": "The if Statement",
+    "question": "What will be the output of the following code?\nint a = 5;\nif (a > 10)\n    printf(\"Big\");\nprintf(\"Done\");",
+    "options": [
+      "Big",
+      "Done",
+      "BigDone",
+      "No output"
+    ],
+    "answer": "B",
+    "explanation": "Since a > 10 is false, printf(\"Big\") is skipped, and only printf(\"Done\") executes, so the output is Done."
+  },
+  {
+    "id": 7,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "The if Statement",
+    "question": "What is the output of the following code?\nint x = 0;\nif (x)\n    printf(\"True\");\nelse\n    printf(\"False\");",
+    "options": [
+      "True",
+      "False",
+      "0",
+      "Compilation error"
+    ],
+    "answer": "B",
+    "explanation": "Since x is 0, the condition is false, so the else branch executes and False is printed."
+  },
+  {
+    "id": 8,
+    "level": "Intermediate",
+    "type": "Statement-Based",
+    "topic": "The if Statement",
+    "question": "Which statement about the if block containing multiple statements is TRUE?",
+    "options": [
+      "Multiple statements after if never need braces",
+      "Multiple statements must be enclosed within curly braces { }",
+      "Only two statements are allowed inside if without braces",
+      "The compiler automatically adds braces for multiple statements"
+    ],
+    "answer": "B",
+    "explanation": "Without braces, only the single statement immediately following if is part of the if-block; multiple statements require enclosing braces { }."
+  },
+  {
+    "id": 9,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "The if Statement",
+    "question": "What is the output of the following code?\nint x = 5;\nif (x = 10)\n    printf(\"Yes\");\nelse\n    printf(\"No\");",
+    "options": [
+      "Yes",
+      "No",
+      "Compilation error",
+      "5"
+    ],
+    "answer": "A",
+    "explanation": "The single = is an assignment, not comparison. x = 10 assigns 10 to x and the expression evaluates to 10 (non-zero, true), so Yes is printed. This tests the common == vs = confusion."
+  },
+  {
+    "id": 10,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "The if Statement",
+    "question": "Which real-life scenario is best modeled using a simple if statement?",
+    "options": [
+      "Choosing between many mutually exclusive options",
+      "Repeating an action until a condition is met",
+      "Checking a single condition, such as whether a number is positive",
+      "Storing a list of values"
+    ],
+    "answer": "C",
+    "explanation": "A simple if statement is ideal for checking one condition and taking action only when it holds true, such as testing if a number is positive."
+  },
+  {
+    "id": 11,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "The if Statement",
+    "question": "A program needs to print 'Eligible' only when age is 18 or above, and otherwise print nothing. Which construct is most suitable?",
+    "options": [
+      "switch statement",
+      "for loop",
+      "simple if statement",
+      "while loop"
+    ],
+    "answer": "C",
+    "explanation": "Since only one condition is checked and no action is needed for the false case, a simple if statement is the most efficient and suitable choice."
+  },
+  {
+    "id": 12,
+    "level": "Basic",
+    "type": "Fill-in-the-Blank",
+    "topic": "The if Statement",
+    "question": "The condition of an if statement in C must always be enclosed within ________.",
+    "options": [
+      "square brackets [ ]",
+      "curly braces { }",
+      "parentheses ( )",
+      "angle brackets < >"
+    ],
+    "answer": "C",
+    "explanation": "In C syntax, the condition of an if statement is mandatorily written inside parentheses ( )."
+  },
+  {
+    "id": 13,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "The if Statement",
+    "question": "Assertion (A): The if statement is called a one-way decision structure.\nReason (R): It executes a block of code only when the condition is true and takes no action otherwise.\nChoose the correct option:",
+    "options": [
+      "Both A and R are true, and R is the correct explanation of A",
+      "Both A and R are true, but R is not the correct explanation of A",
+      "A is true but R is false",
+      "A is false but R is true"
+    ],
+    "answer": "A",
+    "explanation": "The if statement offers only one path of action (when true) with no alternative branch, correctly justifying why it is called one-way decision-making."
+  },
+  {
+    "id": 14,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "The if Statement",
+    "question": "What is the output of the following nested single-statement if code (without braces)?\nint a = 1, b = 0;\nif (a)\n    if (b)\n        printf(\"X\");\n    else\n        printf(\"Y\");",
+    "options": [
+      "X",
+      "Y",
+      "No output",
+      "Compilation error"
+    ],
+    "answer": "B",
+    "explanation": "Due to the dangling-else rule, the else binds to the nearest unmatched if (the inner if(b)). Since a is true, the inner if(b) is tested; b is 0 (false), so else executes, printing Y."
+  },
+  {
+    "id": 15,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "The if Statement",
+    "question": "Which of the following is NOT a valid condition inside an if statement in C?",
+    "options": [
+      "if (a == b)",
+      "if (a > 0 && b > 0)",
+      "if (a; b)",
+      "if (a)"
+    ],
+    "answer": "C",
+    "explanation": "if (a; b) is invalid syntax because a semicolon cannot appear inside the condition parentheses of an if statement; this causes a compilation error."
+  },
+  {
+    "id": 16,
+    "level": "Intermediate",
+    "type": "Comparison-Based",
+    "topic": "The if Statement",
+    "question": "How does a simple if statement differ from an if-else statement?",
+    "options": [
+      "if has two branches, if-else has one",
+      "if provides action only for the true case; if-else provides actions for both true and false cases",
+      "They are functionally identical",
+      "if-else cannot use relational operators"
+    ],
+    "answer": "B",
+    "explanation": "A simple if executes code only when the condition is true, offering no alternative, whereas if-else defines separate actions for both true and false outcomes."
+  },
+  {
+    "id": 17,
+    "level": "Basic",
+    "type": "Definition-Based",
+    "topic": "The if-else Construct",
+    "question": "What is the main advantage of if-else over a simple if statement?",
+    "options": [
+      "It executes faster",
+      "It provides an alternative block of code to execute when the condition is false",
+      "It removes the need for relational operators",
+      "It can only be used with loops"
+    ],
+    "answer": "B",
+    "explanation": "if-else provides a two-way decision: one block runs when the condition is true and another (else block) runs when it is false."
+  },
+  {
+    "id": 18,
+    "level": "Basic",
+    "type": "Syntax-Based",
+    "topic": "The if-else Construct",
+    "question": "Which is the correct syntax for the if-else construct?",
+    "options": [
+      "if (condition) statement1; else statement2;",
+      "if condition then statement1 else statement2",
+      "if (condition) { statement1 } else { statement2 } end",
+      "if-else (condition) statement1 statement2"
+    ],
+    "answer": "A",
+    "explanation": "The correct C syntax is: if (condition) statement1; else statement2; — else must directly follow the if block without any condition of its own."
+  },
+  {
+    "id": 19,
+    "level": "Basic",
+    "type": "Working",
+    "topic": "The if-else Construct",
+    "question": "In an if-else statement, when is the else block executed?",
+    "options": [
+      "Always, regardless of the condition",
+      "Only when the if condition evaluates to false",
+      "Only when the if condition evaluates to true",
+      "Never, it is just a placeholder"
+    ],
+    "answer": "B",
+    "explanation": "The else block executes only when the associated if condition evaluates to false (zero)."
+  },
+  {
+    "id": 20,
+    "level": "Intermediate",
+    "type": "Decision Making",
+    "topic": "The if-else Construct",
+    "question": "How many blocks of code can actually execute in a single run of an if-else statement?",
+    "options": [
+      "Both blocks always execute",
+      "Neither block executes",
+      "Exactly one block executes: either if-block or else-block, never both",
+      "It depends on the compiler"
+    ],
+    "answer": "C",
+    "explanation": "if-else is mutually exclusive: exactly one of the two blocks executes per run, based on whether the condition is true or false."
+  },
+  {
+    "id": 21,
+    "level": "Intermediate",
+    "type": "Program Flow",
+    "topic": "The if-else Construct",
+    "question": "What is the output of the following code?\nint marks = 40;\nif (marks >= 50)\n    printf(\"Pass\");\nelse\n    printf(\"Fail\");",
+    "options": [
+      "Pass",
+      "Fail",
+      "PassFail",
+      "No output"
+    ],
+    "answer": "B",
+    "explanation": "Since marks (40) is not >= 50, the condition is false, so the else block executes and Fail is printed."
+  },
+  {
+    "id": 22,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "The if-else Construct",
+    "question": "Which scenario is best suited for an if-else construct rather than a plain if?",
+    "options": [
+      "Printing a message only if a file exists",
+      "Determining whether a number is even or odd, with output required for both cases",
+      "Logging an error only when it occurs",
+      "Incrementing a counter unconditionally"
+    ],
+    "answer": "B",
+    "explanation": "When distinct output/action is needed for both possible outcomes (even and odd), if-else is appropriate since it defines behavior for both true and false cases."
+  },
+  {
+    "id": 23,
+    "level": "Intermediate",
+    "type": "Differences from Simple if",
+    "topic": "The if-else Construct",
+    "question": "Which of the following best distinguishes if-else from a simple if?",
+    "options": [
+      "if-else cannot use logical operators",
+      "if-else always requires nested statements",
+      "Simple if handles only the true case; if-else handles both true and false cases",
+      "There is no difference; they behave identically"
+    ],
+    "answer": "C",
+    "explanation": "A simple if only reacts when the condition is true, while if-else explicitly defines an alternate action for the false case as well."
+  },
+  {
+    "id": 24,
+    "level": "Intermediate",
+    "type": "Code-Based",
+    "topic": "The if-else Construct",
+    "question": "What is the output of the following code?\nint n = -5;\nif (n >= 0)\n    printf(\"Non-negative\");\nelse\n    printf(\"Negative\");",
+    "options": [
+      "Non-negative",
+      "Negative",
+      "-5",
+      "Compilation error"
+    ],
+    "answer": "B",
+    "explanation": "n is -5, so n >= 0 is false; hence the else branch executes and Negative is printed."
+  },
+  {
+    "id": 25,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "The if-else Construct",
+    "question": "What is the output of the following code?\nint a = 7;\nif (a % 2 == 0)\n    printf(\"Even\");\nelse\n    printf(\"Odd\");",
+    "options": [
+      "Even",
+      "Odd",
+      "7",
+      "0"
+    ],
+    "answer": "B",
+    "explanation": "7 % 2 evaluates to 1, which is not equal to 0, so the condition is false and Odd is printed via the else branch."
+  },
+  {
+    "id": 26,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "The if-else Construct",
+    "question": "What is a common syntax error made when writing an if-else statement?",
+    "options": [
+      "Forgetting to enclose the condition in parentheses",
+      "Placing a semicolon immediately after the if condition, e.g. if (a > b); else ...",
+      "Both A and B are common errors",
+      "There is no possible syntax error in if-else"
+    ],
+    "answer": "C",
+    "explanation": "Both omitting parentheses around the condition and mistakenly placing a semicolon right after if(condition) — which creates an empty statement and detaches else — are common beginner errors."
+  },
+  {
+    "id": 27,
+    "level": "Basic",
+    "type": "Fill-in-the-Blank",
+    "topic": "The if-else Construct",
+    "question": "In C, the else keyword must always be paired with a preceding ________ statement.",
+    "options": [
+      "while",
+      "if",
+      "switch",
+      "for"
+    ],
+    "answer": "B",
+    "explanation": "else has no independent meaning in C; it must always be associated with a preceding if statement."
+  },
+  {
+    "id": 28,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "The if-else Construct",
+    "question": "Assertion (A): if-else is called a two-way branching structure.\nReason (R): It allows only one of the two alternative blocks to execute depending on the condition's truth value.\nChoose the correct option:",
+    "options": [
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are true, but R does not explain A",
+      "A is true, R is false",
+      "A is false, R is true"
+    ],
+    "answer": "A",
+    "explanation": "The name 'two-way' reflects that exactly one of the two mutually exclusive paths executes, which is precisely what R describes."
+  },
+  {
+    "id": 29,
+    "level": "Intermediate",
+    "type": "Comparison-Based",
+    "topic": "The if-else Construct",
+    "question": "Which statement correctly compares if-else with switch for a simple two-outcome decision?",
+    "options": [
+      "switch is always faster for two outcomes",
+      "if-else is generally simpler and more direct for a two-outcome (binary) decision",
+      "if-else cannot handle two outcomes",
+      "switch and if-else are identical in every case"
+    ],
+    "answer": "B",
+    "explanation": "For a simple binary decision, if-else is more direct and readable than a switch statement, which is better suited to multiple discrete cases."
+  },
+  {
+    "id": 30,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "The if-else Construct",
+    "question": "A shop gives a discount if the purchase amount exceeds ₹1000, otherwise no discount is given but a message must still be shown. Which is most appropriate?",
+    "options": [
+      "Simple if statement only",
+      "if-else statement",
+      "Nested loop",
+      "Switch without break"
+    ],
+    "answer": "B",
+    "explanation": "Since a message must be displayed in both cases (discount and no discount), if-else is appropriate as it defines behavior for both branches."
+  },
+  {
+    "id": 31,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "The if-else Construct",
+    "question": "What is the output of the following code?\nint x = 5, y = 5;\nif (x == y)\n    if (x > 10)\n        printf(\"A\");\n    else\n        printf(\"B\");\nelse\n    printf(\"C\");",
+    "options": [
+      "A",
+      "B",
+      "C",
+      "No output"
+    ],
+    "answer": "B",
+    "explanation": "x == y is true, so the outer if executes the inner if-else. x > 10 is false (5 is not > 10), so the inner else runs, printing B."
+  },
+  {
+    "id": 32,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "The if-else Construct",
+    "question": "Which of the following if-else statements will always execute the else part regardless of variable values?",
+    "options": [
+      "if (1) ... else ...",
+      "if (0) ... else ...",
+      "if (a == a) ... else ...",
+      "if (a >= 0 || a < 0) ... else ..."
+    ],
+    "answer": "B",
+    "explanation": "if (0) has a condition that is always false (0 is falsy in C), so the else block will always execute."
+  },
+  {
+    "id": 33,
+    "level": "Intermediate",
+    "type": "Statement-Based",
+    "topic": "The if-else Construct",
+    "question": "Which statement about dangling else is TRUE?",
+    "options": [
+      "An else always pairs with the first if in the program",
+      "An else pairs with the nearest preceding unmatched if, unless braces dictate otherwise",
+      "Dangling else causes a compilation error in C",
+      "C does not allow nested if without else"
+    ],
+    "answer": "B",
+    "explanation": "The dangling-else ambiguity is resolved in C by pairing an else with the nearest unmatched if, unless curly braces explicitly indicate a different pairing."
+  },
+  {
+    "id": 34,
+    "level": "Basic",
+    "type": "Definition-Based",
+    "topic": "Logical Operators",
+    "question": "Which symbol represents the logical AND operator in C?",
+    "options": [
+      "&",
+      "&&",
+      "AND",
+      "|"
+    ],
+    "answer": "B",
+    "explanation": "&& is the logical AND operator in C, which returns true only when both operands are true. A single & is the bitwise AND."
+  },
+  {
+    "id": 35,
+    "level": "Basic",
+    "type": "Definition-Based",
+    "topic": "Logical Operators",
+    "question": "Which symbol represents the logical OR operator in C?",
+    "options": [
+      "|",
+      "||",
+      "OR",
+      "&&"
+    ],
+    "answer": "B",
+    "explanation": "|| is the logical OR operator, returning true when at least one operand is true. A single | is the bitwise OR."
+  },
+  {
+    "id": 36,
+    "level": "Basic",
+    "type": "Definition-Based",
+    "topic": "Logical Operators",
+    "question": "Which symbol represents the logical NOT operator in C?",
+    "options": [
+      "~",
+      "!",
+      "not",
+      "^"
+    ],
+    "answer": "B",
+    "explanation": "! is the logical NOT operator that reverses the truth value of its operand; ~ is the bitwise complement, not logical NOT."
+  },
+  {
+    "id": 37,
+    "level": "Basic",
+    "type": "Truth Table",
+    "topic": "Logical Operators",
+    "question": "For the AND (&&) operator, when is the result true?",
+    "options": [
+      "When at least one operand is true",
+      "When both operands are true",
+      "When both operands are false",
+      "When exactly one operand is true"
+    ],
+    "answer": "B",
+    "explanation": "The AND (&&) operator yields true only when both operand expressions evaluate to true (non-zero)."
+  },
+  {
+    "id": 38,
+    "level": "Basic",
+    "type": "Truth Table",
+    "topic": "Logical Operators",
+    "question": "For the OR (||) operator, when is the result false?",
+    "options": [
+      "When both operands are true",
+      "When at least one operand is true",
+      "Only when both operands are false",
+      "When either operand is false"
+    ],
+    "answer": "C",
+    "explanation": "The OR (||) operator returns false only in the single case where both operands evaluate to false (zero)."
+  },
+  {
+    "id": 39,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Logical Operators",
+    "question": "What does the NOT (!) operator do to a non-zero value?",
+    "options": [
+      "Leaves it unchanged",
+      "Converts it to 0 (false)",
+      "Converts it to -1",
+      "Causes a runtime error"
+    ],
+    "answer": "B",
+    "explanation": "The ! operator inverts truth values: applying ! to any non-zero (true) value produces 0 (false); applying it to 0 produces 1 (true)."
+  },
+  {
+    "id": 40,
+    "level": "Intermediate",
+    "type": "Usage in Decision Making",
+    "topic": "Logical Operators",
+    "question": "Which expression correctly checks if a number x lies between 10 and 20 (inclusive)?",
+    "options": [
+      "if (10 <= x <= 20)",
+      "if (x >= 10 && x <= 20)",
+      "if (x >= 10 || x <= 20)",
+      "if (x >= 10, x <= 20)"
+    ],
+    "answer": "B",
+    "explanation": "C does not support chained relational expressions like 10 <= x <= 20 the way mathematics does; the correct approach is combining two conditions with &&."
+  },
+  {
+    "id": 41,
+    "level": "Intermediate",
+    "type": "Evaluation of Expressions",
+    "topic": "Logical Operators",
+    "question": "What is the result of the expression (5 > 3) && (2 > 4)?",
+    "options": [
+      "1 (true)",
+      "0 (false)",
+      "-1",
+      "Compilation error"
+    ],
+    "answer": "B",
+    "explanation": "(5 > 3) is true (1) but (2 > 4) is false (0). Since AND requires both to be true, the overall result is 0 (false)."
+  },
+  {
+    "id": 42,
+    "level": "Intermediate",
+    "type": "Evaluation of Expressions",
+    "topic": "Logical Operators",
+    "question": "What is the result of the expression (0) || (7 > 2)?",
+    "options": [
+      "0",
+      "1",
+      "7",
+      "Compilation error"
+    ],
+    "answer": "B",
+    "explanation": "0 is false, but (7 > 2) is true; since OR needs only one operand to be true, the result is 1 (true)."
+  },
+  {
+    "id": 43,
+    "level": "Intermediate",
+    "type": "Code-Based",
+    "topic": "Logical Operators",
+    "question": "What is the output of the following code?\nint a = 5, b = 0;\nif (a && b)\n    printf(\"Yes\");\nelse\n    printf(\"No\");",
+    "options": [
+      "Yes",
+      "No",
+      "5",
+      "0"
+    ],
+    "answer": "B",
+    "explanation": "a is 5 (true) but b is 0 (false); since && requires both to be true, the condition is false, so No is printed."
+  },
+  {
+    "id": 44,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Logical Operators",
+    "question": "What is the output of the following code?\nint a = 0, b = 0;\nif (!a && !b)\n    printf(\"Both false\");\nelse\n    printf(\"At least one true\");",
+    "options": [
+      "Both false",
+      "At least one true",
+      "0",
+      "Compilation error"
+    ],
+    "answer": "A",
+    "explanation": "!a becomes true (since a=0) and !b becomes true (since b=0); true && true is true, so 'Both false' is printed."
+  },
+  {
+    "id": 45,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Logical Operators",
+    "question": "In the expression (a++ > 0) && (b++ > 0), if a = -1, what happens to b due to short-circuit evaluation?",
+    "options": [
+      "b is incremented regardless",
+      "b is never evaluated or incremented, because the left operand is false",
+      "b causes a compilation error",
+      "b is decremented"
+    ],
+    "answer": "B",
+    "explanation": "C uses short-circuit evaluation for &&: if the left operand is false, the right operand is not evaluated at all, so b++ never executes."
+  },
+  {
+    "id": 46,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Logical Operators",
+    "question": "In the expression (a > 0) || (b++ > 0), if a = 5, what happens to b due to short-circuit evaluation?",
+    "options": [
+      "b is incremented",
+      "b is not evaluated because the left operand is already true",
+      "b causes an error",
+      "b is set to 0"
+    ],
+    "answer": "B",
+    "explanation": "For ||, if the left operand is true, C short-circuits and skips evaluating the right operand entirely, so b++ does not execute."
+  },
+  {
+    "id": 47,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "Logical Operators",
+    "question": "Logical operators are most useful for:",
+    "options": [
+      "Performing arithmetic calculations",
+      "Combining multiple conditions into a single decision-making expression",
+      "Declaring variables",
+      "Formatting output"
+    ],
+    "answer": "B",
+    "explanation": "Logical operators (&&, ||, !) allow multiple relational conditions to be combined into a single compound expression for decision-making."
+  },
+  {
+    "id": 48,
+    "level": "Intermediate",
+    "type": "Match-the-Following",
+    "topic": "Logical Operators",
+    "question": "Match the operator with its correct description:\n(1) &&   (2) ||   (3) !\n(a) Negates a condition   (b) True if both are true   (c) True if either is true",
+    "options": [
+      "1-a, 2-b, 3-c",
+      "1-b, 2-c, 3-a",
+      "1-c, 2-a, 3-b",
+      "1-b, 2-a, 3-c"
+    ],
+    "answer": "B",
+    "explanation": "&& matches 'true if both are true' (b), || matches 'true if either is true' (c), and ! matches 'negates a condition' (a)."
+  },
+  {
+    "id": 49,
+    "level": "Intermediate",
+    "type": "Comparison-Based",
+    "topic": "Logical Operators",
+    "question": "What is the key difference between && and || in terms of decision requirement?",
+    "options": [
+      "&& requires only one operand true, || requires all operands true",
+      "&& requires all operands true, || requires at least one operand true",
+      "They behave identically",
+      "&& is used only with integers, || only with floats"
+    ],
+    "answer": "B",
+    "explanation": "&& demands every operand be true for the result to be true, whereas || only needs a single true operand for the result to be true."
+  },
+  {
+    "id": 50,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Logical Operators",
+    "question": "What is the output of: printf(\"%d\", !(5 > 3) || (2 == 2));",
+    "options": [
+      "0",
+      "1",
+      "2",
+      "Compilation error"
+    ],
+    "answer": "B",
+    "explanation": "(5>3) is true, so !(5>3) is 0 (false). (2==2) is true (1). false || true evaluates to true, so the output is 1."
+  },
+  {
+    "id": 51,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Logical Operators",
+    "question": "Which logical operator has the lowest precedence among &&, ||, and !?",
+    "options": [
+      "!",
+      "&&",
+      "||",
+      "All have equal precedence"
+    ],
+    "answer": "C",
+    "explanation": "In C's operator precedence, ! (NOT) has the highest precedence, followed by && (AND), with || (OR) having the lowest precedence among the three."
+  },
+  {
+    "id": 52,
+    "level": "Basic",
+    "type": "Definition-Based",
+    "topic": "Compound Relational Tests",
+    "question": "What is a compound relational test in C?",
+    "options": [
+      "A single relational expression using one operator",
+      "A combination of two or more relational expressions joined by logical operators",
+      "A test that uses only arithmetic operators",
+      "A test performed inside a loop only"
+    ],
+    "answer": "B",
+    "explanation": "A compound relational test combines multiple relational expressions (using <, >, ==, etc.) with logical operators (&&, ||) to form a single complex condition."
+  },
+  {
+    "id": 53,
+    "level": "Intermediate",
+    "type": "Combining Relational Expressions",
+    "topic": "Compound Relational Tests",
+    "question": "Which expression correctly checks if a year is a leap year using compound relational tests (simplified condition, ignoring century rule)?",
+    "options": [
+      "year % 4 == 0",
+      "year % 4 == 0 && year % 100 != 0",
+      "year % 4 == 0 || year % 100 == 0",
+      "year % 4 != 0 && year % 100 == 0"
+    ],
+    "answer": "B",
+    "explanation": "A basic leap year check combines two relational tests with &&: divisible by 4 AND not divisible by 100 (the full rule also OR's divisibility by 400, but among the given options this is the correctly combined form)."
+  },
+  {
+    "id": 54,
+    "level": "Intermediate",
+    "type": "Use with Logical Operators",
+    "topic": "Compound Relational Tests",
+    "question": "Which compound condition checks whether a character ch is an uppercase letter?",
+    "options": [
+      "ch >= 'A' || ch <= 'Z'",
+      "ch >= 'A' && ch <= 'Z'",
+      "ch == 'A' && ch == 'Z'",
+      "ch >= 'a' && ch <= 'z'"
+    ],
+    "answer": "B",
+    "explanation": "To check a range, both boundary conditions must hold simultaneously, so && is used: ch must be greater than or equal to 'A' AND less than or equal to 'Z'."
+  },
+  {
+    "id": 55,
+    "level": "Intermediate",
+    "type": "Expression Evaluation",
+    "topic": "Compound Relational Tests",
+    "question": "Evaluate: (10 > 5) && (10 < 20) && (10 != 15)",
+    "options": [
+      "0 (false)",
+      "1 (true)",
+      "10",
+      "Compilation error"
+    ],
+    "answer": "B",
+    "explanation": "All three relational sub-expressions are true: 10>5 (true), 10<20 (true), 10!=15 (true). Since all are ANDed, the overall result is true (1)."
+  },
+  {
+    "id": 56,
+    "level": "Intermediate",
+    "type": "Expression Evaluation",
+    "topic": "Compound Relational Tests",
+    "question": "Evaluate: (a == 5 || a == 10) when a = 7",
+    "options": [
+      "1 (true)",
+      "0 (false)",
+      "7",
+      "5"
+    ],
+    "answer": "B",
+    "explanation": "Neither a==5 nor a==10 is true when a=7, so with OR both being false means the overall expression is false (0)."
+  },
+  {
+    "id": 57,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "Compound Relational Tests",
+    "question": "Compound relational tests are especially useful for:",
+    "options": [
+      "Declaring arrays",
+      "Checking range-based or multi-criteria conditions in a single if statement",
+      "Defining functions",
+      "Performing input/output operations"
+    ],
+    "answer": "B",
+    "explanation": "Compound tests let a program validate multiple criteria at once — such as range checks or multi-value comparisons — within a single decision statement."
+  },
+  {
+    "id": 58,
+    "level": "Intermediate",
+    "type": "Code-Based",
+    "topic": "Compound Relational Tests",
+    "question": "What is the output of the following code?\nint age = 25;\nif (age >= 18 && age <= 60)\n    printf(\"Working age\");\nelse\n    printf(\"Not working age\");",
+    "options": [
+      "Working age",
+      "Not working age",
+      "25",
+      "Compilation error"
+    ],
+    "answer": "A",
+    "explanation": "age (25) satisfies both age>=18 and age<=60, so the compound AND condition is true, printing 'Working age'."
+  },
+  {
+    "id": 59,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Compound Relational Tests",
+    "question": "What is the output of the following code?\nint marks = 35;\nif (marks < 33 || marks > 90)\n    printf(\"Boundary case\");\nelse\n    printf(\"Normal range\");",
+    "options": [
+      "Boundary case",
+      "Normal range",
+      "35",
+      "Error"
+    ],
+    "answer": "B",
+    "explanation": "marks(35) is neither less than 33 nor greater than 90, so both OR conditions are false, making the else branch execute: 'Normal range'."
+  },
+  {
+    "id": 60,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "Compound Relational Tests",
+    "question": "A password is considered valid only if it is at least 8 characters long AND contains at least one digit. Which structure best expresses this in a compound condition?",
+    "options": [
+      "length >= 8 || hasDigit",
+      "length >= 8 && hasDigit",
+      "length < 8 && hasDigit",
+      "length == 8 || hasDigit"
+    ],
+    "answer": "B",
+    "explanation": "Since both criteria (length and digit presence) must be simultaneously satisfied, the correct combination uses && (AND)."
+  },
+  {
+    "id": 61,
+    "level": "Basic",
+    "type": "Fill-in-the-Blank",
+    "topic": "Compound Relational Tests",
+    "question": "To check whether a number is either negative or greater than 100, the correct compound test uses the ________ operator.",
+    "options": [
+      "&&",
+      "||",
+      "!",
+      "%"
+    ],
+    "answer": "B",
+    "explanation": "Since only one of the two conditions ('negative' OR 'greater than 100') needs to be true, the || (OR) operator is the correct choice."
+  },
+  {
+    "id": 62,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Compound Relational Tests",
+    "question": "What is wrong with the expression: if (5 < x < 10) to check if x lies between 5 and 10?",
+    "options": [
+      "Nothing, it works correctly in C",
+      "It is evaluated left to right: (5<x) yields 0 or 1, which is then compared with 10, producing incorrect results",
+      "It causes a compilation error",
+      "It only works for floating-point numbers"
+    ],
+    "answer": "B",
+    "explanation": "C evaluates 5 < x < 10 as (5 < x) < 10. Since (5<x) yields 0 or 1, and both 0<10 and 1<10 are true, the expression is always true regardless of x's actual value — a classic beginner mistake."
+  },
+  {
+    "id": 63,
+    "level": "Intermediate",
+    "type": "Comparison-Based",
+    "topic": "Compound Relational Tests",
+    "question": "How does a compound relational test differ from a simple relational test?",
+    "options": [
+      "A compound test uses only one condition",
+      "A compound test combines multiple relational conditions using logical operators, while a simple test checks only one condition",
+      "There is no functional difference",
+      "Compound tests cannot be used in if statements"
+    ],
+    "answer": "B",
+    "explanation": "A simple relational test evaluates a single comparison, whereas a compound test merges two or more such comparisons using logical operators."
+  },
+  {
+    "id": 64,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Compound Relational Tests",
+    "question": "What is the output of the following code?\nint x = 15;\nif (x > 10 && x < 20 && x % 5 == 0)\n    printf(\"Match\");\nelse\n    printf(\"No Match\");",
+    "options": [
+      "Match",
+      "No Match",
+      "15",
+      "5"
+    ],
+    "answer": "A",
+    "explanation": "x(15) satisfies x>10, x<20, and x%5==0 (15%5=0) — all three conditions are true, so the AND chain is true and 'Match' prints."
+  },
+  {
+    "id": 65,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Compound Relational Tests",
+    "question": "Which compound condition correctly validates that a character is a vowel (uppercase or lowercase 'a','e','i','o','u')?",
+    "options": [
+      "ch == 'a' && ch == 'e' && ch == 'i'",
+      "ch=='a'||ch=='e'||ch=='i'||ch=='o'||ch=='u'||ch=='A'||ch=='E'||ch=='I'||ch=='O'||ch=='U'",
+      "ch >= 'a' && ch <= 'u'",
+      "ch != 'a' || ch != 'e'"
+    ],
+    "answer": "B",
+    "explanation": "Checking membership in a discrete set of values (vowels) requires ORing individual equality tests, since the values are not a contiguous range."
+  },
+  {
+    "id": 66,
+    "level": "Basic",
+    "type": "Definition-Based",
+    "topic": "Nested if Statements",
+    "question": "What is a nested if statement?",
+    "options": [
+      "An if statement placed inside a loop",
+      "An if or if-else statement placed inside another if or else block",
+      "Two if statements placed one after another at the same level",
+      "An if statement with multiple conditions joined by &&"
+    ],
+    "answer": "B",
+    "explanation": "A nested if occurs when one if (or if-else) statement is written entirely inside the body of another if or else block, allowing multi-level decision making."
+  },
+  {
+    "id": 67,
+    "level": "Basic",
+    "type": "Syntax-Based",
+    "topic": "Nested if Statements",
+    "question": "Which of the following correctly represents nested if syntax?",
+    "options": [
+      "if (cond1) if (cond2) statement;",
+      "if (cond1) && if (cond2) statement;",
+      "if (cond1, cond2) statement;",
+      "if (cond1) then if (cond2) statement;"
+    ],
+    "answer": "A",
+    "explanation": "In nested if, an inner if statement is placed directly inside the body of an outer if, without any special connecting syntax."
+  },
+  {
+    "id": 68,
+    "level": "Basic",
+    "type": "Execution Flow",
+    "topic": "Nested if Statements",
+    "question": "In a nested if structure, when does the inner if get evaluated?",
+    "options": [
+      "Always, regardless of the outer condition",
+      "Only if the outer if condition is true",
+      "Only if the outer if condition is false",
+      "Simultaneously with the outer condition"
+    ],
+    "answer": "B",
+    "explanation": "The inner if is only reached and evaluated when the outer if's condition evaluates to true; otherwise, the inner if is skipped entirely."
+  },
+  {
+    "id": 69,
+    "level": "Intermediate",
+    "type": "Code-Based",
+    "topic": "Nested if Statements",
+    "question": "What is the output of the following code?\nint a = 10, b = 20;\nif (a > 5) {\n    if (b > 15)\n        printf(\"Both conditions true\");\n}",
+    "options": [
+      "Both conditions true",
+      "No output",
+      "a>5",
+      "Compilation error"
+    ],
+    "answer": "A",
+    "explanation": "a>5 (10>5) is true, so the inner if executes; b>15 (20>15) is also true, so 'Both conditions true' is printed."
+  },
+  {
+    "id": 70,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Nested if Statements",
+    "question": "What is the output of the following code?\nint x = 3;\nif (x > 0) {\n    if (x > 10)\n        printf(\"Large\");\n    else\n        printf(\"Small positive\");\n} else {\n    printf(\"Non-positive\");\n}",
+    "options": [
+      "Large",
+      "Small positive",
+      "Non-positive",
+      "No output"
+    ],
+    "answer": "B",
+    "explanation": "x>0 (3>0) is true, entering the outer if block. Inside, x>10 is false (3 is not >10), so the inner else runs, printing 'Small positive'."
+  },
+  {
+    "id": 71,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "Nested if Statements",
+    "question": "Nested if statements are most appropriate when:",
+    "options": [
+      "Only a single condition needs checking",
+      "A decision depends on another decision, i.e., conditions are hierarchical",
+      "Repeating a task multiple times",
+      "Declaring multiple variables"
+    ],
+    "answer": "B",
+    "explanation": "Nested if is ideal when a secondary condition only makes sense to check after a primary condition has already been satisfied — a hierarchical decision structure."
+  },
+  {
+    "id": 72,
+    "level": "Intermediate",
+    "type": "Advantages",
+    "topic": "Nested if Statements",
+    "question": "What is an advantage of nested if over a single compound condition using &&?",
+    "options": [
+      "Nested if is always faster to execute",
+      "Nested if allows different actions at each level and can express more complex hierarchical logic clearly",
+      "Nested if requires fewer lines of code",
+      "Nested if cannot use else"
+    ],
+    "answer": "B",
+    "explanation": "Nested if structures allow separate handling and distinct actions at each decision level, making complex hierarchical logic more explicit and manageable than a single compound condition."
+  },
+  {
+    "id": 73,
+    "level": "Intermediate",
+    "type": "Program Analysis",
+    "topic": "Nested if Statements",
+    "question": "In the following code, which output is produced for a = 15, b = 5?\nif (a > 10) {\n    if (b > 10)\n        printf(\"Case1\");\n    else\n        printf(\"Case2\");\n} else {\n    printf(\"Case3\");\n}",
+    "options": [
+      "Case1",
+      "Case2",
+      "Case3",
+      "No output"
+    ],
+    "answer": "B",
+    "explanation": "a>10 (15>10) is true, entering the outer block. b>10 (5>10) is false, so the inner else executes, printing 'Case2'."
+  },
+  {
+    "id": 74,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "Nested if Statements",
+    "question": "A grading system first checks if a student passed, and only if passed, checks whether marks qualify for distinction. Which structure fits best?",
+    "options": [
+      "Simple if statement",
+      "Nested if statement",
+      "Switch without break",
+      "A single relational operator"
+    ],
+    "answer": "B",
+    "explanation": "Since the distinction check is only meaningful after confirming a pass, this hierarchical dependency is best modeled using nested if statements."
+  },
+  {
+    "id": 75,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Nested if Statements",
+    "question": "What potential issue can arise with deeply nested if statements without proper braces?",
+    "options": [
+      "They automatically convert to switch statements",
+      "Dangling-else ambiguity, where else may bind to an unintended if",
+      "The program refuses to compile",
+      "Nested if cannot use relational operators"
+    ],
+    "answer": "B",
+    "explanation": "Without explicit braces, an else can mistakenly bind to the nearest inner if instead of the intended outer if, leading to unexpected program logic (dangling-else problem)."
+  },
+  {
+    "id": 76,
+    "level": "Intermediate",
+    "type": "Comparison-Based",
+    "topic": "Nested if Statements",
+    "question": "How does nested if differ from the else-if ladder?",
+    "options": [
+      "They are exactly the same construct",
+      "Nested if places conditions inside one another (hierarchical), while else-if ladder checks a sequence of alternative conditions at the same level",
+      "Nested if cannot include an else",
+      "else-if ladder cannot be replaced by nested if"
+    ],
+    "answer": "B",
+    "explanation": "Nested if embeds one decision within another (parent-child relationship), whereas else-if ladder tests a series of independent alternatives one after another at the same logical level."
+  },
+  {
+    "id": 77,
+    "level": "Basic",
+    "type": "Fill-in-the-Blank",
+    "topic": "Nested if Statements",
+    "question": "In nested if statements, the inner if is executed only when the ________ condition is satisfied.",
+    "options": [
+      "global",
+      "outer",
+      "final",
+      "unrelated"
+    ],
+    "answer": "B",
+    "explanation": "The inner if is reached and evaluated only after the outer (enclosing) if condition has been satisfied (evaluated true)."
+  },
+  {
+    "id": 78,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Nested if Statements",
+    "question": "What is the output of the following triple-nested code for a=5, b=5, c=5?\nif (a == b) {\n    if (b == c) {\n        if (a == c)\n            printf(\"All equal\");\n        else\n            printf(\"a!=c\");\n    } else\n        printf(\"b!=c\");\n} else\n    printf(\"a!=b\");",
+    "options": [
+      "All equal",
+      "a!=c",
+      "b!=c",
+      "a!=b"
+    ],
+    "answer": "A",
+    "explanation": "a==b is true (5==5), b==c is true (5==5), a==c is true (5==5), so the innermost printf executes, printing 'All equal'."
+  },
+  {
+    "id": 79,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Nested if Statements",
+    "question": "Assertion (A): Nested if statements can replace certain uses of compound relational tests.\nReason (R): Both approaches allow multiple conditions to influence a single decision outcome.\nChoose the correct option:",
+    "options": [
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are true, but R does not explain A",
+      "A is true, R is false",
+      "A is false, R is true"
+    ],
+    "answer": "A",
+    "explanation": "Nested if and compound relational tests (with &&) can often achieve equivalent logic since both evaluate multiple conditions to determine the final action, validating R as the explanation for A."
+  },
+  {
+    "id": 80,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Nested if Statements",
+    "question": "Which of these best explains why excessive nesting of if statements is generally discouraged in good programming practice?",
+    "options": [
+      "It causes syntax errors",
+      "It reduces code readability and increases maintenance difficulty",
+      "It is not supported by the C compiler",
+      "It automatically slows down compilation infinitely"
+    ],
+    "answer": "B",
+    "explanation": "While syntactically valid, deeply nested if statements make code harder to read, debug, and maintain, which is why alternatives like else-if ladders or switch are often preferred for many-branch logic."
+  },
+  {
+    "id": 81,
+    "level": "Basic",
+    "type": "Definition-Based",
+    "topic": "The else-if Construct",
+    "question": "What is the else-if ladder used for?",
+    "options": [
+      "Repeating a block of statements",
+      "Testing a series of conditions in sequence and executing the block for the first true condition",
+      "Declaring multiple variables at once",
+      "Performing only arithmetic operations"
+    ],
+    "answer": "B",
+    "explanation": "The else-if ladder allows a program to check multiple alternative conditions in sequence, executing the block associated with the first condition found true."
+  },
+  {
+    "id": 82,
+    "level": "Basic",
+    "type": "Syntax-Based",
+    "topic": "The else-if Construct",
+    "question": "Which is the correct syntax pattern for an else-if ladder?",
+    "options": [
+      "if (c1) s1; elseif (c2) s2; else s3;",
+      "if (c1) s1; else if (c2) s2; else s3;",
+      "if (c1) s1; else (c2) s2; else s3;",
+      "if (c1, c2, c3) s1; s2; s3;"
+    ],
+    "answer": "B",
+    "explanation": "The correct C syntax chains conditions using 'else if', ending with an optional final 'else' for the default case: if(c1) s1; else if(c2) s2; else s3;"
+  },
+  {
+    "id": 83,
+    "level": "Intermediate",
+    "type": "Ladder Structure",
+    "topic": "The else-if Construct",
+    "question": "In an else-if ladder, once a condition is found true and its block executes, what happens next?",
+    "options": [
+      "All remaining conditions are still checked",
+      "The remaining else-if and else branches are skipped",
+      "The program restarts from the first condition",
+      "An error occurs"
+    ],
+    "answer": "B",
+    "explanation": "As soon as one condition in the ladder evaluates true and its block runs, the rest of the ladder is bypassed entirely — no further conditions are tested."
+  },
+  {
+    "id": 84,
+    "level": "Intermediate",
+    "type": "Execution Sequence",
+    "topic": "The else-if Construct",
+    "question": "In an else-if ladder, conditions are evaluated:",
+    "options": [
+      "In random order",
+      "From bottom to top",
+      "Sequentially from top to bottom until one is true",
+      "All simultaneously"
+    ],
+    "answer": "C",
+    "explanation": "Conditions in an else-if ladder are tested one after another, from the top of the ladder downward, stopping at the first true condition."
+  },
+  {
+    "id": 85,
+    "level": "Intermediate",
+    "type": "Code-Based",
+    "topic": "The else-if Construct",
+    "question": "What is the output of the following code?\nint marks = 75;\nif (marks >= 90)\n    printf(\"A\");\nelse if (marks >= 75)\n    printf(\"B\");\nelse if (marks >= 60)\n    printf(\"C\");\nelse\n    printf(\"D\");",
+    "options": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "answer": "B",
+    "explanation": "marks(75) fails marks>=90, but satisfies marks>=75, so 'B' is printed, and the remaining conditions are skipped."
+  },
+  {
+    "id": 86,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "The else-if Construct",
+    "question": "What is the output of the following code?\nint num = -5;\nif (num > 0)\n    printf(\"Positive\");\nelse if (num < 0)\n    printf(\"Negative\");\nelse\n    printf(\"Zero\");",
+    "options": [
+      "Positive",
+      "Negative",
+      "Zero",
+      "No output"
+    ],
+    "answer": "B",
+    "explanation": "num>0 is false (-5 is not > 0), but num<0 is true, so 'Negative' is printed."
+  },
+  {
+    "id": 87,
+    "level": "Intermediate",
+    "type": "Decision Hierarchy",
+    "topic": "The else-if Construct",
+    "question": "In an else-if ladder used for grading (A, B, C, D), what determines the correct order of conditions?",
+    "options": [
+      "Alphabetical order of grade letters",
+      "Conditions should typically be ordered from the most restrictive/highest threshold to the least, ensuring correct classification",
+      "Order does not matter at all",
+      "Conditions must be in random order for correctness"
+    ],
+    "answer": "B",
+    "explanation": "Because the ladder stops at the first true condition, thresholds must be ordered correctly (e.g., highest marks first) to avoid misclassifying values that satisfy multiple conditions."
+  },
+  {
+    "id": 88,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "The else-if Construct",
+    "question": "The else-if ladder is best suited for:",
+    "options": [
+      "Checking a single fixed condition",
+      "Selecting one action from several mutually exclusive, ranked conditions",
+      "Repeating an operation indefinitely",
+      "Declaring constants"
+    ],
+    "answer": "B",
+    "explanation": "else-if ladders excel at scenarios with multiple mutually exclusive alternatives that need to be tested and ranked, such as grade classification or range-based categorization."
+  },
+  {
+    "id": 89,
+    "level": "Intermediate",
+    "type": "Comparisons with Nested if",
+    "topic": "The else-if Construct",
+    "question": "How does else-if ladder differ structurally from nested if?",
+    "options": [
+      "else-if ladder tests independent alternative conditions at the same conceptual level; nested if tests conditions dependent on a prior condition being true",
+      "They are functionally and structurally identical",
+      "else-if ladder cannot use relational operators",
+      "Nested if always executes faster"
+    ],
+    "answer": "A",
+    "explanation": "In an else-if ladder, each condition is an independent alternative to the others, whereas in nested if, the inner condition is only relevant because the outer condition already succeeded."
+  },
+  {
+    "id": 90,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "The else-if Construct",
+    "question": "A program must classify a person's age group as Child, Teen, Adult, or Senior, based on distinct age ranges. Which construct is most suitable?",
+    "options": [
+      "Simple if statement",
+      "else-if ladder",
+      "Compound relational test alone",
+      "A single logical NOT expression"
+    ],
+    "answer": "B",
+    "explanation": "Since there are multiple mutually exclusive categories based on ranked ranges, the else-if ladder is the natural and readable choice."
+  },
+  {
+    "id": 91,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "The else-if Construct",
+    "question": "What is the output of the following code, given num = 50?\nif (num > 10)\n    printf(\"A\");\nelse if (num > 30)\n    printf(\"B\");\nelse if (num > 40)\n    printf(\"C\");",
+    "options": [
+      "A",
+      "B",
+      "C",
+      "No output"
+    ],
+    "answer": "A",
+    "explanation": "Even though num(50) also satisfies num>30 and num>40, the ladder stops at the FIRST true condition (num>10), so 'A' is printed — a common logic error from incorrect condition ordering."
+  },
+  {
+    "id": 92,
+    "level": "Basic",
+    "type": "Fill-in-the-Blank",
+    "topic": "The else-if Construct",
+    "question": "In an else-if ladder, the final else block (if present) executes when ________.",
+    "options": [
+      "all preceding conditions are true",
+      "none of the preceding conditions are true",
+      "the first condition is true",
+      "the program always executes it first"
+    ],
+    "answer": "B",
+    "explanation": "The trailing else in a ladder acts as the default/catch-all case, executing only when none of the preceding conditions evaluated to true."
+  },
+  {
+    "id": 93,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "The else-if Construct",
+    "question": "Assertion (A): The else-if ladder is more efficient than writing multiple independent if statements for mutually exclusive conditions.\nReason (R): Once a true condition is found in the ladder, remaining condition checks are skipped, saving unnecessary evaluations.\nChoose the correct option:",
+    "options": [
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are true, but R does not explain A",
+      "A is true, R is false",
+      "A is false, R is true"
+    ],
+    "answer": "A",
+    "explanation": "Independent if statements would each be evaluated regardless of prior results, whereas the else-if ladder short-circuits further checks after the first true condition, which correctly explains the efficiency gain."
+  },
+  {
+    "id": 94,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "The else-if Construct",
+    "question": "What is the output for x = 0 in the following?\nif (x > 0)\n    printf(\"Positive\");\nelse if (x == 0)\n    printf(\"Zero\");\nelse\n    printf(\"Negative\");",
+    "options": [
+      "Positive",
+      "Zero",
+      "Negative",
+      "No output"
+    ],
+    "answer": "B",
+    "explanation": "x>0 is false (0 is not >0), so the ladder proceeds; x==0 is true, so 'Zero' is printed, skipping the final else."
+  },
+  {
+    "id": 95,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "The else-if Construct",
+    "question": "Which of the following is a valid reason to prefer an else-if ladder over a switch statement?",
+    "options": [
+      "The conditions involve ranges or relational comparisons rather than exact matches on a single variable",
+      "The ladder is always faster than switch in every case",
+      "switch cannot be used at all in C",
+      "else-if cannot use variables"
+    ],
+    "answer": "A",
+    "explanation": "switch only tests exact equality of an integer/character expression against constants, while else-if ladders can evaluate range-based or complex relational conditions, making them preferable in such cases."
+  },
+  {
+    "id": 96,
+    "level": "Basic",
+    "type": "Definition-Based",
+    "topic": "Relational Operators",
+    "question": "What is the purpose of relational operators in C?",
+    "options": [
+      "To perform arithmetic operations",
+      "To compare two values and produce a true/false (1/0) result",
+      "To allocate memory dynamically",
+      "To declare data types"
+    ],
+    "answer": "B",
+    "explanation": "Relational operators compare two operands and yield a Boolean-like result: 1 if the comparison is true, 0 if false."
+  },
+  {
+    "id": 97,
+    "level": "Basic",
+    "type": "Symbols",
+    "topic": "Relational Operators",
+    "question": "Which operator checks if two values are exactly equal in C?",
+    "options": [
+      "=",
+      "==",
+      "!=",
+      "<>"
+    ],
+    "answer": "B",
+    "explanation": "== is the equality relational operator in C. A single = is the assignment operator, a frequent source of confusion for beginners."
+  },
+  {
+    "id": 98,
+    "level": "Basic",
+    "type": "Symbols",
+    "topic": "Relational Operators",
+    "question": "Which operator represents 'not equal to' in C?",
+    "options": [
+      "<>",
+      "!=",
+      "!==",
+      "><"
+    ],
+    "answer": "B",
+    "explanation": "!= is the correct C operator for 'not equal to'. <> is not valid C syntax (it is used in some other languages like Pascal or SQL)."
+  },
+  {
+    "id": 99,
+    "level": "Basic",
+    "type": "Meaning",
+    "topic": "Relational Operators",
+    "question": "What does the operator >= represent?",
+    "options": [
+      "Strictly greater than",
+      "Greater than or equal to",
+      "Equal to",
+      "Not equal to"
+    ],
+    "answer": "B",
+    "explanation": ">= is the 'greater than or equal to' relational operator, true when the left operand is either greater than or exactly equal to the right operand."
+  },
+  {
+    "id": 100,
+    "level": "Basic",
+    "type": "Meaning",
+    "topic": "Relational Operators",
+    "question": "What does the operator <= represent?",
+    "options": [
+      "Less than",
+      "Less than or equal to",
+      "Greater than",
+      "Equal to"
+    ],
+    "answer": "B",
+    "explanation": "<= is the 'less than or equal to' relational operator, true when the left operand is either less than or exactly equal to the right operand."
+  },
+  {
+    "id": 101,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "Relational Operators",
+    "question": "Relational operators in C always produce a result of data type:",
+    "options": [
+      "float",
+      "int (0 or 1)",
+      "char",
+      "double"
+    ],
+    "answer": "B",
+    "explanation": "In C, relational expressions evaluate to an int: 1 for true and 0 for false."
+  },
+  {
+    "id": 102,
+    "level": "Intermediate",
+    "type": "Usage",
+    "topic": "Relational Operators",
+    "question": "What is the output of: printf(\"%d\", 7 == 7.0);",
+    "options": [
+      "0",
+      "1",
+      "7",
+      "Compilation error"
+    ],
+    "answer": "B",
+    "explanation": "C performs implicit type conversion; 7 (int) is promoted for comparison with 7.0 (double), and since the values are numerically equal, the result is 1 (true)."
+  },
+  {
+    "id": 103,
+    "level": "Intermediate",
+    "type": "Evaluation of Conditions",
+    "topic": "Relational Operators",
+    "question": "What is the result of the expression: 10 != 10?",
+    "options": [
+      "0",
+      "1",
+      "10",
+      "-1"
+    ],
+    "answer": "A",
+    "explanation": "Since 10 is indeed equal to 10, the 'not equal to' test is false, giving a result of 0."
+  },
+  {
+    "id": 104,
+    "level": "Intermediate",
+    "type": "Code-Based",
+    "topic": "Relational Operators",
+    "question": "What is the output of the following code?\nint a = 5, b = 8;\nprintf(\"%d\", a < b);",
+    "options": [
+      "0",
+      "1",
+      "5",
+      "8"
+    ],
+    "answer": "B",
+    "explanation": "a(5) is indeed less than b(8), so the relational expression a < b evaluates to 1 (true)."
+  },
+  {
+    "id": 105,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Relational Operators",
+    "question": "What is the output of the following code?\nprintf(\"%d %d\", 5 > 3, 3 > 5);",
+    "options": [
+      "1 1",
+      "0 0",
+      "1 0",
+      "0 1"
+    ],
+    "answer": "C",
+    "explanation": "5 > 3 is true (1), and 3 > 5 is false (0), so the output is '1 0'."
+  },
+  {
+    "id": 106,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Relational Operators",
+    "question": "What is a common bug caused by confusing = and == in a condition?",
+    "options": [
+      "It always causes a compilation error, so it is easy to catch",
+      "The assignment (=) silently assigns a value and the condition becomes based on the assigned value's truthiness, often causing unintended logic",
+      "It has no effect on program logic",
+      "C automatically converts = to == inside if conditions"
+    ],
+    "answer": "B",
+    "explanation": "Since if (a = 5) is legal C syntax, it silently assigns 5 to a and the condition becomes true (as 5 is non-zero), which can introduce subtle logic bugs without a compiler error."
+  },
+  {
+    "id": 107,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "Relational Operators",
+    "question": "Relational operators are essential in decision structures because they:",
+    "options": [
+      "Perform looping automatically",
+      "Generate the true/false conditions that if, while, and switch structures depend on",
+      "Allocate dynamic memory",
+      "Convert data types automatically"
+    ],
+    "answer": "B",
+    "explanation": "Decision structures like if and loops like while rely on relational (and logical) operators to generate the Boolean condition that controls their behavior."
+  },
+  {
+    "id": 108,
+    "level": "Intermediate",
+    "type": "Comparison-Based",
+    "topic": "Relational Operators",
+    "question": "How do relational operators differ from logical operators?",
+    "options": [
+      "Relational operators compare two values; logical operators combine multiple Boolean conditions",
+      "They are identical in function",
+      "Logical operators can only be used with strings",
+      "Relational operators cannot be used inside if statements"
+    ],
+    "answer": "A",
+    "explanation": "Relational operators (>, <, ==, etc.) compare individual values, while logical operators (&&, ||, !) combine or invert the results of such comparisons."
+  },
+  {
+    "id": 109,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Relational Operators",
+    "question": "What is the output of: printf(\"%d\", (5 > 3) == 1);",
+    "options": [
+      "0",
+      "1",
+      "5",
+      "3"
+    ],
+    "answer": "B",
+    "explanation": "(5 > 3) evaluates to 1; then 1 == 1 is compared, which is true, so the final result printed is 1."
+  },
+  {
+    "id": 110,
+    "level": "Basic",
+    "type": "Definition-Based",
+    "topic": "Conditional Expression (Ternary) Operator",
+    "question": "Which operator is known as the conditional operator in C?",
+    "options": [
+      "&&",
+      "||",
+      "?:",
+      "=="
+    ],
+    "answer": "C",
+    "explanation": "The ?: operator is called the conditional or ternary operator because it evaluates a condition and returns one of two expressions based on the result."
+  },
+  {
+    "id": 111,
+    "level": "Basic",
+    "type": "Syntax-Based",
+    "topic": "Conditional Expression (Ternary) Operator",
+    "question": "What is the correct syntax for the ternary operator?",
+    "options": [
+      "condition ? expr1 : expr2",
+      "condition : expr1 ? expr2",
+      "if (condition) expr1 : expr2",
+      "condition ?? expr1 :: expr2"
+    ],
+    "answer": "A",
+    "explanation": "The correct syntax is condition ? expression_if_true : expression_if_false — a single expression that evaluates to one of two possible values."
+  },
+  {
+    "id": 112,
+    "level": "Basic",
+    "type": "Working",
+    "topic": "Conditional Expression (Ternary) Operator",
+    "question": "How does the ternary operator evaluate an expression?",
+    "options": [
+      "It always evaluates both expr1 and expr2",
+      "It evaluates the condition first; if true, it returns expr1, otherwise it returns expr2 (only one of them is evaluated)",
+      "It evaluates expr2 first, then the condition",
+      "It ignores the condition and always returns expr1"
+    ],
+    "answer": "B",
+    "explanation": "The ternary operator evaluates the condition, then evaluates and returns only the corresponding expression (expr1 for true, expr2 for false) — the other expression is never evaluated."
+  },
+  {
+    "id": 113,
+    "level": "Basic",
+    "type": "Why 'Ternary'",
+    "topic": "Conditional Expression (Ternary) Operator",
+    "question": "Why is ?: called a 'ternary' operator?",
+    "options": [
+      "Because it can only be used three times in a program",
+      "Because it operates on three operands: a condition and two expressions",
+      "Because it returns three possible values",
+      "Because it requires three semicolons"
+    ],
+    "answer": "B",
+    "explanation": "It is called ternary because it takes exactly three operands: the condition, the true-expression, and the false-expression."
+  },
+  {
+    "id": 114,
+    "level": "Intermediate",
+    "type": "Code-Based",
+    "topic": "Conditional Expression (Ternary) Operator",
+    "question": "What is the output of the following code?\nint a = 10, b = 20, max;\nmax = (a > b) ? a : b;\nprintf(\"%d\", max);",
+    "options": [
+      "10",
+      "20",
+      "30",
+      "0"
+    ],
+    "answer": "B",
+    "explanation": "a > b (10 > 20) is false, so the ternary expression evaluates to b (20), which is assigned to max and printed."
+  },
+  {
+    "id": 115,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Conditional Expression (Ternary) Operator",
+    "question": "What is the output of the following code?\nint n = 7;\nprintf(n % 2 == 0 ? \"Even\" : \"Odd\");",
+    "options": [
+      "Even",
+      "Odd",
+      "7",
+      "0"
+    ],
+    "answer": "B",
+    "explanation": "7 % 2 equals 1, which is not equal to 0, so the condition is false, causing the ternary to select and print 'Odd'."
+  },
+  {
+    "id": 116,
+    "level": "Intermediate",
+    "type": "Advantages",
+    "topic": "Conditional Expression (Ternary) Operator",
+    "question": "What is a key advantage of the ternary operator over an equivalent if-else?",
+    "options": [
+      "It can perform loops",
+      "It is a compact expression that can be used inline (e.g., directly inside an assignment or printf), unlike if-else statements",
+      "It removes the need for relational operators",
+      "It always executes faster on all compilers"
+    ],
+    "answer": "B",
+    "explanation": "Because ?: is an expression (not a statement), it can be embedded directly within assignments, function calls, or other expressions — something if-else cannot do directly."
+  },
+  {
+    "id": 117,
+    "level": "Intermediate",
+    "type": "Comparison with if-else",
+    "topic": "Conditional Expression (Ternary) Operator",
+    "question": "Which statement correctly compares the ternary operator with if-else?",
+    "options": [
+      "Ternary can only be used for arithmetic operations, if-else cannot",
+      "Ternary is best for simple, single-expression decisions, while if-else is better for executing multiple statements or complex logic",
+      "if-else is an expression while ternary is a statement",
+      "They cannot be used interchangeably in any scenario"
+    ],
+    "answer": "B",
+    "explanation": "The ternary operator suits simple, single-value decisions embedded in expressions, whereas if-else is more appropriate when multiple statements or complex logic blocks are needed."
+  },
+  {
+    "id": 118,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "Conditional Expression (Ternary) Operator",
+    "question": "Which scenario is most appropriate for using the ternary operator?",
+    "options": [
+      "Executing five different statements based on a condition",
+      "Assigning the larger of two values to a variable in a single line",
+      "Looping through an array",
+      "Declaring a structure"
+    ],
+    "answer": "B",
+    "explanation": "The ternary operator is ideal for simple, single-value decisions such as picking the maximum of two values in one concise line."
+  },
+  {
+    "id": 119,
+    "level": "Basic",
+    "type": "Fill-in-the-Blank",
+    "topic": "Conditional Expression (Ternary) Operator",
+    "question": "In the ternary expression condition ? expr1 : expr2, if condition evaluates to false (0), the result of the expression is ________.",
+    "options": [
+      "expr1",
+      "expr2",
+      "condition",
+      "undefined"
+    ],
+    "answer": "B",
+    "explanation": "When the condition is false, the ternary operator evaluates and returns expr2 (the part after the colon)."
+  },
+  {
+    "id": 120,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Conditional Expression (Ternary) Operator",
+    "question": "What is the output of: printf(\"%d\", 1 ? 2 ? 3 : 4 : 5); (nested ternary)",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "answer": "B",
+    "explanation": "Ternary operators are right-associative. The outer condition (1) is true, so it evaluates '2 ? 3 : 4', where 2 is true, resulting in 3."
+  },
+  {
+    "id": 121,
+    "level": "Intermediate",
+    "type": "Statement-Based",
+    "topic": "Conditional Expression (Ternary) Operator",
+    "question": "Which of the following is TRUE regarding the ternary operator?",
+    "options": [
+      "It can replace any if-else, including those with multiple statements per branch",
+      "It is an expression that evaluates to a single value, best suited for simple two-way value selection",
+      "It cannot be nested",
+      "It requires braces { } around each expression"
+    ],
+    "answer": "B",
+    "explanation": "The ternary operator produces a single resulting value and is not designed to execute multiple statements per branch the way if-else blocks can."
+  },
+  {
+    "id": 122,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Conditional Expression (Ternary) Operator",
+    "question": "Assertion (A): The expression (a > b) ? a : b can be used to find the maximum of two numbers.\nReason (R): The ternary operator returns the first expression if the condition is true, otherwise the second expression.\nChoose the correct option:",
+    "options": [
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are true, but R does not explain A",
+      "A is true, R is false",
+      "A is false, R is true"
+    ],
+    "answer": "A",
+    "explanation": "Since the ternary returns a when a>b is true (a is the larger value) and b otherwise, R correctly explains why this expression finds the maximum, validating A."
+  },
+  {
+    "id": 123,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Conditional Expression (Ternary) Operator",
+    "question": "What is the output of the following code?\nint x = 5;\nint y = (x > 0) ? (x > 10 ? 1 : 2) : 3;\nprintf(\"%d\", y);",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "5"
+    ],
+    "answer": "B",
+    "explanation": "x>0 (5>0) is true, so the nested ternary (x>10 ? 1 : 2) is evaluated. x>10 (5>10) is false, so it returns 2, which is assigned to y."
+  },
+  {
+    "id": 124,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Conditional Expression (Ternary) Operator",
+    "question": "Which precedence/associativity rule applies to the ternary operator in C?",
+    "options": [
+      "It is left-associative",
+      "It is right-associative",
+      "It has no defined associativity",
+      "It always evaluates left-to-right regardless of nesting"
+    ],
+    "answer": "B",
+    "explanation": "The C ternary operator is right-associative, meaning in nested ternary expressions, grouping proceeds from right to left."
+  },
+  {
+    "id": 125,
+    "level": "Basic",
+    "type": "Definition-Based",
+    "topic": "The Switch Statement",
+    "question": "What is the primary purpose of the switch statement in C?",
+    "options": [
+      "To repeat a block of code",
+      "To select one among many code blocks to execute based on the value of an expression",
+      "To declare multiple variables",
+      "To perform pointer arithmetic"
+    ],
+    "answer": "B",
+    "explanation": "The switch statement provides a multi-way branching mechanism, selecting and executing the block matching the value of a single controlling expression."
+  },
+  {
+    "id": 126,
+    "level": "Basic",
+    "type": "Syntax-Based",
+    "topic": "The Switch Statement",
+    "question": "Which is the correct general syntax for a switch statement?",
+    "options": [
+      "switch(expr) { case val1: stmt; case val2: stmt; }",
+      "switch expr { case val1: stmt; }",
+      "switch(expr): case val1 stmt;",
+      "switch { expr case val1: stmt; }"
+    ],
+    "answer": "A",
+    "explanation": "The correct syntax encloses the switch expression in parentheses, followed by a braces block containing one or more case labels: switch(expr) { case val1: stmt; ... }"
+  },
+  {
+    "id": 127,
+    "level": "Intermediate",
+    "type": "Execution Mechanism",
+    "topic": "The Switch Statement",
+    "question": "How does the switch statement decide which case to execute?",
+    "options": [
+      "It always executes the first case",
+      "It compares the switch expression's value with each case label's constant value and transfers control to the matching case",
+      "It executes all cases sequentially",
+      "It randomly selects a case"
+    ],
+    "answer": "B",
+    "explanation": "The switch expression is evaluated once, and control jumps to the case label whose constant matches that value; if no match is found, control goes to the default label (if present)."
+  },
+  {
+    "id": 128,
+    "level": "Intermediate",
+    "type": "Control Transfer",
+    "topic": "The Switch Statement",
+    "question": "Which data types can the switch expression validly evaluate to in standard C?",
+    "options": [
+      "float or double",
+      "Integer or character type (integral types)",
+      "String (char array)",
+      "Structure type"
+    ],
+    "answer": "B",
+    "explanation": "The switch expression in C must evaluate to an integral type (int or char); floating-point types, strings, and structures are not permitted directly."
+  },
+  {
+    "id": 129,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "The Switch Statement",
+    "question": "The switch statement is most suitable when:",
+    "options": [
+      "Testing complex range-based conditions",
+      "Selecting among several discrete, known constant values of a single variable",
+      "Testing conditions involving multiple different variables simultaneously",
+      "Performing floating-point comparisons"
+    ],
+    "answer": "B",
+    "explanation": "switch excels when a single expression must be compared against a fixed set of discrete constant values, such as menu choices or grade letters."
+  },
+  {
+    "id": 130,
+    "level": "Intermediate",
+    "type": "Restrictions",
+    "topic": "The Switch Statement",
+    "question": "Which of the following is a restriction of the switch statement in C?",
+    "options": [
+      "Case labels must be constant expressions known at compile time",
+      "Case labels can be variables",
+      "switch can test floating-point expressions directly",
+      "There is no limit and any expression type is allowed as case label"
+    ],
+    "answer": "A",
+    "explanation": "In C, each case label must be a constant expression (evaluable at compile time); using a variable as a case label causes a compilation error."
+  },
+  {
+    "id": 131,
+    "level": "Intermediate",
+    "type": "Code-Based",
+    "topic": "The Switch Statement",
+    "question": "What is the output of the following code?\nint day = 3;\nswitch(day) {\n    case 1: printf(\"Mon\"); break;\n    case 2: printf(\"Tue\"); break;\n    case 3: printf(\"Wed\"); break;\n    default: printf(\"Invalid\");\n}",
+    "options": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Invalid"
+    ],
+    "answer": "C",
+    "explanation": "day equals 3, which matches case 3, so 'Wed' is printed, and the break exits the switch."
+  },
+  {
+    "id": 132,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "The Switch Statement",
+    "question": "What is the output of the following code?\nint x = 10;\nswitch(x) {\n    case 1: printf(\"One\"); break;\n    case 2: printf(\"Two\"); break;\n    default: printf(\"Other\");\n}",
+    "options": [
+      "One",
+      "Two",
+      "Other",
+      "No output"
+    ],
+    "answer": "C",
+    "explanation": "Since x(10) does not match any listed case (1 or 2), control transfers to the default label, printing 'Other'."
+  },
+  {
+    "id": 133,
+    "level": "Intermediate",
+    "type": "Flow Analysis",
+    "topic": "The Switch Statement",
+    "question": "What happens if a switch statement has no default label and the expression matches no case?",
+    "options": [
+      "A compilation error occurs",
+      "The program crashes",
+      "No block executes; control simply exits the switch statement",
+      "The first case executes automatically"
+    ],
+    "answer": "C",
+    "explanation": "If no case matches and there is no default label, none of the case blocks execute; the program simply continues after the closing brace of the switch."
+  },
+  {
+    "id": 134,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "The Switch Statement",
+    "question": "A menu-driven calculator program needs to perform +, -, *, / based on user's single-character choice. Which construct is most appropriate?",
+    "options": [
+      "A single relational operator",
+      "switch statement",
+      "Ternary operator only",
+      "A compound if without else"
+    ],
+    "answer": "B",
+    "explanation": "Since the choice is a discrete character value among a known fixed set (+, -, *, /), switch is the cleanest and most readable construct."
+  },
+  {
+    "id": 135,
+    "level": "Intermediate",
+    "type": "Comparison-Based",
+    "topic": "The Switch Statement",
+    "question": "How does switch differ from an else-if ladder in terms of the type of condition it can test?",
+    "options": [
+      "switch can test range conditions like x > 10, else-if cannot",
+      "switch tests equality of a single expression against constants; else-if can test any Boolean expression including ranges and multiple variables",
+      "They are functionally identical in every respect",
+      "switch supports floating-point comparisons better than else-if"
+    ],
+    "answer": "B",
+    "explanation": "switch is restricted to equality matching of one expression against constant values, while else-if ladders can evaluate arbitrary Boolean expressions, including ranges and multiple variables."
+  },
+  {
+    "id": 136,
+    "level": "Intermediate",
+    "type": "Match-the-Following",
+    "topic": "The Switch Statement",
+    "question": "Match the switch component with its role:\n(1) switch expression   (2) case label   (3) default\n(a) fallback when no match found   (b) value being compared   (c) constant to match against",
+    "options": [
+      "1-b, 2-c, 3-a",
+      "1-a, 2-b, 3-c",
+      "1-c, 2-a, 3-b",
+      "1-b, 2-a, 3-c"
+    ],
+    "answer": "A",
+    "explanation": "The switch expression is the value being compared (b), case labels are the constants to match against (c), and default is the fallback when no case matches (a)."
+  },
+  {
+    "id": 137,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "The Switch Statement",
+    "question": "What is the output of the following code (note the duplicate case values are NOT present, but check case order)?\nint grade = 2;\nswitch(grade) {\n    default: printf(\"Unknown\"); break;\n    case 1: printf(\"First\"); break;\n    case 2: printf(\"Second\"); break;\n}",
+    "options": [
+      "Unknown",
+      "First",
+      "Second",
+      "Compilation error"
+    ],
+    "answer": "C",
+    "explanation": "Even though default appears first in the code, switch still matches grade(2) against case 2 correctly and executes 'Second' — case order in source code does not affect matching."
+  },
+  {
+    "id": 138,
+    "level": "Basic",
+    "type": "Fill-in-the-Blank",
+    "topic": "The Switch Statement",
+    "question": "Each case label's constant value in a switch statement must be ________ within the same switch block.",
+    "options": [
+      "duplicated at least once",
+      "unique",
+      "in ascending order",
+      "a floating-point number"
+    ],
+    "answer": "B",
+    "explanation": "Duplicate case values within the same switch statement are illegal and cause a compilation error; each case value must be unique."
+  },
+  {
+    "id": 139,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "The Switch Statement",
+    "question": "Assertion (A): switch is often more efficient than a long else-if ladder for many discrete integer comparisons.\nReason (R): Some compilers can optimize switch statements using jump tables instead of sequential comparisons.\nChoose the correct option:",
+    "options": [
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are true, but R does not explain A",
+      "A is true, R is false",
+      "A is false, R is true"
+    ],
+    "answer": "A",
+    "explanation": "Jump-table optimization (when applicable) allows the compiler to jump directly to the matching case in constant time, rather than testing conditions sequentially as an else-if ladder does, which correctly explains the efficiency claim."
+  },
+  {
+    "id": 140,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "The Switch Statement",
+    "question": "What is the output of the following code, where the default label is placed in the middle?\nint x = 5;\nswitch(x) {\n    case 1: printf(\"A\"); break;\n    default: printf(\"D\"); break;\n    case 5: printf(\"E\"); break;\n}",
+    "options": [
+      "A",
+      "D",
+      "E",
+      "DE"
+    ],
+    "answer": "C",
+    "explanation": "x(5) matches case 5 exactly, so control jumps directly to case 5 and prints 'E', regardless of where default appears in the block."
+  },
+  {
+    "id": 141,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "The Switch Statement",
+    "question": "Which of the following expressions is INVALID as a switch expression in standard C?",
+    "options": [
+      "switch(x) where x is int",
+      "switch(ch) where ch is char",
+      "switch(x + y) where x, y are int",
+      "switch(3.14) using a float literal"
+    ],
+    "answer": "D",
+    "explanation": "The switch expression must evaluate to an integral type; using a float literal directly is invalid in standard C and causes a compilation error."
+  },
+  {
+    "id": 142,
+    "level": "Basic",
+    "type": "Definition-Based",
+    "topic": "Switch Statement with break",
+    "question": "What is the purpose of the break statement inside a switch block?",
+    "options": [
+      "To start a new loop",
+      "To terminate the switch statement immediately, preventing fall-through into subsequent cases",
+      "To skip to the default label always",
+      "To declare a new case label"
+    ],
+    "answer": "B",
+    "explanation": "The break statement terminates a switch block immediately and prevents execution from continuing into subsequent case labels."
+  },
+  {
+    "id": 143,
+    "level": "Intermediate",
+    "type": "Purpose of break",
+    "topic": "Switch Statement with break",
+    "question": "Why is break commonly placed at the end of each case block?",
+    "options": [
+      "To make the code longer",
+      "To ensure only the matched case's code executes, avoiding unintended execution of following cases",
+      "It is required by C syntax and the program won't compile without it",
+      "To improve variable declaration"
+    ],
+    "answer": "B",
+    "explanation": "Without break, execution 'falls through' into the next case regardless of whether it matches, so break is used to confine execution strictly to the matched case."
+  },
+  {
+    "id": 144,
+    "level": "Intermediate",
+    "type": "Execution Behavior",
+    "topic": "Switch Statement with break",
+    "question": "What is the output of the following code?\nint x = 2;\nswitch(x) {\n    case 1: printf(\"One\"); break;\n    case 2: printf(\"Two\"); break;\n    case 3: printf(\"Three\"); break;\n}",
+    "options": [
+      "One",
+      "Two",
+      "Three",
+      "OneTwoThree"
+    ],
+    "answer": "B",
+    "explanation": "x matches case 2, printing 'Two'; the break statement then exits the switch immediately, so no other cases execute."
+  },
+  {
+    "id": 145,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Switch Statement with break",
+    "question": "What is the output of the following code?\nchar grade = 'B';\nswitch(grade) {\n    case 'A': printf(\"Excellent\"); break;\n    case 'B': printf(\"Good\"); break;\n    case 'C': printf(\"Average\"); break;\n    default: printf(\"Invalid\");\n}",
+    "options": [
+      "Excellent",
+      "Good",
+      "Average",
+      "Invalid"
+    ],
+    "answer": "B",
+    "explanation": "grade matches case 'B', so 'Good' is printed; break then exits the switch, skipping the remaining cases and default."
+  },
+  {
+    "id": 146,
+    "level": "Intermediate",
+    "type": "Advantages",
+    "topic": "Switch Statement with break",
+    "question": "What is a key advantage of always using break at the end of each case in a menu-driven program?",
+    "options": [
+      "It makes the program run in a loop automatically",
+      "It ensures clean, predictable execution of exactly one case, avoiding unintended fall-through bugs",
+      "It removes the need for a default label",
+      "It converts the switch into an if-else automatically"
+    ],
+    "answer": "B",
+    "explanation": "Using break in every case guarantees that only the intended matching block executes, making program behavior predictable and free from accidental fall-through errors."
+  },
+  {
+    "id": 147,
+    "level": "Intermediate",
+    "type": "Code-Based",
+    "topic": "Switch Statement with break",
+    "question": "What is the output of the following code?\nint choice = 4;\nswitch(choice) {\n    case 1: printf(\"A\"); break;\n    case 2: printf(\"B\"); break;\n    default: printf(\"Default\"); break;\n}",
+    "options": [
+      "A",
+      "B",
+      "Default",
+      "No output"
+    ],
+    "answer": "C",
+    "explanation": "choice(4) matches neither case 1 nor case 2, so control goes to default, printing 'Default'; the break there is good practice even though default is typically last."
+  },
+  {
+    "id": 148,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "Switch Statement with break",
+    "question": "In a traffic light simulation, each color (Red, Yellow, Green) must trigger only its own specific action with no overlap. Which switch design is correct?",
+    "options": [
+      "Switch without any break statements",
+      "Switch with a break statement at the end of every case, including default",
+      "Switch with break only in the first case",
+      "Avoid switch entirely and use nested loops"
+    ],
+    "answer": "B",
+    "explanation": "Since each color must trigger only its own action without spilling into the next case, break must be used consistently after every case block."
+  },
+  {
+    "id": 149,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "Switch Statement with break",
+    "question": "Which scenario benefits most from switch-with-break rather than switch-without-break?",
+    "options": [
+      "Grouping multiple related cases to share one action",
+      "Ensuring each discrete option executes independently and exclusively, such as a menu selection",
+      "Counting the number of matching cases",
+      "Executing all cases regardless of the input"
+    ],
+    "answer": "B",
+    "explanation": "switch-with-break is ideal when each case must run in isolation, such as when a user selects one specific menu option among several."
+  },
+  {
+    "id": 150,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Switch Statement with break",
+    "question": "What is the output of the following code if the break statement in case 2 is accidentally omitted?\nint x = 2;\nswitch(x) {\n    case 1: printf(\"A\");\n    case 2: printf(\"B\");\n    case 3: printf(\"C\"); break;\n    case 4: printf(\"D\");\n}",
+    "options": [
+      "B",
+      "BC",
+      "ABC",
+      "BCD"
+    ],
+    "answer": "B",
+    "explanation": "x matches case 2 and prints 'B'; since there's no break after case 2, execution falls through into case 3, printing 'C' as well, before the break in case 3 stops execution — output is 'BC'."
+  },
+  {
+    "id": 151,
+    "level": "Basic",
+    "type": "Fill-in-the-Blank",
+    "topic": "Switch Statement with break",
+    "question": "The break statement, when executed inside a switch, transfers control to the ________.",
+    "options": [
+      "beginning of the switch block",
+      "statement immediately following the switch block",
+      "default label only",
+      "next case label"
+    ],
+    "answer": "B",
+    "explanation": "break immediately exits the entire switch construct, and execution resumes at the first statement following the closing brace of the switch block."
+  },
+  {
+    "id": 152,
+    "level": "Intermediate",
+    "type": "Comparison-Based",
+    "topic": "Switch Statement with break",
+    "question": "How does the presence of break in every case affect the behavior compared to a switch with no break statements at all?",
+    "options": [
+      "No difference; both always execute all cases",
+      "With break, only the matched case executes; without break, execution falls through and continues into subsequent cases until a break or the end of switch is reached",
+      "Break statements are ignored by the compiler",
+      "Switch without break causes a compilation error"
+    ],
+    "answer": "B",
+    "explanation": "break confines execution to just the matched case, while omitting it causes fall-through, where all subsequent case bodies execute sequentially until a break is encountered or the switch ends."
+  },
+  {
+    "id": 153,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Switch Statement with break",
+    "question": "What is the output of the following code?\nint n = 1;\nswitch(n) {\n    case 1:\n        printf(\"1\");\n        break;\n    case 2:\n        printf(\"2\");\n        break;\n    case 1:\n        printf(\"1 again\");\n        break;\n}",
+    "options": [
+      "1",
+      "1 again",
+      "11 again",
+      "Compilation error due to duplicate case value"
+    ],
+    "answer": "D",
+    "explanation": "Duplicate case labels (case 1 appearing twice) are not allowed in the same switch block in C, and this results in a compilation error, regardless of the break statements."
+  },
+  {
+    "id": 154,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Switch Statement with break",
+    "question": "Which of the following best describes best practice regarding the default case and break in exam-style switch programs?",
+    "options": [
+      "default should never include a break statement",
+      "Placing break after default is good practice, especially if default is not the last label, to prevent unintended fall-through",
+      "default cannot be used with break at all",
+      "break has no effect when placed after default"
+    ],
+    "answer": "B",
+    "explanation": "Even though default is often placed last, if it appears earlier in the switch block, including a break after it prevents accidental fall-through into subsequent case labels."
+  },
+  {
+    "id": 155,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Switch Statement with break",
+    "question": "Assertion (A): break is optional in the last case of a switch statement.\nReason (R): There are no further case labels for control to fall through into after the last case.\nChoose the correct option:",
+    "options": [
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are true, but R does not explain A",
+      "A is true, R is false",
+      "A is false, R is true"
+    ],
+    "answer": "A",
+    "explanation": "Since the last case has no subsequent case to fall through into, omitting break there has no functional difference — R correctly explains why A is true."
+  },
+  {
+    "id": 156,
+    "level": "Basic",
+    "type": "Definition-Based",
+    "topic": "Switch Statement without break",
+    "question": "What is 'fall-through' behavior in a switch statement?",
+    "options": [
+      "The switch statement fails to compile",
+      "Execution continues into subsequent case blocks after a matched case, because no break statement stops it",
+      "The switch always jumps to default",
+      "The program crashes at runtime"
+    ],
+    "answer": "B",
+    "explanation": "Fall-through occurs when a matched case block has no break statement, causing execution to continue sequentially into the code of the next case label(s), regardless of whether they match."
+  },
+  {
+    "id": 157,
+    "level": "Intermediate",
+    "type": "Fall-through Concept",
+    "topic": "Switch Statement without break",
+    "question": "In a switch without break, once a matching case is found, when does execution finally stop?",
+    "options": [
+      "Immediately after the matched case's first statement",
+      "It continues executing all remaining case bodies (and default) until the end of the switch block, unless a break is encountered along the way",
+      "It never executes anything",
+      "Only the default block executes"
+    ],
+    "answer": "B",
+    "explanation": "Without break statements, execution 'falls through' every subsequent case body in sequence until the switch block ends or a break is encountered."
+  },
+  {
+    "id": 158,
+    "level": "Intermediate",
+    "type": "Execution Sequence",
+    "topic": "Switch Statement without break",
+    "question": "What is the output of the following code (no break statements)?\nint x = 1;\nswitch(x) {\n    case 1: printf(\"A\");\n    case 2: printf(\"B\");\n    case 3: printf(\"C\");\n}",
+    "options": [
+      "A",
+      "AB",
+      "ABC",
+      "No output"
+    ],
+    "answer": "C",
+    "explanation": "x matches case 1, printing 'A'; with no break, execution falls through case 2 (prints 'B') and case 3 (prints 'C'), giving 'ABC'."
+  },
+  {
+    "id": 159,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Switch Statement without break",
+    "question": "What is the output of the following code?\nint x = 2;\nswitch(x) {\n    case 1: printf(\"One\");\n    case 2: printf(\"Two\");\n    case 3: printf(\"Three\");\n    default: printf(\"Def\");\n}",
+    "options": [
+      "Two",
+      "TwoThree",
+      "TwoThreeDef",
+      "Def"
+    ],
+    "answer": "C",
+    "explanation": "x matches case 2, printing 'Two'; without break, execution falls through case 3 ('Three') and then default ('Def'), producing 'TwoThreeDef'."
+  },
+  {
+    "id": 160,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "Switch Statement without break",
+    "question": "Fall-through (switch without break) is intentionally useful when:",
+    "options": [
+      "Each case must behave completely independently",
+      "Multiple case values should share and execute the same block of code",
+      "Only exact numeric matches are desired with no shared behavior",
+      "The switch expression is a floating-point number"
+    ],
+    "answer": "B",
+    "explanation": "Deliberate fall-through is useful for grouping multiple case labels that should trigger identical behavior, such as treating both 'a' and 'A' the same way."
+  },
+  {
+    "id": 161,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "Switch Statement without break",
+    "question": "A program needs to treat weekend days (Saturday and Sunday) with the same message 'Weekend', while weekdays get individual messages. Which switch design fits best?",
+    "options": [
+      "switch with break after every single case, including Saturday",
+      "switch where case 'Saturday' has no break, deliberately falling through into case 'Sunday' to share the same 'Weekend' output",
+      "Avoid switch entirely",
+      "Use only if-else with no relational operators"
+    ],
+    "answer": "B",
+    "explanation": "Grouping case 'Saturday' and case 'Sunday' together (with fall-through from Saturday into Sunday) allows both to execute the same shared code block for 'Weekend'."
+  },
+  {
+    "id": 162,
+    "level": "Intermediate",
+    "type": "Code-Based",
+    "topic": "Switch Statement without break",
+    "question": "What is the output of the following intentional fall-through code?\nchar ch = 'a';\nswitch(ch) {\n    case 'a':\n    case 'e':\n    case 'i':\n    case 'o':\n    case 'u':\n        printf(\"Vowel\");\n        break;\n    default:\n        printf(\"Consonant\");\n}",
+    "options": [
+      "Vowel",
+      "Consonant",
+      "a",
+      "No output"
+    ],
+    "answer": "A",
+    "explanation": "Since case 'a' has no code before falling through to the shared printf under case 'u', matching 'a' still reaches and executes printf(\"Vowel\"), followed by break."
+  },
+  {
+    "id": 163,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Switch Statement without break",
+    "question": "What is the output of the following code?\nint x = 5;\nswitch(x) {\n    case 1: printf(\"A\"); break;\n    case 5: printf(\"E\");\n    case 6: printf(\"F\"); break;\n    case 7: printf(\"G\");\n}",
+    "options": [
+      "E",
+      "EF",
+      "EFG",
+      "F"
+    ],
+    "answer": "B",
+    "explanation": "x matches case 5, printing 'E'; with no break, it falls into case 6, printing 'F'; the break in case 6 then stops execution before reaching case 7 — output is 'EF'."
+  },
+  {
+    "id": 164,
+    "level": "Intermediate",
+    "type": "Comparison-Based",
+    "topic": "Switch Statement without break",
+    "question": "What is the primary risk of switch statements without deliberate break placement?",
+    "options": [
+      "The program will not compile",
+      "Unintended fall-through can cause multiple unrelated case blocks to execute accidentally, producing incorrect output",
+      "It always improves performance with no downsides",
+      "It disables the default label"
+    ],
+    "answer": "B",
+    "explanation": "If break is accidentally omitted where it's needed, unrelated subsequent cases execute unintentionally, which is a common source of logic bugs in switch statements."
+  },
+  {
+    "id": 165,
+    "level": "Basic",
+    "type": "Fill-in-the-Blank",
+    "topic": "Switch Statement without break",
+    "question": "When a switch statement lacks break statements, execution continues into subsequent cases; this behavior is known as ________.",
+    "options": [
+      "short-circuiting",
+      "fall-through",
+      "nesting",
+      "casting"
+    ],
+    "answer": "B",
+    "explanation": "The term for continuing execution into subsequent case labels without an intervening break is 'fall-through'."
+  },
+  {
+    "id": 166,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Switch Statement without break",
+    "question": "Assertion (A): Fall-through behavior can be used intentionally as a programming technique.\nReason (R): Grouping multiple case labels together without break lets them share the same block of executable code.\nChoose the correct option:",
+    "options": [
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are true, but R does not explain A",
+      "A is true, R is false",
+      "A is false, R is true"
+    ],
+    "answer": "A",
+    "explanation": "Deliberately omitting break to let multiple case labels fall through into shared code is a legitimate and common technique, and R correctly explains why this is useful."
+  },
+  {
+    "id": 167,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Switch Statement without break",
+    "question": "What is the output of the following code?\nint x = 3;\nswitch(x) {\n    default: printf(\"D\");\n    case 1: printf(\"1\");\n    case 2: printf(\"2\");\n    case 3: printf(\"3\");\n}",
+    "options": [
+      "D",
+      "3",
+      "D123",
+      "123"
+    ],
+    "answer": "B",
+    "explanation": "x matches case 3 directly (case matching does not depend on order), so execution starts at case 3, printing '3'; there are no further cases after it and no break needed, so output is simply '3'."
+  },
+  {
+    "id": 168,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Switch Statement without break",
+    "question": "Which statement about switch without break and 'default' interaction is TRUE?",
+    "options": [
+      "default always executes first regardless of match",
+      "If default lacks a break and is not the last label, execution can fall through into subsequent case blocks even if their values don't match the switch expression",
+      "default can never fall through",
+      "default is mandatory in every switch statement"
+    ],
+    "answer": "B",
+    "explanation": "The default label behaves like any other label with respect to fall-through: if it lacks a break and isn't the last block, execution proceeds into whatever code follows it, irrespective of case value matching."
+  },
+  {
+    "id": 169,
+    "level": "Basic",
+    "type": "Definition-Based",
+    "topic": "Concept of Case Label",
+    "question": "What is a case label in a switch statement?",
+    "options": [
+      "A variable that stores the switch expression's value",
+      "A constant value against which the switch expression is compared, marking the start of a code block",
+      "The default block of the switch",
+      "A loop control variable"
+    ],
+    "answer": "B",
+    "explanation": "A case label is a constant value (like case 5: or case 'A':) that marks a specific branch of code to execute when the switch expression matches that constant."
+  },
+  {
+    "id": 170,
+    "level": "Basic",
+    "type": "Rules",
+    "topic": "Concept of Case Label",
+    "question": "Which of the following is a mandatory rule for case labels in C?",
+    "options": [
+      "Case labels must be variables",
+      "Case labels must be constant expressions evaluable at compile time",
+      "Case labels must be floating-point values",
+      "Case labels can be duplicated freely"
+    ],
+    "answer": "B",
+    "explanation": "Every case label must be a compile-time constant expression; using a runtime variable as a case label results in a compilation error."
+  },
+  {
+    "id": 171,
+    "level": "Intermediate",
+    "type": "Syntax",
+    "topic": "Concept of Case Label",
+    "question": "Which is the correct syntax for writing a case label?",
+    "options": [
+      "case value; statement;",
+      "case value: statement;",
+      "case(value) statement;",
+      "case value -> statement;"
+    ],
+    "answer": "B",
+    "explanation": "A case label in C is written as case constant_value: followed by the statements to execute, using a colon rather than a semicolon or arrow."
+  },
+  {
+    "id": 172,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "Concept of Case Label",
+    "question": "Which of the following is a valid case label in C?",
+    "options": [
+      "case x: where x is a variable",
+      "case 5+3: (a constant expression)",
+      "case 3.14: (a floating-point literal)",
+      "case \"hello\": (a string literal)"
+    ],
+    "answer": "B",
+    "explanation": "5+3 is a valid constant expression (evaluates to 8 at compile time). Variables, floating-point literals, and strings are not valid case labels in standard C switch statements."
+  },
+  {
+    "id": 173,
+    "level": "Intermediate",
+    "type": "Valid Case Labels",
+    "topic": "Concept of Case Label",
+    "question": "Which of the following data types can be validly used for case label constants?",
+    "options": [
+      "int and char constants",
+      "float and double constants",
+      "String literals",
+      "Structure constants"
+    ],
+    "answer": "A",
+    "explanation": "Case labels must be integral constants — either int or char literals (char is promoted to its integer ASCII value); floating-point and string types are not allowed."
+  },
+  {
+    "id": 174,
+    "level": "Intermediate",
+    "type": "Constant Expressions",
+    "topic": "Concept of Case Label",
+    "question": "Which of the following is TRUE about constant expressions used as case labels?",
+    "options": [
+      "They can include function calls that return a value at runtime",
+      "They must be fully evaluable by the compiler at compile time, such as literals or expressions of only constants",
+      "They must always be written as a single literal digit",
+      "They can include user input variables"
+    ],
+    "answer": "B",
+    "explanation": "Constant expressions for case labels must be resolvable entirely at compile time (e.g., literals, enum constants, or arithmetic on constants) — no runtime values like function calls or variables are permitted."
+  },
+  {
+    "id": 175,
+    "level": "Intermediate",
+    "type": "Usage within Switch",
+    "topic": "Concept of Case Label",
+    "question": "What happens if two case labels in the same switch statement have the same constant value?",
+    "options": [
+      "The compiler picks the first one and ignores the second silently",
+      "It results in a compilation error due to duplicate case value",
+      "Both cases execute together every time",
+      "The program runs but produces unpredictable output"
+    ],
+    "answer": "B",
+    "explanation": "Duplicate case values within the same switch statement are illegal in C and are caught as a compilation error, since each value must uniquely identify one branch."
+  },
+  {
+    "id": 176,
+    "level": "Intermediate",
+    "type": "Code-Based",
+    "topic": "Concept of Case Label",
+    "question": "Which of the following switch blocks contains an invalid case label and will fail to compile?\nOption analysis assumes: int a = 5; (variable, not constant)",
+    "options": [
+      "case 10:",
+      "case 'A':",
+      "case a: (where a is a variable)",
+      "case 2+3:"
+    ],
+    "answer": "C",
+    "explanation": "case a: is invalid because a is a variable, not a compile-time constant; C requires all case labels to be fixed constant expressions."
+  },
+  {
+    "id": 177,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Concept of Case Label",
+    "question": "What is the output of the following code using a character case label?\nchar grade = 'B';\nswitch(grade) {\n    case 'A': printf(\"90-100\"); break;\n    case 'B': printf(\"80-89\"); break;\n    case 'C': printf(\"70-79\"); break;\n}",
+    "options": [
+      "90-100",
+      "80-89",
+      "70-79",
+      "No output"
+    ],
+    "answer": "B",
+    "explanation": "grade matches the case label 'B' (compared via its ASCII integer value), so '80-89' is printed."
+  },
+  {
+    "id": 178,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "Concept of Case Label",
+    "question": "A programmer wants to use case (marks/10): as a case label, where marks is a variable. Is this valid?",
+    "options": [
+      "Yes, any expression is valid as a case label",
+      "No, because marks/10 depends on a runtime variable and is not a compile-time constant",
+      "Yes, but only if marks is declared as const",
+      "Yes, if marks/10 always evaluates to an integer"
+    ],
+    "answer": "B",
+    "explanation": "Even simple-looking expressions like marks/10 are invalid case labels if marks is a regular runtime variable, since the value cannot be determined at compile time."
+  },
+  {
+    "id": 179,
+    "level": "Intermediate",
+    "type": "Comparison-Based",
+    "topic": "Concept of Case Label",
+    "question": "How does a case label differ from an if condition in terms of what it can express?",
+    "options": [
+      "A case label can express any Boolean condition, just like if",
+      "A case label can only express exact equality against a single compile-time constant, while an if condition can express any Boolean expression including ranges",
+      "They are functionally identical",
+      "case labels can use relational operators like > and <"
+    ],
+    "answer": "B",
+    "explanation": "Case labels are restricted to exact-match constants, whereas if conditions can use relational and logical operators to express far more complex and flexible conditions, including ranges."
+  },
+  {
+    "id": 180,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Concept of Case Label",
+    "question": "Which of the following is technically a valid case label, even though it might seem unusual to beginners?",
+    "options": [
+      "case 5*2-3:  (an arithmetic constant expression)",
+      "case x+1: where x is a non-const variable",
+      "case getValue(): where getValue() is a function call",
+      "case \"5\": (a string)"
+    ],
+    "answer": "A",
+    "explanation": "5*2-3 is a valid constant expression because it involves only literal constants and evaluates to 7 entirely at compile time, unlike the other options which depend on runtime values or are the wrong type."
+  },
+  {
+    "id": 181,
+    "level": "Basic",
+    "type": "Fill-in-the-Blank",
+    "topic": "Concept of Case Label",
+    "question": "The value used in a case label must be a(n) ________ that the compiler can resolve before the program runs.",
+    "options": [
+      "runtime variable",
+      "integer or character constant expression",
+      "floating-point variable",
+      "string variable"
+    ],
+    "answer": "B",
+    "explanation": "Case labels require constant expressions of integral type (int or char) that are fully resolved at compile time, not runtime variables or floating-point/string values."
+  },
+  {
+    "id": 182,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Concept of Case Label",
+    "question": "Assertion (A): case 'A': and case 65: behave identically in a switch statement testing a char expression.\nReason (R): Character constants in C are internally represented and compared using their ASCII integer values.\nChoose the correct option:",
+    "options": [
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are true, but R does not explain A",
+      "A is true, R is false",
+      "A is false, R is true"
+    ],
+    "answer": "A",
+    "explanation": "Since 'A' has the ASCII value 65, both case labels represent the exact same constant internally, and R correctly explains why they behave identically."
+  },
+  {
+    "id": 183,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Concept of Case Label",
+    "question": "What is the output of the following code that mixes character and equivalent ASCII integer case labels?\nchar ch = 66;\nswitch(ch) {\n    case 'A': printf(\"Apple\"); break;\n    case 66: printf(\"Ball\"); break;\n    case 'C': printf(\"Cat\"); break;\n}",
+    "options": [
+      "Apple",
+      "Ball",
+      "Cat",
+      "Compilation error"
+    ],
+    "answer": "B",
+    "explanation": "ch has the value 66, which corresponds exactly to ASCII 'B'. Since case 66: matches ch's value directly, 'Ball' is printed."
+  },
+  {
+    "id": 184,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Concept of Case Label",
+    "question": "Which of the following case label sets would cause a compilation error in the same switch block?",
+    "options": [
+      "case 1: and case 2:",
+      "case 'A': and case 66: (where 'A' has ASCII value 65)",
+      "case 1: and case 1: (identical values)",
+      "case 10: and case 20:"
+    ],
+    "answer": "C",
+    "explanation": "Having two case labels with the exact same constant value (case 1: appearing twice) is illegal and causes a duplicate case label compilation error."
+  },
+  {
+    "id": 185,
+    "level": "Intermediate",
+    "type": "Comparison-Based",
+    "topic": "Mixed Review: Cross-Topic MCQs",
+    "question": "Which construct would you choose to test 5 mutually exclusive numeric range conditions (e.g., grade bands), and why?",
+    "options": [
+      "switch, because ranges map directly to case labels",
+      "else-if ladder, because it can evaluate relational range conditions that switch cannot express directly",
+      "A single if statement without else",
+      "The ternary operator, because it supports unlimited branches"
+    ],
+    "answer": "B",
+    "explanation": "switch tests exact equality against constants, not ranges, so an else-if ladder (using relational operators) is the correct tool for range-based multi-way decisions."
+  },
+  {
+    "id": 186,
+    "level": "Intermediate",
+    "type": "Comparison-Based",
+    "topic": "Mixed Review: Cross-Topic MCQs",
+    "question": "Which construct would you choose to select one of 7 fixed menu options entered as an integer 1–7?",
+    "options": [
+      "switch statement",
+      "Ternary operator only",
+      "A single relational operator",
+      "Logical NOT operator"
+    ],
+    "answer": "A",
+    "explanation": "Since the input is a discrete set of known integer values, switch offers the cleanest, most readable multi-way branching for menu-driven programs."
+  },
+  {
+    "id": 187,
+    "level": "Intermediate",
+    "type": "Match-the-Following",
+    "topic": "Mixed Review: Cross-Topic MCQs",
+    "question": "Match each construct to its best-fit use case:\n(1) if   (2) if-else   (3) else-if ladder   (4) switch\n(a) Menu selection by exact value   (b) Single condition, no alternative needed   (c) Multiple ranked range conditions   (d) Binary (two-outcome) decision",
+    "options": [
+      "1-b, 2-d, 3-c, 4-a",
+      "1-a, 2-b, 3-c, 4-d",
+      "1-c, 2-a, 3-b, 4-d",
+      "1-d, 2-c, 3-a, 4-b"
+    ],
+    "answer": "A",
+    "explanation": "if fits single-condition checks (b), if-else fits binary decisions (d), else-if ladder fits ranked range conditions (c), and switch fits exact-value menu selection (a)."
+  },
+  {
+    "id": 188,
+    "level": "Intermediate",
+    "type": "Application-Oriented",
+    "topic": "Mixed Review: Cross-Topic MCQs",
+    "question": "A billing system applies different tax slabs based on income ranges. Which is the most appropriate control structure?",
+    "options": [
+      "switch statement using income as the expression",
+      "else-if ladder using relational operators to test income ranges",
+      "A single if statement",
+      "The NOT (!) operator alone"
+    ],
+    "answer": "B",
+    "explanation": "Since income slabs are ranges rather than discrete exact values, an else-if ladder with relational operators is the correct approach; switch cannot directly test ranges."
+  },
+  {
+    "id": 189,
+    "level": "Intermediate",
+    "type": "Application-Oriented",
+    "topic": "Mixed Review: Cross-Topic MCQs",
+    "question": "To assign the smaller of two numbers to a variable in a single, compact line of code, which is most suitable?",
+    "options": [
+      "Nested if statement",
+      "switch without break",
+      "Ternary (conditional) operator",
+      "else-if ladder"
+    ],
+    "answer": "C",
+    "explanation": "The ternary operator's compact single-expression nature makes it ideal for simple value-selection tasks like picking the smaller of two numbers in one line."
+  },
+  {
+    "id": 190,
+    "level": "Intermediate",
+    "type": "Comparison-Based",
+    "topic": "Mixed Review: Cross-Topic MCQs",
+    "question": "Which two constructs both allow only ONE of several blocks to execute for a given run, ensuring mutual exclusivity?",
+    "options": [
+      "if-else and else-if ladder",
+      "Nested if and logical AND only",
+      "Compound relational test and case label",
+      "Relational operator and ternary operator only"
+    ],
+    "answer": "A",
+    "explanation": "Both if-else and the else-if ladder are designed so that exactly one branch executes per run — if-else offers two mutually exclusive paths, and else-if ladder extends this to many."
+  },
+  {
+    "id": 191,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Mixed Review: Cross-Topic MCQs",
+    "question": "Assertion (A): switch statements are generally not suitable for testing floating-point conditions.\nReason (R): The switch expression and case labels in C must be of integral type (int or char).\nChoose the correct option:",
+    "options": [
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are true, but R does not explain A",
+      "A is true, R is false",
+      "A is false, R is true"
+    ],
+    "answer": "A",
+    "explanation": "Because C restricts switch expressions and case labels to integral types, floating-point conditions cannot be tested directly with switch, which is exactly why R explains A."
+  },
+  {
+    "id": 192,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Mixed Review: Cross-Topic MCQs",
+    "question": "Which of the following correctly ranks these constructs from MOST restrictive matching (exact only) to LEAST restrictive (any Boolean expression)?",
+    "options": [
+      "switch → else-if ladder → simple if",
+      "simple if → switch → else-if ladder",
+      "else-if ladder → simple if → switch",
+      "switch → simple if → else-if ladder"
+    ],
+    "answer": "A",
+    "explanation": "switch only allows exact constant matching (most restrictive); simple if evaluates one Boolean expression; else-if ladder evaluates a whole chain of independent Boolean expressions (least restrictive/most flexible)."
+  },
+  {
+    "id": 193,
+    "level": "Basic",
+    "type": "Fill-in-the-Blank",
+    "topic": "Mixed Review: Cross-Topic MCQs",
+    "question": "A construct that combines the compactness of a single expression with two-way decision-making, often used inside printf or assignments, is called the ________ operator.",
+    "options": [
+      "relational",
+      "logical",
+      "ternary (conditional)",
+      "switch"
+    ],
+    "answer": "C",
+    "explanation": "The ternary (?:) operator uniquely combines decision logic into a single expression usable inline, unlike statement-based constructs like if-else or switch."
+  },
+  {
+    "id": 194,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "Mixed Review: Cross-Topic MCQs",
+    "question": "A vending machine accepts a coin value (1, 2, 5, or 10) and must dispense a specific item for each exact value, with an error message for any other coin. Best construct?",
+    "options": [
+      "switch statement with a default case for invalid coins",
+      "Ternary operator chained multiple times",
+      "A single if without else",
+      "Compound relational test using only OR"
+    ],
+    "answer": "A",
+    "explanation": "Since the input is a small set of exact discrete values with a common 'invalid' case, switch with a default label is the cleanest and most exam-appropriate solution."
+  },
+  {
+    "id": 195,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Mixed Review: Cross-Topic MCQs",
+    "question": "Which combination of constructs would correctly replicate switch-like exact-value branching using only if-else logic?",
+    "options": [
+      "A single if with && chaining all values",
+      "An else-if ladder where each condition tests equality (==) against one specific value",
+      "A ternary operator nested infinitely",
+      "It is impossible to replicate switch using if-else"
+    ],
+    "answer": "B",
+    "explanation": "An else-if ladder where each branch tests exact equality (x == value) against a specific constant can replicate the exact-match behavior of a switch statement, though less efficiently."
+  },
+  {
+    "id": 196,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Mixed Review: Cross-Topic MCQs",
+    "question": "Which of the following statements about decision-control structures in C is FALSE?",
+    "options": [
+      "if-else allows exactly one of two blocks to execute",
+      "switch requires the controlling expression to be of integral type",
+      "The ternary operator can execute multiple independent statements per branch, just like if-else",
+      "else-if ladder tests conditions sequentially and stops at the first true condition"
+    ],
+    "answer": "C",
+    "explanation": "This statement is FALSE: the ternary operator only returns a single value/expression per branch and cannot execute multiple independent statements, unlike if-else blocks."
+  },
+  {
+    "id": 197,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Mixed Review: Cross-Topic MCQs",
+    "question": "Why can compound relational tests sometimes replace nested if statements?",
+    "options": [
+      "Because they always execute faster on every compiler",
+      "Because combining conditions with && can express the same 'all conditions must hold' logic that nested if achieves through hierarchy",
+      "Because C does not allow nested if statements",
+      "Because relational operators cannot be combined"
+    ],
+    "answer": "B",
+    "explanation": "When every nested condition simply needs to be true together (with the same resulting action), a single compound && expression can express the same logic as multiple nested if levels."
+  },
+  {
+    "id": 198,
+    "level": "Intermediate",
+    "type": "Application-Oriented",
+    "topic": "Mixed Review: Cross-Topic MCQs",
+    "question": "Which control structure combination would best implement: 'If it is a weekday, check further whether it is a public holiday to decide if office is open'?",
+    "options": [
+      "A single switch statement only",
+      "Nested if statements (outer: weekday check, inner: holiday check)",
+      "Ternary operator only",
+      "Logical NOT operator alone"
+    ],
+    "answer": "B",
+    "explanation": "Since the holiday check is only relevant after confirming it is a weekday (a hierarchical, dependent decision), nested if statements correctly model this logic."
+  },
+  {
+    "id": 199,
+    "level": "Intermediate",
+    "type": "Comparison-Based",
+    "topic": "Mixed Review: Cross-Topic MCQs",
+    "question": "In terms of code readability for grouping several case values that share identical behavior, which is more suitable — switch fall-through or a long else-if chain with OR conditions?",
+    "options": [
+      "Switch fall-through (grouping case labels without break) is generally cleaner for many discrete shared values",
+      "else-if chain with OR is always cleaner regardless of value count",
+      "Both are equally unreadable in all situations",
+      "Neither construct can group shared behavior"
+    ],
+    "answer": "A",
+    "explanation": "When grouping many discrete constant values that share the same action, stacking case labels with fall-through in switch is typically more concise and readable than a long chain of OR'd equality checks."
+  },
+  {
+    "id": 200,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Mixed Review: Cross-Topic MCQs",
+    "question": "Assertion (A): Logical operators are essential for building compound relational tests.\nReason (R): && and || allow multiple individual relational comparisons to be merged into one combined condition.\nChoose the correct option:",
+    "options": [
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are true, but R does not explain A",
+      "A is true, R is false",
+      "A is false, R is true"
+    ],
+    "answer": "A",
+    "explanation": "Compound relational tests are defined precisely as multiple relational expressions joined by logical operators, so R directly and correctly explains why A is true."
+  }
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

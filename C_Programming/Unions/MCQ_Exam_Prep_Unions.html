@@ -1,0 +1,3184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Concept of Union Collection",
+    "question": "What is a union in C?",
+    "options": [
+      "A collection of functions grouped together",
+      "A collection of different data types that share the same memory location",
+      "A type of loop used for iteration",
+      "A file handling structure"
+    ],
+    "answer": "B",
+    "explanation": "A union is a user-defined data type in which all members share the same memory location."
+  },
+  {
+    "id": 2,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Concept of Union Collection",
+    "question": "Which statement best defines a union?",
+    "options": [
+      "A derived data type where each member has its own separate memory",
+      "A primitive data type built into the language",
+      "A pointer to a structure",
+      "A derived data type where all members share a common memory location"
+    ],
+    "answer": "D",
+    "explanation": "By definition, a union allocates one shared memory block for all its members."
+  },
+  {
+    "id": 3,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "Concept of Union Collection",
+    "question": "In a union, how many members can hold a valid value at any given time?",
+    "options": [
+      "All members simultaneously",
+      "Exactly two members at once",
+      "Only one member at a time",
+      "None, unions cannot store values"
+    ],
+    "answer": "C",
+    "explanation": "Since all members overlap in the same memory, only the most recently assigned member holds a valid value."
+  },
+  {
+    "id": 4,
+    "level": "Basic",
+    "type": "Syntax-based",
+    "topic": "Concept of Union Collection",
+    "question": "Which keyword is used to declare a union in C?",
+    "options": [
+      "struct",
+      "class",
+      "record",
+      "union"
+    ],
+    "answer": "D",
+    "explanation": "The keyword \"union\" is used to define a union type, similar to how \"struct\" defines a structure."
+  },
+  {
+    "id": 5,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Concept of Union Collection",
+    "question": "Which of the following statements about unions is TRUE?",
+    "options": [
+      "The size of a union equals the sum of sizes of all its members",
+      "The size of a union equals the size of its largest member",
+      "Unions cannot have more than two members",
+      "Union members cannot be accessed using the dot operator"
+    ],
+    "answer": "B",
+    "explanation": "A union's size is determined by its largest member because all members share the same memory space."
+  },
+  {
+    "id": 6,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Concept of Union Collection",
+    "question": "Assertion (A): A union can store multiple values of different members simultaneously.<br>Reason (R): All members of a union share the same memory location.",
+    "options": [
+      "Both A and R are true, R is the correct explanation of A",
+      "A is false, R is true",
+      "Both A and R are true, R is not the correct explanation of A",
+      "Both A and R are false"
+    ],
+    "answer": "B",
+    "explanation": "The assertion is false because only one member can hold a valid value at a time; the reason itself is a correct statement."
+  },
+  {
+    "id": 7,
+    "level": "Intermediate",
+    "type": "Match-the-Following",
+    "topic": "Concept of Union Collection",
+    "question": "Match the collection type with its memory behaviour:<br>I. Union &nbsp; II. Structure &nbsp; III. Array<br>a. Shared memory for all members &nbsp; b. Separate memory for each member &nbsp; c. Same-type elements",
+    "options": [
+      "I-b, II-a, III-c",
+      "I-a, II-c, III-b",
+      "I-c, II-a, III-b",
+      "I-a, II-b, III-c"
+    ],
+    "answer": "D",
+    "explanation": "Union shares memory (a), structure allocates separate memory (b), array holds same-type elements (c)."
+  },
+  {
+    "id": 8,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Concept of Union Collection",
+    "question": "How does a union primarily differ from a structure in terms of memory allocation?",
+    "options": [
+      "A union allocates more memory than a structure",
+      "A union allocates memory equal to the largest member; a structure allocates memory for all members",
+      "Both allocate exactly the same fixed memory",
+      "A structure shares memory like a union"
+    ],
+    "answer": "B",
+    "explanation": "This is the core memory difference between unions and structures."
+  },
+  {
+    "id": 9,
+    "level": "Advanced",
+    "type": "Code-snippet",
+    "topic": "Concept of Union Collection",
+    "question": "<pre>union Data {\n    int i;\n    float f;\n    char c;\n};</pre>What happens to the value of <code>i</code> after a value is assigned to <code>f</code>?",
+    "options": [
+      "Both i and f remain valid at the same time",
+      "The value of i is overwritten; only f is meaningful",
+      "Only i remains meaningful",
+      "A compile-time error occurs"
+    ],
+    "answer": "B",
+    "explanation": "Since members overlap in memory, assigning to f overwrites the earlier value stored in i."
+  },
+  {
+    "id": 10,
+    "level": "Advanced",
+    "type": "Output-based",
+    "topic": "Concept of Union Collection",
+    "question": "<pre>union U { int x; char y; };\nunion U u;\nu.x = 65;\nprintf(\"%d\", u.x);</pre>What is the output?",
+    "options": [
+      "A",
+      "65",
+      "A garbage value",
+      "Compilation error"
+    ],
+    "answer": "B",
+    "explanation": "Since x was assigned last and read immediately, printing u.x correctly returns 65."
+  },
+  {
+    "id": 11,
+    "level": "Intermediate",
+    "type": "Fill-in-the-Blank",
+    "topic": "Concept of Union Collection",
+    "question": "The total memory allocated to a union is equal to the size of its ______ member.",
+    "options": [
+      "smallest",
+      "largest",
+      "first",
+      "last"
+    ],
+    "answer": "B",
+    "explanation": "A union always reserves memory equal to its largest member to accommodate any member."
+  },
+  {
+    "id": 12,
+    "level": "Advanced",
+    "type": "Scenario-based",
+    "topic": "Concept of Union Collection",
+    "question": "A programmer needs a data type that can hold either an integer or a float value, but never both at once, in order to save memory. Which construct is most suitable?",
+    "options": [
+      "Array",
+      "Structure",
+      "Union",
+      "Function"
+    ],
+    "answer": "C",
+    "explanation": "A union is ideal here since it stores one value at a time while saving memory compared to a structure."
+  },
+  {
+    "id": 13,
+    "level": "Advanced",
+    "type": "Application-oriented",
+    "topic": "Concept of Union Collection",
+    "question": "Unions are commonly used in embedded systems and low-level programming mainly for which purpose?",
+    "options": [
+      "Efficient use of limited memory",
+      "Increasing code readability",
+      "Enabling multiple inheritance",
+      "Simplifying file handling"
+    ],
+    "answer": "A",
+    "explanation": "Because unions share memory, they help conserve limited memory resources typical in embedded environments."
+  },
+  {
+    "id": 14,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Concept of Union Collection",
+    "question": "In C programming, a union is best described as:",
+    "options": [
+      "A data type allowing storage of multiple values simultaneously",
+      "A type exclusively used for arrays",
+      "A synonym for structure",
+      "A memory-efficient data type where members share the same storage"
+    ],
+    "answer": "D",
+    "explanation": "This matches the standard exam definition emphasising shared storage among members."
+  },
+  {
+    "id": 15,
+    "level": "Advanced",
+    "type": "Difficult/Tricky",
+    "topic": "Concept of Union Collection",
+    "question": "A union has members <code>int i</code> (4 bytes), <code>double d</code> (8 bytes) and <code>char c</code> (1 byte). What is the likely size of the union (ignoring padding)?",
+    "options": [
+      "13 bytes",
+      "1 byte",
+      "8 bytes",
+      "4 bytes"
+    ],
+    "answer": "C",
+    "explanation": "The union's size equals the size of its largest member, double (8 bytes), though alignment may add padding."
+  },
+  {
+    "id": 16,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Syntax of Union Declaration and Its Use",
+    "question": "Which of the following is a correctly declared union?",
+    "options": [
+      "union { int a; float b; } x;",
+      "union int a; float b;",
+      "union x { int a, float b }",
+      "union x = { int a; float b; }"
+    ],
+    "answer": "A",
+    "explanation": "This option follows correct union syntax with a valid member list and variable declaration."
+  },
+  {
+    "id": 17,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Syntax of Union Declaration and Its Use",
+    "question": "What does the declaration <code>union Employee { int id; char name[20]; };</code> represent?",
+    "options": [
+      "A structure named Employee",
+      "A function named Employee",
+      "An array of unions",
+      "A union type named Employee with members id and name"
+    ],
+    "answer": "D",
+    "explanation": "This declares a union template named Employee with two members that will share memory."
+  },
+  {
+    "id": 18,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "Syntax of Union Declaration and Its Use",
+    "question": "When declaring a union variable, which of the following is required?",
+    "options": [
+      "Specifying the union tag/type name before the variable name",
+      "Initializing every member",
+      "Declaring it inside a function only",
+      "Using the \"struct\" keyword"
+    ],
+    "answer": "A",
+    "explanation": "A union variable is declared using the union tag/type name, e.g. <code>union Employee e1;</code>"
+  },
+  {
+    "id": 19,
+    "level": "Basic",
+    "type": "Syntax-based",
+    "topic": "Syntax of Union Declaration and Its Use",
+    "question": "Which is the correct way to access member <code>id</code> of union variable <code>e1</code> (not a pointer)?",
+    "options": [
+      "e1->id",
+      "e1::id",
+      "e1.id",
+      "e1[id]"
+    ],
+    "answer": "C",
+    "explanation": "The dot operator is used to access members of a union variable, exactly as with structures."
+  },
+  {
+    "id": 20,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Syntax of Union Declaration and Its Use",
+    "question": "Which statement about union initialization is TRUE?",
+    "options": [
+      "Only the first member can be initialized in a standard initializer list",
+      "All members can be initialized simultaneously",
+      "Initialization is not allowed for unions",
+      "Only pointer members can be initialized"
+    ],
+    "answer": "A",
+    "explanation": "In standard C, a union can be initialized by giving a value to its first member only, e.g. <code>union U u = {10};</code>"
+  },
+  {
+    "id": 21,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Syntax of Union Declaration and Its Use",
+    "question": "Assertion (A): <code>union Data d1, d2;</code> declares two variables of type union Data.<br>Reason (R): Multiple variables can be declared for the same union tag, separated by commas.",
+    "options": [
+      "Both A and R are true, R is not the correct explanation of A",
+      "A is true, R is false",
+      "Both A and R are false",
+      "Both A and R are true, R is the correct explanation of A"
+    ],
+    "answer": "D",
+    "explanation": "Both statements are true, and R correctly explains why the declaration in A is valid."
+  },
+  {
+    "id": 22,
+    "level": "Intermediate",
+    "type": "Match-the-Following",
+    "topic": "Syntax of Union Declaration and Its Use",
+    "question": "Match the code with its purpose:<br>I. <code>union Tag {...};</code> &nbsp; II. <code>union Tag t;</code> &nbsp; III. <code>t.member</code><br>a. Declaring a variable &nbsp; b. Accessing a member &nbsp; c. Defining a union template",
+    "options": [
+      "I-a, II-c, III-b",
+      "I-b, II-a, III-c",
+      "I-c, II-b, III-a",
+      "I-c, II-a, III-b"
+    ],
+    "answer": "D",
+    "explanation": "I defines the template, II declares a variable, III accesses a member using the dot operator."
+  },
+  {
+    "id": 23,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Syntax of Union Declaration and Its Use",
+    "question": "How does declaring a union variable differ syntactically from declaring a structure variable?",
+    "options": [
+      "It uses a completely different operator for member access",
+      "It uses the \"union\" keyword instead of \"struct\", but the overall syntax is otherwise similar",
+      "It cannot be declared inside main()",
+      "It requires pointers only"
+    ],
+    "answer": "B",
+    "explanation": "Union and structure declarations follow a similar pattern, differing mainly in the keyword used."
+  },
+  {
+    "id": 24,
+    "level": "Advanced",
+    "type": "Code-snippet",
+    "topic": "Syntax of Union Declaration and Its Use",
+    "question": "<pre>union Item {\n    int code;\n    float price;\n};\nunion Item it = {101};</pre>What is stored in <code>it</code> after this initialization?",
+    "options": [
+      "Both code and price are set",
+      "price is initialized to 101.0",
+      "A compilation error occurs",
+      "Only code is initialized, to 101"
+    ],
+    "answer": "D",
+    "explanation": "When only one initializer is given, it is assigned to the first declared member, here code."
+  },
+  {
+    "id": 25,
+    "level": "Advanced",
+    "type": "Output-based",
+    "topic": "Syntax of Union Declaration and Its Use",
+    "question": "<pre>union U { int a; char b; };\nunion U u;\nu.a = 320;\nprintf(\"%d\", u.b);</pre>What is the likely nature of the output?",
+    "options": [
+      "Always exactly 320",
+      "Always 0",
+      "Compilation error",
+      "An implementation-defined value, because a and b overlap in memory"
+    ],
+    "answer": "D",
+    "explanation": "Since b overlaps only part of a's memory, reading b after writing a gives an implementation-dependent byte value."
+  },
+  {
+    "id": 26,
+    "level": "Intermediate",
+    "type": "Fill-in-the-Blank",
+    "topic": "Syntax of Union Declaration and Its Use",
+    "question": "To declare a union variable named <code>r</code> using the tag <code>Record</code>, the correct syntax is: <code>union Record ______;</code>",
+    "options": [
+      "Record r",
+      "union r",
+      "new Record()",
+      "r"
+    ],
+    "answer": "D",
+    "explanation": "The correct declaration is <code>union Record r;</code>, so the blank is filled with the variable name \"r\"."
+  },
+  {
+    "id": 27,
+    "level": "Advanced",
+    "type": "Scenario-based",
+    "topic": "Syntax of Union Declaration and Its Use",
+    "question": "A student writes <code>union Data { int i; float f; }; Data d;</code> and gets a compiler error. What is the mistake?",
+    "options": [
+      "The \"union\" keyword is missing before the variable declaration",
+      "A union cannot contain both int and float",
+      "A semicolon is missing after the union body",
+      "Member names cannot be i and f"
+    ],
+    "answer": "A",
+    "explanation": "In standard C, the variable declaration must use <code>union Data d;</code>, not just <code>Data d;</code>, unless typedef is used."
+  },
+  {
+    "id": 28,
+    "level": "Advanced",
+    "type": "Application-oriented",
+    "topic": "Syntax of Union Declaration and Its Use",
+    "question": "Which of the following is an INVALID union declaration?",
+    "options": [
+      "union Point { int x; int y; };",
+      "union Point p; int x; float y; };",
+      "union { int x; int y; } p;",
+      "union Point { int x; int y; } p1, p2;"
+    ],
+    "answer": "B",
+    "explanation": "This option has mismatched braces and member declarations outside the union body, making it invalid syntax."
+  },
+  {
+    "id": 29,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Syntax of Union Declaration and Its Use",
+    "question": "Which operator is used to access a union member through a pointer to the union?",
+    "options": [
+      ".",
+      "::",
+      "&",
+      "->"
+    ],
+    "answer": "D",
+    "explanation": "The arrow operator (->) is used to access members through a pointer, exactly as with structures."
+  },
+  {
+    "id": 30,
+    "level": "Advanced",
+    "type": "Difficult/Tricky",
+    "topic": "Syntax of Union Declaration and Its Use",
+    "question": "Consider <code>union U { int a; char b[4]; } u = {65};</code>. What does <code>u.b[0]</code> most likely contain on a little-endian system?",
+    "options": [
+      "0",
+      "An unrelated value",
+      "65",
+      "Compilation error"
+    ],
+    "answer": "C",
+    "explanation": "On little-endian systems, the least significant byte of a is stored first, so b[0] holds 65."
+  },
+  {
+    "id": 31,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Comparison of Array, Structure and Union",
+    "question": "Which of these can store elements of different data types?",
+    "options": [
+      "Array only",
+      "Structure and Union",
+      "Array and Structure",
+      "None of these"
+    ],
+    "answer": "B",
+    "explanation": "Arrays store elements of the same type, while structures and unions can hold members of different types."
+  },
+  {
+    "id": 32,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Comparison of Array, Structure and Union",
+    "question": "Which statement correctly differentiates arrays from structures/unions?",
+    "options": [
+      "Arrays store heterogeneous data; structures store homogeneous data",
+      "Arrays store homogeneous data; structures/unions can store heterogeneous data",
+      "Arrays and structures are identical in nature",
+      "Unions cannot store any combination of data types"
+    ],
+    "answer": "B",
+    "explanation": "This is the fundamental distinction: arrays are homogeneous, while structures and unions are heterogeneous."
+  },
+  {
+    "id": 33,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "Comparison of Array, Structure and Union",
+    "question": "Which of these allocates memory equal to the sum of all member sizes?",
+    "options": [
+      "Union",
+      "Structure",
+      "Both union and structure",
+      "Neither"
+    ],
+    "answer": "B",
+    "explanation": "A structure allocates separate memory for each member, so its total size is the sum of member sizes."
+  },
+  {
+    "id": 34,
+    "level": "Basic",
+    "type": "Syntax-based",
+    "topic": "Comparison of Array, Structure and Union",
+    "question": "Which keyword differentiates a structure declaration from a union declaration?",
+    "options": [
+      "array vs struct",
+      "int vs float",
+      "struct vs record",
+      "struct vs union"
+    ],
+    "answer": "D",
+    "explanation": "The declaration syntax is identical except for using \"struct\" versus \"union\" as the keyword."
+  },
+  {
+    "id": 35,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Comparison of Array, Structure and Union",
+    "question": "Which statement is TRUE regarding memory usage?",
+    "options": [
+      "Union memory usage is always greater than structure memory usage",
+      "Array and union always use equal memory",
+      "Structure always uses less memory than union",
+      "Structure memory usage is generally greater than or equal to union memory usage"
+    ],
+    "answer": "D",
+    "explanation": "Since structures store all members separately, they generally use equal or more memory than a union with the same members."
+  },
+  {
+    "id": 36,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Comparison of Array, Structure and Union",
+    "question": "Assertion (A): A union is more memory-efficient than a structure with the same members.<br>Reason (R): A union allocates memory only for its largest member.",
+    "options": [
+      "Both A and R are true, R is not the correct explanation of A",
+      "A is false, R is true",
+      "Both A and R are true, R is the correct explanation of A",
+      "Both A and R are false"
+    ],
+    "answer": "C",
+    "explanation": "Both statements are true, and R correctly explains why unions save memory compared to structures."
+  },
+  {
+    "id": 37,
+    "level": "Intermediate",
+    "type": "Match-the-Following",
+    "topic": "Comparison of Array, Structure and Union",
+    "question": "Match the collection with its data organisation:<br>I. Array &nbsp; II. Structure &nbsp; III. Union<br>a. Same data type elements &nbsp; b. Different types, separate memory &nbsp; c. Different types, shared memory",
+    "options": [
+      "I-b, II-c, III-a",
+      "I-c, II-a, III-b",
+      "I-a, II-c, III-b",
+      "I-a, II-b, III-c"
+    ],
+    "answer": "D",
+    "explanation": "Array holds same-type elements; structure allocates separate memory per member; union shares memory."
+  },
+  {
+    "id": 38,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Comparison of Array, Structure and Union",
+    "question": "Which of the following is a similarity between structures and unions?",
+    "options": [
+      "Both allocate memory equal to the sum of member sizes",
+      "Both cannot contain arrays as members",
+      "Both can contain members of different data types and are accessed using the dot/arrow operator",
+      "Both are indexed like arrays"
+    ],
+    "answer": "C",
+    "explanation": "Structures and unions both allow heterogeneous members that are accessed via similar operators."
+  },
+  {
+    "id": 39,
+    "level": "Advanced",
+    "type": "Code-snippet",
+    "topic": "Comparison of Array, Structure and Union",
+    "question": "<pre>struct S { int a; float b; };\nunion U { int a; float b; };</pre>Which statement about <code>sizeof(struct S)</code> and <code>sizeof(union U)</code> is generally TRUE?",
+    "options": [
+      "sizeof(struct S) is generally less than sizeof(union U)",
+      "Both are always exactly equal",
+      "sizeof(union U) is always 0",
+      "sizeof(struct S) is generally greater than or equal to sizeof(union U)"
+    ],
+    "answer": "D",
+    "explanation": "Since a structure allocates memory for all members while a union shares memory, the structure size is typically larger."
+  },
+  {
+    "id": 40,
+    "level": "Advanced",
+    "type": "Output-based",
+    "topic": "Comparison of Array, Structure and Union",
+    "question": "For <code>struct S {char c; int i;};</code> and <code>union U {char c; int i;};</code> on a typical system, which generally has the smaller <code>sizeof</code> value?",
+    "options": [
+      "struct S",
+      "union U",
+      "Both are equal",
+      "Cannot be determined at all"
+    ],
+    "answer": "B",
+    "explanation": "The union shares memory for its largest member, making it smaller than or equal to the structure's size."
+  },
+  {
+    "id": 41,
+    "level": "Intermediate",
+    "type": "Fill-in-the-Blank",
+    "topic": "Comparison of Array, Structure and Union",
+    "question": "An array stores elements of the ______ data type, whereas structures and unions can store elements of ______ data types.",
+    "options": [
+      "different, same",
+      "same, same",
+      "same, different",
+      "different, different"
+    ],
+    "answer": "C",
+    "explanation": "Arrays are homogeneous collections; structures and unions are heterogeneous collections."
+  },
+  {
+    "id": 42,
+    "level": "Advanced",
+    "type": "Scenario-based",
+    "topic": "Comparison of Array, Structure and Union",
+    "question": "A developer needs to store a student's roll number, name and marks simultaneously, with all fields accessible at once. Which is most appropriate?",
+    "options": [
+      "Union",
+      "Array of int",
+      "Structure",
+      "A single variable"
+    ],
+    "answer": "C",
+    "explanation": "Since all fields must be accessible simultaneously, a structure is appropriate; a union would overwrite earlier data."
+  },
+  {
+    "id": 43,
+    "level": "Advanced",
+    "type": "Application-oriented",
+    "topic": "Comparison of Array, Structure and Union",
+    "question": "Which data structure is best suited when only one of several possible data types needs to be stored at a time, to conserve memory?",
+    "options": [
+      "Array",
+      "Structure",
+      "Union",
+      "Linked list"
+    ],
+    "answer": "C",
+    "explanation": "A union is designed for exactly this use case: storing one of many possible types efficiently."
+  },
+  {
+    "id": 44,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Comparison of Array, Structure and Union",
+    "question": "Which of the following correctly compares memory usage for the same set of members?",
+    "options": [
+      "Union size is generally less than or equal to structure size",
+      "Structure size is always less than union size",
+      "Array size equals union size always",
+      "Union size is always greater than structure size"
+    ],
+    "answer": "A",
+    "explanation": "A union's memory is generally less than or equal to a structure holding the same members."
+  },
+  {
+    "id": 45,
+    "level": "Advanced",
+    "type": "Difficult/Tricky",
+    "topic": "Comparison of Array, Structure and Union",
+    "question": "A structure and a union both contain the same three members: char, int and double. Which statement is MOST accurate about their sizes (ignoring padding)?",
+    "options": [
+      "Both always have the same size",
+      "Union size equals the sum of all member sizes",
+      "Structure size equals the sum of all member sizes; union size equals the size of the largest member (double)",
+      "Structure size equals the size of the largest member"
+    ],
+    "answer": "C",
+    "explanation": "This is the defining memory allocation rule distinguishing structures from unions."
+  },
+  {
+    "id": 46,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Array of Unions",
+    "question": "What is an \"array of unions\"?",
+    "options": [
+      "A union containing an array as a member",
+      "An array containing structures",
+      "A collection of multiple union variables of the same union type",
+      "A pointer to a union"
+    ],
+    "answer": "C",
+    "explanation": "An array of unions is a collection where each element is a variable of the same union type."
+  },
+  {
+    "id": 47,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Array of Unions",
+    "question": "Which declaration correctly defines an array of 5 unions of type <code>union Data</code>?",
+    "options": [
+      "union Data[5] arr;",
+      "union Data arr[5];",
+      "array union Data arr(5);",
+      "Data union arr[5];"
+    ],
+    "answer": "B",
+    "explanation": "The syntax follows a normal array declaration: type name followed by array name and size in brackets."
+  },
+  {
+    "id": 48,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "Array of Unions",
+    "question": "In an array of unions, how is the total memory of the array calculated?",
+    "options": [
+      "Sum of sizes of all members multiplied by number of elements",
+      "Size of the smallest member only",
+      "It is always a fixed 100 bytes",
+      "Size of one union element multiplied by the number of elements"
+    ],
+    "answer": "D",
+    "explanation": "Just like any array, total memory equals the size of one union element multiplied by the array length."
+  },
+  {
+    "id": 49,
+    "level": "Basic",
+    "type": "Syntax-based",
+    "topic": "Array of Unions",
+    "question": "How do you access the <code>id</code> member of the 3rd element (index 2) in <code>union Data arr[5];</code>?",
+    "options": [
+      "arr(2).id",
+      "arr.id[2]",
+      "arr[2].id",
+      "arr->id[2]"
+    ],
+    "answer": "C",
+    "explanation": "Standard indexing followed by the dot operator is used to access a member of a specific array element."
+  },
+  {
+    "id": 50,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Array of Unions",
+    "question": "Which statement about arrays of unions is TRUE?",
+    "options": [
+      "All elements must hold values in the same member simultaneously",
+      "Each element can independently hold a value in any one of its members",
+      "An array of unions is not allowed in C",
+      "Elements cannot be accessed using indices"
+    ],
+    "answer": "B",
+    "explanation": "Each union element in the array independently manages its own shared memory for its members."
+  },
+  {
+    "id": 51,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Array of Unions",
+    "question": "Assertion (A): An array of unions can be used to store a collection of variant records.<br>Reason (R): Each element of the array behaves as an independent union instance.",
+    "options": [
+      "Both A and R are true, R is not the correct explanation of A",
+      "A is true, R is false",
+      "Both A and R are false",
+      "Both A and R are true, R is the correct explanation of A"
+    ],
+    "answer": "D",
+    "explanation": "Both are true, and R correctly explains why arrays of unions can hold multiple independent variant values."
+  },
+  {
+    "id": 52,
+    "level": "Intermediate",
+    "type": "Match-the-Following",
+    "topic": "Array of Unions",
+    "question": "Match the code with its purpose:<br>I. <code>union Data arr[3];</code> &nbsp; II. <code>arr[0].x = 5;</code> &nbsp; III. <code>sizeof(arr)</code><br>a. Accessing member of first element &nbsp; b. Declaring an array of 3 unions &nbsp; c. Total memory of the array",
+    "options": [
+      "I-a, II-b, III-c",
+      "I-c, II-b, III-a",
+      "I-b, II-a, III-c",
+      "I-b, II-c, III-a"
+    ],
+    "answer": "C",
+    "explanation": "I declares the array, II accesses a member of an element, III gives total memory size."
+  },
+  {
+    "id": 53,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Array of Unions",
+    "question": "How does an array of unions differ from a single union variable?",
+    "options": [
+      "It behaves identically since unions cannot be arrayed",
+      "It cannot store different member values per element",
+      "It provides multiple independent union instances instead of just one",
+      "It always uses less total memory than a single union"
+    ],
+    "answer": "C",
+    "explanation": "An array of unions provides multiple slots, each independently able to store a different member's value."
+  },
+  {
+    "id": 54,
+    "level": "Advanced",
+    "type": "Code-snippet",
+    "topic": "Array of Unions",
+    "question": "<pre>union U { int x; float y; };\nunion U arr[3];\narr[0].x = 10;\narr[1].y = 2.5;\nprintf(\"%d\", arr[0].x);</pre>What is the output?",
+    "options": [
+      "10",
+      "2 (truncated float)",
+      "A garbage value",
+      "Compilation error"
+    ],
+    "answer": "A",
+    "explanation": "Since arr[0].x was directly assigned, printing it correctly returns 10."
+  },
+  {
+    "id": 55,
+    "level": "Advanced",
+    "type": "Output-based",
+    "topic": "Array of Unions",
+    "question": "<pre>union U { char c; int i; };\nunion U arr[2] = { {'A'}, {66} };\nprintf(\"%c\", arr[0].c);</pre>What is the output?",
+    "options": [
+      "66",
+      "B",
+      "Compilation error",
+      "A"
+    ],
+    "answer": "D",
+    "explanation": "The first element's member c was initialized with 'A', so printing it with %c gives 'A'."
+  },
+  {
+    "id": 56,
+    "level": "Intermediate",
+    "type": "Fill-in-the-Blank",
+    "topic": "Array of Unions",
+    "question": "To declare an array of 10 union elements of type <code>union Record</code>, the syntax is: <code>union Record ______;</code>",
+    "options": [
+      "arr[10]",
+      "arr(10)",
+      "arr{10}",
+      "arr::10"
+    ],
+    "answer": "A",
+    "explanation": "Standard array declaration syntax uses square brackets to specify the number of elements."
+  },
+  {
+    "id": 57,
+    "level": "Advanced",
+    "type": "Scenario-based",
+    "topic": "Array of Unions",
+    "question": "A program must store 50 sensor readings, where each reading could be either an integer or a floating-point value depending on the sensor type. Which is most suitable?",
+    "options": [
+      "An array of unions, one union per sensor reading",
+      "A single union variable for all readings",
+      "A 2D array of int only",
+      "A single structure"
+    ],
+    "answer": "A",
+    "explanation": "An array of unions lets each of the 50 readings independently store either type efficiently."
+  },
+  {
+    "id": 58,
+    "level": "Advanced",
+    "type": "Application-oriented",
+    "topic": "Array of Unions",
+    "question": "Arrays of unions are useful in applications such as:",
+    "options": [
+      "Storing variant data records, like a table of tagged union entries",
+      "Sorting strings alphabetically",
+      "Implementing recursion",
+      "File compression algorithms only"
+    ],
+    "answer": "A",
+    "explanation": "Arrays of unions are commonly used to store collections of variant/tagged data efficiently."
+  },
+  {
+    "id": 59,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Array of Unions",
+    "question": "What is the total memory occupied by <code>union U arr[4];</code> if <code>union U</code> occupies 8 bytes?",
+    "options": [
+      "8 bytes",
+      "32 bytes",
+      "16 bytes",
+      "4 bytes"
+    ],
+    "answer": "B",
+    "explanation": "Total memory = size of one union element (8 bytes) x number of elements (4) = 32 bytes."
+  },
+  {
+    "id": 60,
+    "level": "Advanced",
+    "type": "Difficult/Tricky",
+    "topic": "Array of Unions",
+    "question": "In <code>union U { int a; char b[4]; } arr[3];</code>, if only <code>arr[1].a</code> is assigned a value, what happens to <code>arr[0]</code> and <code>arr[2]</code>?",
+    "options": [
+      "They automatically get the same value as arr[1]",
+      "Their members remain uninitialized/indeterminate unless separately assigned",
+      "They cause a compilation error",
+      "They become read-only"
+    ],
+    "answer": "B",
+    "explanation": "Each array element is an independent union instance; assigning one element does not affect the others."
+  },
+  {
+    "id": 61,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Union as a Member of Structure",
+    "question": "What does it mean when a union is used as a member of a structure?",
+    "options": [
+      "One of the structure's members is a union type, allowing that member to hold one of several types",
+      "The structure becomes a union",
+      "It is not allowed in C",
+      "The union replaces all structure members"
+    ],
+    "answer": "A",
+    "explanation": "A union can be embedded inside a structure as one of its fields, giving that field variant behaviour."
+  },
+  {
+    "id": 62,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Union as a Member of Structure",
+    "question": "Which of the following correctly declares a union as a member of a structure?",
+    "options": [
+      "union S { struct U u; };",
+      "struct S { union U u; int type; };",
+      "struct union S { int type; };",
+      "struct S union U u;"
+    ],
+    "answer": "B",
+    "explanation": "This correctly embeds a union variable u as a member inside structure S."
+  },
+  {
+    "id": 63,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "Union as a Member of Structure",
+    "question": "Why is a union often embedded in a structure along with a \"type\" or \"tag\" field?",
+    "options": [
+      "To track which member of the union is currently valid",
+      "To increase the union's memory size",
+      "To convert the union into an array",
+      "To disable member access"
+    ],
+    "answer": "A",
+    "explanation": "A separate tag field helps the programmer know which union member currently holds valid data, forming a \"tagged union\"."
+  },
+  {
+    "id": 64,
+    "level": "Basic",
+    "type": "Syntax-based",
+    "topic": "Union as a Member of Structure",
+    "question": "Given <code>struct S { int type; union U u; } s;</code>, how do you access member <code>x</code> of the union inside <code>s</code>?",
+    "options": [
+      "s.x.u",
+      "s->u->x",
+      "u.s.x",
+      "s.u.x"
+    ],
+    "answer": "D",
+    "explanation": "You first access the structure member u, then its union member x, using chained dot operators."
+  },
+  {
+    "id": 65,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Union as a Member of Structure",
+    "question": "Which statement is TRUE about a structure containing a union member?",
+    "options": [
+      "The structure's total size ignores the union entirely",
+      "The structure's total size includes space for the union member (sized as the union's largest member) plus its other members",
+      "Structures cannot contain unions",
+      "The union member must always be the first member"
+    ],
+    "answer": "B",
+    "explanation": "The structure allocates space for all its members, including the union, which itself occupies space equal to its largest member."
+  },
+  {
+    "id": 66,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Union as a Member of Structure",
+    "question": "Assertion (A): Embedding a union in a structure with a tag field is a common technique to implement variant records.<br>Reason (R): The tag field indicates which union member is currently active.",
+    "options": [
+      "Both A and R are true, R is not the correct explanation of A",
+      "A is false, R is true",
+      "Both A and R are false",
+      "Both A and R are true, R is the correct explanation of A"
+    ],
+    "answer": "D",
+    "explanation": "Both are true, and R explains the purpose of the tag field in this pattern."
+  },
+  {
+    "id": 67,
+    "level": "Intermediate",
+    "type": "Match-the-Following",
+    "topic": "Union as a Member of Structure",
+    "question": "Match the item with its role:<br>I. <code>struct S { union U u; };</code> &nbsp; II. <code>s.u.member</code> &nbsp; III. tag field<br>a. Access union member inside structure &nbsp; b. Declares union as structure member &nbsp; c. Tracks active union member",
+    "options": [
+      "I-a, II-c, III-b",
+      "I-b, II-a, III-c",
+      "I-c, II-b, III-a",
+      "I-b, II-c, III-a"
+    ],
+    "answer": "B",
+    "explanation": "I declares the embedding, II accesses the nested member, III is the tag-tracking pattern."
+  },
+  {
+    "id": 68,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Union as a Member of Structure",
+    "question": "How does embedding a union in a structure differ from embedding a structure in a union?",
+    "options": [
+      "They are functionally identical in every respect",
+      "Neither is allowed in standard C",
+      "Union-in-structure gives each structure instance its own variant field with tag tracking; structure-in-union shares the whole structure's memory with other union members",
+      "Union-in-structure always uses more memory than structure-in-union"
+    ],
+    "answer": "C",
+    "explanation": "The two nesting patterns serve different purposes: one embeds a variant field, the other overlaps a whole structure with other members."
+  },
+  {
+    "id": 69,
+    "level": "Advanced",
+    "type": "Code-snippet",
+    "topic": "Union as a Member of Structure",
+    "question": "<pre>struct Shape {\n    int type;\n    union { float radius; float side; } dim;\n};\nstruct Shape s;\ns.type = 1;\ns.dim.radius = 5.0;\nprintf(\"%.2f\", s.dim.radius);</pre>What is the output?",
+    "options": [
+      "0.00",
+      "A garbage value",
+      "Compilation error",
+      "5.00"
+    ],
+    "answer": "D",
+    "explanation": "The value directly assigned to s.dim.radius is correctly printed as 5.00."
+  },
+  {
+    "id": 70,
+    "level": "Advanced",
+    "type": "Output-based",
+    "topic": "Union as a Member of Structure",
+    "question": "<pre>struct Data { int type; union { int i; char c; } val; };\nstruct Data d;\nd.val.c = 'Z';\nprintf(\"%c\", d.val.c);</pre>What is the output?",
+    "options": [
+      "90",
+      "A garbage value",
+      "Z",
+      "Compilation error"
+    ],
+    "answer": "C",
+    "explanation": "Since d.val.c was directly assigned 'Z', printing it with %c outputs 'Z'."
+  },
+  {
+    "id": 71,
+    "level": "Intermediate",
+    "type": "Fill-in-the-Blank",
+    "topic": "Union as a Member of Structure",
+    "question": "In a tagged union design, the structure field that indicates which union member is active is commonly called the ______ field.",
+    "options": [
+      "type/tag",
+      "index",
+      "pointer",
+      "size"
+    ],
+    "answer": "A",
+    "explanation": "This field is conventionally called the \"type\" or \"tag\" field in tagged union implementations."
+  },
+  {
+    "id": 72,
+    "level": "Advanced",
+    "type": "Scenario-based",
+    "topic": "Union as a Member of Structure",
+    "question": "A shape-processing program needs to store either a circle's radius or a rectangle's width/height, plus a type indicator, in one record. Which design fits best?",
+    "options": [
+      "A plain union without any tag field",
+      "Two completely unrelated separate variables",
+      "A structure containing a type field and a union of the shape-specific data",
+      "An array of floats only"
+    ],
+    "answer": "C",
+    "explanation": "This is the classic tagged-union pattern: a structure with a tag field and an embedded union for variant data."
+  },
+  {
+    "id": 73,
+    "level": "Advanced",
+    "type": "Application-oriented",
+    "topic": "Union as a Member of Structure",
+    "question": "Structures containing unions are widely used in:",
+    "options": [
+      "Implementing variant/tagged data types, such as in compilers and parsers",
+      "String comparison functions",
+      "Sorting algorithms",
+      "File I/O operations only"
+    ],
+    "answer": "A",
+    "explanation": "This nesting pattern is a standard technique for implementing variant types in real-world software like compilers."
+  },
+  {
+    "id": 74,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Union as a Member of Structure",
+    "question": "When a union is a member of a structure, the union's contribution to the structure's overall size is:",
+    "options": [
+      "The size of the union's largest member",
+      "The sum of all union member sizes",
+      "Always zero",
+      "Twice the largest member's size"
+    ],
+    "answer": "A",
+    "explanation": "The union member still follows union rules internally, contributing only its largest member's size."
+  },
+  {
+    "id": 75,
+    "level": "Advanced",
+    "type": "Difficult/Tricky",
+    "topic": "Union as a Member of Structure",
+    "question": "<pre>struct Rec {\n    int type;\n    union { int i; double d; } value;\n};</pre>If <code>sizeof(int)=4</code> and <code>sizeof(double)=8</code>, what is the union's contribution to <code>struct Rec</code>'s size (ignoring alignment)?",
+    "options": [
+      "8 bytes",
+      "4 bytes",
+      "12 bytes",
+      "16 bytes"
+    ],
+    "answer": "A",
+    "explanation": "The union occupies space equal to its largest member (double, 8 bytes), regardless of the other member's size."
+  },
+  {
+    "id": 76,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Structure as a Member of Union",
+    "question": "What does it mean when a structure is used as a member of a union?",
+    "options": [
+      "The structure becomes a pointer",
+      "It is not allowed in C",
+      "The structure replaces the union entirely",
+      "The union contains a structure as one of its members, sharing memory with other union members"
+    ],
+    "answer": "D",
+    "explanation": "A structure can be one of the members of a union, and it shares the union's common memory space with other members."
+  },
+  {
+    "id": 77,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Structure as a Member of Union",
+    "question": "Which declaration correctly places a structure as a member of a union?",
+    "options": [
+      "struct U { union S s; };",
+      "union struct U { int a; };",
+      "union U { struct { int a; int b; } s; int x; };",
+      "struct union U s;"
+    ],
+    "answer": "C",
+    "explanation": "This correctly declares a union U with a structure member s alongside another member x."
+  },
+  {
+    "id": 78,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "Structure as a Member of Union",
+    "question": "When a union contains a structure member, how much memory does that structure member require within the union?",
+    "options": [
+      "Only the size of the structure's largest field",
+      "The full size of the structure (sum of its own fields, with alignment)",
+      "Zero bytes",
+      "The size of an int only"
+    ],
+    "answer": "B",
+    "explanation": "The structure itself is treated as a single member, requiring memory equal to its own total size."
+  },
+  {
+    "id": 79,
+    "level": "Basic",
+    "type": "Syntax-based",
+    "topic": "Structure as a Member of Union",
+    "question": "Given <code>union U { struct { int a; int b; } s; int x; } u;</code>, how do you access member <code>a</code>?",
+    "options": [
+      "u.a",
+      "u->s->a",
+      "s.u.a",
+      "u.s.a"
+    ],
+    "answer": "D",
+    "explanation": "You access the structure member first (s), then its field (a), using chained dot operators."
+  },
+  {
+    "id": 80,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Structure as a Member of Union",
+    "question": "Which statement is TRUE regarding a union with a structure member?",
+    "options": [
+      "The union's total size is the sum of the structure's size and other members' sizes",
+      "Structures cannot be union members",
+      "The union's total size equals the size of its largest member, which could be the structure",
+      "The structure member cannot have more than one field"
+    ],
+    "answer": "C",
+    "explanation": "The union follows normal rules; its size equals the size of the largest member, which may be the embedded structure."
+  },
+  {
+    "id": 81,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Structure as a Member of Union",
+    "question": "Assertion (A): A structure member inside a union can overlap in memory with other union members.<br>Reason (R): All members of a union share a common memory location.",
+    "options": [
+      "Both A and R are true, R is not the correct explanation of A",
+      "A is false, R is true",
+      "Both A and R are true, R is the correct explanation of A",
+      "Both A and R are false"
+    ],
+    "answer": "C",
+    "explanation": "Both statements are true, and R correctly explains why the structure member overlaps with others."
+  },
+  {
+    "id": 82,
+    "level": "Intermediate",
+    "type": "Match-the-Following",
+    "topic": "Structure as a Member of Union",
+    "question": "Match the item with its role:<br>I. <code>union U { struct S s; int x; };</code> &nbsp; II. <code>u.s.field</code> &nbsp; III. <code>sizeof(union U)</code><br>a. Equals size of the largest member &nbsp; b. Declares structure inside union &nbsp; c. Accesses structure field",
+    "options": [
+      "I-a, II-b, III-c",
+      "I-c, II-a, III-b",
+      "I-b, II-a, III-c",
+      "I-b, II-c, III-a"
+    ],
+    "answer": "D",
+    "explanation": "I declares the nested structure, II accesses its field, III gives the union's total size rule."
+  },
+  {
+    "id": 83,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Structure as a Member of Union",
+    "question": "What is a key difference between \"structure inside union\" and \"union inside structure\"?",
+    "options": [
+      "They behave in exactly the same way",
+      "Neither pattern is valid in standard C",
+      "In union-of-structure, the structure shares memory with sibling union members; in structure-of-union, the union is one independently-sized field among the structure's separately allocated members",
+      "Structure-inside-union always uses less memory"
+    ],
+    "answer": "C",
+    "explanation": "The memory-sharing behaviour differs depending on which container is the outer type."
+  },
+  {
+    "id": 84,
+    "level": "Advanced",
+    "type": "Code-snippet",
+    "topic": "Structure as a Member of Union",
+    "question": "<pre>union U {\n    struct { int x; int y; } point;\n    int z;\n};\nunion U u;\nu.point.x = 3;\nu.point.y = 4;\nprintf(\"%d %d\", u.point.x, u.point.y);</pre>What is the output?",
+    "options": [
+      "Garbage values",
+      "0 0",
+      "3 4",
+      "Compilation error"
+    ],
+    "answer": "C",
+    "explanation": "Both fields of the structure member were directly assigned and remain valid since z was never written."
+  },
+  {
+    "id": 85,
+    "level": "Advanced",
+    "type": "Output-based",
+    "topic": "Structure as a Member of Union",
+    "question": "<pre>union U { struct { int a; int b; } s; long l; };\nunion U u;\nu.l = 100;\nprintf(\"%d\", u.s.a);</pre>What best describes the output?",
+    "options": [
+      "It is always exactly 100",
+      "It is always 0",
+      "It is implementation-defined, since writing to l overlaps with s's memory",
+      "Compilation error"
+    ],
+    "answer": "C",
+    "explanation": "Writing to l overwrites the shared memory used by s, so reading s.a afterward gives an implementation-dependent value."
+  },
+  {
+    "id": 86,
+    "level": "Intermediate",
+    "type": "Fill-in-the-Blank",
+    "topic": "Structure as a Member of Union",
+    "question": "When a structure is a member of a union, the union's overall size is determined by comparing the structure's size with the sizes of ______.",
+    "options": [
+      "only the first member",
+      "only pointer members",
+      "all other union members",
+      "global variables"
+    ],
+    "answer": "C",
+    "explanation": "The union's size is the maximum among all its members' sizes, including the structure member."
+  },
+  {
+    "id": 87,
+    "level": "Advanced",
+    "type": "Scenario-based",
+    "topic": "Structure as a Member of Union",
+    "question": "A network protocol handler needs a union where one interpretation of raw bytes is a structure of header fields, and another interpretation is a single integer. Which design fits?",
+    "options": [
+      "Two completely separate unrelated structures",
+      "An array of chars only",
+      "A structure containing two unions",
+      "A union containing both a structure of header fields and an int member"
+    ],
+    "answer": "D",
+    "explanation": "This is a classic technique for reinterpreting raw memory as different types, useful in protocol-handling code."
+  },
+  {
+    "id": 88,
+    "level": "Advanced",
+    "type": "Application-oriented",
+    "topic": "Structure as a Member of Union",
+    "question": "Structures nested inside unions are useful for:",
+    "options": [
+      "Byte-level reinterpretation of data, such as splitting an integer into component bytes/fields",
+      "Implementing linked lists only",
+      "String concatenation",
+      "File compression exclusively"
+    ],
+    "answer": "A",
+    "explanation": "This pattern is often used to reinterpret data at the byte or field level, common in systems programming."
+  },
+  {
+    "id": 89,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Structure as a Member of Union",
+    "question": "If a union contains a structure member of size 8 bytes and an int member of size 4 bytes, the union's size will be:",
+    "options": [
+      "12 bytes",
+      "4 bytes",
+      "8 bytes (or larger due to alignment)",
+      "0 bytes"
+    ],
+    "answer": "C",
+    "explanation": "The union's size equals its largest member, which here is the 8-byte structure."
+  },
+  {
+    "id": 90,
+    "level": "Advanced",
+    "type": "Difficult/Tricky",
+    "topic": "Structure as a Member of Union",
+    "question": "In <code>union U { struct { char a; int b; } s; double d; };</code>, assuming the inner structure requires 8 bytes (with padding) and double requires 8 bytes, what is the union's total size?",
+    "options": [
+      "16 bytes",
+      "12 bytes",
+      "8 bytes",
+      "4 bytes"
+    ],
+    "answer": "C",
+    "explanation": "Since both the structure (with padding) and double occupy 8 bytes, the union's size remains 8 bytes, the largest among equal-sized members."
+  },
+  {
+    "id": 91,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Array as a Member of Union",
+    "question": "What does it mean when an array is used as a member of a union?",
+    "options": [
+      "The array becomes the union's tag",
+      "It is not allowed in C",
+      "Arrays cannot be union members under any circumstances",
+      "One of the union's members is an array, sharing memory with the union's other members"
+    ],
+    "answer": "D",
+    "explanation": "A union can have an array as one of its members, and that array shares the same memory as other members."
+  },
+  {
+    "id": 92,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Array as a Member of Union",
+    "question": "Which declaration correctly places an array as a member of a union?",
+    "options": [
+      "union U[4] { int i; };",
+      "array union U { int i; };",
+      "union U { int i; char bytes[4]; };",
+      "union U { array char bytes; };"
+    ],
+    "answer": "C",
+    "explanation": "This correctly declares a union with an int member and a 4-element char array member."
+  },
+  {
+    "id": 93,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "Array as a Member of Union",
+    "question": "Why is an array member (like <code>char bytes[4]</code>) commonly used alongside an <code>int</code> member in a union?",
+    "options": [
+      "To allow byte-level access to the individual bytes of the int value",
+      "To increase the union's overall memory usage",
+      "To disable the int member permanently",
+      "To convert the union into a structure"
+    ],
+    "answer": "A",
+    "explanation": "This common technique lets programmers inspect or manipulate individual bytes of a larger data type."
+  },
+  {
+    "id": 94,
+    "level": "Basic",
+    "type": "Syntax-based",
+    "topic": "Array as a Member of Union",
+    "question": "Given <code>union U { int i; char b[4]; } u;</code>, how do you access the second byte of the array member?",
+    "options": [
+      "u.b(1)",
+      "u.b[1]",
+      "u[1].b",
+      "u->b[1]"
+    ],
+    "answer": "B",
+    "explanation": "Standard array indexing combined with the dot operator is used to access a specific element of the array member."
+  },
+  {
+    "id": 95,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Array as a Member of Union",
+    "question": "Which statement is TRUE about an array member inside a union?",
+    "options": [
+      "Array members are ignored when calculating the union's size",
+      "The array's total byte size contributes to determining the union's overall size along with other members",
+      "An array member always makes the union invalid",
+      "Arrays inside unions cannot be indexed"
+    ],
+    "answer": "B",
+    "explanation": "The array's size is one of the sizes considered when the compiler determines the union's overall size (the maximum)."
+  },
+  {
+    "id": 96,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Array as a Member of Union",
+    "question": "Assertion (A): A char array member in a union is often used to examine the byte representation of another member, such as an int.<br>Reason (R): All members of a union overlap in the same memory location.",
+    "options": [
+      "Both A and R are true, R is not the correct explanation of A",
+      "A is false, R is true",
+      "Both A and R are true, R is the correct explanation of A",
+      "Both A and R are false"
+    ],
+    "answer": "C",
+    "explanation": "Both statements are true, and R explains why byte-level inspection works via overlapping memory."
+  },
+  {
+    "id": 97,
+    "level": "Intermediate",
+    "type": "Match-the-Following",
+    "topic": "Array as a Member of Union",
+    "question": "Match the item with its role:<br>I. <code>union U { int i; char b[4]; };</code> &nbsp; II. <code>u.b[0]</code> &nbsp; III. <code>sizeof(union U)</code><br>a. Equals size of largest member &nbsp; b. Declares array member in union &nbsp; c. Accesses first byte",
+    "options": [
+      "I-a, II-b, III-c",
+      "I-c, II-a, III-b",
+      "I-b, II-c, III-a",
+      "I-b, II-a, III-c"
+    ],
+    "answer": "C",
+    "explanation": "I declares the union with an array member, II accesses an element, III applies the standard size rule."
+  },
+  {
+    "id": 98,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Array as a Member of Union",
+    "question": "How does an array member in a union differ from an array of unions?",
+    "options": [
+      "An array member is one field inside a single union sharing memory with other members; an array of unions is multiple independent union instances",
+      "They are exactly the same concept",
+      "Arrays cannot be union members at all",
+      "An array of unions always uses less memory"
+    ],
+    "answer": "A",
+    "explanation": "These are distinct concepts: one nests an array inside a union, the other creates multiple union instances."
+  },
+  {
+    "id": 99,
+    "level": "Advanced",
+    "type": "Code-snippet",
+    "topic": "Array as a Member of Union",
+    "question": "<pre>union U { int i; char b[4]; };\nunion U u;\nu.i = 1;\nprintf(\"%d\", u.b[0]);</pre>On a little-endian system, what is the likely output?",
+    "options": [
+      "0",
+      "4",
+      "Compilation error",
+      "1"
+    ],
+    "answer": "D",
+    "explanation": "On little-endian systems, the least significant byte of i (value 1) is stored first, so b[0] is 1."
+  },
+  {
+    "id": 100,
+    "level": "Advanced",
+    "type": "Output-based",
+    "topic": "Array as a Member of Union",
+    "question": "<pre>union U { int i; char b[4]; };\nunion U u;\nu.b[0] = 'A';\nu.b[1] = 'B';\nprintf(\"%c%c\", u.b[0], u.b[1]);</pre>What is the output?",
+    "options": [
+      "AB",
+      "BA",
+      "Garbage characters",
+      "Compilation error"
+    ],
+    "answer": "A",
+    "explanation": "Both array elements were directly assigned characters, so printing them returns \"AB\" as expected."
+  },
+  {
+    "id": 101,
+    "level": "Intermediate",
+    "type": "Fill-in-the-Blank",
+    "topic": "Array as a Member of Union",
+    "question": "When an array is a member of a union, the union's total size is at least as large as the ______ of the array member.",
+    "options": [
+      "first element",
+      "average size",
+      "index count only, ignoring element size",
+      "total byte size"
+    ],
+    "answer": "D",
+    "explanation": "The array's full byte size (elements times element size) is considered when determining the union's overall size."
+  },
+  {
+    "id": 102,
+    "level": "Advanced",
+    "type": "Scenario-based",
+    "topic": "Array as a Member of Union",
+    "question": "A programmer wants to inspect individual bytes of a 4-byte integer to check the system's endianness. Which union design helps achieve this?",
+    "options": [
+      "union { int i; char b[4]; }",
+      "struct { int i; char b[4]; }",
+      "int arr[4];",
+      "A standalone char b[4]; array"
+    ],
+    "answer": "A",
+    "explanation": "This union allows writing to the int member and reading individual bytes via the array member, revealing endianness."
+  },
+  {
+    "id": 103,
+    "level": "Advanced",
+    "type": "Application-oriented",
+    "topic": "Array as a Member of Union",
+    "question": "Array members inside unions are commonly applied in:",
+    "options": [
+      "High-level GUI design",
+      "Low-level data conversion and byte manipulation tasks, such as handling network byte order",
+      "Recursive function calls",
+      "String sorting algorithms"
+    ],
+    "answer": "B",
+    "explanation": "This pattern is widely used in systems and network programming for byte-level data manipulation."
+  },
+  {
+    "id": 104,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Array as a Member of Union",
+    "question": "In <code>union U { float f; char bytes[4]; };</code>, assuming float is 4 bytes, what is <code>sizeof(union U)</code>?",
+    "options": [
+      "8 bytes",
+      "4 bytes",
+      "1 byte",
+      "16 bytes"
+    ],
+    "answer": "B",
+    "explanation": "Both members are 4 bytes in size, so the union's size is 4 bytes (the maximum among equal-sized members)."
+  },
+  {
+    "id": 105,
+    "level": "Advanced",
+    "type": "Difficult/Tricky",
+    "topic": "Array as a Member of Union",
+    "question": "In <code>union U { int i; char b[6]; };</code>, if int is 4 bytes and the char array has 6 elements, what is <code>sizeof(union U)</code>?",
+    "options": [
+      "4 bytes",
+      "10 bytes",
+      "6 bytes",
+      "2 bytes"
+    ],
+    "answer": "C",
+    "explanation": "The union's size equals its largest member; here the 6-byte char array is larger than the 4-byte int."
+  },
+  {
+    "id": 106,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Concept of Memory Saving and Union",
+    "question": "Why are unions considered memory-efficient compared to structures?",
+    "options": [
+      "All union members share one common memory location instead of each having separate memory",
+      "Unions store more members than structures",
+      "Unions do not allow initialization at all",
+      "Unions are always smaller regardless of member types"
+    ],
+    "answer": "A",
+    "explanation": "Sharing memory among members is the fundamental reason unions save memory compared to structures."
+  },
+  {
+    "id": 107,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Concept of Memory Saving and Union",
+    "question": "The \"memory saving\" concept in unions refers to:",
+    "options": [
+      "Compressing data using algorithms",
+      "Deleting unused variables automatically",
+      "Reducing the number of variables in a program",
+      "Allocating a single shared memory block sized to the largest member, instead of separate blocks for each member"
+    ],
+    "answer": "D",
+    "explanation": "This directly describes how unions achieve memory efficiency through shared storage."
+  },
+  {
+    "id": 108,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "Concept of Memory Saving and Union",
+    "question": "If a union has members of sizes 2, 4 and 8 bytes, how much total memory does the union occupy (ignoring padding)?",
+    "options": [
+      "8 bytes",
+      "14 bytes",
+      "2 bytes",
+      "4 bytes"
+    ],
+    "answer": "A",
+    "explanation": "The union occupies memory equal to its largest member, which is 8 bytes here."
+  },
+  {
+    "id": 109,
+    "level": "Basic",
+    "type": "Syntax-based",
+    "topic": "Concept of Memory Saving and Union",
+    "question": "Which operator is used to determine how much memory a union occupies?",
+    "options": [
+      "memof()",
+      "sizeval()",
+      "sizeof()",
+      "length()"
+    ],
+    "answer": "C",
+    "explanation": "The sizeof() operator returns the number of bytes occupied by a union or any other data type."
+  },
+  {
+    "id": 110,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Concept of Memory Saving and Union",
+    "question": "Which statement correctly explains the memory-saving advantage of unions?",
+    "options": [
+      "Unions save memory by compressing all member values into fewer bits",
+      "Unions save memory by reusing the same memory location for all members instead of allocating separately",
+      "Unions save memory only when using pointers",
+      "Unions save memory by deleting unused data types"
+    ],
+    "answer": "B",
+    "explanation": "This is the correct explanation: memory reuse rather than compression is the mechanism."
+  },
+  {
+    "id": 111,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Concept of Memory Saving and Union",
+    "question": "Assertion (A): Using a union instead of a structure can significantly reduce memory usage when only one field is needed at a time.<br>Reason (R): A union's size depends only on its largest member, not the sum of all members.",
+    "options": [
+      "Both A and R are true, R is not the correct explanation of A",
+      "A is false, R is true",
+      "Both A and R are false",
+      "Both A and R are true, R is the correct explanation of A"
+    ],
+    "answer": "D",
+    "explanation": "Both statements are true, and R correctly explains why unions reduce memory usage in this scenario."
+  },
+  {
+    "id": 112,
+    "level": "Intermediate",
+    "type": "Match-the-Following",
+    "topic": "Concept of Memory Saving and Union",
+    "question": "Match the item with its description:<br>I. Structure &nbsp; II. Union &nbsp; III. sizeof(largest member)<br>a. Determines union size &nbsp; b. Sum of member sizes &nbsp; c. Shared memory concept",
+    "options": [
+      "I-c, II-a, III-b",
+      "I-b, II-c, III-a",
+      "I-a, II-b, III-c",
+      "I-b, II-a, III-c"
+    ],
+    "answer": "B",
+    "explanation": "Structure size is the sum of member sizes; union embodies the shared memory concept; its size equals the largest member."
+  },
+  {
+    "id": 113,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Concept of Memory Saving and Union",
+    "question": "Compared to declaring three separate variables (int, float, char), how does using a union of the same three types affect memory usage?",
+    "options": [
+      "It uses memory equal to the largest of the three types instead of the sum of all three",
+      "It uses more memory than three separate variables",
+      "It uses exactly the same memory as three separate variables",
+      "It uses zero memory"
+    ],
+    "answer": "A",
+    "explanation": "A union uses only as much memory as its largest member, unlike separate variables which each need their own memory."
+  },
+  {
+    "id": 114,
+    "level": "Advanced",
+    "type": "Code-snippet",
+    "topic": "Concept of Memory Saving and Union",
+    "question": "<pre>union Data { int i; float f; double d; };\nprintf(\"%lu\", sizeof(union Data));</pre>Assuming int=4, float=4, double=8 bytes, what is the output?",
+    "options": [
+      "16",
+      "8",
+      "4",
+      "12"
+    ],
+    "answer": "B",
+    "explanation": "The union's size equals its largest member, double, which is 8 bytes."
+  },
+  {
+    "id": 115,
+    "level": "Advanced",
+    "type": "Output-based",
+    "topic": "Concept of Memory Saving and Union",
+    "question": "<pre>struct S { int i; float f; double d; };\nunion U { int i; float f; double d; };\nprintf(\"%d\", sizeof(struct S) > sizeof(union U));</pre>Assuming standard sizes, what is the output?",
+    "options": [
+      "1",
+      "0",
+      "-1",
+      "Compilation error"
+    ],
+    "answer": "A",
+    "explanation": "Since the structure sums all member sizes while the union takes only the largest, sizeof(struct S) is greater, so the comparison evaluates to 1 (true)."
+  },
+  {
+    "id": 116,
+    "level": "Intermediate",
+    "type": "Fill-in-the-Blank",
+    "topic": "Concept of Memory Saving and Union",
+    "question": "The memory saved by using a union instead of a structure with the same members is approximately equal to the ______ of the sizes of the members other than the largest one.",
+    "options": [
+      "sum",
+      "product",
+      "average",
+      "difference of squares"
+    ],
+    "answer": "A",
+    "explanation": "The saved memory roughly corresponds to the combined sizes of the members other than the largest one."
+  },
+  {
+    "id": 117,
+    "level": "Advanced",
+    "type": "Scenario-based",
+    "topic": "Concept of Memory Saving and Union",
+    "question": "An embedded system with very limited RAM needs to store one of five possible sensor value types at a time. Which approach minimizes memory usage?",
+    "options": [
+      "Declaring five separate variables",
+      "Using a structure with five fields",
+      "Using five separate arrays",
+      "Using a union with five members"
+    ],
+    "answer": "D",
+    "explanation": "A union minimizes memory by allocating only enough space for the largest of the five types."
+  },
+  {
+    "id": 118,
+    "level": "Advanced",
+    "type": "Application-oriented",
+    "topic": "Concept of Memory Saving and Union",
+    "question": "The memory-saving property of unions is particularly valuable in which type of applications?",
+    "options": [
+      "Applications with abundant memory and no constraints",
+      "Applications that never reuse variables",
+      "Purely mathematical applications with no data types",
+      "Memory-constrained applications such as embedded systems and microcontrollers"
+    ],
+    "answer": "D",
+    "explanation": "Memory-constrained systems benefit most from the efficient shared storage that unions provide."
+  },
+  {
+    "id": 119,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Concept of Memory Saving and Union",
+    "question": "The key reason a union requires less memory than an equivalent structure is:",
+    "options": [
+      "Unions allocate memory only once, shared among all members, sized to the largest member",
+      "Unions use compressed encoding internally",
+      "Unions do not allow floating point members",
+      "Unions store data in a file instead of RAM"
+    ],
+    "answer": "A",
+    "explanation": "This directly matches the standard exam explanation for union memory efficiency."
+  },
+  {
+    "id": 120,
+    "level": "Advanced",
+    "type": "Difficult/Tricky",
+    "topic": "Concept of Memory Saving and Union",
+    "question": "A union has members: char c (1 byte), short s (2 bytes), int i (4 bytes), and double d (8 bytes). What is the MINIMUM memory this union could require (ignoring alignment)?",
+    "options": [
+      "8 bytes",
+      "1 byte",
+      "15 bytes",
+      "4 bytes"
+    ],
+    "answer": "A",
+    "explanation": "The union must accommodate its largest member, double (8 bytes), so its minimum required size is 8 bytes."
+  },
+  {
+    "id": 121,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Union as a Generic Data Type",
+    "question": "What does it mean to describe a union as a \"generic data type\"?",
+    "options": [
+      "It can only store integer values",
+      "It works only with generic templates in C++",
+      "It cannot store any value at all",
+      "It can represent multiple different data types using a single, shared storage location, chosen at runtime"
+    ],
+    "answer": "D",
+    "explanation": "A union's ability to interpret the same memory as different types makes it a flexible, generic container."
+  },
+  {
+    "id": 122,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Union as a Generic Data Type",
+    "question": "Which best defines the \"generic\" characteristic of a union?",
+    "options": [
+      "A union restricts a variable to exactly one fixed data type",
+      "A union allows a single variable to represent different data types at different times using shared memory",
+      "A union is generic because it works only with pointers",
+      "A union always behaves like an array"
+    ],
+    "answer": "B",
+    "explanation": "This flexibility to hold varying types over time, using the same memory, is what makes unions generic."
+  },
+  {
+    "id": 123,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "Union as a Generic Data Type",
+    "question": "Why is a union particularly useful for implementing a variable that can hold different types across different function calls?",
+    "options": [
+      "Because it wastes memory to store multiple copies",
+      "Because it reuses the same memory location, allowing reinterpretation as different types without separate storage",
+      "Because it always defaults to an integer type",
+      "Because it forbids reinterpretation of data"
+    ],
+    "answer": "B",
+    "explanation": "Memory reuse enables the same union variable to represent different types as needed, supporting generic behaviour."
+  },
+  {
+    "id": 124,
+    "level": "Basic",
+    "type": "Syntax-based",
+    "topic": "Union as a Generic Data Type",
+    "question": "In implementing a generic union type for multiple data kinds, which construct usually accompanies the union to track the current active type?",
+    "options": [
+      "A pointer to void only",
+      "A second identical union",
+      "A tag/type enum or int field, often within an enclosing structure",
+      "A macro definition only"
+    ],
+    "answer": "C",
+    "explanation": "A tag field (often an enum) paired with the union is the standard way to track its currently active type."
+  },
+  {
+    "id": 125,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Union as a Generic Data Type",
+    "question": "Which statement about unions as generic data types is TRUE?",
+    "options": [
+      "A union can hold one of several types at a time, and the programmer must track which type is currently valid",
+      "A union can safely hold and validly read all its members simultaneously",
+      "Unions automatically convert data types without programmer tracking",
+      "Unions cannot be used for generic data representation"
+    ],
+    "answer": "A",
+    "explanation": "Correct usage requires the programmer to track the currently valid member, since only one can be valid at a time."
+  },
+  {
+    "id": 126,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Union as a Generic Data Type",
+    "question": "Assertion (A): Unions are often used to implement \"variant\" types capable of representing multiple kinds of data generically.<br>Reason (R): A union allows different data types to occupy the same memory space at different times.",
+    "options": [
+      "Both A and R are true, R is not the correct explanation of A",
+      "A is false, R is true",
+      "Both A and R are true, R is the correct explanation of A",
+      "Both A and R are false"
+    ],
+    "answer": "C",
+    "explanation": "Both are true, and R correctly explains the generic/variant capability of unions."
+  },
+  {
+    "id": 127,
+    "level": "Intermediate",
+    "type": "Match-the-Following",
+    "topic": "Union as a Generic Data Type",
+    "question": "Match the term with its description:<br>I. Generic union &nbsp; II. Tag field &nbsp; III. Variant record<br>a. Structure combining union and tag &nbsp; b. Type indicator for active union member &nbsp; c. Data type able to hold multiple representations",
+    "options": [
+      "I-a, II-c, III-b",
+      "I-b, II-a, III-c",
+      "I-c, II-b, III-a",
+      "I-c, II-a, III-b"
+    ],
+    "answer": "C",
+    "explanation": "I is the generic capability, II is the tag field's role, III is the resulting combined pattern."
+  },
+  {
+    "id": 128,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Union as a Generic Data Type",
+    "question": "How does a \"generic union\" differ from a generic template in a language like C++ (in terms of core mechanism)?",
+    "options": [
+      "A union achieves generic behaviour via shared memory reinterpretation at runtime; templates achieve it via compile-time type substitution",
+      "They are exactly the same mechanism",
+      "Unions are only usable at compile-time",
+      "Templates also require shared memory reinterpretation"
+    ],
+    "answer": "A",
+    "explanation": "These are fundamentally different mechanisms for achieving flexibility with types."
+  },
+  {
+    "id": 129,
+    "level": "Advanced",
+    "type": "Code-snippet",
+    "topic": "Union as a Generic Data Type",
+    "question": "<pre>union Value { int i; float f; char c; };\nenum Type { INT, FLOAT, CHAR };\nstruct Variant { enum Type type; union Value val; };\nstruct Variant v;\nv.type = FLOAT;\nv.val.f = 3.14;</pre>What does this code pattern demonstrate?",
+    "options": [
+      "A fixed single-type variable",
+      "A generic/variant type using a union with a tag to track the active member",
+      "An array of unions",
+      "A memory leak"
+    ],
+    "answer": "B",
+    "explanation": "This is a textbook example of implementing a generic/variant type using a tagged union."
+  },
+  {
+    "id": 130,
+    "level": "Advanced",
+    "type": "Output-based",
+    "topic": "Union as a Generic Data Type",
+    "question": "<pre>union Value { int i; float f; };\nunion Value v;\nv.i = 10;\nprintf(\"%d\", v.i);\nv.f = 2.5;\nprintf(\" %.1f\", v.f);</pre>What is the output?",
+    "options": [
+      "10 10.0",
+      "Garbage values",
+      "Compilation error",
+      "10 2.5"
+    ],
+    "answer": "D",
+    "explanation": "Each print statement occurs immediately after the corresponding assignment, so both values print correctly in sequence."
+  },
+  {
+    "id": 131,
+    "level": "Intermediate",
+    "type": "Fill-in-the-Blank",
+    "topic": "Union as a Generic Data Type",
+    "question": "A union used to represent multiple possible data types in a single variable, combined with a type indicator, is often called a ______ type.",
+    "options": [
+      "static",
+      "tagged/variant",
+      "constant",
+      "volatile"
+    ],
+    "answer": "B",
+    "explanation": "This combination is standard terminology known as a \"tagged union\" or \"variant type\"."
+  },
+  {
+    "id": 132,
+    "level": "Advanced",
+    "type": "Scenario-based",
+    "topic": "Union as a Generic Data Type",
+    "question": "A configuration parser needs to store setting values that could be integers, floats, or strings, and must know which type each value currently holds. Which design is most appropriate?",
+    "options": [
+      "A single int variable used for all settings",
+      "Three completely separate unrelated variables per setting",
+      "A structure with a tag field and a union holding int, float, or string data",
+      "An array of unrelated types with no tracking"
+    ],
+    "answer": "C",
+    "explanation": "This tagged-union design is the standard generic approach for representing heterogeneous configuration values."
+  },
+  {
+    "id": 133,
+    "level": "Advanced",
+    "type": "Application-oriented",
+    "topic": "Union as a Generic Data Type",
+    "question": "Generic unions (often as tagged unions) are widely used in:",
+    "options": [
+      "Simple arithmetic operations only",
+      "Interpreters, compilers, and parsers to represent tokens or values of varying types",
+      "Fixed-size array declarations",
+      "String literal storage exclusively"
+    ],
+    "answer": "B",
+    "explanation": "Tagged unions are a foundational technique in interpreters and compilers for representing heterogeneous values."
+  },
+  {
+    "id": 134,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Union as a Generic Data Type",
+    "question": "The main benefit of using a union as a generic data type is:",
+    "options": [
+      "It permanently fixes a variable to one data type",
+      "It eliminates the need for any data types in a program",
+      "It automatically sorts data",
+      "It allows a single variable to flexibly represent multiple data types while saving memory"
+    ],
+    "answer": "D",
+    "explanation": "This captures both the flexibility and memory efficiency benefits of using unions generically."
+  },
+  {
+    "id": 135,
+    "level": "Advanced",
+    "type": "Difficult/Tricky",
+    "topic": "Union as a Generic Data Type",
+    "question": "When using a union as a generic type WITHOUT a tag field, what is the primary risk?",
+    "options": [
+      "The program will simply fail to compile",
+      "The union will automatically throw a runtime exception",
+      "The union will silently convert all types to int",
+      "The programmer may read the wrong member, leading to incorrect or undefined interpretation of the stored data"
+    ],
+    "answer": "D",
+    "explanation": "Without a tag to track which member is valid, reading the wrong member yields incorrect or undefined results."
+  },
+  {
+    "id": 136,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Concept of Anonymous Union",
+    "question": "What is an anonymous union?",
+    "options": [
+      "A union that cannot be initialized at all",
+      "A union declared without a tag name and without a variable name, whose members are accessed directly",
+      "A union with only one member",
+      "A union declared inside a comment"
+    ],
+    "answer": "B",
+    "explanation": "An anonymous union has no tag and no variable name; its members become directly accessible in the enclosing scope."
+  },
+  {
+    "id": 137,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Concept of Anonymous Union",
+    "question": "Which of the following best describes the syntax of an anonymous union?",
+    "options": [
+      "union Tag { int a; float b; } u;",
+      "union { int a; float b; };",
+      "union { int a; float b; } u;",
+      "typedef union { int a; } U;"
+    ],
+    "answer": "B",
+    "explanation": "An anonymous union omits both the tag and the variable name, as shown in this option."
+  },
+  {
+    "id": 138,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "Concept of Anonymous Union",
+    "question": "How are members of an anonymous union accessed?",
+    "options": [
+      "Directly by their member names, without any variable name or dot operator, since they behave as if declared in the enclosing scope",
+      "Using a variable name together with the dot operator",
+      "Using array indexing",
+      "They cannot be accessed at all"
+    ],
+    "answer": "A",
+    "explanation": "Because there is no variable name, members of an anonymous union are accessed directly by name in the enclosing scope."
+  },
+  {
+    "id": 139,
+    "level": "Basic",
+    "type": "Syntax-based",
+    "topic": "Concept of Anonymous Union",
+    "question": "Which of the following is a valid anonymous union declaration inside a structure?",
+    "options": [
+      "struct S { int type; union { int i; float f; }; };",
+      "struct S { int type; union U { int i; float f; }; };",
+      "struct S { int type; union { int i; float f; } u; };",
+      "struct S { union int i; };"
+    ],
+    "answer": "A",
+    "explanation": "This option shows a correctly declared anonymous union nested inside a structure, without a tag or variable name."
+  },
+  {
+    "id": 140,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Concept of Anonymous Union",
+    "question": "Which statement about anonymous unions is TRUE?",
+    "options": [
+      "Anonymous unions allow direct access to their members without a union variable name",
+      "Anonymous unions must always have a tag name",
+      "Anonymous unions cannot be nested inside structures",
+      "Anonymous unions require pointer access only"
+    ],
+    "answer": "A",
+    "explanation": "This is the defining characteristic that distinguishes anonymous unions from regular named unions."
+  },
+  {
+    "id": 141,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Concept of Anonymous Union",
+    "question": "Assertion (A): Anonymous unions simplify member access by removing the need for an intermediate variable name.<br>Reason (R): Members of an anonymous union are treated as if they belong directly to the enclosing scope.",
+    "options": [
+      "Both A and R are true, R is not the correct explanation of A",
+      "A is false, R is true",
+      "Both A and R are true, R is the correct explanation of A",
+      "Both A and R are false"
+    ],
+    "answer": "C",
+    "explanation": "Both statements are true, and R correctly explains why anonymous unions simplify access syntax."
+  },
+  {
+    "id": 142,
+    "level": "Intermediate",
+    "type": "Match-the-Following",
+    "topic": "Concept of Anonymous Union",
+    "question": "Match the declaration with its type:<br>I. <code>union { int a; } b;</code> &nbsp; II. <code>union { int a; };</code> &nbsp; III. <code>union Tag { int a; } t;</code><br>a. Named union with a variable name (not fully anonymous) &nbsp; b. Anonymous union &nbsp; c. Fully named/tagged union",
+    "options": [
+      "I-a, II-b, III-c",
+      "I-b, II-a, III-c",
+      "I-c, II-b, III-a",
+      "I-a, II-c, III-b"
+    ],
+    "answer": "A",
+    "explanation": "I is a union with a variable but no tag (not fully anonymous), II is truly anonymous, III is a fully named union."
+  },
+  {
+    "id": 143,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Concept of Anonymous Union",
+    "question": "How does an anonymous union differ from a regular (named) union in terms of member access?",
+    "options": [
+      "There is no difference between them at all",
+      "Regular unions cannot be accessed at all",
+      "Anonymous unions require pointers for access",
+      "Anonymous union members are accessed directly by name; regular union members require a variable name and the dot operator"
+    ],
+    "answer": "D",
+    "explanation": "This access-syntax simplification is the key practical difference between anonymous and regular unions."
+  },
+  {
+    "id": 144,
+    "level": "Advanced",
+    "type": "Code-snippet",
+    "topic": "Concept of Anonymous Union",
+    "question": "<pre>struct Point {\n    int type;\n    union {\n        int x;\n        float fx;\n    };\n};\nstruct Point p;\np.x = 10;\nprintf(\"%d\", p.x);</pre>What is the output?",
+    "options": [
+      "10",
+      "Compilation error since the union has no name",
+      "A garbage value",
+      "0"
+    ],
+    "answer": "A",
+    "explanation": "Because the union is anonymous, its member x is accessed directly as p.x, correctly printing 10."
+  },
+  {
+    "id": 145,
+    "level": "Advanced",
+    "type": "Output-based",
+    "topic": "Concept of Anonymous Union",
+    "question": "<pre>union {\n    int a;\n    char b;\n};\na = 65;\nprintf(\"%d %c\", a, b);</pre>Assuming this anonymous union is used validly in its context, what is the likely output?",
+    "options": [
+      "65 A",
+      "65 65",
+      "A 65",
+      "Compilation error in every context"
+    ],
+    "answer": "A",
+    "explanation": "Member a set to 65 overlaps with b; since 65 corresponds to 'A' in ASCII, printing b as %c shows 'A'."
+  },
+  {
+    "id": 146,
+    "level": "Intermediate",
+    "type": "Fill-in-the-Blank",
+    "topic": "Concept of Anonymous Union",
+    "question": "An anonymous union is declared without a ______ and without a ______.",
+    "options": [
+      "semicolon, brace",
+      "tag name, variable name",
+      "member, type",
+      "function, loop"
+    ],
+    "answer": "B",
+    "explanation": "The defining feature of an anonymous union is the absence of both a tag name and a variable name."
+  },
+  {
+    "id": 147,
+    "level": "Advanced",
+    "type": "Scenario-based",
+    "topic": "Concept of Anonymous Union",
+    "question": "A programmer wants to embed a union inside a structure but avoid using an extra variable name each time a member is accessed, for cleaner code. Which technique should be used?",
+    "options": [
+      "A regular named union",
+      "An anonymous union",
+      "An array of unions",
+      "A separate global union"
+    ],
+    "answer": "B",
+    "explanation": "Anonymous unions are specifically designed to simplify access by removing the need for an intermediate variable name."
+  },
+  {
+    "id": 148,
+    "level": "Advanced",
+    "type": "Application-oriented",
+    "topic": "Concept of Anonymous Union",
+    "question": "Anonymous unions are commonly applied in:",
+    "options": [
+      "Declaring global constants",
+      "Simplifying access to variant fields within structures, such as in graphics or vector libraries",
+      "Implementing recursive functions",
+      "String formatting operations"
+    ],
+    "answer": "B",
+    "explanation": "Anonymous unions are frequently used in libraries (e.g. vector/graphics math) to allow flexible, direct field access."
+  },
+  {
+    "id": 149,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Concept of Anonymous Union",
+    "question": "A key advantage of using anonymous unions within structures is:",
+    "options": [
+      "They allow direct, simplified access to union members without an extra intermediate name",
+      "They increase the number of required variable names",
+      "They prevent any member from being accessed",
+      "They convert the structure into an array"
+    ],
+    "answer": "A",
+    "explanation": "This directly matches the standard exam explanation of the anonymous union's main benefit."
+  },
+  {
+    "id": 150,
+    "level": "Advanced",
+    "type": "Difficult/Tricky",
+    "topic": "Concept of Anonymous Union",
+    "question": "Consider a structure with two anonymous unions, each containing a member named <code>value</code>. What issue arises?",
+    "options": [
+      "A naming conflict/ambiguity occurs because both members would be accessed directly by the same name in the same enclosing scope",
+      "No issue at all; anonymous unions never conflict",
+      "The compiler automatically renames them without error",
+      "Anonymous unions cannot have member names at all"
+    ],
+    "answer": "A",
+    "explanation": "Since anonymous union members merge into the enclosing scope, two members with identical names would cause a naming conflict."
+  }
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

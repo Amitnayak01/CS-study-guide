@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {"id": 1, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "Which Visual Basic 6.0 tool is used to create and modify menus at design time?", "options": ["Menu Editor", "Immediate Window", "Project Explorer", "Properties Window"], "answer": "A", "explanation": "The Menu Editor allows developers to create menu items, organize submenu hierarchies, and configure menu properties."},
+  {"id": 2, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "Which keyboard shortcut opens the Menu Editor while a form is active in the designer?", "options": ["F4", "Ctrl+E", "Ctrl+M", "Ctrl+R"], "answer": "B", "explanation": "Ctrl+E opens the Menu Editor. F4 opens the Properties window and Ctrl+R opens Project Explorer."},
+  {"id": 3, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "From which VB 6.0 IDE menu is the Menu Editor opened?", "options": ["Tools menu", "View menu", "Format menu", "Project menu"], "answer": "A", "explanation": "The command is Tools &gt; Menu Editor. It is also on the standard toolbar."},
+  {"id": 4, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "When is the Menu Editor unavailable (dimmed) in the IDE?", "options": ["When the form has no controls placed on it", "When the project contains more than one form", "When no form designer window is active, e.g. only a Code window has focus", "When the form's Caption property is empty"], "answer": "C", "explanation": "The Menu Editor works on the active form, so a form window must be selected in design mode."},
+  {"id": 5, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "Which two properties must be supplied for every menu item, including a separator bar?", "options": ["Name and Enabled", "Caption and Name", "Caption and Shortcut", "Name and Index"], "answer": "B", "explanation": "Each menu item is a control, so it needs a Name; the Caption holds its text (a separator uses a hyphen)."},
+  {"id": 6, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "What is the main purpose of the Name property of a menu item?", "options": ["To decide whether the item shows a check mark", "To identify the menu control in code and in its event procedure names", "To assign the Alt-key access letter", "To set the text shown on the menu"], "answer": "B", "explanation": "Code such as mnuFileOpen_Click uses the Name. The visible text comes from the Caption."},
+  {"id": 7, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "Which prefix is conventionally used for naming menu controls in VB 6.0?", "options": ["mnc", "mni", "mnu", "cmd"], "answer": "C", "explanation": "The standard prefix is mnu, for example mnuFile and mnuFileOpen."},
+  {"id": 8, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "Which Caption creates a separator bar in a menu?", "options": ["_ (underscore)", "= (equals sign)", "| (vertical bar)", "- (a single hyphen)"], "answer": "D", "explanation": "A hyphen as the Caption draws a horizontal separator line. The separator still needs a Name."},
+  {"id": 9, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "In the Menu Editor, which button indents the selected item to make it a menu command or submenu item under the item above it?", "options": ["Up arrow", "Right arrow", "Left arrow", "Insert"], "answer": "B", "explanation": "The right arrow demotes the item one level (adds four dots). The left arrow promotes it one level."},
+  {"id": 10, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "Which Menu Editor buttons change the position of an item within the same menu level?", "options": ["Up and Down arrows", "Left and Right arrows", "Next and Insert", "OK and Cancel"], "answer": "A", "explanation": "The up and down arrows reorder items; the left and right arrows change the indentation level."},
+  {"id": 11, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "Which Menu Editor button inserts a blank item above the currently selected item?", "options": ["Next", "Delete", "Insert", "OK"], "answer": "C", "explanation": "Insert adds a new blank item before the selected one. Next moves to the following item."},
+  {"id": 12, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "What does the Delete button of the Menu Editor do?", "options": ["Unloads the item at run time", "Removes the selected menu item from the list", "Clears every menu on the form", "Sets the item's Visible property to False"], "answer": "B", "explanation": "Delete removes only the selected item from the menu structure at design time."},
+  {"id": 13, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "What do the four dots (....) before an item in the Menu Editor list indicate?", "options": ["The item is disabled", "The item is indented one level below a menu title", "The item is a separator bar", "The item has a shortcut key"], "answer": "B", "explanation": "Each group of four dots represents one level of indentation in the menu hierarchy."},
+  {"id": 14, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "Besides Tools &gt; Menu Editor, how can the Menu Editor be opened?", "options": ["Right-click the Toolbox and choose Menu", "Press F5 with the form selected", "Double-click the form's title bar", "Right-click the form in the designer and choose Menu Editor"], "answer": "D", "explanation": "The form's context menu in the designer includes the Menu Editor command. F5 runs the project."},
+  {"id": 15, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "A menu bar can be attached directly to which of the following?", "options": ["A PictureBox", "A TextBox", "A Form", "A Frame"], "answer": "C", "explanation": "Menus belong to forms (including MDI forms), not to other controls."},
+  {"id": 16, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "What happens when Cancel is clicked in the Menu Editor?", "options": ["All menus on the form are deleted", "The form runs to preview the menu", "Changes are saved and the editor closes", "Changes made in that session are discarded and the editor closes"], "answer": "D", "explanation": "OK applies the changes to the form; Cancel throws them away."},
+  {"id": 17, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "What does the large list box at the bottom of the Menu Editor display?", "options": ["The available shortcut keys", "The hierarchical list of all menu items on the form", "The forms in the project", "The event procedures of the menu"], "answer": "B", "explanation": "It shows every menu item with indentation (dots) reflecting its level in the hierarchy."},
+  {"id": 18, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "Up to how many levels of submenus can be created in the VB 6.0 Menu Editor?", "options": ["Four", "Two", "Six", "Unlimited"], "answer": "C", "explanation": "VB 6.0 permits submenus nested up to six levels deep; beyond that the Menu Editor allows no further indenting."},
+  {"id": 19, "level": "Basic", "type": "Concept", "topic": "Creating Menus at Design Time", "question": "How is a menu control array created at design time in the Menu Editor?", "options": ["Give the items the same Caption and different Names", "Give adjacent items at the same level the same Name and different Index values", "Set WindowList to True for the items", "Give the items the same Shortcut key"], "answer": "B", "explanation": "Items sharing a Name are accepted only as a control array, so each needs a unique Index."},
+  {"id": 20, "level": "Advanced", "type": "Tricky", "topic": "Creating Menus at Design Time", "question": "Which condition must be met by items that form one menu control array?", "options": ["They must have identical Captions", "They must all be top-level menus", "They must all have a separator above them", "They must be adjacent in the list and at the same indentation level under the same parent"], "answer": "D", "explanation": "Members of a menu control array must be contiguous and share the same level and parent."},
+  {"id": 21, "level": "Basic", "type": "Concept", "topic": "Modifying Menu Items and Properties", "question": "Which menu property displays a check mark beside a menu item?", "options": ["Marked", "Value", "Checked", "Selected"], "answer": "C", "explanation": "Checked is a Boolean property; True shows a check mark next to the item."},
+  {"id": 22, "level": "Intermediate", "type": "Scenario", "topic": "Modifying Menu Items and Properties", "question": "A command must stay visible on the menu but be unavailable to the user for now. Which property should be set to False?", "options": ["Visible", "Index", "Enabled", "Checked"], "answer": "C", "explanation": "Enabled = False dims the item. Visible = False would remove it from the menu."},
+  {"id": 23, "level": "Basic", "type": "Concept", "topic": "Modifying Menu Items and Properties", "question": "What are the default values of Enabled, Visible and Checked for a new menu item?", "options": ["Enabled = False, Visible = True, Checked = False", "Enabled = True, Visible = True, Checked = False", "Enabled = True, Visible = True, Checked = True", "Enabled = True, Visible = False, Checked = False"], "answer": "B", "explanation": "A new item is enabled and visible and has no check mark."},
+  {"id": 24, "level": "Basic", "type": "Concept", "topic": "Modifying Menu Items and Properties", "question": "What is the purpose of the Index property of a menu item?", "options": ["To set its position on the screen", "To set its access letter", "To assign a shortcut key", "To make the item an element of a menu control array"], "answer": "D", "explanation": "Items sharing a Name and having different Index values form a menu control array."},
+  {"id": 25, "level": "Basic", "type": "Concept", "topic": "Modifying Menu Items and Properties", "question": "What does the WindowList property of a top-level menu do on an MDI form?", "options": ["Shows a list of the open MDI child windows on that menu", "Lists recently opened files", "Lists all forms in the project", "Lists all menu names in the Properties window"], "answer": "A", "explanation": "When WindowList is True, VB automatically appends the open child window titles to the menu."},
+  {"id": 26, "level": "Basic", "type": "Concept", "topic": "Modifying Menu Items and Properties", "question": "What is the use of the HelpContextID property of a menu item?", "options": ["It sets the menu's access key", "It sets the item's position in the list", "It hides the item at run time", "It links the item to a specific topic of a help file"], "answer": "D", "explanation": "HelpContextID holds a numeric ID that points to the related topic in the help file."},
+  {"id": 27, "level": "Basic", "type": "Concept", "topic": "Modifying Menu Items and Properties", "question": "What does the NegotiatePosition property of a menu control?", "options": ["Whether and where the menu appears in a container's menu bar when an embedded object is active", "The alphabetical order of menu items", "The shortcut key of the menu", "The font used for the caption"], "answer": "A", "explanation": "NegotiatePosition (None, Left, Middle, Right) is used when menus are shared with an active OLE object."},
+  {"id": 28, "level": "Basic", "type": "Concept", "topic": "Modifying Menu Items and Properties", "question": "If a caption is typed as &amp;Edit, what is the result at run time?", "options": ["The caption displays '&amp;Edit' as typed", "Ctrl+E becomes its shortcut key", "E is underlined and Alt+E can open the menu", "The item is disabled"], "answer": "C", "explanation": "An ampersand before a letter makes that letter the access key, shown underlined."},
+  {"id": 29, "level": "Basic", "type": "Concept", "topic": "Modifying Menu Items and Properties", "question": "How can a caption display a literal ampersand, as in 'Cut &amp; Paste'?", "options": ["Type the caption as Cut %&amp; Paste", "Type the caption as Cut \\&amp; Paste", "Type the caption as Cut &amp;&amp; Paste", "Type the caption as Cut &amp; Paste"], "answer": "C", "explanation": "A single &amp; marks an access key; a double &amp;&amp; displays one literal ampersand."},
+  {"id": 30, "level": "Basic", "type": "Concept", "topic": "Modifying Menu Items and Properties", "question": "Which of the following is NOT a property of a menu control?", "options": ["Visible", "Checked", "Caption", "Left"], "answer": "D", "explanation": "Menu items have no Left, Top, Width or Height because the system positions them."},
+  {"id": 31, "level": "Advanced", "type": "Tricky", "topic": "Modifying Menu Items and Properties", "question": "A menu item's Name is changed in the Menu Editor after its Click procedure has been written. What happens to that procedure?", "options": ["It stays in the code window but is no longer linked to the menu as its event", "It is renamed automatically", "It is deleted automatically", "VB refuses to change the Name"], "answer": "A", "explanation": "VB does not rename existing event procedures; the old procedure becomes an ordinary general procedure."},
+  {"id": 32, "level": "Basic", "type": "Concept", "topic": "Modifying Menu Items and Properties", "question": "Which of the following appears as a check box in the Menu Editor?", "options": ["WindowList", "AutoRedraw", "TabStop", "Locked"], "answer": "A", "explanation": "The Menu Editor offers four check boxes: Checked, Enabled, Visible and WindowList."},
+  {"id": 33, "level": "Basic", "type": "Concept", "topic": "Modifying Menu Items and Properties", "question": "How can the caption of an existing menu item be changed at design time?", "options": ["It cannot be changed once created", "Delete the item and re-create it every time", "Edit it in the Project Explorer", "Select the item in the Menu Editor list, edit the Caption box, and click OK"], "answer": "D", "explanation": "Selecting an item in the list loads its properties into the editor fields for modification."},
+  {"id": 34, "level": "Basic", "type": "Concept", "topic": "Modifying Menu Items and Properties", "question": "By Windows convention, what does an ellipsis in a caption such as 'Save As...' indicate?", "options": ["A dialog box asking for more information will appear", "The item is disabled", "The item has a submenu", "The item has a shortcut key"], "answer": "A", "explanation": "An ellipsis is a user-interface convention that warns that further input will be requested."},
+  {"id": 35, "level": "Intermediate", "type": "Match", "topic": "Modifying Menu Items and Properties", "question": "Match the menu property with its effect:\n1. Checked   2. Enabled   3. Visible   4. Index\na. Element number in a control array   b. Displays a tick   c. Dims the item   d. Hides the item", "options": ["1-c, 2-b, 3-a, 4-d", "1-b, 2-c, 3-d, 4-a", "1-a, 2-d, 3-c, 4-b", "1-d, 2-a, 3-b, 4-c"], "answer": "B", "explanation": "Checked shows a tick, Enabled dims, Visible hides, and Index numbers control array elements."},
+  {"id": 36, "level": "Intermediate", "type": "Statement", "topic": "Modifying Menu Items and Properties", "question": "Consider the statements:\nI. The Caption of a menu item may contain spaces.\nII. The Name of a menu item may contain spaces.\nIII. The Name is used to refer to the menu item in code.", "options": ["II and III only", "I and III only", "I, II and III", "I and II only"], "answer": "B", "explanation": "Names are identifiers and cannot contain spaces; captions are display text and can."},
+  {"id": 37, "level": "Basic", "type": "Concept", "topic": "Modifying Menu Items and Properties", "question": "Which of the following is NOT a valid setting of the NegotiatePosition property?", "options": ["None", "Middle", "Left", "Top"], "answer": "D", "explanation": "The valid values are 0-None, 1-Left, 2-Middle and 3-Right."},
+  {"id": 38, "level": "Basic", "type": "Concept", "topic": "Modifying Menu Items and Properties", "question": "Which practice is recommended for access keys in the same menu?", "options": ["Use access keys only on separator bars", "Use the same underlined letter for all items", "Use the same letter as the shortcut key for every item", "Use a different underlined letter for each item"], "answer": "D", "explanation": "Unique access letters in one menu avoid ambiguity when the user navigates with the keyboard."},
+  {"id": 39, "level": "Basic", "type": "Concept", "topic": "Menu Hierarchies and Submenus", "question": "In the Menu Editor list, which items appear on the form's menu bar?", "options": ["Items with no indentation (no dots)", "Items whose caption is a hyphen", "Items with eight dots", "Items with four dots"], "answer": "A", "explanation": "Non-indented items are top-level menu titles shown on the menu bar."},
+  {"id": 40, "level": "Intermediate", "type": "Code", "topic": "Menu Hierarchies and Submenus", "question": "How many menu titles appear on the menu bar for this Menu Editor list?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">File<br>....New<br>....Open<br>Edit<br>....Cut<br>....Copy<br>Help<br>....About</span>", "options": ["8", "2", "3", "5"], "answer": "C", "explanation": "Only File, Edit and Help have no dots, so they are the menu bar titles."},
+  {"id": 41, "level": "Intermediate", "type": "Code", "topic": "Menu Hierarchies and Submenus", "question": "In this list, which item will show an arrowhead at run time to indicate a submenu?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">File<br>....Recent Files<br>........Doc1<br>........Doc2<br>....Exit</span>", "options": ["Exit", "Recent Files", "Doc1", "File"], "answer": "B", "explanation": "Recent Files has indented items beneath it, so it opens a submenu instead of running a command."},
+  {"id": 42, "level": "Basic", "type": "Concept", "topic": "Menu Hierarchies and Submenus", "question": "In the Menu Editor list, how is a submenu item shown that belongs to a menu command which is itself under a menu title?", "options": ["With four dots", "With eight dots", "With no dots", "With one dot"], "answer": "B", "explanation": "Each level adds four dots: title (0), command (4), submenu item (8)."},
+  {"id": 43, "level": "Basic", "type": "Concept", "topic": "Menu Hierarchies and Submenus", "question": "Which name follows the recommended hierarchical naming convention for the Open command under the File menu?", "options": ["mnuFileOpen", "FileOpenMnu", "menuOpen.File", "mnuOpenFile"], "answer": "A", "explanation": "The convention is prefix + parent name + item name, such as mnuFileOpen or mnuEditCopy."},
+  {"id": 44, "level": "Basic", "type": "Concept", "topic": "Menu Hierarchies and Submenus", "question": "What is the effect of setting Enabled = False on a top-level menu title?", "options": ["Only the title text is dimmed; commands still work", "The menu moves to the right end of the bar", "The whole menu is dimmed and its commands cannot be chosen", "Its commands are deleted"], "answer": "C", "explanation": "A disabled menu title cannot be opened, so none of its commands can be reached."},
+  {"id": 45, "level": "Basic", "type": "Concept", "topic": "Menu Hierarchies and Submenus", "question": "What is the effect of setting Visible = False on a top-level menu title?", "options": ["The menu becomes dimmed", "The menu becomes a context menu automatically", "Only the title disappears; the commands stay on screen", "The entire menu, including its commands, disappears from the menu bar"], "answer": "D", "explanation": "Hiding a title hides everything under it as well."},
+  {"id": 46, "level": "Basic", "type": "Concept", "topic": "Menu Hierarchies and Submenus", "question": "What is the purpose of a separator bar in a menu?", "options": ["To visually divide groups of related commands", "To create a submenu", "To disable the commands below it", "To assign a shortcut key"], "answer": "A", "explanation": "Separator bars organize long menus into logical groups; they are not clickable."},
+  {"id": 47, "level": "Intermediate", "type": "Scenario", "topic": "Menu Hierarchies and Submenus", "question": "An item 'Exit' is listed with no dots after the Help menu but should be under File. What is the correct way to fix this in the Menu Editor?", "options": ["Drag it with the mouse onto the File title", "Set its Index equal to the File menu's Index", "Prefix its caption with 'File.'", "Move it up below the File commands with the up arrow, then indent it with the right arrow"], "answer": "D", "explanation": "Position in the list and indentation decide parentage; the Menu Editor has no drag-and-drop."},
+  {"id": 48, "level": "Basic", "type": "Concept", "topic": "Menu Hierarchies and Submenus", "question": "How does the Menu Editor decide the parent of an indented item?", "options": ["The item with the same Index", "The item whose Name has the same prefix", "The nearest item above it with one level less indentation", "The item selected when Insert was pressed"], "answer": "C", "explanation": "Parentage is determined only by list order and indentation."},
+  {"id": 49, "level": "Basic", "type": "Concept", "topic": "Menu Hierarchies and Submenus", "question": "Which sequence ranks the menu structure from highest level to lowest?", "options": ["Menu bar -&gt; menu title -&gt; menu command -&gt; submenu item", "Submenu item -&gt; menu command -&gt; menu bar -&gt; menu title", "Menu command -&gt; menu title -&gt; menu bar -&gt; submenu item", "Menu title -&gt; menu bar -&gt; submenu item -&gt; menu command"], "answer": "A", "explanation": "The menu bar holds titles; titles hold commands; commands can hold submenu items."},
+  {"id": 50, "level": "Advanced", "type": "Tricky", "topic": "Menu Hierarchies and Submenus", "question": "mnuFile.Enabled = False is set, but mnuFileOpen.Enabled still holds True. Can the user choose Open?", "options": ["Yes, but only with the right mouse button", "No, because Open's Enabled becomes False automatically", "Yes, because Open is enabled", "No; the disabled parent menu cannot be opened so Open cannot be reached"], "answer": "D", "explanation": "Child items keep their own Enabled value, but they are unreachable while the parent menu is disabled."},
+  {"id": 51, "level": "Basic", "type": "Concept", "topic": "Menu Hierarchies and Submenus", "question": "What does the arrowhead at the right of a menu item at run time indicate?", "options": ["The item is checked", "The item opens a submenu instead of running a command", "The item has a shortcut key", "The item is disabled"], "answer": "B", "explanation": "An item that has indented items beneath it displays an arrowhead and opens a cascading submenu."},
+  {"id": 52, "level": "Basic", "type": "Concept", "topic": "Programming Menu Commands", "question": "A menu item is named mnuFileOpen. Which procedure runs when the user chooses it?", "options": ["mnuFileOpen_Select", "mnuFileOpen_Open", "mnuFileOpen_Click", "Open_mnuFile_Click"], "answer": "C", "explanation": "Menu event procedures are named ControlName_EventName, and the menu event is Click."},
+  {"id": 53, "level": "Basic", "type": "Concept", "topic": "Programming Menu Commands", "question": "In design mode, what happens when a menu item is clicked on the form (not in the Menu Editor)?", "options": ["The Menu Editor opens", "The Code window opens with that item's Click procedure", "The item is run immediately", "The item is deleted"], "answer": "B", "explanation": "Clicking a menu item in the designer jumps to its Click event stub."},
+  {"id": 54, "level": "Intermediate", "type": "Output", "topic": "Programming Menu Commands", "question": "What happens when this menu command runs?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Private Sub mnuFileExit_Click()<br>    Unload Me<br>End Sub</span>", "options": ["The form is only hidden", "The Exit item is disabled", "The current form is closed", "All text boxes are cleared"], "answer": "C", "explanation": "Unload Me unloads the form that contains the code; the program ends if it was the last form."},
+  {"id": 55, "level": "Basic", "type": "Concept", "topic": "Programming Menu Commands", "question": "Which statement toggles the check mark of mnuViewStatus every time it is executed?", "options": ["mnuViewStatus.Check = Not mnuViewStatus.Check", "mnuViewStatus.Checked = Not mnuViewStatus.Checked", "mnuViewStatus.Checked = True", "mnuViewStatus.Value = Not mnuViewStatus.Value"], "answer": "B", "explanation": "Checked is a Boolean property, so Not reverses its current value."},
+  {"id": 56, "level": "Basic", "type": "Concept", "topic": "Programming Menu Commands", "question": "Which statement dims (grays out) the menu item mnuEditPaste?", "options": ["mnuEditPaste.Enabled = False", "mnuEditPaste.Checked = False", "mnuEditPaste.Caption = \"\"", "mnuEditPaste.Visible = False"], "answer": "A", "explanation": "Enabled = False makes the item unavailable but still visible."},
+  {"id": 57, "level": "Intermediate", "type": "Output", "topic": "Programming Menu Commands", "question": "Text1 is not bold initially. What is the state of Text1 after the menu item is clicked twice?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Private Sub mnuFormatBold_Click()<br>    Text1.FontBold = Not Text1.FontBold<br>End Sub</span>", "options": ["Bold", "Italic", "Run-time error", "Not bold"], "answer": "D", "explanation": "The statement flips FontBold each time: False -&gt; True -&gt; False."},
+  {"id": 58, "level": "Advanced", "type": "Tricky", "topic": "Programming Menu Commands", "question": "Which is the valid way to run the code of mnuFileSave from another procedure?", "options": ["Call mnuFileSave_Click", "mnuFileSave.Value = True", "mnuFileSave.Click", "mnuFileSave.Execute"], "answer": "A", "explanation": "Menu controls have no Click method; the event procedure is called like any other procedure."},
+  {"id": 59, "level": "Basic", "type": "Concept", "topic": "Programming Menu Commands", "question": "Which statement about Unload Me and End in an Exit command is correct?", "options": ["End only closes the active form", "Unload Me always terminates all forms and the program", "Unload Me runs the form's Unload events, but End terminates immediately without them", "Both behave identically in every respect"], "answer": "C", "explanation": "End stops the program at once, skipping Form_Unload and QueryUnload; Unload Me is the orderly route."},
+  {"id": 60, "level": "Intermediate", "type": "Output", "topic": "Programming Menu Commands", "question": "What happens when the user chooses Help &gt; About?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Private Sub mnuHelpAbout_Click()<br>    MsgBox \"Menu Demo v1.0\", vbInformation, \"About\"<br>End Sub</span>", "options": ["A compile error occurs", "The item becomes disabled", "The form closes", "A message box with an information icon and the title 'About' appears"], "answer": "D", "explanation": "vbInformation gives the icon and the third argument supplies the title bar text."},
+  {"id": 61, "level": "Basic", "type": "Concept", "topic": "Programming Menu Commands", "question": "In the procedure below, what does Me refer to?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Private Sub mnuColorRed_Click()<br>    Me.BackColor = vbRed<br>End Sub</span>", "options": ["The menu item that was clicked", "The form on which the menu is placed", "The Menu Editor", "The project"], "answer": "B", "explanation": "Me always refers to the current form instance, so the form's background becomes red."},
+  {"id": 62, "level": "Intermediate", "type": "Output", "topic": "Programming Menu Commands", "question": "The user chooses the item with Index 1. Which Align items are checked afterwards?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Private Sub mnuAlign_Click(Index As Integer)<br>    Dim i As Integer<br>    For i = 0 To 2<br>        mnuAlign(i).Checked = False<br>    Next i<br>    mnuAlign(Index).Checked = True<br>End Sub</span>", "options": ["All three items", "Items 0 and 1", "Only item 1", "Only item 0"], "answer": "C", "explanation": "The loop clears every check mark and then sets only the chosen element, giving radio-button behaviour."},
+  {"id": 63, "level": "Intermediate", "type": "Code", "topic": "Programming Menu Commands", "question": "What does this Form_Load code achieve for the Recent Files list?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Private Sub Form_Load()<br>    mnuRecent(0).Visible = False<br>End Sub</span>", "options": ["Adds a shortcut key to the list", "Deletes the control array", "Disables the whole File menu", "Hides the list item until a file name is available"], "answer": "D", "explanation": "Setting Visible = False on element 0 keeps the unused Recent Files entry off the menu."},
+  {"id": 64, "level": "Basic", "type": "Concept", "topic": "Menu Command Events", "question": "Which event is supported by a menu control?", "options": ["KeyPress", "Click", "DblClick", "MouseDown"], "answer": "B", "explanation": "Click is the only event of a menu item; it fires for mouse, access-key or shortcut-key selection."},
+  {"id": 65, "level": "Intermediate", "type": "Code", "topic": "Menu Command Events", "question": "When does this procedure run, and what does it achieve?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Private Sub mnuEdit_Click()<br>    mnuEditCopy.Enabled = (Text1.SelLength &gt; 0)<br>End Sub</span>", "options": ["When Text1 changes; the Edit menu is hidden", "Each time the Edit menu is opened; Copy is enabled only if text is selected", "When Copy is clicked; text is copied", "Only at form load; Copy is disabled permanently"], "answer": "B", "explanation": "The Click event of a top-level menu fires as it opens, which is a good moment to refresh item states."},
+  {"id": 66, "level": "Basic", "type": "Concept", "topic": "Menu Command Events", "question": "A user opens the Edit menu (mnuEdit) and chooses Copy (mnuEditCopy). In which order do the Click events occur?", "options": ["mnuEdit_Click, then mnuEditCopy_Click", "Only mnuEditCopy_Click", "Only mnuEdit_Click", "mnuEditCopy_Click, then mnuEdit_Click"], "answer": "A", "explanation": "The title's Click occurs when the menu opens; the command's Click occurs when it is chosen."},
+  {"id": 67, "level": "Intermediate", "type": "Statement", "topic": "Menu Command Events", "question": "Which of the following can trigger the Click event of a menu item?\nI. Clicking the item with the mouse\nII. Pressing its access key while the menu is open\nIII. Pressing its assigned shortcut key", "options": ["II and III only", "I only", "I and II only", "I, II and III"], "answer": "D", "explanation": "All three actions choose the command and therefore raise its Click event."},
+  {"id": 68, "level": "Intermediate", "type": "Code", "topic": "Menu Command Events", "question": "The item with Index 2 in the control array is chosen. What is the font size of Text1?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Private Sub mnuSize_Click(Index As Integer)<br>    Select Case Index<br>        Case 0: Text1.FontSize = 8<br>        Case 1: Text1.FontSize = 12<br>        Case 2: Text1.FontSize = 16<br>    End Select<br>End Sub</span>", "options": ["2", "8", "12", "16"], "answer": "D", "explanation": "The Index argument tells which element was clicked, and Case 2 sets the size to 16."},
+  {"id": 69, "level": "Intermediate", "type": "Output", "topic": "Menu Command Events", "question": "What is the form caption after the menu item is clicked three times?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Dim n As Integer<br>Private Sub mnuCount_Click()<br>    n = n + 1<br>    Me.Caption = \"Clicks: \" &amp; n<br>End Sub</span>", "options": ["Clicks: 1", "Clicks: 123", "Clicks: 3", "Clicks: 0"], "answer": "C", "explanation": "n is a form-level variable, so it keeps its value between clicks and grows to 3."},
+  {"id": 70, "level": "Intermediate", "type": "Output", "topic": "Menu Command Events", "question": "When the form starts, how does the Save item appear?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Private Sub Form_Load()<br>    mnuFileSave.Enabled = False<br>End Sub</span>", "options": ["Checked", "It causes a run-time error", "Hidden", "Dimmed (disabled)"], "answer": "D", "explanation": "Form_Load can set menu properties; Enabled = False makes Save unavailable from the start."},
+  {"id": 71, "level": "Basic", "type": "Concept", "topic": "Menu Command Events", "question": "What happens when the user tries to click a disabled menu item?", "options": ["The item becomes enabled", "A run-time error is raised", "Its Click event occurs normally", "Nothing; its Click event does not occur"], "answer": "D", "explanation": "Disabled items ignore user input, so no event is generated."},
+  {"id": 72, "level": "Intermediate", "type": "Code", "topic": "Menu Command Events", "question": "Which is the correct Click procedure header for elements of a menu control array named mnuRecent?", "options": ["Private Sub mnuRecent_Index_Click()", "Private Sub mnuRecent_Click(Index As Integer)", "Private Sub mnuRecent_Click(Index As String)", "Private Sub mnuRecent_Click()"], "answer": "B", "explanation": "A control array event receives the Index of the element, declared As Integer."},
+  {"id": 73, "level": "Basic", "type": "Concept", "topic": "Shortcut Keys and Menu Commands", "question": "Where is a shortcut key assigned to a menu command at design time?", "options": ["Caption property", "KeyPreview property of the form", "Shortcut drop-down list in the Menu Editor", "Shortcut text box in the Properties window"], "answer": "C", "explanation": "The Menu Editor provides a Shortcut combo box listing the available key combinations."},
+  {"id": 74, "level": "Basic", "type": "Concept", "topic": "Shortcut Keys and Menu Commands", "question": "Which of the following can be selected in the Menu Editor's Shortcut list?", "options": ["Ctrl+F5", "Shift+Alt+X", "Alt+F", "Ctrl+Alt+K"], "answer": "A", "explanation": "The list holds Ctrl+letters, function keys with Ctrl/Shift, Ins/Del variants, etc. Alt+letter is for access keys."},
+  {"id": 75, "level": "Basic", "type": "Concept", "topic": "Shortcut Keys and Menu Commands", "question": "What is the main difference between a shortcut key and an access key?", "options": ["Both are identical in behaviour", "An access key runs the command directly; a shortcut key needs the menu opened", "A shortcut key runs the command directly; an access key works through the menu with Alt/underlined letters", "Shortcut keys apply only to top-level menus"], "answer": "C", "explanation": "Ctrl+S can run Save without opening any menu, whereas an access key navigates the menu."},
+  {"id": 76, "level": "Basic", "type": "Concept", "topic": "Shortcut Keys and Menu Commands", "question": "A Save item has Ctrl+S selected as its shortcut. How is the shortcut shown at run time?", "options": ["Only if the programmer types it into the Caption", "It appears on the form's title bar", "It is never displayed", "Ctrl+S appears automatically at the right side of the caption"], "answer": "D", "explanation": "VB adds the shortcut text itself, so it must not be typed into the caption."},
+  {"id": 77, "level": "Basic", "type": "Concept", "topic": "Shortcut Keys and Menu Commands", "question": "A menu item's shortcut is Ctrl+P, but its Enabled property is False. What happens when Ctrl+P is pressed?", "options": ["Nothing; the command is not executed", "A run-time error occurs", "The command still runs", "The item becomes enabled"], "answer": "A", "explanation": "A disabled command ignores its shortcut key as well as mouse selection."},
+  {"id": 78, "level": "Intermediate", "type": "Match", "topic": "Shortcut Keys and Menu Commands", "question": "Match the standard shortcut with its common command:\n1. Ctrl+X   2. Ctrl+V   3. Ctrl+N   4. Ctrl+P\na. Print   b. Cut   c. Paste   d. New", "options": ["1-c, 2-b, 3-a, 4-d", "1-b, 2-c, 3-d, 4-a", "1-d, 2-a, 3-b, 4-c", "1-a, 2-d, 3-c, 4-b"], "answer": "B", "explanation": "These are the standard Windows conventions that menu designers follow."},
+  {"id": 79, "level": "Intermediate", "type": "Scenario", "topic": "Shortcut Keys and Menu Commands", "question": "Which caption lets a user choose the Exit command by pressing X while the File menu is open?", "options": ["Exit&amp;", "E&amp;xit", "E&amp;&amp;xit", "&amp;Exit"], "answer": "B", "explanation": "The ampersand goes before the letter to be underlined; &amp;&amp; would show a literal ampersand."},
+  {"id": 80, "level": "Intermediate", "type": "Statement", "topic": "Shortcut Keys and Menu Commands", "question": "Consider the statements:\nI. Shortcut keys are chosen from a predefined list in the Menu Editor.\nII. Any key combination may be typed freely as a shortcut.\nIII. The shortcut text is shown next to the caption automatically.", "options": ["III only", "I and II only", "II and III only", "I and III only"], "answer": "D", "explanation": "Shortcuts come from a fixed list; arbitrary combinations cannot be typed."},
+  {"id": 81, "level": "Basic", "type": "Concept", "topic": "Shortcut Keys and Menu Commands", "question": "Which shortcut key is conventionally assigned to the Help command?", "options": ["Ctrl+H", "F1", "F12", "F5"], "answer": "B", "explanation": "F1 is the standard Windows key for Help and is available in the Shortcut list."},
+  {"id": 82, "level": "Advanced", "type": "Tricky", "topic": "Shortcut Keys and Menu Commands", "question": "Ctrl+C is the Shortcut of mnuEditCopy and the focus is in a text box. Which procedure runs when Ctrl+C is pressed?", "options": ["mnuEditCopy_Click, since the menu shortcut is processed first", "Only the text box's built-in copy", "None; Ctrl+C is reserved by Windows", "Text1_KeyPress only"], "answer": "A", "explanation": "A menu shortcut takes priority, so the menu command's code is responsible for the copy."},
+  {"id": 83, "level": "Basic", "type": "Concept", "topic": "Shortcut Keys and Menu Commands", "question": "For which menu items is the Shortcut list in the Menu Editor unavailable?", "options": ["Items in a submenu", "Items with a separator above them", "Items under a File menu", "Top-level menu titles on the menu bar"], "answer": "D", "explanation": "Shortcut keys are meant for commands, so they cannot be assigned to menu bar titles."},
+  {"id": 84, "level": "Basic", "type": "Concept", "topic": "Managing Menus at Runtime", "question": "Which set of menu properties can all be changed by code at run time?", "options": ["Caption, Shortcut, Checked, Visible", "Caption, Checked, Enabled, Visible", "Name, Caption, Enabled, Visible", "Shortcut, Name, Index, Enabled"], "answer": "B", "explanation": "Name and Index are read-only at run time and Shortcut is set only at design time."},
+  {"id": 85, "level": "Basic", "type": "Concept", "topic": "Managing Menus at Runtime", "question": "Which statement changes the displayed text of the menu item mnuFileOpen at run time?", "options": ["mnuFileOpen.Text = \"Open Recent\"", "mnuFileOpen.Label = \"Open Recent\"", "mnuFileOpen.Caption = \"Open Recent\"", "mnuFileOpen.Name = \"Open Recent\""], "answer": "C", "explanation": "Caption holds the menu text; Name is read-only at run time."},
+  {"id": 86, "level": "Basic", "type": "Concept", "topic": "Managing Menus at Runtime", "question": "Which statement hides the whole Edit menu (title and commands) at run time?", "options": ["mnuEdit.Visible = False", "mnuEdit.Checked = False", "Unload mnuEdit", "mnuEdit.Enabled = False"], "answer": "A", "explanation": "Visible = False removes the title from the menu bar; Enabled = False would only dim it."},
+  {"id": 87, "level": "Basic", "type": "Concept", "topic": "Managing Menus at Runtime", "question": "Which statement is used to add a new element to a menu control array at run time?", "options": ["Create", "Add", "Load", "Show"], "answer": "C", "explanation": "Load mnuRecent(n) creates a new element of the control array in memory."},
+  {"id": 88, "level": "Basic", "type": "Concept", "topic": "Managing Menus at Runtime", "question": "What must exist before new menu items can be added at run time with Load?", "options": ["The Menu Editor must remain open", "At least one element (usually Index 0) created at design time", "The Shortcut property must be set", "The menu must be a top-level menu with Visible False"], "answer": "B", "explanation": "Only elements of an existing control array can be loaded."},
+  {"id": 89, "level": "Basic", "type": "Concept", "topic": "Managing Menus at Runtime", "question": "Which statement removes a menu item that was added at run time using Load?", "options": ["Unload", "Hide", "Delete", "Remove"], "answer": "A", "explanation": "Unload mnuRecent(n) removes an element created with Load."},
+  {"id": 90, "level": "Intermediate", "type": "Output", "topic": "Managing Menus at Runtime", "question": "What does this loop do?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Dim i As Integer<br>For i = 1 To 3<br>    Load mnuRecent(i)<br>    mnuRecent(i).Caption = \"File\" &amp; i<br>    mnuRecent(i).Visible = True<br>Next i</span>", "options": ["Adds one item captioned File3", "Adds three items captioned File1, File2 and File3 to the menu", "Removes three items from the menu", "Causes a compile error"], "answer": "B", "explanation": "Each pass loads a new element of mnuRecent and gives it a caption."},
+  {"id": 91, "level": "Intermediate", "type": "Code", "topic": "Managing Menus at Runtime", "question": "Which statement adds the next new element to the menu control array mnuRecent?", "options": ["Load mnuRecent(mnuRecent.UBound + 1)", "Add mnuRecent(UBound + 1)", "Load mnuRecent(mnuRecent.Count)", "Load mnuRecent.UBound + 1"], "answer": "A", "explanation": "UBound gives the highest index in use, so UBound + 1 is the next free index."},
+  {"id": 92, "level": "Basic", "type": "Concept", "topic": "Managing Menus at Runtime", "question": "Which method displays a context (popup) menu at run time?", "options": ["PopupMenu", "DisplayMenu", "ContextMenu", "ShowMenu"], "answer": "A", "explanation": "PopupMenu is a method of Form and MDIForm that shows a menu at the mouse position or at given coordinates."},
+  {"id": 93, "level": "Intermediate", "type": "Code", "topic": "Managing Menus at Runtime", "question": "What does the following code do?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Private Sub Form_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)<br>    If Button = vbRightButton Then PopupMenu mnuEdit<br>End Sub</span>", "options": ["Moves the form to the pointer", "Shows the Edit menu as a popup when the right mouse button is released over the form", "Disables the Edit menu", "Opens the Menu Editor"], "answer": "B", "explanation": "Button = vbRightButton checks for the right button; PopupMenu then displays mnuEdit's commands."},
+  {"id": 94, "level": "Basic", "type": "Concept", "topic": "Managing Menus at Runtime", "question": "What is required of the menu specified in the PopupMenu method?", "options": ["It must have WindowList set to True", "It must be a menu control array", "It must have a shortcut key", "It must be a top-level menu that has at least one submenu item"], "answer": "D", "explanation": "The popup shows the commands under the specified menu, so it needs at least one."},
+  {"id": 95, "level": "Basic", "type": "Concept", "topic": "Managing Menus at Runtime", "question": "Which statement about a top-level menu whose Visible property is False is true?", "options": ["It is hidden from the menu bar but can still be displayed with PopupMenu", "It cannot be used with PopupMenu", "It is deleted when the form loads", "It must be re-created with Load before use"], "answer": "A", "explanation": "Developers often hide a menu title and use it only as a context menu."},
+  {"id": 96, "level": "Advanced", "type": "Tricky", "topic": "Managing Menus at Runtime", "question": "In the PopupMenu method, what does the flag vbPopupMenuRightButton specify?", "options": ["The popup is aligned to the right of x", "The popup appears only on a right-click", "Items in the popup can be chosen with either the left or right mouse button", "The first item is displayed in bold"], "answer": "C", "explanation": "By default (left button flag) only the left button selects items; the right-button flag allows both."},
+  {"id": 97, "level": "Basic", "type": "Concept", "topic": "Managing Menus at Runtime", "question": "What does the boldcommand argument of PopupMenu specify?", "options": ["The item that is checked", "The item that is shown with a shortcut", "The menu item to be displayed in bold as the default command", "The item that is disabled"], "answer": "C", "explanation": "boldcommand names one menu control in the popup to be shown in bold."},
+  {"id": 98, "level": "Advanced", "type": "Tricky", "topic": "Managing Menus at Runtime", "question": "When is the statement after a PopupMenu call executed?", "options": ["After the popup menu has been dismissed (an item chosen or closed)", "Immediately, while the menu is still open", "Only when the form is unloaded", "Never, because PopupMenu ends the procedure"], "answer": "A", "explanation": "PopupMenu is synchronous: code halts until the user finishes with the popup."},
+  {"id": 99, "level": "Intermediate", "type": "Output", "topic": "Managing Menus at Runtime", "question": "Initially mnuViewPanel.Checked = False and Picture1 is visible. What is the state after the item is clicked twice?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Private Sub mnuViewPanel_Click()<br>    mnuViewPanel.Checked = Not mnuViewPanel.Checked<br>    Picture1.Visible = mnuViewPanel.Checked<br>End Sub</span>", "options": ["Checked = True and Picture1 visible", "Checked = False and Picture1 visible", "Checked = True and Picture1 hidden", "Checked = False and Picture1 hidden"], "answer": "D", "explanation": "Click 1: True/visible; Click 2: False/hidden, since Picture1 follows the Checked value."},
+  {"id": 100, "level": "Intermediate", "type": "Output", "topic": "Managing Menus at Runtime", "question": "What remains of the control array after this code executes?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Dim i As Integer<br>For i = mnuRecent.UBound To 1 Step -1<br>    Unload mnuRecent(i)<br>Next i</span>", "options": ["Only element 0, created at design time", "No elements at all", "All elements, now hidden", "Only the last element"], "answer": "A", "explanation": "Elements loaded at run time are unloaded, and element 0 stays because Unload does not remove it."},
+  {"id": 101, "level": "Basic", "type": "Concept", "topic": "Managing Menus at Runtime", "question": "What is the correct order of arguments in the PopupMenu method?", "options": ["flags, menuname, x, y, boldcommand", "menuname, x, y, flags, boldcommand", "x, y, menuname, flags, boldcommand", "menuname, flags, x, y, boldcommand"], "answer": "D", "explanation": "Syntax: object.PopupMenu menuname, flags, x, y, boldcommand."},
+  {"id": 102, "level": "Basic", "type": "Concept", "topic": "Managing Menus at Runtime", "question": "Which constant centers the popup menu horizontally on the x coordinate?", "options": ["vbPopupMenuLeftAlign", "vbPopupMenuCenterAlign", "vbPopupMenuCenter", "vbPopupMenuMiddleAlign"], "answer": "B", "explanation": "The alignment constants are LeftAlign (default), CenterAlign and RightAlign."},
+  {"id": 103, "level": "Basic", "type": "Concept", "topic": "Managing Menus at Runtime", "question": "In which mouse event is a popup menu conventionally shown for a right-click?", "options": ["DblClick", "Click", "MouseUp", "Resize"], "answer": "C", "explanation": "Popup menus follow the Windows convention of appearing when the right button is released; Click does not receive the button."},
+  {"id": 104, "level": "Basic", "type": "Concept", "topic": "Managing Menus at Runtime", "question": "In an MDI application, what happens to the MDI form's menu bar when a child form that has its own menu is active?", "options": ["The MDI form's menu is deleted permanently", "The child form's menu replaces the MDI form's menu bar", "The two menus are shown in separate bars", "The child's menu appears inside the child window"], "answer": "B", "explanation": "A child's menu is displayed on the MDI form's menu bar and replaces the MDI menu while the child is active."},
+  {"id": 105, "level": "Basic", "type": "Concept", "topic": "Managing Menus at Runtime", "question": "On which kind of menu is the WindowList property normally set to True in an MDI application?", "options": ["A separator bar", "A shortcut key", "A top-level menu such as Window", "A menu control array element"], "answer": "C", "explanation": "The Window menu lists the open child forms, with a check mark on the active one."},
+  {"id": 106, "level": "Advanced", "type": "Error-ID", "topic": "Code-Based and Scenario-Based Questions", "question": "Why does the statement mnuFileSave.Shortcut = vbKeyS cause an error?", "options": ["Menu items cannot have shortcut keys", "mnuFileSave has not been loaded", "Shortcut values must be strings", "Shortcut can be set only at design time in the Menu Editor"], "answer": "D", "explanation": "The Shortcut property is not available in code, so VB reports 'Method or data member not found'."},
+  {"id": 107, "level": "Advanced", "type": "Error-ID", "topic": "Code-Based and Scenario-Based Questions", "question": "mnuFileOpen was created without an Index value. Why does Load mnuFileOpen fail?", "options": ["Load needs the parent menu to be unloaded first", "Load cannot be used with menus", "Only elements of a control array can be loaded", "Names must start with mnuLoad"], "answer": "C", "explanation": "A single menu item is not an array, so Load/Unload cannot be applied to it."},
+  {"id": 108, "level": "Advanced", "type": "Error-ID", "topic": "Code-Based and Scenario-Based Questions", "question": "mnuRecent(0) was created at design time. What is wrong with Unload mnuRecent(0)?", "options": ["Index 0 does not exist", "Unload needs the Visible property to be True", "Unload can be used only for top-level menus", "Control array elements created at design time cannot be unloaded"], "answer": "D", "explanation": "Only elements added with Load at run time may be removed with Unload."},
+  {"id": 109, "level": "Advanced", "type": "Error-ID", "topic": "Code-Based and Scenario-Based Questions", "question": "mnuRecent(0) exists. Which error occurs on executing Load mnuRecent(0)?", "options": ["Type mismatch", "Subscript out of range", "Object already loaded", "Permission denied"], "answer": "C", "explanation": "Run-time error 360 is raised because element 0 is already present."},
+  {"id": 110, "level": "Advanced", "type": "Error-ID", "topic": "Code-Based and Scenario-Based Questions", "question": "Only mnuRecent(0) exists. What happens when mnuRecent(5).Caption = \"X\" is executed?", "options": ["Run-time error: control array element does not exist", "Nothing happens", "The caption is set and item 5 is created automatically", "The caption of item 0 is changed"], "answer": "A", "explanation": "Run-time error 340 occurs because element 5 was never loaded."},
+  {"id": 111, "level": "Intermediate", "type": "Scenario", "topic": "Code-Based and Scenario-Based Questions", "question": "A Save command must be unavailable until the user types in Text1. Which approach is correct?", "options": ["Unload mnuFileSave and Load it again on the first key press", "Set mnuFileSave.Index = 0 until text is typed", "Set mnuFileSave.Enabled = False initially and set it True in Text1_Change", "Set mnuFileSave.Checked = False until text is typed"], "answer": "C", "explanation": "Enabled controls availability; the Change event is a natural place to react to typing."},
+  {"id": 112, "level": "Intermediate", "type": "Scenario", "topic": "Code-Based and Scenario-Based Questions", "question": "The Tools menu must be visible only when the Boolean variable isAdmin is True. Which statement achieves this?", "options": ["mnuTools.Checked = isAdmin", "mnuTools.Visible = isAdmin", "mnuTools.Enabled = isAdmin", "mnuTools.Caption = isAdmin"], "answer": "B", "explanation": "Enabled would only dim the menu; Visible hides it completely when isAdmin is False."},
+  {"id": 113, "level": "Intermediate", "type": "Output", "topic": "Code-Based and Scenario-Based Questions", "question": "The user chooses the item with Index 1. Which items are checked afterwards?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Private Sub mnuSize_Click(Index As Integer)<br>    Dim i As Integer<br>    For i = 0 To 2<br>        mnuSize(i).Checked = (i = Index)<br>    Next i<br>End Sub</span>", "options": ["Only the item with Index 0", "None of the items", "All three items", "Only the item with Index 1"], "answer": "D", "explanation": "(i = Index) is True only when i equals the chosen element, so only that item gets a tick."},
+  {"id": 114, "level": "Intermediate", "type": "Output", "topic": "Code-Based and Scenario-Based Questions", "question": "How does the Paste item appear after these statements execute?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">mnuEditPaste.Enabled = False<br>mnuEditPaste.Visible = True</span>", "options": ["Visible but dimmed", "Visible and usable", "Hidden", "Checked and hidden"], "answer": "A", "explanation": "Visible = True keeps it on the menu while Enabled = False prevents its use."},
+  {"id": 115, "level": "Advanced", "type": "Tricky", "topic": "Code-Based and Scenario-Based Questions", "question": "Can the user see and choose the Options command after this code runs?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">mnuTools.Visible = False<br>mnuToolsOptions.Visible = True</span>", "options": ["No, because Options was unloaded", "Yes, but it is dimmed", "Yes, because Options is visible", "No, because its parent menu is hidden"], "answer": "D", "explanation": "A child item cannot be reached when its parent title is not displayed."},
+  {"id": 116, "level": "Intermediate", "type": "Output", "topic": "Code-Based and Scenario-Based Questions", "question": "The caption is initially 'Full Screen'. What is the caption after three clicks?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Private Sub mnuViewMode_Click()<br>    If mnuViewMode.Caption = \"Full Screen\" Then<br>        mnuViewMode.Caption = \"Normal View\"<br>    Else<br>        mnuViewMode.Caption = \"Full Screen\"<br>    End If<br>End Sub</span>", "options": ["Full Screen", "Full Screen Normal View", "Run-time error", "Normal View"], "answer": "D", "explanation": "The caption alternates: Normal View, Full Screen, Normal View."},
+  {"id": 117, "level": "Intermediate", "type": "Output", "topic": "Code-Based and Scenario-Based Questions", "question": "The user chooses File &gt; Exit and clicks No in the message box. What happens?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Private Sub mnuFileExit_Click()<br>    If MsgBox(\"Quit?\", vbYesNo) = vbYes Then Unload Me<br>End Sub</span>", "options": ["The Exit item is disabled", "The program ends with an error", "Nothing; the form stays open", "The form is closed"], "answer": "C", "explanation": "Unload Me runs only when MsgBox returns vbYes."},
+  {"id": 118, "level": "Intermediate", "type": "Output", "topic": "Code-Based and Scenario-Based Questions", "question": "What is the final value of mnuBold.Checked?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">mnuBold.Checked = True<br>mnuBold.Checked = Not mnuBold.Checked<br>mnuBold.Checked = Not mnuBold.Checked</span>", "options": ["True", "Run-time error", "False", "Null"], "answer": "A", "explanation": "It is set True, flipped to False, then flipped back to True."},
+  {"id": 119, "level": "Intermediate", "type": "Code", "topic": "Code-Based and Scenario-Based Questions", "question": "What is the effect of this procedure?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Private Sub Text1_Change()<br>    mnuFileSave.Enabled = Len(Text1.Text) &gt; 0<br>End Sub</span>", "options": ["Save is checked whenever Text1 changes", "Save is enabled only when Text1 is empty", "Save is enabled whenever Text1 contains at least one character", "Save is hidden when Text1 changes"], "answer": "C", "explanation": "The Boolean expression Len(Text1.Text) &gt; 0 is assigned directly to Enabled."},
+  {"id": 120, "level": "Intermediate", "type": "Code", "topic": "Code-Based and Scenario-Based Questions", "question": "If lastAction = \"Typing\", what is the caption of mnuEditUndo after this statement?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">mnuEditUndo.Caption = \"Undo \" &amp; lastAction</span>", "options": ["Undo &amp; lastAction", "UndoTyping", "Undo Typing", "Typing"], "answer": "C", "explanation": "The &amp; operator joins the strings, giving 'Undo Typing'."},
+  {"id": 121, "level": "Intermediate", "type": "Output", "topic": "Code-Based and Scenario-Based Questions", "question": "What is the Recent menu state after this code (mnuRecent(0) exists)?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">mnuRecent(0).Caption = \"A.txt\"<br>Load mnuRecent(1)<br>mnuRecent(1).Caption = \"B.txt\"</span>", "options": ["mnuRecent(0) and mnuRecent(1) both exist and show 'A.txt' and 'B.txt'", "Both items exist but are hidden by default", "A run-time error occurs", "Only mnuRecent(1) exists"], "answer": "A", "explanation": "Load creates element 1 and the captions are then set; mnuRecent(0) already existed."},
+  {"id": 122, "level": "Advanced", "type": "Assertion-Reason", "topic": "Important and Tricky Questions", "question": "<b>Assertion (A):</b> A separator bar in a menu must be given a Name in the Menu Editor.<br><b>Reason (R):</b> Every separator bar is a menu control and every menu control requires a Name.", "options": ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"], "answer": "A", "explanation": "A separator is created like any other item (Caption '-') and the editor demands a Name for it."},
+  {"id": 123, "level": "Advanced", "type": "Assertion-Reason", "topic": "Important and Tricky Questions", "question": "<b>Assertion (A):</b> A shortcut key can run a menu command without opening the menu.<br><b>Reason (R):</b> The shortcut key text is displayed beside the menu caption at run time.", "options": ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"], "answer": "B", "explanation": "Both are true, but displaying the text does not explain why the shortcut works directly."},
+  {"id": 124, "level": "Advanced", "type": "Assertion-Reason", "topic": "Important and Tricky Questions", "question": "<b>Assertion (A):</b> The Shortcut property of a menu item can be assigned in code at run time.<br><b>Reason (R):</b> Shortcut keys are selected from a drop-down list in the Menu Editor.", "options": ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"], "answer": "D", "explanation": "Shortcut is a design-time setting only, so A is false while R is true."},
+  {"id": 125, "level": "Advanced", "type": "Assertion-Reason", "topic": "Important and Tricky Questions", "question": "<b>Assertion (A):</b> A top-level menu with Visible = False can still be displayed with the PopupMenu method.<br><b>Reason (R):</b> PopupMenu cannot display a menu that is hidden from the menu bar.", "options": ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"], "answer": "C", "explanation": "A is true (a common technique for context menus); R contradicts it and is false."},
+  {"id": 126, "level": "Advanced", "type": "Assertion-Reason", "topic": "Important and Tricky Questions", "question": "<b>Assertion (A):</b> The first item in the Menu Editor list cannot be indented.<br><b>Reason (R):</b> A submenu item needs a parent item above it.", "options": ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"], "answer": "A", "explanation": "With nothing above the first item there is no possible parent, so the right arrow is unavailable."},
+  {"id": 127, "level": "Intermediate", "type": "Statement", "topic": "Important and Tricky Questions", "question": "Consider the statements:\nI. Menu items respond to the Click event.\nII. Menu controls can be dragged from the Toolbox onto a form.\nIII. Menus are created using the Menu Editor.", "options": ["I, II and III", "I and III only", "I and II only", "II and III only"], "answer": "B", "explanation": "The Toolbox has no Menu control; menus come only from the Menu Editor."},
+  {"id": 128, "level": "Intermediate", "type": "Statement", "topic": "Important and Tricky Questions", "question": "Consider the statements about a menu control array:\nI. Elements share the same Name.\nII. Elements are distinguished by Index.\nIII. Elements share a single Click procedure.", "options": ["II and III only", "I and II only", "I, II and III", "I and III only"], "answer": "C", "explanation": "A control array has one name, numbered elements and one event procedure with an Index argument."},
+  {"id": 129, "level": "Intermediate", "type": "Statement", "topic": "Important and Tricky Questions", "question": "Consider the statements about PopupMenu:\nI. It is a method of a form.\nII. The menu used must have at least one submenu item.\nIII. A popup menu can be invoked only with the left mouse button.", "options": ["I and II only", "II and III only", "III only", "I and III only"], "answer": "A", "explanation": "Popup menus are normally shown on a right-button event; statement III is false."},
+  {"id": 130, "level": "Intermediate", "type": "Match", "topic": "Important and Tricky Questions", "question": "Match each Menu Editor button with its function:\n1. Right arrow   2. Left arrow   3. Insert   4. Delete\na. Promote one level   b. Indent one level   c. Add a blank item above   d. Remove the selected item", "options": ["1-b, 2-a, 3-c, 4-d", "1-c, 2-d, 3-b, 4-a", "1-d, 2-c, 3-a, 4-b", "1-a, 2-b, 3-d, 4-c"], "answer": "A", "explanation": "Right arrow demotes, left arrow promotes, Insert adds above, and Delete removes."},
+  {"id": 131, "level": "Intermediate", "type": "Match", "topic": "Important and Tricky Questions", "question": "Match each statement or method with its purpose:\n1. Load   2. Unload   3. PopupMenu   4. Call\na. Create an array element at run time   b. Remove a run-time element   c. Show a context menu   d. Invoke an event procedure", "options": ["1-b, 2-a, 3-d, 4-c", "1-c, 2-d, 3-a, 4-b", "1-d, 2-c, 3-b, 4-a", "1-a, 2-b, 3-c, 4-d"], "answer": "D", "explanation": "Load and Unload manage array elements; PopupMenu shows a popup; Call runs a procedure."},
+  {"id": 132, "level": "Advanced", "type": "Tricky", "topic": "Important and Tricky Questions", "question": "Which statement is FALSE?", "options": ["Menus are created and modified with the Menu Editor", "A menu item can be added to a form by dragging a Menu control from the Toolbox", "Elements of a menu control array share one Click procedure", "A hidden top-level menu can still serve as a popup menu"], "answer": "B", "explanation": "VB 6.0 has no Menu control in the Toolbox; the Menu Editor is the only design-time tool."},
+  {"id": 133, "level": "Advanced", "type": "Tricky", "topic": "Important and Tricky Questions", "question": "mnuFileSave.Enabled is False and the code calls mnuFileSave_Click. What happens?", "options": ["The procedure executes normally", "Nothing happens", "The item is enabled first", "A run-time error occurs"], "answer": "A", "explanation": "Enabled only blocks user actions; calling the event procedure directly runs the code anyway."},
+  {"id": 134, "level": "Advanced", "type": "Tricky", "topic": "Important and Tricky Questions", "question": "Which of the following is NOT possible with the standard VB 6.0 Menu Editor?", "options": ["Displaying a bitmap icon beside a menu item", "Creating a separator bar", "Creating a control array of menu items", "Assigning a shortcut key"], "answer": "A", "explanation": "The standard Menu Editor does not support pictures on menu items."},
+  {"id": 135, "level": "Basic", "type": "Concept", "topic": "Mixed OAVS TGT Practice Set", "question": "Two menu items on the same form can share the same Name only when:", "options": ["They have different shortcut keys", "They are on different menus", "They have different captions", "They are elements of a control array with different Index values"], "answer": "D", "explanation": "Otherwise Names must be unique; control array elements are the one allowed exception."},
+  {"id": 136, "level": "Intermediate", "type": "Sequence", "topic": "Mixed OAVS TGT Practice Set", "question": "Which sequence correctly creates a File menu with an Exit command?", "options": ["Open Menu Editor; give File its Caption and Name; click right arrow; give Exit its Caption and Name; click OK", "Open Menu Editor; give File its Caption and Name; click Next; give Exit its Caption and Name; click right arrow; click OK", "Open Menu Editor; give Exit its Caption and Name; click right arrow; give File its Caption and Name; click OK", "Add a Menu control from the Toolbox; set its Caption to File; add another for Exit; set its Parent property to File"], "answer": "B", "explanation": "The first item cannot be indented; Exit must come after File and then be indented one level."},
+  {"id": 137, "level": "Intermediate", "type": "Scenario", "topic": "Mixed OAVS TGT Practice Set", "question": "A form has menu &amp;File with command &amp;Save (shortcut Ctrl+S). How can Save be chosen using only access keys?", "options": ["Press Shift+Alt+S", "Press Alt+S directly", "Press Ctrl+F, then S", "Press Alt+F, then S"], "answer": "D", "explanation": "Alt+F opens the File menu, then S selects the underlined command. Ctrl+S is the shortcut route."},
+  {"id": 138, "level": "Intermediate", "type": "Scenario", "topic": "Mixed OAVS TGT Practice Set", "question": "At run time a form shows no menu bar although menus were created. What is a possible cause?", "options": ["Every top-level menu has Visible set to False", "The form's KeyPreview is True", "The menus have access keys", "The form's WindowState is Normal"], "answer": "A", "explanation": "If all titles are hidden, no menu bar is displayed."},
+  {"id": 139, "level": "Basic", "type": "Concept", "topic": "Mixed OAVS TGT Practice Set", "question": "What is the data type of the Checked, Enabled and Visible properties of a menu item?", "options": ["String", "Variant", "Integer", "Boolean"], "answer": "D", "explanation": "They hold True or False."},
+  {"id": 140, "level": "Advanced", "type": "Tricky", "topic": "Mixed OAVS TGT Practice Set", "question": "In PopupMenu mnuEdit, vbPopupMenuRightAlign, 100, 200 what does the flag vbPopupMenuRightAlign do?", "options": ["Moves the popup to the right of the screen", "Aligns the caption text to the right", "Restricts the popup to the right mouse button", "Places the popup so that its right edge is at the x coordinate"], "answer": "D", "explanation": "The alignment flags position the popup relative to x: left edge (default), centered or right edge."},
+  {"id": 141, "level": "Intermediate", "type": "Code", "topic": "Mixed OAVS TGT Practice Set", "question": "How many separator bars and menu bar titles does this Menu Editor list contain?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">&amp;File<br>....&amp;New<br>....&amp;Open<br>....-<br>....E&amp;xit<br>&amp;Edit<br>....Cu&amp;t<br>....&amp;Copy<br>....-<br>....&amp;Paste</span>", "options": ["1 separator bar and 2 titles", "3 separator bars and 2 titles", "2 separator bars and 2 titles", "2 separator bars and 4 titles"], "answer": "C", "explanation": "The two hyphen items are separators; &amp;File and &amp;Edit are the only non-indented titles."},
+  {"id": 142, "level": "Basic", "type": "Concept", "topic": "Mixed OAVS TGT Practice Set", "question": "Which property of a menu control array returns the number of elements currently loaded?", "options": ["Length", "Items", "Count", "Size"], "answer": "C", "explanation": "Control arrays provide Count, LBound and UBound."},
+  {"id": 143, "level": "Basic", "type": "Concept", "topic": "Mixed OAVS TGT Practice Set", "question": "What decides the left-to-right order of top-level menus on the menu bar?", "options": ["Their Index values", "Their order in the Menu Editor list", "Alphabetical order of their Names", "The order of creation of event procedures"], "answer": "B", "explanation": "Items are displayed in the same order as they appear in the list, top to bottom."},
+  {"id": 144, "level": "Basic", "type": "Concept", "topic": "Mixed OAVS TGT Practice Set", "question": "What is the state of the Menu Editor while the application is running?", "options": ["Unavailable; menus must be edited in design mode", "Available, with changes applied next run", "Available only for Caption changes", "Available, with changes applied immediately"], "answer": "A", "explanation": "The IDE disables the Menu Editor in run mode (and break mode)."},
+  {"id": 145, "level": "Advanced", "type": "Error-ID", "topic": "Mixed OAVS TGT Practice Set", "question": "What happens when this procedure runs?<span style=\"display:block;white-space:pre;overflow-x:auto;font-family:Consolas,monospace;font-size:.88em;font-weight:400;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:8px 0 2px\">Private Sub mnuFileOpen_Click()<br>    mnuFileOpen.Enabled = \"Off\"<br>End Sub</span>", "options": ["The item is hidden", "Run-time error 13: Type mismatch", "The caption changes to Off", "The item is disabled"], "answer": "B", "explanation": "Enabled is Boolean, so assigning a non-numeric string such as \"Off\" cannot be converted."},
+  {"id": 146, "level": "Intermediate", "type": "Scenario", "topic": "Mixed OAVS TGT Practice Set", "question": "Which call shows mnuEdit as a popup centered at the pointer with the Copy item in bold?", "options": ["PopupMenu mnuEdit, mnuEditCopy, vbPopupMenuCenterAlign", "PopupMenu mnuEditCopy, mnuEdit, vbPopupMenuCenterAlign", "PopupMenu mnuEdit, vbPopupMenuCenterAlign, , , mnuEditCopy", "PopupMenu mnuEdit, , , , vbPopupMenuCenterAlign"], "answer": "C", "explanation": "Empty positions skip x and y; the fifth argument, boldcommand, names mnuEditCopy."}
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

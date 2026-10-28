@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {"id": 1, "level": "Basic", "type": "Concept", "topic": "1. Recovery and Storage Problems", "question": "Which of the following storage types loses its contents when the power supply fails?", "options": ["Magnetic tape", "Main memory (RAM)", "Magnetic disk", "Optical disc"], "answer": "B", "explanation": "Main memory and cache are volatile. Disk, tape and optical media are non-volatile and survive power loss."},
+  {"id": 2, "level": "Basic", "type": "Concept", "topic": "1. Recovery and Storage Problems", "question": "Which one of the following is a non-volatile storage device?", "options": ["Magnetic hard disk", "CPU registers", "Dynamic RAM", "Cache memory"], "answer": "A", "explanation": "Non-volatile storage retains data without power. Registers, cache and RAM are volatile."},
+  {"id": 3, "level": "Basic", "type": "Concept", "topic": "1. Recovery and Storage Problems", "question": "After a system crash such as a power failure, which data is normally still intact?", "options": ["Contents of the log buffer in main memory", "Contents of non-volatile storage such as the disk", "Contents of the database buffer in main memory", "Values held in CPU registers"], "answer": "B", "explanation": "A system crash destroys only volatile storage. Disk contents are assumed to survive (fail-stop assumption)."},
+  {"id": 4, "level": "Basic", "type": "Concept", "topic": "1. Recovery and Storage Problems", "question": "Why is recovery needed even for a transaction that has already committed?", "options": ["Its updated buffer blocks may not yet have been written to disk when the crash occurs", "A crash always rolls back every transaction, including the committed ones", "The user must manually resubmit every committed transaction again", "Disk blocks are completely erased every time the system restarts"], "answer": "A", "explanation": "Updates may still sit in volatile buffers at crash time. Recovery must redo them to preserve durability."},
+  {"id": 5, "level": "Basic", "type": "Concept", "topic": "1. Recovery and Storage Problems", "question": "Stable storage is best described as:", "options": ["Main memory protected by a larger cache so that its contents are never lost", "Storage that never loses data, approximated by replicating it on several non-volatile media", "Any single magnetic disk that has been formatted without bad sectors", "Storage that is faster than cache memory but loses its data on power failure"], "answer": "B", "explanation": "Stable storage is an ideal abstraction, implemented by keeping independent copies on multiple non-volatile devices."},
+  {"id": 6, "level": "Basic", "type": "Concept", "topic": "1. Recovery and Storage Problems", "question": "The 'fail-stop' assumption for a system crash means that:", "options": ["Errors halt the system and the contents of non-volatile storage are not corrupted", "Only the log is lost during a crash, while the database disk is corrupted", "Volatile storage is automatically saved to disk just before the crash occurs", "The system keeps running normally after every error without any interruption"], "answer": "A", "explanation": "Under fail-stop, the system halts on error and disk data is trusted, so recovery can rely on the disk and the log."},
+  {"id": 7, "level": "Advanced", "type": "Tricky", "topic": "1. Recovery and Storage Problems", "question": "In recovery terminology, output(B) transfers:", "options": ["Buffer block B from main memory to the disk", "Disk block B into the main-memory buffer", "A page-table entry into a CPU register", "A log record from disk into the buffer"], "answer": "A", "explanation": "output(B) writes a buffer block to disk. input(B) is the reverse: disk to buffer."},
+  {"id": 8, "level": "Basic", "type": "Concept", "topic": "1. Recovery and Storage Problems", "question": "Which failure results in the loss of data stored on non-volatile storage?", "options": ["System crash", "Disk (head) crash", "Logical error in a transaction", "Power failure"], "answer": "B", "explanation": "Power failures and system crashes lose only volatile data. A disk crash destroys non-volatile content, so a copy on stable storage is needed."},
+  {"id": 9, "level": "Basic", "type": "Concept", "topic": "1. Recovery and Storage Problems", "question": "The primary goal of a recovery mechanism after a failure is to:", "options": ["Increase the speed of query execution", "Restore the database to the most recent consistent state", "Restore the database to its state at creation time", "Delete all incomplete and committed transactions"], "answer": "B", "explanation": "Recovery undoes incomplete transactions and preserves committed ones, giving a consistent database."},
+  {"id": 10, "level": "Advanced", "type": "Assertion-Reason", "topic": "1. Recovery and Storage Problems", "question": "Assertion (A): Data held only in volatile storage is lost after a system crash.\nReason (R): Volatile storage needs a continuous power supply to retain its contents.", "options": ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"], "answer": "A", "explanation": "Both are true. Loss of power is exactly why volatile content disappears, so R explains A."},
+  {"id": 11, "level": "Intermediate", "type": "Match", "topic": "1. Recovery and Storage Problems", "question": "Match the failure type (List I) with its effect (List II).\nI. Transaction failure    II. System crash    III. Disk failure\n1. Loss of non-volatile storage content    2. Loss of volatile storage content    3. A single transaction cannot complete", "options": ["I-1, II-2, III-3", "I-3, II-1, III-2", "I-3, II-2, III-1", "I-2, II-3, III-1"], "answer": "C", "explanation": "Transaction failure stops one transaction, a system crash wipes volatile memory, and a disk failure destroys non-volatile data."},
+  {"id": 12, "level": "Basic", "type": "Concept", "topic": "1. Recovery and Storage Problems", "question": "Which pair consists only of volatile storage?", "options": ["Cache memory and optical disk", "Magnetic disk and tape", "Main memory and magnetic disk", "Cache memory and main memory"], "answer": "D", "explanation": "Cache and RAM need power to hold data. Disk, tape and optical disc are non-volatile."},
+  {"id": 13, "level": "Intermediate", "type": "Statement", "topic": "1. Recovery and Storage Problems", "question": "S1: A power failure destroys the contents of the database buffer in main memory.\nS2: A power failure destroys the contents of the magnetic disk.\nWhich is correct?", "options": ["Only S1", "Only S2", "Both S1 and S2", "Neither S1 nor S2"], "answer": "A", "explanation": "The buffer is volatile and is lost. The disk is non-volatile and is unaffected by power failure."},
+  {"id": 14, "level": "Basic", "type": "Concept", "topic": "1. Recovery and Storage Problems", "question": "In stable-storage implementation with two copies of each block, the second copy is written:", "options": ["Only after the first copy has been written successfully", "Only after the transaction has committed", "Before the first copy, so the old data is kept", "At the same time as the first copy, using one write"], "answer": "A", "explanation": "Writing the copies one after the other ensures that at least one copy is always in a valid state."},
+  {"id": 15, "level": "Advanced", "type": "Tricky", "topic": "1. Recovery and Storage Problems", "question": "During recovery of a stable-storage block, both copies show no detectable error but their contents differ. The system:", "options": ["Keeps both different copies unchanged", "Replaces the content of the first copy with that of the second copy", "Replaces the content of the second copy with that of the first", "Declares the block lost and stops recovery"], "answer": "B", "explanation": "This makes the write appear either to have completed fully or not to have happened at all."},
+  {"id": 16, "level": "Basic", "type": "Concept", "topic": "1. Recovery and Storage Problems", "question": "The possible outcomes of transferring a block between memory and disk are:", "options": ["Successful completion, partial failure and total failure", "Active, failed and aborted states of the disk block", "Commit, abort and rollback of the transfer operation", "Redo, undo and ignore actions applied by the recovery manager"], "answer": "A", "explanation": "A failed transfer may leave the destination block partly written (partial failure) or untouched (total failure)."},
+  {"id": 17, "level": "Basic", "type": "Concept", "topic": "1. Recovery and Storage Problems", "question": "Recovery from a system crash is possible mainly because:", "options": ["The database buffer is always written to disk just before a crash", "The main memory is automatically copied to tape every few seconds", "The CPU registers are saved to disk by the hardware at failure", "The disk contents and the log on stable storage survive the crash"], "answer": "D", "explanation": "The crash destroys only volatile memory. The database on disk and the log are used to restore a consistent state."},
+  {"id": 18, "level": "Basic", "type": "Concept", "topic": "1. Recovery and Storage Problems", "question": "Which of the following storage types is the fastest to access?", "options": ["Magnetic disk", "Magnetic tape", "Cache memory", "Main memory"], "answer": "C", "explanation": "Speed decreases from cache to main memory to disk to tape, while volatility goes the opposite way."},
+  {"id": 19, "level": "Basic", "type": "Concept", "topic": "2. Transaction Concepts and Properties", "question": "A transaction in a DBMS is best defined as:", "options": ["A physical block of data that is moved between the disk and main memory", "A logical unit of work made of one or more database operations executed as a single unit", "A collection of tables that share the same primary key across the schema", "A utility program that compresses and archives old log files on disk"], "answer": "B", "explanation": "A transaction is a logical unit of database processing. It accesses and possibly updates data items."},
+  {"id": 20, "level": "Basic", "type": "Concept", "topic": "2. Transaction Concepts and Properties", "question": "ACID stands for:", "options": ["Accuracy, Consistency, Isolation, Dependability", "Atomicity, Consistency, Integrity, Delay", "Atomicity, Consistency, Isolation, Durability", "Atomicity, Concurrency, Integrity, Durability"], "answer": "C", "explanation": "The four transaction properties are Atomicity, Consistency, Isolation and Durability."},
+  {"id": 21, "level": "Basic", "type": "Concept", "topic": "2. Transaction Concepts and Properties", "question": "The 'all-or-nothing' property of a transaction is called:", "options": ["Isolation", "Durability", "Atomicity", "Consistency"], "answer": "C", "explanation": "Atomicity means either all operations of the transaction are reflected in the database, or none are."},
+  {"id": 22, "level": "Basic", "type": "Concept", "topic": "2. Transaction Concepts and Properties", "question": "Durability guarantees that:", "options": ["Every transaction is executed on one single processor from start to finish", "Once a transaction commits, its updates persist even if the system later fails", "Aborted transactions are restarted automatically again and again until they commit", "Uncommitted data written by one transaction is never visible to any other user"], "answer": "B", "explanation": "Durability protects committed updates against later failures. It is achieved with logs and redo."},
+  {"id": 23, "level": "Basic", "type": "Concept", "topic": "2. Transaction Concepts and Properties", "question": "Consistency of a transaction means that:", "options": ["It writes every single update twice to the log before continuing", "It copies every data item it reads onto several different servers", "Run alone on a consistent database, it leaves the database in a consistent state", "It always completes its execution in a constant amount of time per operation"], "answer": "C", "explanation": "Consistency requires the transaction to preserve integrity constraints."},
+  {"id": 24, "level": "Intermediate", "type": "Scenario", "topic": "2. Transaction Concepts and Properties", "question": "Rs. 500 is moved from account A to B. The system crashes after A is debited but before B is credited. Recovery restores both balances to their old values. Which property is preserved?", "options": ["Durability", "Isolation", "Atomicity", "Consistency"], "answer": "C", "explanation": "The partial transfer is wiped out, so the transaction behaves as all-or-nothing."},
+  {"id": 25, "level": "Intermediate", "type": "Scenario", "topic": "2. Transaction Concepts and Properties", "question": "In a transfer from A to B, the sum A + B must be the same before and after the transaction. This requirement is an example of:", "options": ["Isolation", "Atomicity", "Durability", "Consistency"], "answer": "D", "explanation": "An invariant such as the total balance is an integrity requirement. A correct transaction maintains it."},
+  {"id": 26, "level": "Intermediate", "type": "Scenario", "topic": "2. Transaction Concepts and Properties", "question": "A transaction commits and the user is told it succeeded. The machine then loses power. After restart the committed updates are present. Which property is demonstrated?", "options": ["Consistency", "Isolation", "Durability", "Atomicity"], "answer": "C", "explanation": "Committed effects survive the failure, which is the definition of durability."},
+  {"id": 27, "level": "Basic", "type": "Concept", "topic": "2. Transaction Concepts and Properties", "question": "Which pair of ACID properties is mainly the responsibility of the recovery manager?", "options": ["Consistency and Isolation", "Consistency and Durability", "Atomicity and Durability", "Isolation and Atomicity"], "answer": "C", "explanation": "Recovery undoes incomplete transactions (atomicity) and redoes committed ones (durability). Consistency comes from integrity constraints and correct programs."},
+  {"id": 28, "level": "Basic", "type": "Concept", "topic": "2. Transaction Concepts and Properties", "question": "Which SQL statement makes the updates of the current transaction permanent?", "options": ["COMMIT", "SAVEPOINT", "GRANT", "ROLLBACK"], "answer": "A", "explanation": "COMMIT ends the transaction successfully and makes its changes permanent."},
+  {"id": 29, "level": "Basic", "type": "Concept", "topic": "2. Transaction Concepts and Properties", "question": "Which statement undoes all updates made by the current transaction?", "options": ["REVOKE", "COMMIT", "GRANT", "ROLLBACK"], "answer": "D", "explanation": "ROLLBACK aborts the transaction and restores the database to its state before the transaction began."},
+  {"id": 30, "level": "Intermediate", "type": "Statement", "topic": "2. Transaction Concepts and Properties", "question": "S1: Atomicity requires that either all operations of a transaction are reflected in the database or none are.\nS2: Durability requires that committed updates persist despite failures.\nS3: Consistency is guaranteed solely by the recovery manager.\nWhich statements are correct?", "options": ["S2 and S3 only", "S1, S2 and S3", "S1 and S2 only", "S1 and S3 only"], "answer": "C", "explanation": "S3 is false. Consistency depends on integrity constraints and correct transaction logic, not only on recovery."},
+  {"id": 31, "level": "Advanced", "type": "Assertion-Reason", "topic": "2. Transaction Concepts and Properties", "question": "Assertion (A): Committed updates may be lost if durability is not ensured.\nReason (R): Durability is ensured by undoing committed transactions after a failure.", "options": ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"], "answer": "C", "explanation": "A is true. R is false: durability is ensured by redoing committed transactions, not undoing them."},
+  {"id": 32, "level": "Advanced", "type": "Tricky", "topic": "2. Transaction Concepts and Properties", "question": "Which of the following is NOT one of the ACID properties?", "options": ["Atomicity", "Availability", "Isolation", "Durability"], "answer": "B", "explanation": "ACID covers Atomicity, Consistency, Isolation and Durability. Availability is not part of it."},
+  {"id": 33, "level": "Intermediate", "type": "Scenario", "topic": "2. Transaction Concepts and Properties", "question": "A transaction debits account A, but a crash stops it before B is credited, and after restart A still shows the debit. Which property has been violated?", "options": ["Availability", "Isolation", "Durability", "Atomicity"], "answer": "D", "explanation": "Only part of the transaction was reflected in the database, so the all-or-nothing rule was broken."},
+  {"id": 34, "level": "Intermediate", "type": "Scenario", "topic": "2. Transaction Concepts and Properties", "question": "A database has the integrity constraint 'balance &gt;= 0'. A transaction leaves an account with a negative balance and commits. Which property is violated?", "options": ["Recovery", "Atomicity", "Durability", "Consistency"], "answer": "D", "explanation": "The transaction moved the database from a consistent state to an inconsistent one."},
+  {"id": 35, "level": "Basic", "type": "Concept", "topic": "2. Transaction Concepts and Properties", "question": "In a transaction, the operation write(X) means:", "options": ["Transfer the value of X from the local buffer into the database item X", "Write the commit record for the transaction into the log", "Transfer the value of X from the database into a local program variable", "Delete the data item X completely from the database"], "answer": "A", "explanation": "read(X) brings the item into a local variable. write(X) sends the local value back to the database."},
+  {"id": 36, "level": "Intermediate", "type": "Statement", "topic": "2. Transaction Concepts and Properties", "question": "S1: Recovery can redo the changes of a committed transaction after a crash.\nS2: Recovery can undo the changes of a committed transaction after a crash.\nWhich is correct?", "options": ["Only S1", "Only S2", "Both S1 and S2", "Neither S1 nor S2"], "answer": "A", "explanation": "Committed changes are protected by durability, so they are redone if needed and never undone."},
+  {"id": 37, "level": "Basic", "type": "Concept", "topic": "2. Transaction Concepts and Properties", "question": "Durability is mainly achieved by:", "options": ["Deleting the log records of a transaction as soon as it commits", "Keeping all the updated data only in the main-memory buffer", "Keeping the committed updates in the log so they can be redone after a failure", "Aborting all running transactions whenever a crash is detected"], "answer": "C", "explanation": "A commit record and the updates it covers are safely in the log, so redo can restore them after a crash."},
+  {"id": 38, "level": "Basic", "type": "Concept", "topic": "3. Transaction States and Transitions", "question": "The initial state of every transaction in the state diagram is:", "options": ["Active", "Failed", "Partially committed", "Committed"], "answer": "A", "explanation": "A transaction starts in the Active state and stays there while it executes its operations."},
+  {"id": 39, "level": "Basic", "type": "Concept", "topic": "3. Transaction States and Transitions", "question": "A transaction enters the partially committed state:", "options": ["After its final statement has been executed", "After it has been rolled back", "Immediately when it is submitted", "After all its log records are deleted"], "answer": "A", "explanation": "Partially committed means the last statement ran, but the updates may not yet be safely on disk."},
+  {"id": 40, "level": "Basic", "type": "Concept", "topic": "3. Transaction States and Transitions", "question": "A transaction moves to the failed state when:", "options": ["Its commit record has been written to stable storage", "All its updates have been written to disk", "The database has been restored to its earlier state", "Normal execution can no longer proceed"], "answer": "D", "explanation": "Failure is detected from an error or system problem that prevents normal execution."},
+  {"id": 41, "level": "Basic", "type": "Concept", "topic": "3. Transaction States and Transitions", "question": "A transaction reaches the aborted state after:", "options": ["Its commit record has been written to the log on stable storage", "It has just been submitted and has not executed any statement yet", "It has been rolled back and the database restored to its state before the transaction began", "Its last statement has been executed and the output is waiting in the buffer"], "answer": "C", "explanation": "Aborted follows Failed once rollback is complete."},
+  {"id": 42, "level": "Basic", "type": "Concept", "topic": "3. Transaction States and Transitions", "question": "A transaction is in the committed state when:", "options": ["It is waiting to be restarted", "It has completed successfully and its effects are permanent", "A failure has been detected", "It has just executed its first statement"], "answer": "B", "explanation": "Committed is entered after successful completion. It is a terminal state."},
+  {"id": 43, "level": "Intermediate", "type": "Diagram", "topic": "3. Transaction States and Transitions", "question": "Given: State diagram: Active goes to Partially committed, and Partially committed goes to Committed. Both Active and Partially committed can go to Failed, and Failed goes to Aborted.\nFrom which two states can a transaction move to the Failed state?", "options": ["Committed and Aborted", "Partially committed and Aborted", "Active and Committed", "Active and Partially committed"], "answer": "D", "explanation": "Errors can occur during execution (Active) or while finishing (Partially committed). A committed transaction cannot fail."},
+  {"id": 44, "level": "Intermediate", "type": "Diagram", "topic": "3. Transaction States and Transitions", "question": "Given: State diagram: Active goes to Partially committed, and Partially committed goes to Committed. Both Active and Partially committed can go to Failed, and Failed goes to Aborted.\nWhich transition does NOT exist?", "options": ["Failed to Aborted", "Active to Failed", "Committed to Aborted", "Active to Partially committed"], "answer": "C", "explanation": "Once committed, a transaction cannot be aborted. Its effects can only be reversed by a new transaction."},
+  {"id": 45, "level": "Basic", "type": "Concept", "topic": "3. Transaction States and Transitions", "question": "How many states does the standard transaction state diagram show?", "options": ["Three", "Five", "Four", "Seven"], "answer": "B", "explanation": "Active, Partially committed, Failed, Aborted and Committed."},
+  {"id": 46, "level": "Intermediate", "type": "Diagram", "topic": "3. Transaction States and Transitions", "question": "Which sequence represents a successfully completed transaction?", "options": ["Partially committed, Active, Committed", "Active, Committed, Partially committed", "Active, Partially committed, Committed", "Active, Failed, Committed"], "answer": "C", "explanation": "A successful run follows Active, then Partially committed, then Committed."},
+  {"id": 47, "level": "Intermediate", "type": "Diagram", "topic": "3. Transaction States and Transitions", "question": "Which sequence represents a transaction that fails during normal execution?", "options": ["Active, Failed, Aborted", "Failed, Active, Committed", "Active, Partially committed, Committed", "Active, Aborted, Failed"], "answer": "A", "explanation": "Failure is detected first, then rollback completes and the transaction is aborted."},
+  {"id": 48, "level": "Advanced", "type": "Tricky", "topic": "3. Transaction States and Transitions", "question": "A transaction in the partially committed state can still move to the failed state because:", "options": ["Its log records have all been discarded by the recovery manager", "It has already been committed and its commit record is on stable storage", "Its first statement has not yet been executed by the system", "Its final updates may fail to be written to disk, for example due to a hardware failure"], "answer": "D", "explanation": "Partially committed does not guarantee durability. A failure before the output completes sends it to Failed."},
+  {"id": 49, "level": "Basic", "type": "Concept", "topic": "3. Transaction States and Transitions", "question": "After a transaction is aborted, the system may restart it only if the abort was caused by:", "options": ["An internal logical error in the transaction, such as a bad calculation", "A hardware or software error that is not due to the transaction's internal logic", "The writing of the commit record to the log on stable storage", "Normal completion of the final statement of the transaction program"], "answer": "B", "explanation": "A transaction with an internal logical error would fail again, so it is killed instead of restarted."},
+  {"id": 50, "level": "Intermediate", "type": "Match", "topic": "3. Transaction States and Transitions", "question": "Match each state (List I) with its description (List II).\nI. Active    II. Partially committed    III. Failed    IV. Aborted\n1. Rolled back, database restored    2. Executing its operations    3. Last statement executed    4. Normal execution cannot proceed", "options": ["I-3, II-2, III-4, IV-1", "I-2, II-3, III-4, IV-1", "I-2, II-3, III-1, IV-4", "I-4, II-3, III-2, IV-1"], "answer": "B", "explanation": "Active is executing, Partially committed has run its last statement, Failed cannot proceed, and Aborted has been rolled back."},
+  {"id": 51, "level": "Intermediate", "type": "Scenario", "topic": "3. Transaction States and Transitions", "question": "A transaction has executed its last statement, but its updated blocks are still in the buffer when the system crashes. What happens after recovery?", "options": ["It is not durable and is rolled back, as it had not committed", "It is committed once the buffer is flushed on its own", "It stays partially committed indefinitely", "It is treated as committed because its last statement ran"], "answer": "A", "explanation": "No commit record was made safe, so recovery treats the transaction as incomplete and undoes it."},
+  {"id": 52, "level": "Basic", "type": "Concept", "topic": "3. Transaction States and Transitions", "question": "Which pair of states are terminal states of a transaction?", "options": ["Active and Partially committed", "Active and Failed", "Partially committed and Failed", "Committed and Aborted"], "answer": "D", "explanation": "A transaction ends either committed or aborted."},
+  {"id": 53, "level": "Basic", "type": "Concept", "topic": "3. Transaction States and Transitions", "question": "Some descriptions add a 'terminated' state to the state diagram. It represents:", "options": ["The transaction leaving the system after it has committed or aborted", "A transaction that has failed but has not yet been rolled back", "A transaction that has only just started its first operation", "A transaction that is waiting for its commit record to be written"], "answer": "A", "explanation": "Terminated is the final stage after reaching Committed or Aborted. The core diagram has five states."},
+  {"id": 54, "level": "Intermediate", "type": "Diagram", "topic": "3. Transaction States and Transitions", "question": "Given: State diagram: Active goes to Partially committed, and Partially committed goes to Committed. Both Active and Partially committed can go to Failed, and Failed goes to Aborted.\nThe Failed state leads only to:", "options": ["Active", "Committed", "Partially committed", "Aborted"], "answer": "D", "explanation": "A failed transaction is rolled back and becomes Aborted."},
+  {"id": 55, "level": "Intermediate", "type": "Scenario", "topic": "3. Transaction States and Transitions", "question": "A transaction is in the Failed state. What must the system do next?", "options": ["Roll back its updates so that it reaches the Aborted state", "Move the transaction directly to the Committed state", "Write the commit record of the transaction to the log on disk", "Move the transaction back to the Active state and continue it"], "answer": "A", "explanation": "Failure is followed by rollback, which restores the database to its state before the transaction."},
+  {"id": 56, "level": "Intermediate", "type": "Scenario", "topic": "3. Transaction States and Transitions", "question": "A transaction runs its last statement, but a disk error stops the final writes. Which state sequence does it follow?", "options": ["Active, Failed, Partially committed, Aborted", "Active, Partially committed, Committed", "Active, Aborted, Failed, Committed", "Active, Partially committed, Failed, Aborted"], "answer": "D", "explanation": "The error occurs while in Partially committed, so it moves to Failed and then, after rollback, to Aborted."},
+  {"id": 57, "level": "Basic", "type": "Concept", "topic": "4. Log", "question": "In database recovery, a log is:", "options": ["A list of all the indexes that have been created on the database", "A copy of the whole main memory taken automatically every second", "A sequence of records describing all update activities, kept on stable storage", "A table of user names and passwords maintained by the DBMS for security"], "answer": "C", "explanation": "The log records every update so that it can be undone or redone after a failure."},
+  {"id": 58, "level": "Basic", "type": "Concept", "topic": "4. Log", "question": "Which log record marks the beginning of transaction Ti?", "options": ["&lt;Ti, abort&gt;", "&lt;Ti, commit&gt;", "&lt;checkpoint L&gt;", "&lt;Ti, start&gt;"], "answer": "D", "explanation": "Each transaction writes &lt;Ti, start&gt; when it begins."},
+  {"id": 59, "level": "Advanced", "type": "Tricky", "topic": "4. Log", "question": "An update log record is &lt;T1, X, 500, 700&gt;. Which interpretation is correct?", "options": ["500 is the transaction id and 700 the item id", "500 is the page number and 700 the offset of X", "500 is the old value and 700 is the new value of X", "500 is the new value and 700 is the old value of X"], "answer": "C", "explanation": "The standard update record format is &lt;Ti, item, old value, new value&gt;."},
+  {"id": 60, "level": "Basic", "type": "Concept", "topic": "4. Log", "question": "Write-ahead logging (WAL) requires that:", "options": ["The log is kept only in main memory so that it can be accessed quickly", "The data item is written to disk first and its log record is written afterwards", "The log record of an update reaches stable storage before the updated data item reaches the disk", "Log records are written to stable storage only after the transaction commits"], "answer": "C", "explanation": "WAL guarantees the old value is available for undo before a data block is overwritten."},
+  {"id": 61, "level": "Basic", "type": "Concept", "topic": "4. Log", "question": "A transaction is considered committed when:", "options": ["Its last statement has executed", "Its &lt;Ti, commit&gt; record has been written to stable storage", "Its &lt;Ti, start&gt; record has been written", "All its data blocks have been output to disk"], "answer": "B", "explanation": "The commit record in the stable log is the commit point. Data blocks may be written later."},
+  {"id": 62, "level": "Basic", "type": "Concept", "topic": "4. Log", "question": "For a log record &lt;Ti, X, V1, V2&gt;, the undo and redo operations set X to:", "options": ["V2 for undo and V1 for redo", "V1 for both undo and redo", "V2 for both undo and redo", "V1 for undo and V2 for redo"], "answer": "D", "explanation": "Undo restores the old value V1. Redo reinstalls the new value V2."},
+  {"id": 63, "level": "Basic", "type": "Concept", "topic": "4. Log", "question": "Which statement about deferred modification is correct?", "options": ["No log is maintained", "Database writes are delayed until the transaction partially commits, so undo is never needed", "Redo is never needed", "Updates reach the disk before the commit record, so undo is always needed"], "answer": "B", "explanation": "Nothing is written to the database before commit, so incomplete transactions leave no trace. Only redo is needed."},
+  {"id": 64, "level": "Basic", "type": "Concept", "topic": "4. Log", "question": "In immediate modification, updates may reach the database before commit. After a crash, recovery may therefore need:", "options": ["Both undo and redo", "Neither undo nor redo", "Undo only", "Redo only"], "answer": "A", "explanation": "Uncommitted writes already on disk must be undone. Committed writes not yet on disk must be redone."},
+  {"id": 65, "level": "Basic", "type": "Concept", "topic": "4. Log", "question": "During recovery, transaction Ti is redone if the log contains:", "options": ["Only &lt;Ti, commit&gt; without &lt;Ti, start&gt;", "Only &lt;Ti, abort&gt;", "&lt;Ti, start&gt; but no &lt;Ti, commit&gt;", "Both &lt;Ti, start&gt; and &lt;Ti, commit&gt;"], "answer": "D", "explanation": "A transaction with both start and commit records finished successfully, so its effects are reapplied."},
+  {"id": 66, "level": "Basic", "type": "Concept", "topic": "4. Log", "question": "Redo and undo operations must be idempotent. This means:", "options": ["Executing them repeatedly gives the same result as executing them once", "They always require two separate transactions to run in parallel", "They can be executed only once, since a second execution corrupts the data", "They modify the log itself every time they are executed"], "answer": "A", "explanation": "A crash can occur during recovery itself, so the operations may be repeated safely."},
+  {"id": 67, "level": "Basic", "type": "Concept", "topic": "4. Log", "question": "Why must the log be kept on stable storage rather than only in main memory?", "options": ["Main memory cannot store text records", "Main memory is lost in a crash, so the log must survive failures", "Stable storage is faster than RAM", "Log records may be written only to disk by hardware rule"], "answer": "B", "explanation": "Recovery depends on the log after a crash, so the log must survive it."},
+  {"id": 68, "level": "Advanced", "type": "Assertion-Reason", "topic": "4. Log", "question": "Assertion (A): Under write-ahead logging, the log record of an update must reach stable storage before the data item reaches disk.\nReason (R): Without the old value in the log, an uncommitted update already on disk could not be undone.", "options": ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"], "answer": "A", "explanation": "Both are true. The ordering rule exists to make undo possible."},
+  {"id": 69, "level": "Advanced", "type": "Tricky", "topic": "4. Log", "question": "Under immediate modification, may a data item updated by an uncommitted transaction be written to disk?", "options": ["Yes, even before its log record is written", "No, never before commit", "No, buffer blocks cannot be output before commit", "Yes, but only after its log record is on stable storage"], "answer": "D", "explanation": "Early writes are allowed, but WAL must hold so the update can be undone."},
+  {"id": 70, "level": "Intermediate", "type": "Scenario", "topic": "4. Log", "question": "The log shows: &lt;T1, start&gt;, &lt;T1, A, 10, 20&gt;, &lt;T1, commit&gt;, &lt;T2, start&gt;, &lt;T2, B, 5, 8&gt;. The system then crashes. After recovery, the values of A and B are:", "options": ["A = 10, B = 8", "A = 20, B = 5", "A = 10, B = 5", "A = 20, B = 8"], "answer": "B", "explanation": "T1 committed, so it is redone and A = 20. T2 has no commit, so it is undone and B returns to 5."},
+  {"id": 71, "level": "Intermediate", "type": "Scenario", "topic": "4. Log", "question": "The log shows: &lt;T1 start&gt;, &lt;T1, A, 5, 10&gt;, &lt;T2 start&gt;, &lt;T2, B, 7, 9&gt;, &lt;T1 commit&gt;, &lt;T3 start&gt;, &lt;T3, C, 1, 2&gt;, &lt;T2 commit&gt;, and then the system crashes. Which transactions are in the redo list?", "options": ["T3 only", "T2 and T3", "T1 only", "T1 and T2"], "answer": "D", "explanation": "T1 and T2 have commit records. T3 has none and goes to the undo list, so C is restored to 1."},
+  {"id": 72, "level": "Basic", "type": "Concept", "topic": "4. Log", "question": "In log-based recovery with undo and redo, the log is scanned:", "options": ["Backward for the undo pass and forward for the redo pass", "Forward for both passes", "Forward for the undo pass and backward for the redo pass", "Backward for both passes"], "answer": "A", "explanation": "Undo restores old values starting from the latest record. Redo reapplies new values in the original order."},
+  {"id": 73, "level": "Basic", "type": "Concept", "topic": "4. Log", "question": "If the system crashes again while recovery is in progress:", "options": ["The whole database is lost permanently and cannot be rebuilt", "The log must be deleted before the recovery can be started again", "All the committed transactions are aborted by the recovery manager", "Recovery is simply run again, since redo and undo are idempotent"], "answer": "D", "explanation": "Repeating redo or undo any number of times gives the same final state."},
+  {"id": 74, "level": "Basic", "type": "Concept", "topic": "4. Log", "question": "In deferred modification, the update log record needs to hold:", "options": ["Both the old and new values", "Neither value", "Only the new value of the data item", "Only the old value of the data item"], "answer": "C", "explanation": "The database is not changed before commit, so undo is never needed and the old value is not required."},
+  {"id": 75, "level": "Basic", "type": "Concept", "topic": "5. Checkpoint", "question": "The main purpose of a checkpoint is to:", "options": ["Remove the need for a log completely, since all data is on disk", "Reduce the amount of log that must be scanned during recovery", "Prevent every kind of system crash from occurring in the future", "Increase the size of the database buffer held in main memory"], "answer": "B", "explanation": "A checkpoint limits how far back recovery must read, which shortens restart time."},
+  {"id": 76, "level": "Basic", "type": "Concept", "topic": "5. Checkpoint", "question": "Which action is part of taking a checkpoint?", "options": ["Deleting the entire log", "Rebuilding all indexes", "Aborting all active transactions", "Writing all modified buffer blocks to disk"], "answer": "D", "explanation": "A checkpoint outputs buffered log records, outputs modified buffer blocks, and then writes a checkpoint record."},
+  {"id": 77, "level": "Basic", "type": "Concept", "topic": "5. Checkpoint", "question": "In a checkpoint record &lt;checkpoint L&gt;, L is:", "options": ["The size of the log file measured in bytes at checkpoint time", "The list of transactions active at the time of the checkpoint", "The list of all the transactions that have ever committed in the system", "The number of disk blocks currently allocated to the database"], "answer": "B", "explanation": "L tells recovery which transactions were still running when the checkpoint was taken."},
+  {"id": 78, "level": "Basic", "type": "Concept", "topic": "5. Checkpoint", "question": "How does a checkpoint help during recovery?", "options": ["The log is ignored completely and the database is reloaded", "All transactions in the system are aborted and restarted from scratch", "Only transactions active at the last checkpoint or started after it need to be considered", "All committed transactions in the entire log must be redone again"], "answer": "C", "explanation": "Updates committed before the checkpoint are already on disk, so they need no redo."},
+  {"id": 79, "level": "Intermediate", "type": "Diagram", "topic": "5. Checkpoint", "question": "Given: Checkpoint taken at Tc, system failure at Tf. T1 starts and commits before Tc. T2 starts before Tc and commits between Tc and Tf. T3 starts after Tc and commits before Tf. T4 starts before Tc and is still active at Tf. T5 starts after Tc and is still active at Tf.\nWhich transactions must be REDONE during recovery after the failure at Tf?", "options": ["T1 and T2", "T2 and T3", "T4 and T5", "T3 and T4"], "answer": "B", "explanation": "T2 and T3 committed after the checkpoint and before the failure. Their updates may not be on disk."},
+  {"id": 80, "level": "Intermediate", "type": "Diagram", "topic": "5. Checkpoint", "question": "Given: Checkpoint taken at Tc, system failure at Tf. T1 starts and commits before Tc. T2 starts before Tc and commits between Tc and Tf. T3 starts after Tc and commits before Tf. T4 starts before Tc and is still active at Tf. T5 starts after Tc and is still active at Tf.\nWhich transactions must be UNDONE?", "options": ["T1 and T4", "T2 and T3", "T4 and T5", "T3 and T5"], "answer": "C", "explanation": "T4 and T5 were still active at the failure and had not committed."},
+  {"id": 81, "level": "Intermediate", "type": "Diagram", "topic": "5. Checkpoint", "question": "Given: Checkpoint taken at Tc, system failure at Tf. T1 starts and commits before Tc. T2 starts before Tc and commits between Tc and Tf. T3 starts after Tc and commits before Tf. T4 starts before Tc and is still active at Tf. T5 starts after Tc and is still active at Tf.\nWhich transaction needs neither redo nor undo, and why?", "options": ["T3, because it started after the checkpoint and committed before Tf", "T2, because it started before the checkpoint was taken", "T4, because it was already active when the checkpoint was taken", "T1, because it committed before the checkpoint and its updates are already on disk"], "answer": "D", "explanation": "T1 finished before Tc and the checkpoint forced its updates to disk."},
+  {"id": 82, "level": "Basic", "type": "Concept", "topic": "5. Checkpoint", "question": "What problem arises if checkpoints are never taken?", "options": ["Recovery must scan the whole log and may redo work already on disk", "Transactions are not able to commit in the system any more", "The log can no longer be written to stable storage by the system", "Committed transactions can no longer be recorded in the log at all"], "answer": "A", "explanation": "Without checkpoints, recovery has no starting point except the beginning of the log."},
+  {"id": 83, "level": "Advanced", "type": "Assertion-Reason", "topic": "5. Checkpoint", "question": "Assertion (A): Checkpoints reduce recovery time.\nReason (R): Frequent checkpoints slow down normal transaction processing.", "options": ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"], "answer": "B", "explanation": "Both are true, but R is a cost of checkpoints and does not explain why they reduce recovery time."},
+  {"id": 84, "level": "Basic", "type": "Concept", "topic": "5. Checkpoint", "question": "More frequent checkpoints result in:", "options": ["Longer recovery time and less overhead during normal processing", "No change in recovery time, but more disk space is needed", "Elimination of all the log records from stable storage", "Shorter recovery time but more overhead during normal processing"], "answer": "D", "explanation": "Each checkpoint costs I/O now but shortens the log scan after a crash."},
+  {"id": 85, "level": "Intermediate", "type": "Statement", "topic": "5. Checkpoint", "question": "S1: A checkpoint makes the log unnecessary.\nS2: A checkpoint record is written into the log.\nS3: A checkpoint forces modified buffer blocks to disk.\nWhich statements are correct?", "options": ["S2 and S3 only", "S1 and S3 only", "S1 and S2 only", "S1, S2 and S3"], "answer": "A", "explanation": "The log is still needed for undo and for redo of later transactions. S1 is false."},
+  {"id": 86, "level": "Advanced", "type": "Tricky", "topic": "5. Checkpoint", "question": "Why are log records in main memory written to stable storage before the checkpoint record is written?", "options": ["To avoid ever writing the modified data blocks to the disk", "To abort all the active transactions before the checkpoint starts", "To delete all the older log records from stable storage first", "So that every log record preceding the checkpoint is safely on stable storage"], "answer": "D", "explanation": "The checkpoint record is only meaningful if the log before it is already safe, consistent with write-ahead logging."},
+  {"id": 87, "level": "Intermediate", "type": "Diagram", "topic": "5. Checkpoint", "question": "Given: Checkpoint taken at Tc, system failure at Tf. T1 starts and commits before Tc. T2 starts before Tc and commits between Tc and Tf. T3 starts after Tc and commits before Tf. T4 starts before Tc and is still active at Tf. T5 starts after Tc and is still active at Tf.\nHow many transactions need to be considered during recovery after the failure, that is, are not simply ignored?", "options": ["4", "2", "5", "3"], "answer": "A", "explanation": "T2, T3, T4 and T5 are examined (T2 and T3 redone, T4 and T5 undone). T1 finished before the checkpoint."},
+  {"id": 88, "level": "Basic", "type": "Concept", "topic": "5. Checkpoint", "question": "During recovery, the list L in the last checkpoint record is used to find:", "options": ["The pages that are present in the shadow page table", "The transactions that started before the checkpoint and may still need undo", "The data blocks that were lost during the system crash", "The oldest transaction that is present anywhere in the log"], "answer": "B", "explanation": "Transactions active at checkpoint time may have updates before the checkpoint, so they must be tracked."},
+  {"id": 89, "level": "Intermediate", "type": "Scenario", "topic": "5. Checkpoint", "question": "T started before a checkpoint and was in its list L. It committed after the checkpoint, and the system then crashed. Recovery:", "options": ["Undoes T, since it was active at the checkpoint", "Ignores T, since it started before the checkpoint", "Restarts T from scratch", "Redoes T, since it committed after the checkpoint"], "answer": "D", "explanation": "T has a commit record after the checkpoint, so its later updates may not be on disk and are redone."},
+  {"id": 90, "level": "Basic", "type": "Concept", "topic": "5. Checkpoint", "question": "In the simple checkpoint scheme, while a checkpoint is being taken, transactions:", "options": ["Write directly to the shadow page table", "Are aborted and restarted", "Are not allowed to perform any update actions", "Are committed automatically"], "answer": "C", "explanation": "Updates are suspended so that the checkpoint state is consistent."},
+  {"id": 91, "level": "Basic", "type": "Concept", "topic": "6. Shadow Paging", "question": "Shadow paging keeps which two tables for each transaction?", "options": ["A commit table and an abort table", "A log table and a checkpoint table", "A current page table and a shadow page table", "A volatile table and a stable table"], "answer": "C", "explanation": "The current table is used by the running transaction. The shadow table holds the original, committed state."},
+  {"id": 92, "level": "Basic", "type": "Concept", "topic": "6. Shadow Paging", "question": "During a transaction in shadow paging, the shadow page table:", "options": ["Is deleted from the disk when the transaction starts executing", "Is never modified and stays on non-volatile storage", "Is kept only in main memory so that it can be accessed fast", "Is updated on every write made by the running transaction"], "answer": "B", "explanation": "The shadow table is the safe copy that points to the last committed pages."},
+  {"id": 93, "level": "Basic", "type": "Concept", "topic": "6. Shadow Paging", "question": "At the start of a transaction, the current page table is:", "options": ["Empty", "A copy of the shadow page table", "Filled with free pages only", "A copy of the log"], "answer": "B", "explanation": "Both tables initially point to the same database pages."},
+  {"id": 94, "level": "Basic", "type": "Concept", "topic": "6. Shadow Paging", "question": "When a transaction writes to page i for the first time, shadow paging:", "options": ["Copies the page to an unused page, points the current table entry to the copy, and updates the copy", "Overwrites the original page on disk and records the old value in a log", "Overwrites the entry of the shadow page table with the new page", "Writes the updated page only to the log and never to a data page"], "answer": "A", "explanation": "Original pages are never overwritten, so the shadow table remains valid."},
+  {"id": 95, "level": "Basic", "type": "Concept", "topic": "6. Shadow Paging", "question": "How is a transaction committed in shadow paging?", "options": ["A commit record is appended to the log on stable storage and flushed", "The shadow page table is deleted and all its pages are erased from disk", "The current page table becomes the new shadow page table, by atomically switching the stored pointer", "All modified pages are copied back over the original pages one by one"], "answer": "C", "explanation": "Modified pages and the current table are flushed, then the pointer to the page table is switched in one write."},
+  {"id": 96, "level": "Basic", "type": "Concept", "topic": "6. Shadow Paging", "question": "If the system crashes before a transaction commits in shadow paging, recovery:", "options": ["Redoes the transaction's updates using the new values kept in the log", "Discards the current page table and uses the shadow page table", "Replays the log from the last checkpoint to redo the updates", "Waits for the user to resubmit the transaction before continuing"], "answer": "B", "explanation": "The shadow table still points to the old committed pages, so the database is already consistent."},
+  {"id": 97, "level": "Basic", "type": "Concept", "topic": "6. Shadow Paging", "question": "Which operations are NOT needed for crash recovery in shadow paging?", "options": ["Disk writes", "Page table lookups", "Undo and redo", "Pointer switching"], "answer": "C", "explanation": "Uncommitted changes live only in new pages. They are simply ignored."},
+  {"id": 98, "level": "Basic", "type": "Concept", "topic": "6. Shadow Paging", "question": "Which of the following is a disadvantage of shadow paging?", "options": ["It needs a checkpoint to be taken every single second", "Data fragmentation, because updated pages are written to new locations", "It cannot support the commit of a transaction in any form", "It requires both undo and redo operations after every crash"], "answer": "B", "explanation": "Moving pages destroys locality of related data, which hurts performance."},
+  {"id": 99, "level": "Basic", "type": "Concept", "topic": "6. Shadow Paging", "question": "After a commit in shadow paging, the old versions of the updated pages:", "options": ["Are copied into the log as old values for later undo", "Become the new current page table of the next transaction", "Become garbage and must be reclaimed by garbage collection", "Remain in use by the next shadow page table forever"], "answer": "C", "explanation": "Old pages are no longer referenced and the space must be freed."},
+  {"id": 100, "level": "Intermediate", "type": "Diagram", "topic": "6. Shadow Paging", "question": "Given: Shadow paging with 4 pages P1 to P4. The shadow page table entries 1 to 4 point to P1, P2, P3, P4. A running transaction updated page 2 by writing a new copy P2'. The current page table entries 1, 3 and 4 still point to P1, P3 and P4.\nAfter the transaction updates page 2 (before commit), entry 2 of the current page table points to:", "options": ["P3", "P2 (the original)", "P2' (the new copy)", "Both P2 and P2'"], "answer": "C", "explanation": "The update goes to a new page. The shadow table entry 2 still points to P2."},
+  {"id": 101, "level": "Intermediate", "type": "Diagram", "topic": "6. Shadow Paging", "question": "Given: Shadow paging with 4 pages P1 to P4. The shadow page table entries 1 to 4 point to P1, P2, P3, P4. A running transaction updated page 2 by writing a new copy P2'. The current page table entries 1, 3 and 4 still point to P1, P3 and P4.\nIf a crash happens before commit, which version of page 2 is visible after recovery?", "options": ["Both versions", "P2, reached through the shadow page table", "Neither version", "P2', reached through the current page table"], "answer": "B", "explanation": "The current page table is lost or discarded. The shadow table gives the last committed state."},
+  {"id": 102, "level": "Basic", "type": "Concept", "topic": "6. Shadow Paging", "question": "Why is the shadow page table stored on non-volatile storage?", "options": ["It is rewritten on disk after every statement of the transaction", "It must survive a crash to identify the last committed state", "It is too large to be held in main memory during a transaction", "It records the old and new values of every updated item"], "answer": "B", "explanation": "After a crash, the shadow table is the only link to the committed database."},
+  {"id": 103, "level": "Basic", "type": "Concept", "topic": "6. Shadow Paging", "question": "Atomic commit in shadow paging relies on the assumption that:", "options": ["Writing many disk blocks together is an atomic operation by itself", "The log is always empty when the transaction commits successfully", "Main memory never fails while the transaction is running", "Writing a single disk block, which holds the page-table pointer, is atomic"], "answer": "D", "explanation": "A single-block write is assumed to either complete or not occur at all."},
+  {"id": 104, "level": "Advanced", "type": "Tricky", "topic": "6. Shadow Paging", "question": "Why must modified pages be flushed to disk before the commit pointer is switched?", "options": ["To delete the shadow page table before the pointer is switched", "Otherwise the new table could point to pages not yet on disk", "To keep the old pages in use after the commit is complete", "To write the checkpoint record for the transaction on disk"], "answer": "B", "explanation": "The pointer switch is the commit point, so every page it references must already be durable."},
+  {"id": 105, "level": "Intermediate", "type": "Scenario", "topic": "6. Shadow Paging", "question": "A page table has 8 entries. A transaction updates page 5 twice and page 6 once. How many new pages does shadow paging allocate?", "options": ["8", "1", "3", "2"], "answer": "D", "explanation": "A page is copied only on its first write. Pages 5 and 6 each get one copy."},
+  {"id": 106, "level": "Basic", "type": "Concept", "topic": "6. Shadow Paging", "question": "What is the correct order of the commit steps in shadow paging?", "options": ["Output the current page table, update the pointer, then output modified pages", "Output modified pages, output the current page table, then update the pointer to the new page table", "Update the pointer first, then output the current page table, then the modified pages", "Update the pointer, output the modified pages, then output the current page table"], "answer": "B", "explanation": "The pointer switch is the commit point, so everything it refers to must already be on disk."},
+  {"id": 107, "level": "Intermediate", "type": "Statement", "topic": "6. Shadow Paging", "question": "S1: Crash recovery in shadow paging is quick.\nS2: Shadow paging avoids the overhead of writing log records.\nS3: Shadow paging keeps related pages contiguous on disk.\nWhich are correct?", "options": ["S2 and S3 only", "S1, S2 and S3", "S1 and S3 only", "S1 and S2 only"], "answer": "D", "explanation": "Updated pages are written to new places, so locality is lost. S3 is false."},
+  {"id": 108, "level": "Basic", "type": "Concept", "topic": "6. Shadow Paging", "question": "Each entry of a page table in shadow paging points to:", "options": ["A page of the database on disk", "A log record", "A checkpoint record", "A running transaction"], "answer": "A", "explanation": "The page table maps logical page numbers to their locations on disk."},
+  {"id": 109, "level": "Intermediate", "type": "Comparison", "topic": "7. Comparison-Based Questions", "question": "Which recovery technique does NOT rely on a log of old and new values?", "options": ["Shadow paging", "Immediate-modification logging", "Log with checkpoints", "Deferred-modification logging"], "answer": "A", "explanation": "Shadow paging uses page tables. The other three all use log records."},
+  {"id": 110, "level": "Intermediate", "type": "Comparison", "topic": "7. Comparison-Based Questions", "question": "S1: Log-based recovery may require both undo and redo.\nS2: Shadow paging needs undo and redo after every crash.\nWhich is correct?", "options": ["Only S2 is correct", "Neither is correct", "Only S1 is correct", "Both are correct"], "answer": "C", "explanation": "Shadow paging needs neither, since the shadow page table already represents the committed state."},
+  {"id": 111, "level": "Intermediate", "type": "Comparison", "topic": "7. Comparison-Based Questions", "question": "Which mechanism is an add-on to log-based recovery to limit the work done at restart?", "options": ["Page-table pointer switch", "Shadow page table", "Rollback of committed transactions", "Checkpoint"], "answer": "D", "explanation": "A checkpoint bounds the portion of the log that must be examined."},
+  {"id": 112, "level": "Intermediate", "type": "Comparison", "topic": "7. Comparison-Based Questions", "question": "Which approach writes updated data to a new location rather than overwriting the old data in place?", "options": ["Write-ahead logging", "Log-based recovery with checkpoints", "Log-based immediate modification", "Shadow paging"], "answer": "D", "explanation": "Shadow paging copies the page and updates the copy. Logging schemes update the data item in place."},
+  {"id": 113, "level": "Intermediate", "type": "Comparison", "topic": "7. Comparison-Based Questions", "question": "Garbage collection of unreferenced pages is a drawback of:", "options": ["Shadow paging", "Stable storage", "Checkpointing", "Write-ahead logging"], "answer": "A", "explanation": "After a commit, the old page versions are no longer referenced and must be freed."},
+  {"id": 114, "level": "Intermediate", "type": "Match", "topic": "7. Comparison-Based Questions", "question": "Match the item (List I) with its key feature (List II).\nI. Log    II. Checkpoint    III. Shadow paging    IV. Stable storage\n1. Two page tables    2. Replicated non-volatile copies    3. Old and new values    4. Limits the log scan", "options": ["I-1, II-4, III-3, IV-2", "I-3, II-4, III-2, IV-1", "I-3, II-4, III-1, IV-2", "I-4, II-3, III-1, IV-2"], "answer": "C", "explanation": "The log keeps old and new values. A checkpoint limits the scan, shadow paging uses two tables, and stable storage uses replication."},
+  {"id": 115, "level": "Intermediate", "type": "Comparison", "topic": "7. Comparison-Based Questions", "question": "Which comparison is correct?", "options": ["Log: needs undo/redo.  Shadow paging: switches to the shadow page table", "Checkpoint: replaces the log.  Shadow paging: needs the log of old values", "Log: keeps two page tables.  Shadow paging: keeps old and new values", "Log: needs no undo/redo.  Shadow paging: scans the whole log"], "answer": "A", "explanation": "Logging replays or reverses updates from the log. Shadow paging simply reinstates the shadow table."},
+  {"id": 116, "level": "Intermediate", "type": "Comparison", "topic": "7. Comparison-Based Questions", "question": "After a crash, recovery is typically fastest in which scheme?", "options": ["Shadow paging, since the shadow page table is simply reinstated", "Immediate modification, since all updates are redone", "Deferred modification, since every transaction is undone", "Log-based recovery without checkpoints, since the whole log is scanned"], "answer": "A", "explanation": "Shadow paging needs no undo/redo and no log scan."},
+  {"id": 117, "level": "Advanced", "type": "Assertion-Reason", "topic": "7. Comparison-Based Questions", "question": "Assertion (A): Shadow paging updates pages in place.\nReason (R): Shadow paging writes updated pages to new disk locations.", "options": ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"], "answer": "D", "explanation": "A is false: shadow paging does not update pages in place. R is true."},
+  {"id": 118, "level": "Intermediate", "type": "Comparison", "topic": "7. Comparison-Based Questions", "question": "What is the main disadvantage of log-based recovery compared with shadow paging?", "options": ["Needs garbage collection of old pages", "Causes data fragmentation on disk", "Requires copying the page table at the start", "Extra log writes and undo/redo processing"], "answer": "D", "explanation": "Logging adds overhead for log records and recovery passes. The other three are shadow-paging drawbacks."},
+  {"id": 119, "level": "Intermediate", "type": "Match", "topic": "7. Comparison-Based Questions", "question": "Match the technique (List I) with its recovery action after a crash (List II).\nI. Immediate modification    II. Deferred modification    III. Shadow paging    IV. Checkpoint\n1. Redo only    2. Start from the last checkpoint record    3. Reinstate the shadow page table    4. Undo and redo", "options": ["I-4, II-1, III-3, IV-2", "I-4, II-1, III-2, IV-3", "I-1, II-4, III-3, IV-2", "I-3, II-1, III-4, IV-2"], "answer": "A", "explanation": "Immediate modification needs both undo and redo, deferred needs only redo, shadow paging reuses the shadow table, and a checkpoint sets the starting point."},
+  {"id": 120, "level": "Advanced", "type": "Assertion-Reason", "topic": "7. Comparison-Based Questions", "question": "Assertion (A): Deferred modification needs no undo operation.\nReason (R): Immediate modification may need both undo and redo operations.", "options": ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"], "answer": "B", "explanation": "Both are true, but R describes another scheme and does not explain A. A is true because deferred modification writes nothing to the database before commit."},
+  {"id": 121, "level": "Intermediate", "type": "Scenario", "topic": "8. Scenario-Based and Tricky Questions", "question": "At a crash the log holds &lt;T1, start&gt;, &lt;T1, A, 1000, 900&gt; and nothing else for T1. What does recovery do?", "options": ["Undo T1, so A is restored to 1000", "Redo T1, so A is set to 900", "Do nothing, so A stays 900 on disk", "Redo T1, so A is set to 1000"], "answer": "A", "explanation": "No commit record exists, so T1 is undone using the old value 1000."},
+  {"id": 122, "level": "Intermediate", "type": "Scenario", "topic": "8. Scenario-Based and Tricky Questions", "question": "The &lt;T, commit&gt; record reached the stable log, but T's data blocks were still only in the buffer when power failed. Recovery will:", "options": ["Undo T's updates", "Abort T and restart it", "Redo T's updates from the log", "Ignore T completely"], "answer": "C", "explanation": "T had committed, so durability demands that its updates be reapplied."},
+  {"id": 123, "level": "Intermediate", "type": "Scenario", "topic": "8. Scenario-Based and Tricky Questions", "question": "In an immediate-modification system, T's updated data is on disk but T has no commit record when the crash occurs. Recovery will:", "options": ["Mark T as committed and write a commit record for it", "Undo T using the old values in the log", "Leave the data unchanged because the log is not consulted", "Redo T using the new values stored in the log records"], "answer": "B", "explanation": "An uncommitted transaction must leave no effects, so its writes are reversed."},
+  {"id": 124, "level": "Advanced", "type": "Tricky", "topic": "8. Scenario-Based and Tricky Questions", "question": "A data item is written to disk BEFORE its log record is written, and the system then crashes. What is the problem?", "options": ["The commit record is duplicated in the log on stable storage", "The log becomes too large to be kept on stable storage", "The checkpoint record is lost, so the whole log must be scanned", "The old value is not in the log, so the update cannot be undone"], "answer": "D", "explanation": "This violates write-ahead logging. Atomicity cannot be guaranteed."},
+  {"id": 125, "level": "Intermediate", "type": "Scenario", "topic": "8. Scenario-Based and Tricky Questions", "question": "A checkpoint is taken with active list {T2, T3}. Later T2 commits and T3 is still running when the system crashes. Recovery:", "options": ["Undoes T2 and redoes T3", "Does nothing for either", "Redoes T2 and undoes T3", "Redoes both"], "answer": "C", "explanation": "T2 committed after the checkpoint, so it is redone. T3 never committed, so it is undone."},
+  {"id": 126, "level": "Intermediate", "type": "Scenario", "topic": "8. Scenario-Based and Tricky Questions", "question": "A transaction divides by zero during execution. Which sequence of states does it follow?", "options": ["Active, Partially committed, Committed", "Active, Aborted, Failed", "Active, Failed, Aborted, with its updates rolled back", "Active, Committed, Aborted"], "answer": "C", "explanation": "A logical error stops normal execution. The transaction fails and then is rolled back to Aborted."},
+  {"id": 127, "level": "Advanced", "type": "Tricky", "topic": "8. Scenario-Based and Tricky Questions", "question": "A user is shown a 'success' message before the commit record reaches stable storage, and the system then crashes. What risk arises?", "options": ["The log grows without limit and fills the whole stable storage", "A transaction reported as done can be lost, violating durability", "The shadow page table is duplicated on the disk by the system", "The checkpoint record is lost, so recovery has to start at the top"], "answer": "B", "explanation": "Success must be reported only after the commit record is on stable storage."},
+  {"id": 128, "level": "Intermediate", "type": "Scenario", "topic": "8. Scenario-Based and Tricky Questions", "question": "Under deferred modification, at crash time T1 has a commit record and T2 does not. Recovery:", "options": ["Redoes T1 and ignores T2, since T2 never updated the database", "Undoes T1 and redoes T2 using the old and new values in the log", "Redoes both T1 and T2 using the new values in the log", "Undoes both T1 and T2 using the old values in the log"], "answer": "A", "explanation": "Deferred modification delays all database writes until commit, so T2 left nothing to undo."},
+  {"id": 129, "level": "Advanced", "type": "Tricky", "topic": "8. Scenario-Based and Tricky Questions", "question": "Which of the following is NOT part of an update log record?", "options": ["The page-table address of the shadow table", "Data item identifier of the item that was updated", "Transaction identifier of the transaction that made the update", "Old value and new value of the updated data item"], "answer": "A", "explanation": "An update record holds the transaction id, the item, and the old and new values. Shadow tables are not part of logging."},
+  {"id": 130, "level": "Intermediate", "type": "Scenario", "topic": "8. Scenario-Based and Tricky Questions", "question": "After a crash, the database buffer is lost. Which source is used to recover committed updates that were not yet on disk?", "options": ["Contents of CPU registers", "The log on stable storage", "The cache of the web server", "The database buffer in RAM"], "answer": "B", "explanation": "The log survives the crash and holds the new values needed for redo."},
+  {"id": 131, "level": "Advanced", "type": "Tricky", "topic": "8. Scenario-Based and Tricky Questions", "question": "A crash occurs after all log records were safely written, but none of the data blocks reached disk. What does recovery need to do?", "options": ["Redo the committed transactions. The uncommitted ones need no undo on disk", "Redo all transactions, including the uncommitted ones, from the log", "Undo all transactions, including the committed ones, from the log", "Nothing at all, since no data block was written to the disk"], "answer": "A", "explanation": "Committed updates must be reapplied from the log. Uncommitted updates never reached the disk."},
+  {"id": 132, "level": "Intermediate", "type": "Scenario", "topic": "8. Scenario-Based and Tricky Questions", "question": "The log reads: &lt;T1 start&gt;, &lt;T1, A, 50, 60&gt;, &lt;checkpoint {T1}&gt;, &lt;T1, A, 60, 70&gt;, &lt;T1 commit&gt;, &lt;T2 start&gt;, &lt;T2, B, 3, 4&gt;. The system crashes. After recovery, A and B are:", "options": ["A = 50, B = 3", "A = 60, B = 4", "A = 70, B = 4", "A = 70, B = 3"], "answer": "D", "explanation": "T1 committed and is redone, so A = 70. T2 has no commit and is undone, so B = 3."},
+  {"id": 133, "level": "Intermediate", "type": "Scenario", "topic": "8. Scenario-Based and Tricky Questions", "question": "In shadow paging, a crash occurs after the modified pages and the current page table are written, but before the pointer is switched. After restart:", "options": ["The transaction is treated as committed and its updates are kept", "The transaction is redone from the log using its new values", "The database is inconsistent and has to be rebuilt from scratch", "The database is in its state before the transaction, as the shadow page table is used"], "answer": "D", "explanation": "The pointer switch is the commit point. Before it, the shadow table still defines the database."},
+  {"id": 134, "level": "Basic", "type": "Concept", "topic": "9. Mixed OAVS TGT Practice Set", "question": "WAL stands for:", "options": ["Wide-Area Logging", "Write-Ahead Logging", "Wait-And-Log", "Write-After Logging"], "answer": "B", "explanation": "Write-ahead logging means log records are written to stable storage before the data they describe."},
+  {"id": 135, "level": "Basic", "type": "Concept", "topic": "9. Mixed OAVS TGT Practice Set", "question": "Which DBMS component is chiefly responsible for restoring the database after a failure?", "options": ["Recovery manager", "Authorization manager", "Query optimizer", "DDL compiler"], "answer": "A", "explanation": "The recovery manager implements logging, checkpointing and rollback or redo."},
+  {"id": 136, "level": "Intermediate", "type": "Scenario", "topic": "9. Mixed OAVS TGT Practice Set", "question": "The log contains &lt;T1, X, 10, 20&gt; followed by &lt;T1, X, 20, 35&gt;. If T1 must be undone, the final value of X is:", "options": ["35", "45", "10", "20"], "answer": "C", "explanation": "Undo proceeds backwards, restoring 20 and then 10. The earliest old value is 10."},
+  {"id": 137, "level": "Intermediate", "type": "Scenario", "topic": "9. Mixed OAVS TGT Practice Set", "question": "A database has a page table with 10 entries. A transaction modifies 3 distinct pages. How many new data pages does shadow paging allocate for it?", "options": ["10", "1", "7", "3"], "answer": "D", "explanation": "Each modified page is copied once to a new page. Unmodified pages are shared by both tables."},
+  {"id": 138, "level": "Basic", "type": "Concept", "topic": "9. Mixed OAVS TGT Practice Set", "question": "Which log record shows that a transaction was rolled back?", "options": ["&lt;Ti, start&gt;", "&lt;checkpoint L&gt;", "&lt;Ti, abort&gt;", "&lt;Ti, commit&gt;"], "answer": "C", "explanation": "After rollback completes, an abort record is written for Ti."},
+  {"id": 139, "level": "Advanced", "type": "Tricky", "topic": "9. Mixed OAVS TGT Practice Set", "question": "Which of the following is NOT a standard transaction state?", "options": ["Failed", "Active", "Suspended", "Partially committed"], "answer": "C", "explanation": "The standard states are Active, Partially committed, Failed, Aborted and Committed."},
+  {"id": 140, "level": "Intermediate", "type": "Statement", "topic": "9. Mixed OAVS TGT Practice Set", "question": "S1: A checkpoint record is written to the log.\nS2: Shadow paging writes a checkpoint record to the page table.\nWhich is correct?", "options": ["Both S1 and S2", "Only S2", "Neither S1 nor S2", "Only S1"], "answer": "D", "explanation": "Checkpoints belong to log-based recovery. Shadow paging does not use them."},
+  {"id": 141, "level": "Advanced", "type": "Assertion-Reason", "topic": "9. Mixed OAVS TGT Practice Set", "question": "Assertion (A): A transaction in the partially committed state may still fail.\nReason (R): Once a transaction reaches the partially committed state, it is guaranteed to commit.", "options": ["Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "A is false, but R is true"], "answer": "C", "explanation": "A is true, since the final output may fail. R is false."},
+  {"id": 142, "level": "Intermediate", "type": "Match", "topic": "9. Mixed OAVS TGT Practice Set", "question": "Match the property (List I) with its description (List II).\nI. Atomicity    II. Consistency    III. Isolation    IV. Durability\n1. Committed updates survive crashes    2. All or nothing    3. Preserves integrity constraints    4. Concurrent transactions do not interfere", "options": ["I-2, II-3, III-1, IV-4", "I-4, II-3, III-2, IV-1", "I-3, II-2, III-4, IV-1", "I-2, II-3, III-4, IV-1"], "answer": "D", "explanation": "Atomicity is all-or-nothing, consistency preserves constraints, isolation avoids interference, and durability survives failure."},
+  {"id": 143, "level": "Advanced", "type": "Tricky", "topic": "9. Mixed OAVS TGT Practice Set", "question": "After a COMMIT has completed successfully, issuing ROLLBACK will:", "options": ["Undo the committed updates using the log", "Have no effect on the committed updates", "Move the transaction back to Active", "Delete the checkpoint record"], "answer": "B", "explanation": "ROLLBACK affects only the current, uncommitted transaction. Committed work is permanent."},
+  {"id": 144, "level": "Intermediate", "type": "Scenario", "topic": "9. Mixed OAVS TGT Practice Set", "question": "The log contains &lt;T1, X, 5, 8&gt;, &lt;T2, Y, 2, 6&gt;, &lt;T1 commit&gt;, and then the system crashes with no further records. After recovery, X and Y are:", "options": ["X = 5, Y = 2", "X = 5, Y = 6", "X = 8, Y = 2", "X = 8, Y = 6"], "answer": "C", "explanation": "T1 committed, so X = 8 is redone. T2 has no commit, so Y goes back to 2."}
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

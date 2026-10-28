@@ -1,0 +1,2984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "Definition/Fact",
+    "topic": "History of Java",
+    "question": "Who is widely regarded as the father of the Java programming language?",
+    "options": ["James Gosling","Bjarne Stroustrup","Dennis Ritchie","Guido van Rossum"],
+    "answer": "A",
+    "explanation": "James Gosling led the team at Sun Microsystems that created Java and is credited as its principal designer."
+  },
+  {
+    "id": 2,
+    "level": "Basic",
+    "type": "Definition/Fact",
+    "topic": "History of Java",
+    "question": "In which year did James Gosling and his team begin the project that eventually led to Java?",
+    "options": ["2000","1991","1985","1995"],
+    "answer": "B",
+    "explanation": "The project, initially called the 'Green Project', was started in 1991 at Sun Microsystems."
+  },
+  {
+    "id": 3,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "History of Java",
+    "question": "What was the original name given to the language before it was called Java?",
+    "options": ["Green","Duke","Oak","Pearl"],
+    "answer": "C",
+    "explanation": "The language was first named 'Oak', reportedly after an oak tree outside James Gosling's office."
+  },
+  {
+    "id": 4,
+    "level": "Basic",
+    "type": "Definition/Fact",
+    "topic": "History of Java",
+    "question": "Which company originally developed the Java programming language?",
+    "options": ["IBM","Oracle Corporation","Microsoft","Sun Microsystems"],
+    "answer": "D",
+    "explanation": "Java was originally developed by Sun Microsystems, which was later acquired by Oracle in 2010."
+  },
+  {
+    "id": 5,
+    "level": "Intermediate",
+    "type": "Definition/Fact",
+    "topic": "History of Java",
+    "question": "In which year was the name of the language officially changed from Oak to Java?",
+    "options": ["1993","1995","1998","1991"],
+    "answer": "B",
+    "explanation": "The language was renamed to Java in 1995 due to a trademark conflict with the name Oak."
+  },
+  {
+    "id": 6,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "History of Java",
+    "question": "Why was the name 'Oak' abandoned in favour of 'Java'?",
+    "options": ["Oak was too long to type","Sun wanted a name starting with J","Oak sounded unprofessional","Oak was already a registered trademark"],
+    "answer": "D",
+    "explanation": "The name Oak had to be dropped because it was already trademarked by another company, leading to the adoption of the name Java."
+  },
+  {
+    "id": 7,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "History of Java",
+    "question": "The internal project at Sun Microsystems that led to the creation of Java was known as:",
+    "options": ["The Blue Project","The Green Project","Project Duke","Project Oak"],
+    "answer": "B",
+    "explanation": "Java originated from an internal research effort at Sun Microsystems called the Green Project, started in 1991."
+  },
+  {
+    "id": 8,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "History of Java",
+    "question": "Which of the following was an original goal behind the creation of Java?",
+    "options": ["To build a language for consumer electronic devices","To design a web browser","To replace all operating systems","To create a database query language"],
+    "answer": "A",
+    "explanation": "Java was originally designed for programming small, embedded, networked consumer devices such as set-top boxes."
+  },
+  {
+    "id": 9,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "History of Java",
+    "question": "Along with James Gosling, which other engineers were key members of the original Green Team at Sun Microsystems?",
+    "options": ["Guido van Rossum and Tim Berners-Lee","Larry Ellison and Scott McNealy","Dennis Ritchie and Ken Thompson","Mike Sheridan and Patrick Naughton"],
+    "answer": "D",
+    "explanation": "Mike Sheridan and Patrick Naughton, along with James Gosling, formed the core of the original Green Team."
+  },
+  {
+    "id": 10,
+    "level": "Basic",
+    "type": "Definition/Fact",
+    "topic": "History of Java",
+    "question": "In which year was Java first publicly released to the world?",
+    "options": ["1991","1993","1995","1996"],
+    "answer": "C",
+    "explanation": "Java was formally announced and released to the public in 1995 by Sun Microsystems."
+  },
+  {
+    "id": 11,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "History of Java",
+    "question": "The very first official version, JDK 1.0, was released in:",
+    "options": ["1994","1996","1995","1998"],
+    "answer": "B",
+    "explanation": "JDK 1.0, the first official Java Development Kit release, was made available in January 1996."
+  },
+  {
+    "id": 12,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "History of Java",
+    "question": "Java's design was most heavily influenced by which two earlier programming languages?",
+    "options": ["BASIC and COBOL","Lisp and Prolog","Pascal and Fortran","C and C++"],
+    "answer": "D",
+    "explanation": "Java's syntax and object-oriented structure were strongly influenced by C and C++."
+  },
+  {
+    "id": 13,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "History of Java",
+    "question": "Which well-known slogan is closely associated with Java's history and design philosophy?",
+    "options": ["Write Once, Run Anywhere","One Language to Rule Them All","Fail fast, fail often","Keep It Simple"],
+    "answer": "A",
+    "explanation": "The phrase 'Write Once, Run Anywhere' (WORA) captures Java's founding goal of platform-independent execution."
+  },
+  {
+    "id": 14,
+    "level": "Basic",
+    "type": "Definition/Fact",
+    "topic": "History of Java",
+    "question": "What is the name of the official mascot of the Java programming language?",
+    "options": ["Java Bean","Duke","Tux","Gopher"],
+    "answer": "B",
+    "explanation": "Duke, a small waving cartoon figure, has been the official Java mascot since Java's early days."
+  },
+  {
+    "id": 15,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "History of Java",
+    "question": "Java was initially intended to power which type of product before it became popular for the internet?",
+    "options": ["Mainframe servers","Personal desktop computers","Interactive digital cable television set-top boxes","Word processors"],
+    "answer": "C",
+    "explanation": "Java was originally created for interactive television and embedded consumer devices before being repositioned for internet applications."
+  },
+  {
+    "id": 16,
+    "level": "Intermediate",
+    "type": "Definition/Fact",
+    "topic": "History of Java",
+    "question": "Which company acquired Sun Microsystems, the original creator of Java, in 2010?",
+    "options": ["Google","Oracle Corporation","IBM","Microsoft"],
+    "answer": "B",
+    "explanation": "Oracle Corporation acquired Sun Microsystems in 2010 and has maintained Java ever since."
+  },
+  {
+    "id": 17,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "History of Java",
+    "question": "Which of the following best describes why Java gained rapid popularity in the mid-1990s?",
+    "options": ["It was cheaper than all other languages","It required no compiler","It enabled platform-independent applications suited to the growing internet","It was the only object-oriented language available"],
+    "answer": "C",
+    "explanation": "Java's rise coincided with the growth of the internet, and its platform-independent nature made it ideal for web-based applications."
+  },
+  {
+    "id": 18,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "History of Java",
+    "question": "Java version 1.2, released in 1998, was marketed under which name?",
+    "options": ["JDK Classic","Java Enterprise","J2SE (Java 2 Platform, Standard Edition)","Java SE"],
+    "answer": "C",
+    "explanation": "With the release of version 1.2 in 1998, Sun rebranded the platform as J2SE, marking the beginning of the 'Java 2' era."
+  },
+  {
+    "id": 19,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "History of Java",
+    "question": "Which major Java version, released in 2004, introduced generics, annotations, and the enhanced for-loop, and is considered a historic milestone?",
+    "options": ["Java SE 6","J2SE 1.4","J2SE 1.3","J2SE 5.0"],
+    "answer": "D",
+    "explanation": "J2SE 5.0 (2004) was a landmark release introducing generics, metadata annotations, autoboxing, and the enhanced for-loop."
+  },
+  {
+    "id": 20,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "History of Java",
+    "question": "From which version onward did Sun Microsystems drop the 'J2SE' naming convention in favour of 'Java SE'?",
+    "options": ["Java SE 5","Java SE 7","Java SE 6","Java SE 8"],
+    "answer": "C",
+    "explanation": "Starting with version 6 in 2006, the platform was renamed from J2SE to Java SE, dropping the '2'."
+  },
+  {
+    "id": 21,
+    "level": "Basic",
+    "type": "Definition/Fact",
+    "topic": "History of Java",
+    "question": "Which organisation currently owns and maintains the Java programming language and platform?",
+    "options": ["Free Software Foundation","Oracle Corporation","Apache Software Foundation","The Linux Foundation"],
+    "answer": "B",
+    "explanation": "Since acquiring Sun Microsystems in 2010, Oracle Corporation has owned and maintained the Java platform."
+  },
+  {
+    "id": 22,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "History of Java",
+    "question": "Java was formally unveiled to the public at which type of event in 1995?",
+    "options": ["A United Nations summit","The SunWorld conference","A private Microsoft seminar","The Olympics opening ceremony"],
+    "answer": "B",
+    "explanation": "Java was formally introduced to the public at the SunWorld conference in 1995."
+  },
+  {
+    "id": 23,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "History of Java",
+    "question": "Which of the following statements about Java's early history is TRUE?",
+    "options": ["Java began as a language for set-top boxes and was later adapted for the World Wide Web","Java was designed exclusively for scientific computing","Java was released before C++","Java's original name was 'Java Beans'"],
+    "answer": "A",
+    "explanation": "Java began as 'Oak', targeted at embedded consumer devices, and was later repositioned to serve the emerging World Wide Web."
+  },
+  {
+    "id": 24,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "History of Java",
+    "question": "Approximately how many years after the start of the Green Project was Java publicly released?",
+    "options": ["1 year","10 years","4 years","2 years"],
+    "answer": "C",
+    "explanation": "The Green Project began in 1991, and Java was publicly released in 1995 - a gap of about four years."
+  },
+  {
+    "id": 25,
+    "level": "Basic",
+    "type": "Negative/Exception",
+    "topic": "History of Java",
+    "question": "Which of these is NOT true regarding the history of Java?",
+    "options": ["Java was renamed in 1995","Java was created at Sun Microsystems","Java was created by Dennis Ritchie","Java's original name was Oak"],
+    "answer": "C",
+    "explanation": "Dennis Ritchie is known for creating the C language, not Java; Java was created by James Gosling and his team."
+  },
+  {
+    "id": 26,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which Java feature allows a compiled Java program to run on any device with a compatible JVM, regardless of the underlying operating system?",
+    "options": ["Portability","Security","Robustness","Simplicity"],
+    "answer": "A",
+    "explanation": "Platform independence/portability means Java bytecode can run unchanged on any platform that has a suitable JVM."
+  },
+  {
+    "id": 27,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Java is described as 'simple' primarily because:",
+    "options": ["It removes complex features like pointers and operator overloading found in C++","It has no built-in libraries","It does not support object orientation","It cannot be used for large applications"],
+    "answer": "A",
+    "explanation": "Java was designed to eliminate confusing and error-prone features of C/C++, such as explicit pointers, making it easier to learn and use."
+  },
+  {
+    "id": 28,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "The feature of Java that allows the same compiled bytecode to execute on Windows, Linux, and macOS is known as:",
+    "options": ["Dynamic binding","Multithreading","Platform independence","Distributed computing"],
+    "answer": "C",
+    "explanation": "Platform independence is achieved because Java bytecode is not tied to any specific operating system or hardware."
+  },
+  {
+    "id": 29,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which Java feature enables a single program to perform multiple tasks simultaneously, such as playing music while downloading a file?",
+    "options": ["Interpretation","Garbage collection","Portability","Multithreading"],
+    "answer": "D",
+    "explanation": "Multithreading allows concurrent execution of two or more parts of a program for maximum utilisation of CPU."
+  },
+  {
+    "id": 30,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Java is called 'architecture-neutral' because:",
+    "options": ["It cannot be compiled","Its compiled code is not dependent on any specific computer architecture","It requires a specific brand of hardware","It only runs on ARM processors"],
+    "answer": "B",
+    "explanation": "Architecture neutrality means Java bytecode has no dependency on any particular CPU architecture and can run wherever a JVM exists."
+  },
+  {
+    "id": 31,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which of the following best distinguishes 'portable' from 'architecture-neutral' as Java features?",
+    "options": ["They mean exactly the same thing with no distinction","Architecture-neutral refers to independence from data representation/CPU design, while portable extends this to full application-level independence across environments","Portable means only source code can move, not bytecode","Architecture-neutral applies only to the JVM, not to bytecode"],
+    "answer": "B",
+    "explanation": "Architecture-neutrality is about bytecode having no size/format dependency on a CPU, while portability is the broader guarantee that programs behave consistently across different environments."
+  },
+  {
+    "id": 32,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which Java feature specifically refers to Java's ability to check programs at both compile-time and run-time to avoid crashes?",
+    "options": ["Distributed nature","Simplicity","Dynamic nature","Robustness"],
+    "answer": "D",
+    "explanation": "Robustness refers to Java's strong memory management, exception handling, and type-checking that reduce the chances of program failure."
+  },
+  {
+    "id": 33,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Automatic garbage collection in Java is most closely associated with which overall feature?",
+    "options": ["Distributed computing","Multithreading","Security","Robustness"],
+    "answer": "D",
+    "explanation": "Automatic garbage collection contributes to robustness by preventing memory leaks and reducing programmer error."
+  },
+  {
+    "id": 34,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Java is considered a 'secure' language mainly because of features such as:",
+    "options": ["Direct access to memory addresses via pointers","Allowing unrestricted access to the operating system","Absence of explicit pointers and use of a bytecode verifier/sandboxed execution","Lack of an execution environment"],
+    "answer": "C",
+    "explanation": "Java enhances security by removing explicit pointers and running code inside a controlled environment where bytecode is verified before execution."
+  },
+  {
+    "id": 35,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which feature allows Java programs to access databases, files, and objects across a network as though they were local resources?",
+    "options": ["Dynamic nature","Simplicity","Interpreted nature","Distributed nature"],
+    "answer": "D",
+    "explanation": "Java's distributed nature, supported by networking libraries, allows resource sharing and communication across networks."
+  },
+  {
+    "id": 36,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "The 'dynamic' nature of Java refers to its ability to:",
+    "options": ["Never update its libraries","Run only static methods","Avoid using interfaces","Adapt to an evolving environment by loading classes at runtime as needed"],
+    "answer": "D",
+    "explanation": "Java's dynamic nature allows classes to be loaded on demand at runtime, supporting extensibility and adaptability."
+  },
+  {
+    "id": 37,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which of the following is a core object-oriented feature supported by Java?",
+    "options": ["Global functions without classes only","Encapsulation, inheritance, and polymorphism as part of its OOP model","Only procedural programming","Only functional programming"],
+    "answer": "B",
+    "explanation": "Java is fundamentally object-oriented and organises programs around objects and classes, supporting concepts like encapsulation and inheritance."
+  },
+  {
+    "id": 38,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which statement correctly explains why Java is called an 'interpreted and compiled' language?",
+    "options": ["Java source is compiled into bytecode by javac, which the JVM then interprets/JIT-compiles into machine code","Java bytecode is compiled again into another intermediate language","Java has no compilation step at all","Java source code is directly executed by hardware"],
+    "answer": "A",
+    "explanation": "Java source code is first compiled into bytecode; the JVM then interprets or Just-In-Time compiles that bytecode into native machine instructions."
+  },
+  {
+    "id": 39,
+    "level": "Advanced",
+    "type": "Scenario-Based",
+    "topic": "Features of Java",
+    "question": "A developer notices their Java program automatically frees memory used by objects no longer referenced. Which Java feature is responsible?",
+    "options": ["Garbage collection (part of robustness)","Multithreading","Architecture neutrality","Portability"],
+    "answer": "A",
+    "explanation": "Automatic memory reclamation of unused objects is performed by the garbage collector, supporting Java's robustness."
+  },
+  {
+    "id": 40,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "High performance in Java, compared to purely interpreted languages, is largely achieved through:",
+    "options": ["Manual memory management","Avoiding the use of a JVM","The Just-In-Time (JIT) compiler","Removing object orientation"],
+    "answer": "C",
+    "explanation": "The JIT compiler converts frequently used bytecode into native machine code at runtime, significantly improving performance."
+  },
+  {
+    "id": 41,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which feature best explains why the same .class file can be executed on both a Windows PC and a Linux server?",
+    "options": ["Simplicity","Multithreading","Platform independence via the JVM","Distributed computing"],
+    "answer": "C",
+    "explanation": "Because each platform has its own JVM implementation capable of interpreting the same platform-independent bytecode, the file runs unchanged on both systems."
+  },
+  {
+    "id": 42,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "Features of Java",
+    "question": "A student says, 'Java removes the need for explicit pointer arithmetic, unlike C++.' This statement supports which Java feature?",
+    "options": ["Dynamic nature","Simplicity and Security","Distributed nature","Multithreading"],
+    "answer": "B",
+    "explanation": "Removing explicit pointers makes Java simpler to use and more secure, since it prevents unauthorised or accidental memory access."
+  },
+  {
+    "id": 43,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which of the following is a common misconception about Java's 'interpreted' feature?",
+    "options": ["That Java bytecode requires a JVM to run","That interpretation can be aided by JIT compilation","That the JVM can interpret bytecode line-by-line","That Java is interpreted only and never compiled at all, ignoring the javac compilation step"],
+    "answer": "D",
+    "explanation": "A common misconception is thinking Java skips compilation entirely; in reality, source code is compiled to bytecode first, and the JVM interprets/JIT-compiles that bytecode."
+  },
+  {
+    "id": 44,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which Java feature is responsible for allowing multiple parts of a program, such as a UI update and a background calculation, to run concurrently?",
+    "options": ["Portability","Simplicity","Multithreading","Robustness"],
+    "answer": "C",
+    "explanation": "Multithreading is Java's capability to execute multiple threads concurrently within a single program."
+  },
+  {
+    "id": 45,
+    "level": "Intermediate",
+    "type": "Negative/Exception",
+    "topic": "Features of Java",
+    "question": "Which of the following is NOT a feature of Java?",
+    "options": ["Object-oriented design","Platform independence","Robustness","Manual pointer-based memory management as the default approach"],
+    "answer": "D",
+    "explanation": "Java deliberately avoids manual pointer-based memory management, using automatic garbage collection instead."
+  },
+  {
+    "id": 46,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Match the feature to its correct meaning: 'Security' in Java primarily relates to:",
+    "options": ["Ability to run older Java versions","Protection against viruses/malicious code through a controlled execution environment","Faster execution speed","Support for multiple threads"],
+    "answer": "B",
+    "explanation": "Java's security features include the bytecode verifier and a sandboxed execution environment that restrict potentially harmful operations."
+  },
+  {
+    "id": 47,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which statement correctly compares 'robustness' and 'security' as Java features?",
+    "options": ["They are identical features with no difference","Robustness focuses on preventing program crashes (via strong typing, exception handling, garbage collection), while security focuses on protecting systems from malicious code","Robustness applies only to multithreaded programs","Security is only about network firewalls, unrelated to Java itself"],
+    "answer": "B",
+    "explanation": "Robustness is about reliability and crash-prevention through error checking and memory management, while security is about protecting against harmful or unauthorised code execution."
+  },
+  {
+    "id": 48,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which Java feature makes it well-suited for developing networked and enterprise applications that share data across multiple computers?",
+    "options": ["Portability","Simplicity","Distributed nature","Dynamic nature"],
+    "answer": "C",
+    "explanation": "Java's distributed nature, supported by networking APIs, allows applications to easily communicate and share resources across a network."
+  },
+  {
+    "id": 49,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "Features of Java",
+    "question": "A programmer claims: 'Because Java compiles to bytecode instead of native machine code, my program can run on any device with a JVM.' Which feature does this best illustrate?",
+    "options": ["Dynamic nature","Platform independence / portability","Multithreading","Robustness"],
+    "answer": "B",
+    "explanation": "This statement directly illustrates platform independence, where the same bytecode runs across devices using their respective JVMs."
+  },
+  {
+    "id": 50,
+    "level": "Advanced",
+    "type": "Scenario-Based",
+    "topic": "Features of Java",
+    "question": "Which of the following scenarios best demonstrates Java's 'dynamic' nature?",
+    "options": ["A Java program refuses to run on a new operating system","A Java program is compiled once and never changes","A Java array has a fixed size that cannot change","A Java class is loaded into memory only when it is first referenced during program execution"],
+    "answer": "D",
+    "explanation": "Dynamic class loading, where classes are loaded on demand at runtime rather than all at once, exemplifies Java's dynamic nature."
+  },
+  {
+    "id": 51,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which of the following best defines 'portability' in the context of Java?",
+    "options": ["The ability to secure a network","The ability to transfer files between folders","The ability to write code faster","The ability of Java bytecode to run correctly on different hardware and operating systems without modification"],
+    "answer": "D",
+    "explanation": "Portability means Java programs, once compiled, can be moved and executed on any platform without needing to be recompiled."
+  },
+  {
+    "id": 52,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which of the following is an example of Java's object-oriented feature in practice?",
+    "options": ["Disabling inheritance in all programs","Avoiding the use of methods entirely","Organising a program's data and behaviour into classes and objects","Writing code as a single long sequence of instructions with no structure"],
+    "answer": "C",
+    "explanation": "Java's object-oriented feature is reflected in structuring programs around classes and objects that encapsulate data and behaviour."
+  },
+  {
+    "id": 53,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which feature of Java ensures architecture-neutral bytecode has a fixed instruction format regardless of the underlying CPU?",
+    "options": ["Multithreading","Garbage collection","Java's networking libraries","The design of the Java Virtual Machine's bytecode specification"],
+    "answer": "D",
+    "explanation": "The JVM specification defines a fixed, architecture-independent bytecode format, ensuring consistent behaviour across CPU types."
+  },
+  {
+    "id": 54,
+    "level": "Advanced",
+    "type": "Statement-Based",
+    "topic": "Features of Java",
+    "question": "Statement I: Java's robustness is enhanced by strict compile-time and run-time checking. Statement II: Java's robustness eliminates the need for a garbage collector. Which is correct?",
+    "options": ["Both statements are true","Only Statement I is true","Only Statement II is true","Both statements are false"],
+    "answer": "B",
+    "explanation": "Statement I correctly describes robustness, but Statement II is false since garbage collection is itself a contributor to robustness, not something it eliminates."
+  },
+  {
+    "id": 55,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which of the following is a benefit directly resulting from Java's platform independence feature?",
+    "options": ["Automatic language translation","Improved battery life on mobile devices","Faster internet speeds","Reduced need to rewrite software for each operating system"],
+    "answer": "D",
+    "explanation": "Because the same Java bytecode runs on multiple platforms, developers save significant time and effort compared to rewriting code for each OS."
+  },
+  {
+    "id": 56,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "A common exam trick question asks whether Java is 'purely interpreted'. The correct clarification is:",
+    "options": ["Java involves both compilation (to bytecode) and interpretation/JIT compilation (by the JVM)","Java requires manual translation by the programmer","Java is purely interpreted with no compilation step","Java is purely compiled into machine code with no JVM involvement"],
+    "answer": "A",
+    "explanation": "Java uses a hybrid approach: source code is compiled into bytecode, which the JVM then interprets or JIT-compiles into native code."
+  },
+  {
+    "id": 57,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which feature allows a Java program compiled years ago on an old system to still run correctly on a brand-new system with an updated JVM?",
+    "options": ["Multithreading","Portability/platform independence","Static typing","Encapsulation"],
+    "answer": "B",
+    "explanation": "Portability ensures that compiled Java bytecode remains executable across different systems and over time, as long as a compatible JVM exists."
+  },
+  {
+    "id": 58,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which statement best explains the relationship between 'architecture neutrality' and 'high performance' as Java features?",
+    "options": ["They contradict each other and cannot coexist","Architecture-neutral bytecode is optimised at runtime by the JIT compiler, allowing near-native performance while remaining platform-independent","High performance is achieved only by removing architecture neutrality","They are unrelated to the JVM"],
+    "answer": "B",
+    "explanation": "The JIT compiler bridges the gap between architecture-neutral bytecode and high performance by converting bytecode into optimised native code at runtime."
+  },
+  {
+    "id": 59,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which of these best identifies Java as an object-oriented language feature exam question?",
+    "options": ["Java forbids the use of classes","Java objects cannot have attributes","Java programs are built around interacting objects rather than only procedures","Java only supports functions, not objects"],
+    "answer": "C",
+    "explanation": "Java is fundamentally object-oriented, meaning that programs are designed using objects that combine data and behaviour."
+  },
+  {
+    "id": 60,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which of the following correctly pairs a Java feature with its primary benefit?",
+    "options": ["Security - Slows down compilation only","Multithreading - Better utilisation of CPU by running tasks concurrently","Simplicity - Increases code complexity","Robustness - Removes the ability to catch exceptions"],
+    "answer": "B",
+    "explanation": "Multithreading allows a program to perform multiple operations concurrently, improving CPU utilisation and responsiveness."
+  },
+  {
+    "id": 61,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which of the following is the BEST explanation for why Java is considered both 'robust' and 'secure', without conflating the two features?",
+    "options": ["Robust applies to hardware; secure applies to software","Robust and secure mean the same thing in Java","Neither feature involves the JVM","Robust deals with preventing runtime failures (via strong typing and garbage collection); secure deals with preventing malicious or unauthorised operations"],
+    "answer": "D",
+    "explanation": "Robustness is about reliability and crash prevention, while security is about protection from malicious code - two distinct but complementary features."
+  },
+  {
+    "id": 62,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "A key reason Java code can run on embedded devices, desktops, and servers alike is because of its:",
+    "options": ["Dependence on Windows APIs","Platform-independent/portable nature","Static-only design","Requirement for a specific compiler per device"],
+    "answer": "B",
+    "explanation": "Java's platform independence and portability allow the same compiled bytecode to run across a wide variety of devices."
+  },
+  {
+    "id": 63,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which of the following features is primarily responsible for Java applications being able to detect and handle errors gracefully rather than crashing abruptly?",
+    "options": ["Distributed nature","Dynamic nature","Multithreading","Robustness (exception handling, strong type checking)"],
+    "answer": "D",
+    "explanation": "Robustness includes Java's exception-handling mechanism and strict compile-time checks that help programs handle errors gracefully."
+  },
+  {
+    "id": 64,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Features of Java",
+    "question": "Assertion (A): Java is architecture-neutral. Reason (R): Java bytecode size and format do not depend on any specific CPU. Choose the correct option.",
+    "options": ["A is false but R is true","Both A and R are false","A is true but R is false","Both A and R are true, and R correctly explains A"],
+    "answer": "D",
+    "explanation": "Java's architecture neutrality stems exactly from the fact that its bytecode format is independent of any specific processor design."
+  },
+  {
+    "id": 65,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Features of Java",
+    "question": "Which of these is a valid example illustrating Java's 'distributed' feature?",
+    "options": ["Using a for loop","Declaring a private variable in a class","Using Java's networking classes (like java.net) to build client-server applications","Compiling a single Java file"],
+    "answer": "C",
+    "explanation": "Java's distributed nature is demonstrated through its built-in support for networking, enabling applications to communicate across systems."
+  },
+  {
+    "id": 66,
+    "level": "Basic",
+    "type": "Definition/Fact",
+    "topic": "JDK Environment",
+    "question": "What does the acronym JDK stand for?",
+    "options": ["Java Development Kit","Java Dynamic Kit","Java Data Kernel","Java Design Kernel"],
+    "answer": "A",
+    "explanation": "JDK stands for Java Development Kit, the complete software package needed to develop Java applications."
+  },
+  {
+    "id": 67,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "The JDK is primarily intended for which group of users?",
+    "options": ["End users who only run Java applications","Developers who write, compile, and debug Java programs","Database administrators only","Network administrators only"],
+    "answer": "B",
+    "explanation": "The JDK provides the tools required by developers to write, compile, and debug Java programs, unlike the JRE which is meant for running programs."
+  },
+  {
+    "id": 68,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "Which of the following is included within the JDK?",
+    "options": ["Only the JVM","The JRE plus development tools such as compiler and debugger","Only a text editor","Only the operating system"],
+    "answer": "B",
+    "explanation": "The JDK includes the JRE (which itself contains the JVM and libraries) along with development tools like javac, java, javadoc, and jar."
+  },
+  {
+    "id": 69,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "Which JDK tool is used to compile Java source code into bytecode?",
+    "options": ["java","jar","javac","javap"],
+    "answer": "C",
+    "explanation": "javac is the Java compiler tool that converts .java source files into .class bytecode files."
+  },
+  {
+    "id": 70,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "Which JDK tool is used to launch the JVM and execute a compiled Java class?",
+    "options": ["jdb","javac","java","javadoc"],
+    "answer": "C",
+    "explanation": "The java command launches the JVM, which loads and executes the specified compiled .class file."
+  },
+  {
+    "id": 71,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "Which JDK tool automatically generates HTML documentation from specially formatted comments in Java source code?",
+    "options": ["jar","javac","javap","javadoc"],
+    "answer": "D",
+    "explanation": "javadoc scans source code comments (doc comments) and generates HTML API documentation automatically."
+  },
+  {
+    "id": 72,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "Which JDK tool is a disassembler used to inspect the bytecode instructions of a compiled .class file?",
+    "options": ["jar","javac","java","javap"],
+    "answer": "D",
+    "explanation": "javap disassembles class files, allowing developers to view method signatures and bytecode-level details."
+  },
+  {
+    "id": 73,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "Which JDK tool is used to package multiple .class files and resources into a single compressed archive for distribution?",
+    "options": ["jar","javap","javac","java"],
+    "answer": "A",
+    "explanation": "The jar tool bundles class files and related resources into a single JAR (Java ARchive) file for easier distribution."
+  },
+  {
+    "id": 74,
+    "level": "Basic",
+    "type": "Definition/Fact",
+    "topic": "JDK Environment",
+    "question": "What is the file extension produced by the javac compiler for each compiled Java class?",
+    "options": [".exe",".jar",".java",".class"],
+    "answer": "D",
+    "explanation": "javac compiles .java source files into .class files containing bytecode."
+  },
+  {
+    "id": 75,
+    "level": "Intermediate",
+    "type": "Sequencing",
+    "topic": "JDK Environment",
+    "question": "In the standard Java development workflow, which of the following is the correct order of steps?",
+    "options": ["Writing code -> Compilation (javac) -> Execution (java)","Execution -> Compilation -> Writing code","Execution -> Writing code -> Compilation","Compilation -> Writing code -> Execution"],
+    "answer": "A",
+    "explanation": "The typical workflow is: write source code, compile it with javac into bytecode, then execute the bytecode using the java command."
+  },
+  {
+    "id": 76,
+    "level": "Advanced",
+    "type": "Scenario-Based",
+    "topic": "JDK Environment",
+    "question": "A developer wants to generate professional API documentation directly from comments in their source files. Which JDK tool should they use?",
+    "options": ["jar","javap","javadoc","javac"],
+    "answer": "C",
+    "explanation": "javadoc is specifically designed to generate HTML-based API documentation from source code comments."
+  },
+  {
+    "id": 77,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "Which of the following best describes the overall role of the JDK in Java program development?",
+    "options": ["It provides the complete environment and tools needed to write, compile, and run Java programs","It replaces the need for an operating system","It is used only for testing hardware","It only runs already-compiled programs"],
+    "answer": "A",
+    "explanation": "The JDK provides everything a developer needs: compiler, runtime, and supporting tools to build and run Java applications."
+  },
+  {
+    "id": 78,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "Which statement about the relationship between JDK and JRE is correct?",
+    "options": ["JRE is a superset of JDK","JDK and JRE are unrelated products","JDK includes JRE, plus additional development tools","JRE contains the compiler while JDK does not"],
+    "answer": "C",
+    "explanation": "The JDK is a superset that bundles the JRE (execution environment) together with development tools such as the compiler."
+  },
+  {
+    "id": 79,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "If a company only needs to run a pre-built Java application without developing new code, which is minimally sufficient?",
+    "options": ["JRE","JDK","javac alone","javadoc alone"],
+    "answer": "A",
+    "explanation": "The JRE alone is sufficient to run compiled Java applications since it includes the JVM and standard libraries but not development tools."
+  },
+  {
+    "id": 80,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "Which JDK command-line tool would you use to step through code and inspect variable values while debugging?",
+    "options": ["javac","jdb","javap","jar"],
+    "answer": "B",
+    "explanation": "jdb (Java Debugger) is the JDK's command-line tool used for debugging Java programs."
+  },
+  {
+    "id": 81,
+    "level": "Advanced",
+    "type": "Sequencing",
+    "topic": "JDK Environment",
+    "question": "Identify the correct sequence of Java program development steps: (1) Execution by JVM (2) Writing source code (3) Compilation into bytecode.",
+    "options": ["1-2-3","2-3-1","3-1-2","2-1-3"],
+    "answer": "B",
+    "explanation": "The correct order is: write the source code first, compile it into bytecode, and then execute the bytecode via the JVM."
+  },
+  {
+    "id": 82,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "Which of the following tools is directly responsible for converting human-readable Java code into a form the JVM can understand?",
+    "options": ["jar","jdb","javadoc","javac (compiler)"],
+    "answer": "D",
+    "explanation": "javac performs the compilation step, translating Java source code into JVM-understandable bytecode."
+  },
+  {
+    "id": 83,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "A JAR file created using the jar tool typically contains:",
+    "options": ["Only source code files","Compiled .class files and associated resources bundled together","Only documentation","Only the JVM itself"],
+    "answer": "B",
+    "explanation": "A JAR file packages compiled .class files, along with resources like images or configuration files, into one distributable archive."
+  },
+  {
+    "id": 84,
+    "level": "Basic",
+    "type": "Negative/Exception",
+    "topic": "JDK Environment",
+    "question": "Which of the following is NOT a standard JDK development tool?",
+    "options": ["javac","javap","java","MS Word"],
+    "answer": "D",
+    "explanation": "MS Word is a word processor and is not part of the JDK; javac, java, and javap are all standard JDK tools."
+  },
+  {
+    "id": 85,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "What role does the JDK play once source code has been compiled into bytecode?",
+    "options": ["It provides the java launcher (via the bundled JRE/JVM) to execute the bytecode","It deletes the bytecode","It converts bytecode back into source code","It has no further role"],
+    "answer": "A",
+    "explanation": "After compilation, the JDK's bundled JRE and JVM (accessed via the java command) execute the resulting bytecode."
+  },
+  {
+    "id": 86,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "Which statement correctly explains why the JDK is necessary even though the JVM alone can execute bytecode?",
+    "options": ["The JVM can compile source code by itself, so JDK is redundant","JDK and JVM are the same software component","The JDK removes the need for a JVM entirely","The JVM cannot compile .java files into bytecode; that requires the compiler (javac) provided in the JDK"],
+    "answer": "D",
+    "explanation": "The JVM only executes bytecode; it cannot compile source code. The JDK provides javac, which performs this necessary compilation step."
+  },
+  {
+    "id": 87,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "Which of the following correctly identifies the compiler among JDK components?",
+    "options": ["javac","javap","jar","java"],
+    "answer": "A",
+    "explanation": "javac is the compiler component of the JDK, distinct from java (launcher), jar (archiver), and javap (disassembler)."
+  },
+  {
+    "id": 88,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "Which JDK component is responsible for the compilation and execution workflow together, from source code to running program?",
+    "options": ["The overall JDK, combining javac (compilation) and the bundled JRE/JVM (execution)","The operating system's file manager","Only jar","Only javadoc"],
+    "answer": "A",
+    "explanation": "The JDK as a whole supports the entire workflow, with javac handling compilation and the JRE/JVM handling execution."
+  },
+  {
+    "id": 89,
+    "level": "Advanced",
+    "type": "Scenario-Based",
+    "topic": "JDK Environment",
+    "question": "A student compiles MyProgram.java successfully but then tries to run 'javac MyProgram' to execute it, and gets an error. What is the mistake?",
+    "options": ["javac should be used to run programs, not java","The file extension .java should be used with the java command","They should have used 'java MyProgram' to execute the already-compiled class","There is no mistake in the command"],
+    "answer": "C",
+    "explanation": "javac is only for compiling source code; to execute a compiled class, the java command should be used instead, e.g., 'java MyProgram'."
+  },
+  {
+    "id": 90,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "Which of the following best explains the purpose of having a dedicated JDK environment rather than writing and running machine code directly?",
+    "options": ["It removes the need for any programming knowledge","It provides organised, standard tools (compiler, runtime, utilities) that simplify writing, building, and running portable Java programs","It only benefits web designers","It eliminates the need for the JVM entirely"],
+    "answer": "B",
+    "explanation": "The JDK environment standardises and simplifies the entire Java development lifecycle, from writing source code to compiling and running it portably."
+  },
+  {
+    "id": 91,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "Which of the following file types does the javac compiler take as INPUT?",
+    "options": [".exe files",".class files",".jar files",".java files"],
+    "answer": "D",
+    "explanation": "javac takes Java source files with the .java extension as input and produces .class bytecode files as output."
+  },
+  {
+    "id": 92,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK Environment",
+    "question": "Which JDK tool would be most useful to quickly check the method signatures inside a compiled class file without having the original source code?",
+    "options": ["jar","javac","javadoc","javap"],
+    "answer": "D",
+    "explanation": "javap disassembles compiled .class files and can display method signatures and other structural details, even without the original source."
+  },
+  {
+    "id": 93,
+    "level": "Advanced",
+    "type": "Statement-Based",
+    "topic": "JDK Environment",
+    "question": "Statement I: The JDK is required only for running Java applications. Statement II: The JDK is required for developing (writing and compiling) Java applications. Which is correct?",
+    "options": ["Only Statement II is true","Both are false","Both are true","Only Statement I is true"],
+    "answer": "A",
+    "explanation": "The JDK is meant for development purposes (writing, compiling, debugging); merely running applications only requires the JRE."
+  },
+  {
+    "id": 94,
+    "level": "Basic",
+    "type": "Definition/Fact",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "What does JVM stand for?",
+    "options": ["Java Virtual Machine","Java Visual Model","Java Variable Manager","Java Verified Module"],
+    "answer": "A",
+    "explanation": "JVM stands for Java Virtual Machine, the engine that provides a runtime environment to execute Java bytecode."
+  },
+  {
+    "id": 95,
+    "level": "Basic",
+    "type": "Definition/Fact",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "What is the primary purpose of the JVM?",
+    "options": ["To design user interfaces","To compile Java source code into bytecode","To write Java source code","To execute Java bytecode and provide platform independence"],
+    "answer": "D",
+    "explanation": "The JVM's core purpose is to execute compiled Java bytecode, enabling programs to run consistently across platforms."
+  },
+  {
+    "id": 96,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "The JVM is best described as:",
+    "options": ["A text editor for writing Java code","A version control system","A physical hardware processor","An abstract computing machine that provides a runtime environment for executing bytecode"],
+    "answer": "D",
+    "explanation": "The JVM is an abstract (software-based) computing machine that provides the environment in which Java bytecode is executed."
+  },
+  {
+    "id": 97,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "How does the JVM contribute to Java's platform independence?",
+    "options": ["By interpreting the same platform-independent bytecode differently based on each platform's JVM implementation","By converting Java source code directly into hardware instructions","By requiring different bytecode for each operating system","By avoiding the need for an operating system altogether"],
+    "answer": "A",
+    "explanation": "Each platform has its own JVM implementation that understands the same standard bytecode, allowing identical bytecode to run everywhere."
+  },
+  {
+    "id": 98,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Which of these correctly completes the sequence: Java Source Code -> Compiler -> Bytecode -> ______ -> Execution?",
+    "options": ["Text Editor","Operating System Kernel","JVM","Web Browser"],
+    "answer": "C",
+    "explanation": "After compilation, the JVM takes the bytecode and executes it, completing the source-to-execution pipeline."
+  },
+  {
+    "id": 99,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Which of the following statements about the JVM is TRUE?",
+    "options": ["The JVM is platform-independent while the bytecode it runs is platform-dependent","Neither the JVM nor bytecode relate to platforms","Both the JVM and bytecode are platform-dependent","The bytecode is platform-independent, but each JVM implementation itself is platform-dependent"],
+    "answer": "D",
+    "explanation": "Bytecode is designed to be platform-independent, but the actual JVM software must be implemented separately for each operating system/hardware combination."
+  },
+  {
+    "id": 100,
+    "level": "Intermediate",
+    "type": "Negative/Exception",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Which of the following is NOT typically considered a component of the JVM's runtime architecture?",
+    "options": ["Class loader","Web server module","Bytecode verifier","Execution engine"],
+    "answer": "B",
+    "explanation": "A web server module is unrelated to the JVM; the class loader, bytecode verifier, and execution engine are core JVM components."
+  },
+  {
+    "id": 101,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Which JVM component is responsible for loading .class files into memory before execution?",
+    "options": ["Bytecode verifier","Class loader","Garbage collector","Execution engine"],
+    "answer": "B",
+    "explanation": "The class loader subsystem locates and loads compiled class files into the JVM's memory at runtime."
+  },
+  {
+    "id": 102,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Which JVM component checks that loaded bytecode does not violate Java's security and structural constraints before execution?",
+    "options": ["Execution engine","Heap memory","Bytecode verifier","Class loader"],
+    "answer": "C",
+    "explanation": "The bytecode verifier examines loaded bytecode to ensure it follows Java's rules and does not perform unsafe operations, before allowing execution."
+  },
+  {
+    "id": 103,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Which JVM component actually converts bytecode into machine-level instructions for execution, using interpretation and/or JIT compilation?",
+    "options": ["Execution engine","Class loader","javac","Bytecode verifier"],
+    "answer": "A",
+    "explanation": "The execution engine is responsible for executing bytecode, either by interpreting it line by line or compiling it just-in-time for faster execution."
+  },
+  {
+    "id": 104,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Which of the following best explains why the JVM enables 'Write Once, Run Anywhere'?",
+    "options": ["Because Java bytecode is identical to native machine code","Because the JVM rewrites source code for every platform","Because Java does not need to be compiled","Because a platform-specific JVM implementation interprets the same standard bytecode consistently across environments"],
+    "answer": "D",
+    "explanation": "Each platform's own JVM understands the same universal bytecode format, so identical compiled code behaves consistently everywhere."
+  },
+  {
+    "id": 105,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Which of these is required on a computer for it to run compiled Java bytecode?",
+    "options": ["An active internet connection","A copy of the original .java source file","A working JVM implementation for that platform","A C++ compiler"],
+    "answer": "C",
+    "explanation": "Any device that wants to execute Java bytecode must have a compatible JVM implementation installed."
+  },
+  {
+    "id": 106,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Which statement about the JVM's relationship with the operating system is correct?",
+    "options": ["The JVM runs as a program on top of the operating system and translates bytecode instructions into OS/hardware-specific calls","The operating system runs inside the JVM","The JVM has no interaction with the operating system at all","The JVM completely replaces the operating system"],
+    "answer": "A",
+    "explanation": "The JVM operates as software running on the host operating system, translating platform-independent bytecode into operating-system and hardware-specific actions."
+  },
+  {
+    "id": 107,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "A Java program compiled on a Windows machine runs correctly on a Linux server without recompilation. What makes this possible?",
+    "options": ["Because the program was written in C instead of Java","The presence of a JVM implementation on the Linux server capable of interpreting the same bytecode","Because Java bytecode is automatically converted to Linux source code","Because Linux and Windows share the same native machine code"],
+    "answer": "B",
+    "explanation": "As long as a suitable JVM is installed on the Linux server, it can interpret and execute the same platform-independent bytecode produced on Windows."
+  },
+  {
+    "id": 108,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Which of the following best describes 'bytecode' in the context of the JVM?",
+    "options": ["A type of Java documentation file","The original human-readable Java source code","An intermediate, platform-independent set of instructions generated by the compiler for the JVM to execute","Machine code specific to Intel processors only"],
+    "answer": "C",
+    "explanation": "Bytecode is an intermediate representation of the program, generated by javac, designed to be understood and executed by any JVM."
+  },
+  {
+    "id": 109,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Hardware independence in Java is achieved primarily because:",
+    "options": ["Bytecode instructions are abstracted from any specific CPU design, and the JVM handles the translation to native instructions for that hardware","All computers use identical hardware","Java programs never use the CPU","The compiler produces different bytecode for each CPU"],
+    "answer": "A",
+    "explanation": "Since bytecode does not target any specific CPU, the JVM (tailored to each hardware/OS) bridges the gap by translating bytecode into native instructions."
+  },
+  {
+    "id": 110,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Which of the following is a correct, exam-relevant distinction between 'interpreting' and 'JIT compiling' bytecode within the JVM's execution engine?",
+    "options": ["Interpreting executes bytecode instructions one at a time each run; JIT compilation converts frequently executed bytecode into native code for reuse, improving speed","Interpreting is always faster than JIT compilation","Interpreting and JIT compilation are identical processes","JIT compilation only works on source code, not bytecode"],
+    "answer": "A",
+    "explanation": "Interpretation processes bytecode instruction-by-instruction each time, while JIT compilation translates hot bytecode into native machine code once for faster repeated execution."
+  },
+  {
+    "id": 111,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Which of the following best completes this workflow diagram? Java Source (.java) -> [X] -> Bytecode (.class) -> [Y] -> Program Output",
+    "options": ["X = JVM, Y = Compiler","X = Garbage Collector, Y = Compiler","X = Compiler (javac), Y = JVM","X = JVM, Y = Garbage Collector"],
+    "answer": "C",
+    "explanation": "The compiler (javac) transforms source code into bytecode, and the JVM then executes that bytecode to produce the program's output."
+  },
+  {
+    "id": 112,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Which of the following is TRUE regarding the JVM and different operating systems?",
+    "options": ["JVMs are only available for Windows","JVMs cannot run on servers","Separate JVM implementations exist for different operating systems, but they all execute the same standard bytecode","A single universal JVM binary works identically, unmodified, on every OS without any platform-specific implementation"],
+    "answer": "C",
+    "explanation": "While the bytecode format is universal, each operating system requires its own specific JVM implementation to execute that bytecode."
+  },
+  {
+    "id": 113,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Which basic JVM-related concept explains why a program might behave with slightly different memory usage on different systems despite using the same bytecode?",
+    "options": ["Differences between JVM implementations and their runtime memory management on each platform","All systems have identical memory always","The bytecode itself changes on each platform","Java programs cannot use memory"],
+    "answer": "A",
+    "explanation": "Although bytecode stays the same, the specific JVM implementation and underlying OS can manage memory differently, causing slight variations."
+  },
+  {
+    "id": 114,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Assertion (A): The JVM enables platform independence for Java programs. Reason (R): Bytecode generated by the Java compiler is not tied to any specific hardware or OS, and JVM implementations translate it for their specific platform. Choose the correct option.",
+    "options": ["Both A and R are true, and R correctly explains A","A is true, R is false","Both A and R are false","A is false, R is true"],
+    "answer": "A",
+    "explanation": "The JVM achieves platform independence precisely because bytecode is hardware/OS-agnostic and each platform's JVM handles the platform-specific translation."
+  },
+  {
+    "id": 115,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Which of the following is the correct role of the JVM within the broader JRE (Java Runtime Environment)?",
+    "options": ["The JVM is unrelated to the JRE","The JVM only exists within the JDK, never within the JRE","The JRE runs inside the JVM as a sub-component","The JVM is the core execution engine within the JRE that runs bytecode, alongside supporting libraries"],
+    "answer": "D",
+    "explanation": "The JRE consists of the JVM plus the core class libraries needed to run Java applications; the JVM is the actual execution engine within it."
+  },
+  {
+    "id": 116,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Without an appropriate JVM installed on a machine, what happens when trying to run a compiled Java program?",
+    "options": ["The program cannot be executed, since there is no environment to interpret the bytecode","The bytecode automatically converts itself into an executable","The program runs faster without a JVM","The program still runs using the operating system directly"],
+    "answer": "A",
+    "explanation": "A JVM is essential for executing Java bytecode; without one, the compiled program simply cannot run."
+  },
+  {
+    "id": 117,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Virtual Machine (JVM)",
+    "question": "Which of the following best identifies the JVM's role in memory management?",
+    "options": ["The JVM has no involvement in memory management","The JVM manages runtime memory (like the heap) and performs automatic garbage collection of unused objects","Memory management is handled solely by javac","The operating system alone manages Java's heap memory without JVM involvement"],
+    "answer": "B",
+    "explanation": "The JVM manages runtime memory areas, including the heap, and its garbage collector automatically reclaims memory from unreachable objects."
+  },
+  {
+    "id": 118,
+    "level": "Basic",
+    "type": "Definition/Fact",
+    "topic": "Java Bytecode and Execution Workflow",
+    "question": "What is bytecode in the context of Java?",
+    "options": ["A type of hardware chip","The original Java source code","A network protocol","An intermediate, platform-independent instruction set generated by the compiler"],
+    "answer": "D",
+    "explanation": "Bytecode is the intermediate form of a Java program, produced by the compiler, designed to be executed by any JVM."
+  },
+  {
+    "id": 119,
+    "level": "Intermediate",
+    "type": "Sequencing",
+    "topic": "Java Bytecode and Execution Workflow",
+    "question": "Arrange the following in the correct order of the Java compilation and execution workflow: (1) JVM executes bytecode (2) Source code is written (3) javac compiles source code (4) Bytecode is produced",
+    "options": ["3-4-2-1","2-3-4-1","4-3-2-1","1-2-3-4"],
+    "answer": "B",
+    "explanation": "The correct order is: write source code, compile it with javac, which produces bytecode, and then the JVM executes that bytecode."
+  },
+  {
+    "id": 120,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Bytecode and Execution Workflow",
+    "question": "Once bytecode (.class file) is generated, which component loads it into the JVM for execution?",
+    "options": ["The jar tool","The operating system's file explorer","The class loader subsystem of the JVM","The javac compiler"],
+    "answer": "C",
+    "explanation": "The JVM's class loader subsystem is responsible for locating and loading .class files into memory for execution."
+  },
+  {
+    "id": 121,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Java Bytecode and Execution Workflow",
+    "question": "Which of the following best describes why bytecode is considered 'platform-independent'?",
+    "options": ["It uses a standard format understood by any JVM, regardless of the underlying hardware or OS","It can only run on Sun/Oracle-branded machines","It is written directly in a specific processor's machine language","It is identical to source code"],
+    "answer": "A",
+    "explanation": "Bytecode follows a standard specification that any compliant JVM can interpret, regardless of the platform it runs on."
+  },
+  {
+    "id": 122,
+    "level": "Intermediate",
+    "type": "Fill in the Blank",
+    "topic": "Java Bytecode and Execution Workflow",
+    "question": "Which of the following correctly completes the workflow: Source Code -> [Compilation] -> Bytecode -> [Class Loading + Verification] -> ______",
+    "options": ["Conversion back to source code","Execution by the JVM's execution engine","Recompilation","Deletion of bytecode"],
+    "answer": "B",
+    "explanation": "After class loading and bytecode verification, the JVM's execution engine executes the bytecode to produce the program's behaviour/output."
+  },
+  {
+    "id": 123,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Java Bytecode and Execution Workflow",
+    "question": "Which of the following is the most accurate description of what happens during 'interpretation' of bytecode?",
+    "options": ["The compiler interprets the source code directly, skipping bytecode","Bytecode interpretation happens before compilation","The JVM reads and executes bytecode instructions one at a time without producing native machine code ahead of time","The bytecode is converted into another programming language"],
+    "answer": "C",
+    "explanation": "Interpretation means the JVM processes bytecode instructions sequentially at runtime, one at a time, without pre-generating full native code."
+  },
+  {
+    "id": 124,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Bytecode and Execution Workflow",
+    "question": "Why can the same compiled .class file run on both a Windows PC and a Mac without changes?",
+    "options": ["Because Windows and Mac share identical native machine code","Because .class files are converted automatically into Word documents","Because bytecode is platform-independent and each OS has its own compatible JVM to execute it","Because the JVM does not exist on Mac"],
+    "answer": "C",
+    "explanation": "The platform-independent nature of bytecode, combined with OS-specific JVM implementations, allows identical .class files to execute across different systems."
+  },
+  {
+    "id": 125,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Java Bytecode and Execution Workflow",
+    "question": "In the workflow Java Source Code -> Compiler -> Bytecode -> JVM -> Execution, which step introduces platform independence into the process?",
+    "options": ["Compiling the source code into standard bytecode","Writing the source code","Running the antivirus software","Physically installing the operating system"],
+    "answer": "A",
+    "explanation": "Platform independence is introduced when the compiler converts source code into standardized bytecode that any JVM can interpret, rather than platform-specific machine code."
+  },
+  {
+    "id": 126,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Bytecode and Execution Workflow",
+    "question": "Which statement about the compilation step is TRUE?",
+    "options": ["Compilation happens after execution","Compilation converts Java source code into bytecode using javac","Compilation converts bytecode into Java source code","Compilation is performed by the JVM, not by javac"],
+    "answer": "B",
+    "explanation": "Compilation, performed by javac, is the process of translating readable Java source code into bytecode."
+  },
+  {
+    "id": 127,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Java Bytecode and Execution Workflow",
+    "question": "Which of the following correctly identifies the 'execution environment' in the Java workflow?",
+    "options": ["The text editor used to write code","The jar packaging tool","The Java Virtual Machine (JVM)","The javac compiler"],
+    "answer": "C",
+    "explanation": "The JVM serves as the execution environment, running the compiled bytecode to perform the program's operations."
+  },
+  {
+    "id": 128,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Bytecode and Execution Workflow",
+    "question": "Which of the following best explains the purpose of having an intermediate bytecode stage instead of compiling Java source code directly into native machine code?",
+    "options": ["It removes the need for a JVM","It makes programs run slower on purpose","It allows the same compiled output to be portable and run on any platform with a JVM","It prevents Java programs from being distributed"],
+    "answer": "C",
+    "explanation": "Introducing bytecode as an intermediate step decouples the compiled program from any single machine's native instructions, enabling portability."
+  },
+  {
+    "id": 129,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Java Bytecode and Execution Workflow",
+    "question": "A Java program fails to run with a 'bytecode verification error'. At which stage of the workflow does this error most likely occur?",
+    "options": ["During class loading and bytecode verification by the JVM, before execution","After the program has finished executing","During compilation by javac","During writing of the source code"],
+    "answer": "A",
+    "explanation": "Bytecode verification errors occur when the JVM's bytecode verifier checks loaded classes and detects a violation, which happens before the program executes."
+  },
+  {
+    "id": 130,
+    "level": "Intermediate",
+    "type": "Negative/Exception",
+    "topic": "Java Bytecode and Execution Workflow",
+    "question": "Which of the following is NOT part of the standard Java compilation/execution workflow?",
+    "options": ["Writing source code","Executing with the JVM","Manually converting bytecode into assembly by hand","Compiling with javac"],
+    "answer": "C",
+    "explanation": "Manual conversion of bytecode into assembly is not a standard step; the JVM's execution engine automatically handles interpretation or JIT compilation."
+  },
+  {
+    "id": 131,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Java Bytecode and Execution Workflow",
+    "question": "Which of the following statements correctly distinguishes compilation from execution in Java?",
+    "options": ["Compilation and execution are the same process performed by javac","Execution converts bytecode into source code","Compilation (by javac) converts source code to bytecode; execution (by the JVM) runs that bytecode to produce output","Compilation only happens at runtime, not beforehand"],
+    "answer": "C",
+    "explanation": "Compilation is a distinct step performed by javac that produces bytecode, while execution is a separate step performed by the JVM that runs that bytecode."
+  },
+  {
+    "id": 132,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Java Bytecode and Execution Workflow",
+    "question": "Which of the following best explains how the JIT compiler fits into the bytecode execution workflow?",
+    "options": ["It replaces javac entirely and compiles source code directly to native code before any bytecode is created","It only works before the class loader runs","It has no relationship to bytecode","It works within the JVM's execution engine, converting frequently executed bytecode into native machine code at runtime for faster performance"],
+    "answer": "D",
+    "explanation": "The JIT compiler operates inside the JVM's execution engine during runtime, optimising performance by converting 'hot' bytecode into native machine code."
+  },
+  {
+    "id": 133,
+    "level": "Intermediate",
+    "type": "Fill in the Blank",
+    "topic": "Java Bytecode and Execution Workflow",
+    "question": "Fill in the blank: In the workflow, bytecode acts as a bridge between the platform-independent ______ and the platform-dependent ______.",
+    "options": ["Operating system; hardware","Garbage collector; class loader","Source code; native machine execution by the JVM","Compiler; javadoc"],
+    "answer": "C",
+    "explanation": "Bytecode bridges the gap between the human-written, platform-independent source code and the platform-specific native execution ultimately carried out via the JVM."
+  },
+  {
+    "id": 134,
+    "level": "Basic",
+    "type": "Definition/Fact",
+    "topic": "Garbage Collection",
+    "question": "What is the main purpose of garbage collection in Java?",
+    "options": ["To format source code","To speed up network connections","To compile Java source code","To automatically reclaim memory occupied by objects that are no longer in use"],
+    "answer": "D",
+    "explanation": "Garbage collection automatically frees up memory used by objects that are no longer reachable or needed by the program."
+  },
+  {
+    "id": 135,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Garbage collection in Java is performed by which component?",
+    "options": ["The jar tool","The javac compiler","The operating system's file system","The JVM (via its garbage collector)"],
+    "answer": "D",
+    "explanation": "The JVM includes a garbage collector that automatically manages memory by removing unused objects."
+  },
+  {
+    "id": 136,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "An object in Java becomes eligible for garbage collection when:",
+    "options": ["It has no live references pointing to it from any reachable part of the program","It is created inside a method","It is assigned a value","It is declared as public"],
+    "answer": "A",
+    "explanation": "An object becomes eligible for garbage collection once no active references to it remain, making it unreachable by the running program."
+  },
+  {
+    "id": 137,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Which of the following best describes 'automatic memory management' as implemented through garbage collection?",
+    "options": ["The JVM automatically identifies and reclaims memory from unused objects without explicit programmer intervention","Programmers must manually free memory using special commands","Memory is never freed in Java","Memory management is handled by the compiler at compile-time only"],
+    "answer": "A",
+    "explanation": "Java's automatic memory management means the JVM's garbage collector handles reclaiming memory, sparing programmers from manual deallocation."
+  },
+  {
+    "id": 138,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Which of the following is a key ADVANTAGE of automatic garbage collection?",
+    "options": ["It completely eliminates all forms of memory-related issues in every case","It slows down every Java program significantly with no benefit","It reduces the burden on programmers and helps prevent common memory leaks from forgotten manual deallocation","It requires programmers to manually track every object's lifetime"],
+    "answer": "C",
+    "explanation": "Garbage collection reduces programmer workload and helps avoid memory leaks that could occur from manually forgetting to free memory."
+  },
+  {
+    "id": 139,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Which of the following is a recognised LIMITATION of garbage collection?",
+    "options": ["It guarantees zero performance overhead at all times","It removes all objects from memory immediately upon creation","It can introduce runtime overhead/pauses and does not guarantee immediate collection of eligible objects","It prevents any object from ever being created"],
+    "answer": "C",
+    "explanation": "Garbage collection can introduce performance overhead, and there is no guarantee about exactly when an eligible object will be collected."
+  },
+  {
+    "id": 140,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Which method can a Java program call to request (but not guarantee) that garbage collection be performed?",
+    "options": ["Object.delete()","System.gc()","Runtime.free()","System.exit()"],
+    "answer": "B",
+    "explanation": "Calling System.gc() merely suggests to the JVM that garbage collection should run soon, but it does not guarantee immediate execution."
+  },
+  {
+    "id": 141,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Why is it generally considered a common misconception that calling System.gc() forces immediate garbage collection?",
+    "options": ["Because garbage collection can only run once per program","Because the JVM treats the call only as a request/suggestion, and the actual timing of garbage collection remains at the JVM's discretion","Because System.gc() is not a real method","Because System.gc() actually deletes the program instead"],
+    "answer": "B",
+    "explanation": "System.gc() is only a hint to the JVM; the specification does not guarantee that garbage collection will happen immediately or at all when it is called."
+  },
+  {
+    "id": 142,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Which of the following best explains why garbage collection is considered part of Java's robustness feature?",
+    "options": ["It slows down compilation","It has no connection to robustness","It replaces the need for exception handling","It helps prevent memory leaks and related crashes by automatically managing unused object memory"],
+    "answer": "D",
+    "explanation": "By automatically reclaiming memory from unused objects, garbage collection reduces the risk of memory-related failures, contributing to robustness."
+  },
+  {
+    "id": 143,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "Garbage Collection",
+    "question": "In a simple scenario, if an object created inside a method is never assigned to any variable outside that method and the method has finished executing, that object is:",
+    "options": ["Permanently stored in memory forever","Automatically converted into bytecode","Eligible for garbage collection, since it is no longer reachable","Still actively used by the program"],
+    "answer": "C",
+    "explanation": "Once the method exits and no external reference to the object exists, the object becomes unreachable and thus eligible for garbage collection."
+  },
+  {
+    "id": 144,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Which of the following is TRUE regarding the timing of garbage collection?",
+    "options": ["Garbage collection never happens automatically","The JVM decides when to run garbage collection; the programmer cannot force an exact time","The programmer has full and precise control over exactly when garbage collection occurs","Garbage collection always runs exactly once every second"],
+    "answer": "B",
+    "explanation": "The JVM automatically manages when garbage collection runs based on memory needs, and precise timing cannot be guaranteed or forced by the programmer."
+  },
+  {
+    "id": 145,
+    "level": "Basic",
+    "type": "Scenario-Based",
+    "topic": "Garbage Collection",
+    "question": "Which of the following scenarios describes an object that is NOT eligible for garbage collection?",
+    "options": ["An object with an active reference still being used by the running program","An object with zero references pointing to it","An object whose only reference has gone out of scope","An object explicitly set to null with no other references"],
+    "answer": "A",
+    "explanation": "An object remains ineligible for garbage collection as long as at least one active, reachable reference to it still exists."
+  },
+  {
+    "id": 146,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Which statement best describes garbage collection's relationship to the JVM?",
+    "options": ["Garbage collection is performed only by javac before compilation","Garbage collection is a built-in JVM function/thread responsible for automatic memory reclamation","Garbage collection has nothing to do with memory","Garbage collection is entirely separate from the JVM and runs as an independent external application"],
+    "answer": "B",
+    "explanation": "Garbage collection is carried out by the JVM itself, typically via a dedicated internal mechanism/thread that manages heap memory."
+  },
+  {
+    "id": 147,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Which of the following best explains a limitation where garbage collection alone CANNOT prevent all memory leaks?",
+    "options": ["Garbage collection removes all objects regardless of use, so leaks are impossible","Garbage collection deletes reachable objects randomly","When objects remain reachable unintentionally (e.g., via forgotten references in collections or listeners), they are never considered eligible, causing a leak despite garbage collection being active","Java has no concept of memory leaks at all"],
+    "answer": "C",
+    "explanation": "If a program unintentionally keeps a reference to an object it no longer needs (e.g., in a static collection), the object remains reachable and won't be collected, causing a logical memory leak."
+  },
+  {
+    "id": 148,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Which of the following best distinguishes manual memory management (as in some other languages) from Java's garbage-collected approach?",
+    "options": ["Java has no memory management approach at all","Both approaches are functionally identical","Manual memory management is always automatic","Manual memory management requires explicit programmer commands to free memory, while Java automatically reclaims memory from unreachable objects"],
+    "answer": "D",
+    "explanation": "Unlike languages requiring explicit deallocation, Java's garbage collector automatically identifies and frees memory from objects no longer in use."
+  },
+  {
+    "id": 149,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Garbage collection specifically deals with reclaiming which resource?",
+    "options": ["Network bandwidth","Heap memory occupied by unused objects","Disk storage space","CPU clock speed"],
+    "answer": "B",
+    "explanation": "Garbage collection reclaims heap memory that was allocated to objects that are no longer reachable by the running program."
+  },
+  {
+    "id": 150,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "Garbage Collection",
+    "question": "Which of the following is an example of a simple conceptual scenario illustrating garbage collection?",
+    "options": ["A method is compiled successfully","A variable is reassigned to a new object, leaving the old object with no references, making it eligible for collection","A variable is declared but never used at all","A class implements an interface"],
+    "answer": "B",
+    "explanation": "When a variable is reassigned, any object it previously referenced (if no other references exist) becomes unreachable and eligible for garbage collection."
+  },
+  {
+    "id": 151,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Garbage Collection",
+    "question": "Assertion (A): Garbage collection guarantees that memory leaks can never occur in Java. Reason (R): Garbage collection only reclaims memory from objects that are unreachable, not those still referenced. Choose the correct option.",
+    "options": ["Both A and R are true, and R correctly explains A","Both A and R are false","A is true and R is false","A is false, but R is true and explains why leaks can still occur despite garbage collection"],
+    "answer": "D",
+    "explanation": "Assertion A is false because leaks can still occur if objects remain reachable unintentionally; Reason R correctly explains why garbage collection cannot address such cases."
+  },
+  {
+    "id": 152,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Which of the following is a valid advantage of Java's automatic garbage collection compared to manual memory management?",
+    "options": ["It eliminates the need to ever declare variables","It reduces programmer effort and the risk of common memory errors like dangling references","It guarantees the fastest possible program execution in all cases","It completely removes the need for the JVM"],
+    "answer": "B",
+    "explanation": "By automating memory reclamation, garbage collection reduces the manual effort and common bugs associated with explicit memory management."
+  },
+  {
+    "id": 153,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Which of the following best defines an 'unreachable object' in the context of garbage collection?",
+    "options": ["An object that cannot be accessed by any live thread or reference chain in the running program","An object that has just been created","An object stored on the hard disk","An object with a public access modifier"],
+    "answer": "A",
+    "explanation": "An unreachable object is one that no active part of the program can access through any reference chain, making it a candidate for garbage collection."
+  },
+  {
+    "id": 154,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Why is garbage collection considered essential for long-running Java applications like servers?",
+    "options": ["Because it replaces the need for a JVM","Because it compiles code faster","Because it speeds up network requests","Because it prevents the accumulation of unused objects in memory over time, which could otherwise exhaust available memory"],
+    "answer": "D",
+    "explanation": "In long-running applications, continuously created objects need to be cleaned up; garbage collection prevents memory exhaustion by reclaiming unused ones over time."
+  },
+  {
+    "id": 155,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Which of the following best describes a common misconception students have about garbage collection?",
+    "options": ["That the programmer must always manually delete every object, similar to some other languages","That the JVM has no role in memory","That objects can never be created in Java","That it happens automatically without direct control, but assuming it can be perfectly predicted or forced at will"],
+    "answer": "D",
+    "explanation": "A common misconception is expecting exact, forceable control over garbage collection timing, when in reality the JVM decides when to run it based on its own algorithms."
+  },
+  {
+    "id": 156,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Garbage Collection",
+    "question": "Which basic working concept correctly summarises Java's garbage collection process?",
+    "options": ["The compiler removes unused objects before compilation","Garbage collection only works on primitive data types","The JVM periodically identifies unreachable objects on the heap and reclaims their memory automatically","Objects are deleted by the programmer using the 'delete' keyword"],
+    "answer": "C",
+    "explanation": "The JVM's garbage collector periodically scans the heap, identifies unreachable objects, and frees the memory they occupy."
+  },
+  {
+    "id": 157,
+    "level": "Basic",
+    "type": "Negative/Exception",
+    "topic": "Garbage Collection",
+    "question": "Which of the following is NOT a benefit typically associated with automatic garbage collection?",
+    "options": ["Improved overall program reliability regarding memory handling","Guaranteed zero runtime overhead in all circumstances","Less manual memory management burden on the programmer","Reduced risk of certain memory leaks"],
+    "answer": "B",
+    "explanation": "Garbage collection does introduce some runtime overhead; it does not guarantee zero overhead, unlike the other genuine benefits listed."
+  },
+  {
+    "id": 158,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "Which of the following correctly distinguishes the JDK from the JVM?",
+    "options": ["The JDK is used only to run programs, and the JVM is used only to write them","The JDK and JVM are exactly the same thing","The JDK is the full development kit (including compiler and JVM), while the JVM is specifically the runtime engine that executes bytecode","The JVM includes the JDK as one of its sub-components"],
+    "answer": "C",
+    "explanation": "The JDK is a complete development package that includes the JVM plus tools like javac, while the JVM itself is only the execution engine for bytecode."
+  },
+  {
+    "id": 159,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "Which of the following is available in the JDK but NOT in the JVM alone?",
+    "options": ["The javac compiler","Bytecode verification","Class loading","Bytecode execution capability"],
+    "answer": "A",
+    "explanation": "The javac compiler is a development tool bundled with the JDK; the JVM alone only executes bytecode and does not compile source code."
+  },
+  {
+    "id": 160,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "If you only want to execute an already-compiled Java program, which minimal environment do you need?",
+    "options": ["The full JDK with javac","Only the jar tool","Only a text editor","A working JVM (typically via the JRE)"],
+    "answer": "D",
+    "explanation": "Running compiled bytecode only requires a JVM (usually provided through the JRE); the full JDK with development tools is not necessary."
+  },
+  {
+    "id": 161,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "Which best represents the 'development environment vs execution environment' distinction?",
+    "options": ["JVM represents development; JDK represents execution","Both represent execution only","Both represent development only","JDK represents the development environment (writing/compiling code); JVM represents the execution environment (running bytecode)"],
+    "answer": "D",
+    "explanation": "The JDK supports the development process, while the JVM specifically provides the environment where compiled bytecode is executed."
+  },
+  {
+    "id": 162,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "Which of the following statements about compiler vs JVM is correct?",
+    "options": ["The compiler (javac) translates source code to bytecode; the JVM executes that bytecode","Neither is involved in running Java programs","Both perform identical functions","The JVM translates source code to bytecode; the compiler executes bytecode"],
+    "answer": "A",
+    "explanation": "The compiler and the JVM perform distinct roles: compilation happens first (javac), followed by execution (JVM)."
+  },
+  {
+    "id": 163,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "Source code and bytecode differ in that:",
+    "options": ["Source code and bytecode are identical files","Bytecode is used only for documentation","Bytecode is written directly by programmers before source code exists","Source code (.java) is human-readable and compiled by javac into bytecode (.class), which the JVM executes"],
+    "answer": "D",
+    "explanation": "Source code is the human-written code, while bytecode is the compiled, platform-independent form that the JVM can execute."
+  },
+  {
+    "id": 164,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "Which of the following correctly reflects the relationship 'compilation vs execution'?",
+    "options": ["Execution creates the source code","They occur simultaneously with no order","Compilation happens after execution completes","Compilation transforms source code to bytecode; execution runs that bytecode to produce results - compilation always precedes execution"],
+    "answer": "D",
+    "explanation": "Compilation must occur first to produce bytecode, and execution follows afterward, using the JVM to run that bytecode."
+  },
+  {
+    "id": 165,
+    "level": "Advanced",
+    "type": "Scenario-Based",
+    "topic": "JDK vs JVM",
+    "question": "A student says: 'The JVM can compile Java files directly, so we don't need the JDK.' What is wrong with this statement?",
+    "options": ["The JVM cannot compile source code; only javac (part of the JDK) can compile .java files into bytecode","The statement is correct; JDK is indeed unnecessary","The JDK cannot execute bytecode at all","There is no difference between JDK and JVM"],
+    "answer": "A",
+    "explanation": "The JVM is only an execution engine; it has no compilation capability. Compiling requires javac, which is part of the JDK."
+  },
+  {
+    "id": 166,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "Which of the following best summarises why the JDK is considered a 'superset' relative to the JVM?",
+    "options": ["Because the JDK includes the JVM plus additional development tools like javac, javadoc, and jar","Because JDK is smaller in size than the JVM","Because they have no overlapping functionality","Because the JVM includes the JDK plus extra tools"],
+    "answer": "A",
+    "explanation": "The JDK is broader in scope, bundling the JVM (for execution) together with a full set of development tools."
+  },
+  {
+    "id": 167,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "Which of the following is a true statement comparing JDK and JVM in terms of installation for end-users who just want to play a Java-based game (already compiled)?",
+    "options": ["No software installation is needed at all","Installing just a JVM (via JRE) is generally sufficient to run the compiled game","They need a C++ compiler instead","They must install the full JDK with javac"],
+    "answer": "B",
+    "explanation": "Since the game is already compiled into bytecode, end-users typically only need a JVM to run it, not the full JDK with development tools."
+  },
+  {
+    "id": 168,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "Which statement is TRUE about the scope of responsibilities of JDK vs JVM?",
+    "options": ["JVM's scope includes writing and compiling source code","JDK's scope is limited to only running bytecode","JDK's scope covers writing, compiling and packaging code; JVM's scope is narrowly focused on executing bytecode","There is no difference in scope"],
+    "answer": "C",
+    "explanation": "The JDK covers the entire development lifecycle, whereas the JVM's responsibility is specifically limited to executing compiled bytecode."
+  },
+  {
+    "id": 169,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "Which of the following correctly orders these terms from broadest to narrowest in scope: JDK, JVM, JRE?",
+    "options": ["JVM > JRE > JDK","JDK > JRE > JVM","All three are equal in scope","JRE > JDK > JVM"],
+    "answer": "B",
+    "explanation": "The JDK is the broadest, containing the JRE (runtime plus libraries), which in turn contains the JVM as its core execution engine."
+  },
+  {
+    "id": 170,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "Which of these correctly reflects the difference between 'JDK vs JVM' regarding debugging tools such as jdb?",
+    "options": ["jdb is part of the JDK, used by developers; the JVM itself does not provide a standalone debugging tool for developers","jdb is part of the JVM only, not the JDK","jdb is unrelated to Java development","The JVM cannot run programs that were debugged using jdb"],
+    "answer": "A",
+    "explanation": "Debugging tools like jdb are provided as part of the JDK's developer toolset, separate from the JVM's core execution responsibilities."
+  },
+  {
+    "id": 171,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "Which of the following correctly matches each term to its primary function?",
+    "options": ["JDK - executing bytecode; JVM - compiling code","JDK - compiling and developing code; JVM - executing bytecode","Both JDK and JVM only compile code","Both JDK and JVM only execute code"],
+    "answer": "B",
+    "explanation": "The JDK is primarily used for compiling and developing Java applications, while the JVM's primary function is to execute the resulting bytecode."
+  },
+  {
+    "id": 172,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "JDK vs JVM",
+    "question": "Which of the following would be MOST affected if only the JVM (without the rest of the JDK) were installed on a developer's machine?",
+    "options": ["Ability to run already-compiled Java programs","Ability to view previously compiled bytecode class files with a viewer","None of the above would be affected","Ability to compile new .java source files using javac"],
+    "answer": "D",
+    "explanation": "Without the JDK's compiler (javac), a developer with only the JVM would be unable to compile new Java source code into bytecode."
+  },
+  {
+    "id": 173,
+    "level": "Advanced",
+    "type": "Statement-Based",
+    "topic": "JDK vs JVM",
+    "question": "Statement I: The JVM alone is sufficient for full Java software development, including writing and compiling code. Statement II: The JDK is required for full Java software development, as it includes the compiler and other tools alongside the JVM. Which is correct?",
+    "options": ["Only Statement II is true","Both are true","Both are false","Only Statement I is true"],
+    "answer": "A",
+    "explanation": "The JVM alone cannot compile code, so full development requires the JDK, which bundles the JVM together with the compiler and other development tools."
+  },
+  {
+    "id": 174,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "Which of the following best illustrates 'compilation vs execution' using a simple analogy?",
+    "options": ["Compilation is like translating a recipe into a standard format; execution is like actually cooking the dish using that translated recipe","Neither compilation nor execution relate to a recipe analogy","Compilation and execution are the same step in cooking","Execution happens before compilation in this analogy"],
+    "answer": "A",
+    "explanation": "Just as translating a recipe (compilation) must precede cooking (execution), Java source code must be compiled into bytecode before the JVM can execute it."
+  },
+  {
+    "id": 175,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "Which of the following tools would you find in the JDK but never inside the JVM itself?",
+    "options": ["The class loader","javac, javadoc, and jar","The bytecode verifier","The execution engine"],
+    "answer": "B",
+    "explanation": "javac, javadoc, and jar are development tools bundled with the JDK; the class loader, verifier, and execution engine are internal parts of the JVM."
+  },
+  {
+    "id": 176,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "Which of the following best explains why a beginner might confuse the JDK and JVM?",
+    "options": ["Because the JDK bundles the JVM within it, making the two seem inseparable, even though they serve very different purposes","Because JDK and JVM are marketed by different companies","Because the JDK's name always appears identical to JVM in software menus","Because neither term is related to Java"],
+    "answer": "A",
+    "explanation": "Since the JDK packages the JVM together with development tools, beginners often assume they are the same, despite the JVM being only the execution component."
+  },
+  {
+    "id": 177,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "JDK vs JVM",
+    "question": "Which of the following is the most precise statement distinguishing the JDK's and JVM's role in the compile-execute cycle?",
+    "options": ["The JDK provides the compiler for the compile phase and also bundles the JVM (used in the execute phase); the JVM's own role is strictly limited to execution","Both JDK and JVM equally perform both compilation and execution independently","JDK handles ONLY the compile phase (via javac) and has no connection to execution, while JVM handles ONLY the execute phase with zero connection to compilation - they are entirely separate products with no shared components","Compilation and execution are handled entirely by the operating system, with neither JDK nor JVM playing a role"],
+    "answer": "A",
+    "explanation": "The JDK supplies the compiler for compilation and also includes the JVM used for execution, while the JVM's actual role remains strictly the execution of bytecode."
+  },
+  {
+    "id": 178,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Assertion (A): Java bytecode can run on any device. Reason (R): Every device automatically understands Java bytecode without any additional software. Choose the correct option.",
+    "options": ["Both A and R are true, and R correctly explains A","A is false, but R is true","Both A and R are false","A is true, but R is false because a JVM implementation must be present on the device to interpret the bytecode"],
+    "answer": "D",
+    "explanation": "While bytecode is designed to be platform-independent, a device still requires an installed JVM to actually interpret and run it; R as stated is false."
+  },
+  {
+    "id": 179,
+    "level": "Intermediate",
+    "type": "Match the Following",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Match the following: (1) javac (2) java (3) JVM (4) Garbage Collector, with (a) Executes bytecode (b) Compiles source code (c) Launches the JVM (d) Reclaims unused memory",
+    "options": ["1-a, 2-b, 3-c, 4-d","1-b, 2-c, 3-a, 4-d","1-c, 2-a, 3-b, 4-d","1-d, 2-c, 3-b, 4-a"],
+    "answer": "B",
+    "explanation": "javac compiles source code (b), java launches the JVM (c), the JVM executes bytecode (a), and the garbage collector reclaims unused memory (d)."
+  },
+  {
+    "id": 180,
+    "level": "Advanced",
+    "type": "Negative/Exception",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Which of the following statements is FALSE regarding Java's core introductory concepts?",
+    "options": ["Java bytecode is platform-independent","The JVM is platform-dependent in its implementation","Garbage collection requires the programmer to manually free every object","The JDK includes the JVM"],
+    "answer": "C",
+    "explanation": "Garbage collection is automatic in Java; the programmer does not need to manually free every object, unlike in some other languages."
+  },
+  {
+    "id": 181,
+    "level": "Intermediate",
+    "type": "Fill in the Blank",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Fill in the blank: Java's motto '______' reflects its platform-independence achieved through bytecode and the JVM.",
+    "options": ["Write Once, Run Anywhere","Compile Twice, Run Once","Simple is Better","Code Once, Debug Forever"],
+    "answer": "A",
+    "explanation": "'Write Once, Run Anywhere' (WORA) is the classic phrase describing Java's platform-independence."
+  },
+  {
+    "id": 182,
+    "level": "Advanced",
+    "type": "Statement-Based",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Statement I: The JDK is only needed to run compiled programs. Statement II: The JVM alone can compile Java source files. Which of the following is correct?",
+    "options": ["Only Statement I is true","Only Statement II is true","Both statements are false","Both statements are true"],
+    "answer": "C",
+    "explanation": "Both statements are false: the JDK is needed for development (not just running programs), and the JVM cannot compile source files by itself - that requires javac."
+  },
+  {
+    "id": 183,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Which of the following correctly orders the stages from writing code to seeing program output?",
+    "options": ["Execute -> Compile -> Write source code -> Output","Compile -> Output -> Write source code -> Execute","Write source code -> Compile (javac) -> Load & verify bytecode -> Execute (JVM) -> Output","Output -> Write source code -> Compile -> Execute"],
+    "answer": "C",
+    "explanation": "The correct end-to-end sequence begins with writing code, compiling it, loading/verifying the bytecode, executing it, and finally producing output."
+  },
+  {
+    "id": 184,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Which of these best identifies a tricky but TRUE statement about Java's history and features together?",
+    "options": ["Java has never changed its name since inception","Java, originally created for embedded consumer devices under the name Oak, gained its platform-independence feature partly due to the design of bytecode and the JVM introduced during its development","Java's platform independence has nothing to do with its historical design goals","Java was originally named Java and later renamed Oak"],
+    "answer": "B",
+    "explanation": "Java began as Oak for embedded devices, and its platform-independent bytecode/JVM design (a defining feature) emerged directly from this historical development."
+  },
+  {
+    "id": 185,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Which of the following pairs correctly matches a Java feature with a common misconception about it?",
+    "options": ["Security - misconception that Java has no execution environment","Interpreted feature - misconception that Java has no compilation step at all","Portability - misconception that Java code cannot be shared","Robustness - misconception that Java always crashes"],
+    "answer": "B",
+    "explanation": "A frequent misconception is that Java is purely interpreted with no compilation, ignoring that source code is first compiled into bytecode by javac."
+  },
+  {
+    "id": 186,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Which of the following correctly identifies both an advantage AND a limitation of garbage collection in the same statement?",
+    "options": ["Garbage collection automatically frees unused memory (advantage) but can introduce runtime overhead and does not guarantee immediate collection (limitation)","Garbage collection has no advantages","Garbage collection only has limitations and never any advantage","Garbage collection has no limitations"],
+    "answer": "A",
+    "explanation": "Garbage collection genuinely offers automatic memory management as a benefit, while also carrying the trade-off of possible performance overhead and unpredictable timing."
+  },
+  {
+    "id": 187,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Which of the following is the most accurate statement combining JDK, JVM, and bytecode concepts?",
+    "options": ["The JVM compiles source code, and the JDK executes bytecode","The JDK's javac compiles source code into bytecode, and the JDK's bundled JVM then executes that bytecode","JDK and bytecode are unrelated concepts","Bytecode is created by the JVM before compilation occurs"],
+    "answer": "B",
+    "explanation": "This statement correctly integrates the roles: javac (within the JDK) compiles source code into bytecode, and the JVM (also within the JDK) executes it."
+  },
+  {
+    "id": 188,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Assertion (A): Garbage collection is a feature that supports Java's robustness. Reason (R): Automatic memory reclamation reduces the likelihood of memory-related program failures. Choose the correct option.",
+    "options": ["Both A and R are true, and R correctly explains A","A is false, R is true","A is true, R is false","Both are false"],
+    "answer": "A",
+    "explanation": "Garbage collection does support robustness, and the reason correctly explains that automatic memory management reduces memory-related failures."
+  },
+  {
+    "id": 189,
+    "level": "Intermediate",
+    "type": "Fill in the Blank",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Which of the following correctly completes this statement: 'Bytecode verification is performed by the ______ before the ______ executes the code.'",
+    "options": ["jar tool; class loader","javac; operating system","Bytecode verifier (JVM component); execution engine (JVM component)","Garbage collector; javadoc"],
+    "answer": "C",
+    "explanation": "The bytecode verifier, a JVM component, checks the code for safety and correctness before the execution engine, also within the JVM, runs it."
+  },
+  {
+    "id": 190,
+    "level": "Advanced",
+    "type": "Scenario-Based",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Which of the following scenarios correctly demonstrates BOTH platform independence and garbage collection working together in a single Java application?",
+    "options": ["A compiled .class file only runs on Windows, and no memory is ever freed","Bytecode changes format depending on the operating system","Source code runs directly without any compilation or memory management","A compiled .class file runs unchanged on Windows and Linux, and on both systems the respective JVM's garbage collector automatically reclaims memory from unused objects during execution"],
+    "answer": "D",
+    "explanation": "This scenario shows platform independence (same bytecode running on different OSes) and garbage collection (automatic memory reclamation) both functioning as expected on each platform's own JVM."
+  },
+  {
+    "id": 191,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Which of the following correctly identifies the odd one out among JDK development tools?",
+    "options": ["jar","javac","Garbage Collector","javadoc"],
+    "answer": "C",
+    "explanation": "The Garbage Collector is a JVM runtime component, not a standalone JDK command-line development tool like javac, javadoc, or jar."
+  },
+  {
+    "id": 192,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Which statement most accurately reflects the historical link between Java's original design goals and its present-day feature of platform independence?",
+    "options": ["Java's platform independence was an accidental side effect discovered after release, unrelated to its original design","Java was originally designed for varied consumer electronic devices, which directly motivated the creation of platform-independent bytecode and the JVM as core design features","Platform independence was added only in Java's most recent versions and was absent from its original design","Java's original design had no connection to any hardware devices"],
+    "answer": "B",
+    "explanation": "Because Java was meant to run identically across many different consumer devices, the founders deliberately designed bytecode and the JVM to achieve platform independence from the start."
+  },
+  {
+    "id": 193,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Which of the following is the BEST way to distinguish 'compilation errors' from 'garbage collection behaviour' conceptually?",
+    "options": ["Compilation errors are caused by the garbage collector","Garbage collection behaviour causes compilation errors","Compilation errors occur during the javac compilation step, before any bytecode is even created; garbage collection behaviour occurs later, during program execution as the JVM manages memory","Both occur at exactly the same stage of the program's lifecycle"],
+    "answer": "C",
+    "explanation": "Compilation errors arise early, during the source-to-bytecode translation by javac, while garbage collection is a runtime memory-management activity that occurs later, during execution."
+  },
+  {
+    "id": 194,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Which of the following correctly reflects the difference between a JDK tool and a JVM component?",
+    "options": ["JDK tools run only inside the JVM's memory space","A JDK tool (e.g., javac) is a standalone command-line utility used by developers; a JVM component (e.g., class loader) is an internal part of the runtime engine itself","JDK tools and JVM components are identical in every way","JVM components are external command-line utilities"],
+    "answer": "B",
+    "explanation": "JDK tools like javac are separate command-line utilities used during development, whereas JVM components like the class loader operate internally within the runtime engine."
+  },
+  {
+    "id": 195,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Conceptual & Tricky Questions",
+    "question": "Which of the following best captures why OAVS TGT exam questions often test the JDK-JVM-bytecode-garbage collection relationship together?",
+    "options": ["Because together they form the complete conceptual foundation of how a Java program moves from source code to a running, memory-managed application","Because JDK and JVM concepts are outdated and irrelevant","Because these concepts are unrelated and tested separately for no reason","Because only garbage collection matters in real exams"],
+    "answer": "A",
+    "explanation": "These four concepts collectively explain the full lifecycle of a Java program - from development and compilation, through execution, to automatic memory management - making them a natural focus for foundational exam questions."
+  },
+  {
+    "id": 196,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which Java feature allows programs to run on different operating systems without modification?",
+    "options": ["Multithreading","Simplicity","Platform independence","Distributed nature"],
+    "answer": "C",
+    "explanation": "Platform independence, enabled by bytecode and the JVM, allows the same compiled program to run across different operating systems."
+  },
+  {
+    "id": 197,
+    "level": "Intermediate",
+    "type": "Definition/Fact",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "What does the JVM primarily execute?",
+    "options": ["Bytecode","Java source code directly","Machine code written by the programmer","HTML files"],
+    "answer": "A",
+    "explanation": "The JVM executes bytecode, the compiled intermediate form of Java programs."
+  },
+  {
+    "id": 198,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which of the following best defines garbage collection?",
+    "options": ["Automatic reclamation of memory from unused objects by the JVM","Removing bugs from source code","Compiling unused code","Manually deleting files from disk"],
+    "answer": "A",
+    "explanation": "Garbage collection is the JVM's automatic process for reclaiming memory occupied by objects no longer in use."
+  },
+  {
+    "id": 199,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which of the following correctly reflects the full Java workflow from source code to execution?",
+    "options": ["Execution -> JVM -> javac -> Bytecode","Source Code -> JVM -> javac -> Bytecode","Bytecode -> Source Code -> javac -> JVM","Source Code -> javac -> Bytecode -> JVM -> Execution"],
+    "answer": "D",
+    "explanation": "The Java workflow proceeds from writing source code, compiling it into bytecode using javac, and then executing that bytecode via the JVM."
+  },
+  {
+    "id": 200,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which of the following statements about the JDK and JVM is correct?",
+    "options": ["The JVM can compile source code independently","The JDK cannot execute programs","The JDK is a subset of the JVM","The JVM is included within the JDK, along with additional development tools"],
+    "answer": "D",
+    "explanation": "The JDK is the broader package that bundles the JVM together with compilation and other development tools."
+  },
+  {
+    "id": 201,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which of the following is an example of a Java feature related to concurrent task execution?",
+    "options": ["Security","Simplicity","Multithreading","Portability"],
+    "answer": "C",
+    "explanation": "Multithreading enables a Java program to perform multiple tasks concurrently within the same application."
+  },
+  {
+    "id": 202,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which of the following correctly identifies why Java bytecode contributes to platform independence, while acknowledging JVM implementations remain platform-specific?",
+    "options": ["JVM implementations are identical binary files usable on every OS without modification","Bytecode changes format for every operating system","Platform independence has nothing to do with bytecode","Bytecode is platform-neutral by design, and separate JVM implementations for each OS interpret this same bytecode consistently"],
+    "answer": "D",
+    "explanation": "The neutrality of bytecode combined with OS-specific JVM implementations together deliver Java's platform-independence."
+  },
+  {
+    "id": 203,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which of the following best explains why Java is called 'robust'?",
+    "options": ["It has strong compile-time and run-time checking, exception handling, and automatic memory management that reduce failures","It has no garbage collector","It cannot throw exceptions","It never requires testing"],
+    "answer": "A",
+    "explanation": "Robustness in Java stems from strict checking, exception handling, and automatic memory management, which together minimise runtime failures."
+  },
+  {
+    "id": 204,
+    "level": "Advanced",
+    "type": "Fill in the Blank",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which of the following correctly completes the analogy: javac is to compilation as ______ is to execution?",
+    "options": ["java","javadoc","javap","jar"],
+    "answer": "A",
+    "explanation": "Just as javac performs compilation, the java command launches the JVM to perform execution of the compiled bytecode."
+  },
+  {
+    "id": 205,
+    "level": "Basic",
+    "type": "Negative/Exception",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which of the following is NOT one of the five topics in the Introduction to Java syllabus (History, Features, JDK, JVM, Garbage Collection)?",
+    "options": ["Exception Handling","Features of Java","History of Java","Garbage Collection"],
+    "answer": "A",
+    "explanation": "Exception handling is a separate, more advanced Java topic and falls outside the Introduction to Java syllabus scope of History, Features, JDK, JVM, and Garbage Collection."
+  }
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

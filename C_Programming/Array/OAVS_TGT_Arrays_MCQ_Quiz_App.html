@@ -1,0 +1,3184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Concept of Collection",
+    "question": "In programming, a \"collection\" is best defined as:",
+    "options": [
+      "A comment used to document code.",
+      "A group of related data elements stored and organized so they can be accessed and processed together.",
+      "A keyword reserved for declaring constants.",
+      "A single variable holding one primitive value."
+    ],
+    "answer": "B",
+    "explanation": "A collection groups multiple related elements under one identifier so they can be handled as a unit."
+  },
+  {
+    "id": 2,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Concept of Collection",
+    "question": "What is the main purpose of using a collection in a program?",
+    "options": [
+      "To make the program run without a compiler.",
+      "To prevent the use of loops.",
+      "To store only floating-point constants.",
+      "To store and manage multiple related values efficiently under one name."
+    ],
+    "answer": "D",
+    "explanation": "Collections exist so that many related values can be managed together instead of individually."
+  },
+  {
+    "id": 3,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Concept of Collection",
+    "question": "Statement: \"Collections become necessary when a program must handle many related values that would otherwise require separate variables.\" Evaluate this statement.",
+    "options": [
+      "False, because C does not allow multiple variables.",
+      "True, but only when the values are of different types.",
+      "True, because separate variables for many related values are impractical to manage.",
+      "False, because separate variables are always easier to manage."
+    ],
+    "answer": "C",
+    "explanation": "The need for collections arises directly from the impracticality of using many individual variables."
+  },
+  {
+    "id": 4,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Concept of Collection",
+    "question": "Which of the following best describes a \"characteristic\" of a collection?",
+    "options": [
+      "It cannot be used inside loops.",
+      "It must always be declared as a constant.",
+      "It can only ever hold one element.",
+      "It groups multiple elements that can be referenced through a single identifier."
+    ],
+    "answer": "D",
+    "explanation": "A defining characteristic of any collection is grouping multiple elements under one name."
+  },
+  {
+    "id": 5,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Concept of Collection",
+    "question": "Which of the following is a genuine advantage of using a collection over independent variables?",
+    "options": [
+      "Guaranteed reduction of program size to zero.",
+      "Easier bulk processing, such as looping through all elements for a calculation.",
+      "Removal of the need for indexing.",
+      "Automatic conversion between data types."
+    ],
+    "answer": "B",
+    "explanation": "Collections allow operations like loops to process many values together, which independent variables cannot offer as conveniently."
+  },
+  {
+    "id": 6,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Concept of Collection",
+    "question": "A program must store the ages of 100 people and later compute their average. Which approach best reflects the \"need for collections\"?",
+    "options": [
+      "Using a single variable and overwriting it 100 times.",
+      "Using a single collection to store all 100 ages instead of 100 separate variables.",
+      "Avoiding storage of the ages altogether.",
+      "Declaring 100 separate int variables."
+    ],
+    "answer": "B",
+    "explanation": "This scenario is precisely why collections are needed - to manage many related values efficiently."
+  },
+  {
+    "id": 7,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Concept of Collection",
+    "question": "How does a collection differ fundamentally from a single scalar variable?",
+    "options": [
+      "There is no real difference between them.",
+      "A scalar variable can store more values than a collection.",
+      "A collection can never be looped over, unlike a scalar variable.",
+      "A collection stores and organizes multiple values under one identifier, whereas a scalar variable stores only a single value."
+    ],
+    "answer": "D",
+    "explanation": "The essential difference is that a collection groups multiple values, while a scalar variable holds just one."
+  },
+  {
+    "id": 8,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Concept of Collection",
+    "question": "A student says, \"Since a single variable can store a value, there is no need for collections in any program.\" Why is this statement flawed?",
+    "options": [
+      "It is correct because a single variable can store unlimited values.",
+      "It is correct because collections are never used in real programs.",
+      "It ignores that many real-world programs must handle numerous related values, which a single variable cannot manage efficiently.",
+      "It is flawed because single variables cannot store any value at all."
+    ],
+    "answer": "C",
+    "explanation": "The claim overlooks the practical need to manage multiple related values, which is the entire rationale for collections."
+  },
+  {
+    "id": 9,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Types of Collections Supported by C",
+    "question": "Which built-in collection type does the C language primarily provide for storing multiple values of the same data type?",
+    "options": [
+      "Linked list (as a native built-in type)",
+      "Set",
+      "Array",
+      "Dictionary"
+    ],
+    "answer": "C",
+    "explanation": "C's core, built-in collection construct is the array; structures like linked lists must be built manually using arrays or pointers."
+  },
+  {
+    "id": 10,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Types of Collections Supported by C",
+    "question": "Which is a key characteristic of an array as a collection in C?",
+    "options": [
+      "Its size can change automatically at runtime.",
+      "All its elements are of the same data type and are stored in contiguous memory locations.",
+      "Its elements cannot be accessed individually.",
+      "Its elements can be of completely different, unrelated data types."
+    ],
+    "answer": "B",
+    "explanation": "Arrays store same-typed elements contiguously, which enables indexed access."
+  },
+  {
+    "id": 11,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Types of Collections Supported by C",
+    "question": "Which situation is best suited to using an array as a collection?",
+    "options": [
+      "Storing a single employee's ID number.",
+      "Storing the marks of 50 students to compute their average.",
+      "Storing one Boolean status flag.",
+      "Storing a single character constant."
+    ],
+    "answer": "B",
+    "explanation": "Arrays suit situations with many same-type related values, such as 50 students' marks."
+  },
+  {
+    "id": 12,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Types of Collections Supported by C",
+    "question": "Compared to simple (scalar) variables, what advantage does an array collection provide?",
+    "options": [
+      "It allows storage of only one value at a time.",
+      "It removes the need for any data type.",
+      "It allows many values to be stored and accessed together under a single name using indices.",
+      "It automatically sorts stored data."
+    ],
+    "answer": "C",
+    "explanation": "Arrays let multiple related values be grouped under one identifier and accessed via index, unlike scalar variables."
+  },
+  {
+    "id": 13,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Types of Collections Supported by C",
+    "question": "Statement: \"C provides built-in dynamic collection types such as lists and dictionaries, similar to Python.\" Evaluate this statement.",
+    "options": [
+      "False - C's main built-in collection structure is the array, not dynamic lists or dictionaries.",
+      "True - C has native list and dictionary types.",
+      "False - C has no way to group data at all.",
+      "True, but only in older C standards."
+    ],
+    "answer": "A",
+    "explanation": "Unlike Python, C does not provide built-in dynamic collections; arrays are its primary native collection type."
+  },
+  {
+    "id": 14,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Types of Collections Supported by C",
+    "question": "A beginner claims that arrays in C automatically increase in size whenever new elements are added. Is this claim correct?",
+    "options": [
+      "Yes, but only for character arrays.",
+      "No - arrays can never store more than one element.",
+      "Yes - arrays resize themselves as needed.",
+      "No - an array's size is fixed at the time of declaration and does not grow automatically."
+    ],
+    "answer": "D",
+    "explanation": "Array size in C is fixed once declared; it does not grow dynamically like some higher-level language structures."
+  },
+  {
+    "id": 15,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Array Collection and its Features",
+    "question": "An array in C can be defined as:",
+    "options": [
+      "A single variable that can hold any data type at once.",
+      "A keyword used to declare pointers.",
+      "A collection of elements of the same data type stored in contiguous memory locations under a single name.",
+      "A function that returns several values."
+    ],
+    "answer": "C",
+    "explanation": "This is the standard definition of an array: same-type elements, contiguous storage, one name."
+  },
+  {
+    "id": 16,
+    "level": "Basic",
+    "type": "Feature",
+    "topic": "Array Collection and its Features",
+    "question": "Which of the following is a core feature of arrays in C?",
+    "options": [
+      "Elements are accessed using an index number.",
+      "Elements are stored in random, non-contiguous memory.",
+      "Elements are accessed only through function calls.",
+      "Elements cannot be modified after declaration."
+    ],
+    "answer": "A",
+    "explanation": "Indexed access is a defining feature of arrays, allowing direct access to any element."
+  },
+  {
+    "id": 17,
+    "level": "Intermediate",
+    "type": "Advantage",
+    "topic": "Array Collection and its Features",
+    "question": "Which of these is a genuine advantage of using arrays?",
+    "options": [
+      "Arrays remove the need for specifying a data type.",
+      "Arrays automatically resize themselves during program execution.",
+      "Arrays can store unlimited elements without declaring a size.",
+      "Related data can be stored and processed together using loops, reducing code duplication."
+    ],
+    "answer": "D",
+    "explanation": "Arrays enable compact, loop-based processing of related data, avoiding repetitive code for each variable."
+  },
+  {
+    "id": 18,
+    "level": "Intermediate",
+    "type": "Limitation",
+    "topic": "Array Collection and its Features",
+    "question": "Which of the following is a genuine limitation of arrays in C?",
+    "options": [
+      "Their size is fixed at declaration and cannot be changed during execution.",
+      "They cannot be indexed.",
+      "They cannot store integer values.",
+      "They must always contain exactly one element."
+    ],
+    "answer": "A",
+    "explanation": "A key limitation of C arrays is their static size, fixed once declared."
+  },
+  {
+    "id": 19,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Array Collection and its Features",
+    "question": "Which of the following is a typical real-world application of arrays?",
+    "options": [
+      "Storing one constant value like pi.",
+      "Storing a single character for a grade.",
+      "Storing daily temperature readings for a month to calculate the monthly average.",
+      "Storing a single yes/no flag for login status."
+    ],
+    "answer": "C",
+    "explanation": "Arrays are ideal for storing a series of related, same-type readings such as daily temperatures."
+  },
+  {
+    "id": 20,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Array Collection and its Features",
+    "question": "How do arrays differ from simple variables in terms of data organization?",
+    "options": [
+      "Arrays organize multiple same-type values under one name; simple variables hold only a single value.",
+      "There is no organizational difference between them.",
+      "Arrays can hold only one value; simple variables hold many.",
+      "Arrays cannot be organized at all."
+    ],
+    "answer": "A",
+    "explanation": "This distinction is the essential feature separating arrays (collections) from scalar (simple) variables."
+  },
+  {
+    "id": 21,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Array Collection and its Features",
+    "question": "Assertion (A): Arrays are useful for storing large numbers of related values. Reason (R): Arrays allow indexed access to individual elements. Choose the correct option.",
+    "options": [
+      "A is false, but R is true.",
+      "Both A and R are false.",
+      "A is true, but R is false.",
+      "Both A and R are true, and R correctly explains A."
+    ],
+    "answer": "D",
+    "explanation": "Indexed access (R) is precisely what makes arrays practical for storing and retrieving large sets of related values (A)."
+  },
+  {
+    "id": 22,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Array Collection and its Features",
+    "question": "A programmer stores 10 integers using an array but later needs to store 15. What must be done, given the fixed-size limitation of arrays?",
+    "options": [
+      "The program will resize the array at runtime without any changes.",
+      "The array will overwrite unrelated memory to make space.",
+      "Nothing - the array will automatically expand to fit 15 integers.",
+      "Declare a new, larger array (or redeclare with a bigger size), since the original array's size cannot grow."
+    ],
+    "answer": "D",
+    "explanation": "Because array size is fixed at declaration, accommodating more elements requires declaring a new array with sufficient size."
+  },
+  {
+    "id": 23,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Concept of Indexing",
+    "question": "\"Indexing\" in the context of arrays refers to:",
+    "options": [
+      "The technique of converting an array into a string.",
+      "The method of identifying and accessing a specific element in an array using its position number.",
+      "A method used only for sorting arrays.",
+      "The process of compiling a C program."
+    ],
+    "answer": "B",
+    "explanation": "Indexing is the mechanism that lets a specific array element be located and accessed by its position."
+  },
+  {
+    "id": 24,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Concept of Indexing",
+    "question": "In C, array indexing begins from which value?",
+    "options": [
+      "1",
+      "0",
+      "2",
+      "-1"
+    ],
+    "answer": "B",
+    "explanation": "C arrays use zero-based indexing, so the first element is at index 0."
+  },
+  {
+    "id": 25,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Concept of Indexing",
+    "question": "If an array has 10 elements, what is the valid index range?",
+    "options": [
+      "0 to 10",
+      "1 to 9",
+      "1 to 10",
+      "0 to 9"
+    ],
+    "answer": "D",
+    "explanation": "With 10 elements and zero-based indexing, valid indices run from 0 through 9 (10 total positions)."
+  },
+  {
+    "id": 26,
+    "level": "Basic",
+    "type": "Positioning",
+    "topic": "Concept of Indexing",
+    "question": "How does indexing help determine the position of an element in an array?",
+    "options": [
+      "Indexing has no relation to element position.",
+      "Indexing only tells the total size of the array.",
+      "Indexing determines the data type of the array.",
+      "Each index value directly corresponds to the offset of an element from the start of the array."
+    ],
+    "answer": "D",
+    "explanation": "The index value is essentially the position offset from the beginning of the array in memory."
+  },
+  {
+    "id": 27,
+    "level": "Basic",
+    "type": "Access Mechanism",
+    "topic": "Concept of Indexing",
+    "question": "Which of the following correctly accesses the 3rd element of an array named marks?",
+    "options": [
+      "marks[2]",
+      "marks{2}",
+      "marks(3)",
+      "marks[3]"
+    ],
+    "answer": "A",
+    "explanation": "Since indexing starts at 0, the 3rd element is accessed using index 2, i.e., marks[2]."
+  },
+  {
+    "id": 28,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Concept of Indexing",
+    "question": "Statement: \"Array indexing in C always starts from 1, similar to everyday counting.\" Evaluate this statement.",
+    "options": [
+      "False - indexing starts from -1.",
+      "True - indexing always starts from 1.",
+      "True, but only for character arrays.",
+      "False - C array indexing always starts from 0, not 1."
+    ],
+    "answer": "D",
+    "explanation": "This is a common misconception; C strictly uses zero-based indexing for arrays."
+  },
+  {
+    "id": 29,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Concept of Indexing",
+    "question": "An array int a[5]; is declared. Which index would cause an out-of-bounds access?",
+    "options": [
+      "a[4]",
+      "a[2]",
+      "a[0]",
+      "a[5]"
+    ],
+    "answer": "D",
+    "explanation": "Valid indices for a 5-element array are 0 to 4; a[5] refers to a non-existent 6th element, causing an out-of-bounds access."
+  },
+  {
+    "id": 30,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Concept of Indexing",
+    "question": "Why is understanding indexing critical when working with arrays in C?",
+    "options": [
+      "Because indexing determines the color of output text.",
+      "Because indexing changes the array's data type automatically.",
+      "Because C does not automatically check index bounds, incorrect indexing can access invalid memory.",
+      "Because indexing is optional and arrays can be accessed without it."
+    ],
+    "answer": "C",
+    "explanation": "Since C performs no automatic bounds checking, understanding correct index usage is essential to avoid undefined behavior."
+  },
+  {
+    "id": 31,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Index Variable",
+    "question": "An \"index variable\" is best defined as:",
+    "options": [
+      "A variable that stores the total size of an array.",
+      "A special constant defined by the compiler.",
+      "A variable used to hold the index value that specifies which array element is being accessed.",
+      "A variable that can only hold floating-point numbers."
+    ],
+    "answer": "C",
+    "explanation": "An index variable stores the numeric position used to reference a specific array element."
+  },
+  {
+    "id": 32,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "Index Variable",
+    "question": "What is the main purpose of using an index variable, such as i, in a loop that processes an array?",
+    "options": [
+      "To store the sum of all array elements permanently.",
+      "To systematically refer to each array element in turn during iteration.",
+      "To declare the array's size dynamically.",
+      "To change the array's data type during the loop."
+    ],
+    "answer": "B",
+    "explanation": "Index variables like i are used in loops to move through and access each element of the array sequentially."
+  },
+  {
+    "id": 33,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "Index Variable",
+    "question": "Which characteristic must an index variable in C generally have?",
+    "options": [
+      "It must always be a character constant.",
+      "It should hold an integer value corresponding to a valid array position.",
+      "It must always be declared as a float.",
+      "It must be declared outside the program."
+    ],
+    "answer": "B",
+    "explanation": "Since array indices are whole numbers representing positions, index variables are typically integers."
+  },
+  {
+    "id": 34,
+    "level": "Basic",
+    "type": "Usage",
+    "topic": "Index Variable",
+    "question": "In the code for(i=0; i<n; i++) arr[i] = 0;, what role does i play?",
+    "options": [
+      "It defines the data type of arr.",
+      "It stores the final value of the array.",
+      "It represents the memory address of the compiler.",
+      "It acts as the index variable that accesses each element of arr in sequence."
+    ],
+    "answer": "D",
+    "explanation": "Here, i is incremented each loop cycle and used as the index to access arr[i] sequentially."
+  },
+  {
+    "id": 35,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Index Variable",
+    "question": "Why is using an index variable more efficient than manually writing arr[0], arr[1], arr[2], and so on individually?",
+    "options": [
+      "It removes the need for the array to have a declared size.",
+      "It converts the array into a different data type.",
+      "It reduces the array's memory usage to zero.",
+      "It allows the same code (using a loop) to process arrays of any size without repeating statements."
+    ],
+    "answer": "D",
+    "explanation": "Index variables combined with loops let one line of code handle elements of any array size, avoiding repetition."
+  },
+  {
+    "id": 36,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Index Variable",
+    "question": "If the index variable i in a loop mistakenly runs from 1 to n (instead of 0 to n-1) for an array of size n, what happens?",
+    "options": [
+      "The program automatically corrects itself and works fine.",
+      "The array size increases to accommodate index n.",
+      "The first element (index 0) is skipped, and an out-of-bounds access occurs at index n.",
+      "Nothing happens; all elements are processed correctly."
+    ],
+    "answer": "C",
+    "explanation": "Since valid indices run from 0 to n-1, looping from 1 to n skips the first element and accesses one index beyond the array's bounds."
+  },
+  {
+    "id": 37,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Index Type",
+    "question": "In C, array indices must be of which fundamental type?",
+    "options": [
+      "Character string type",
+      "Boolean type only",
+      "Floating-point type",
+      "Integer type"
+    ],
+    "answer": "D",
+    "explanation": "Array indices in C must be integers (or integer-compatible types); floating-point or string values cannot be used directly as indices."
+  },
+  {
+    "id": 38,
+    "level": "Basic",
+    "type": "Rule",
+    "topic": "Index Type",
+    "question": "Which of the following is a valid index value for accessing an array element in C?",
+    "options": [
+      "Any arbitrary string.",
+      "A Boolean value like true.",
+      "A non-negative integer within the array's declared size.",
+      "A negative floating-point number."
+    ],
+    "answer": "C",
+    "explanation": "Valid indices are non-negative whole numbers that lie within the array's bounds."
+  },
+  {
+    "id": 39,
+    "level": "Basic",
+    "type": "Restriction",
+    "topic": "Index Type",
+    "question": "What restriction applies to index values used to access array elements in C?",
+    "options": [
+      "They can be any real number, positive or negative.",
+      "They must always be exactly equal to the array size.",
+      "There is no restriction on index values in C.",
+      "They must be within the range 0 to (size - 1) for defined behavior."
+    ],
+    "answer": "D",
+    "explanation": "Using an index outside 0 to size-1 leads to undefined behavior since C does not check bounds automatically."
+  },
+  {
+    "id": 40,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Index Type",
+    "question": "Statement: \"An array index can be a floating-point expression like arr[2.5] in standard C.\" Evaluate.",
+    "options": [
+      "False - array indices must evaluate to integer values, not floating-point values.",
+      "False - indices must always be negative.",
+      "True, but only for two-dimensional arrays.",
+      "True - floating-point indices are always valid."
+    ],
+    "answer": "A",
+    "explanation": "C requires indices to be integral; a floating-point expression like 2.5 is not a valid direct index."
+  },
+  {
+    "id": 41,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Index Type",
+    "question": "Which expression below is a valid way to index an array using a computed integer index?",
+    "options": [
+      "arr[true && false] treated as a non-integer",
+      "arr[\"1\"] using a string literal",
+      "arr[i + 1.5] where the result is fractional",
+      "arr[i + 1] where i is an integer variable"
+    ],
+    "answer": "D",
+    "explanation": "arr[i + 1] evaluates to an integer, making it a valid array index expression."
+  },
+  {
+    "id": 42,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Index Type",
+    "question": "A programmer writes arr[3.0] to access an array element. What is the likely outcome in C?",
+    "options": [
+      "The index becomes invalid and always crashes the program.",
+      "The program refuses to compile under any circumstances.",
+      "The compiler converts 3.0 to an integer index (3), but relying on this is poor and non-portable practice.",
+      "The array automatically becomes a floating-point array."
+    ],
+    "answer": "C",
+    "explanation": "While C may implicitly convert a floating literal to an integer in some contexts, correct practice always uses integer index expressions."
+  },
+  {
+    "id": 43,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Positional Value of a Member of Array Collection",
+    "question": "The \"positional value\" of an array element refers to:",
+    "options": [
+      "The data type used for the array.",
+      "The total number of elements in the array.",
+      "The specific location/index of that element within the array's sequence.",
+      "The literal value stored at index 0 only."
+    ],
+    "answer": "C",
+    "explanation": "Positional value describes where an element sits within the ordered sequence of the array, identified by its index."
+  },
+  {
+    "id": 44,
+    "level": "Basic",
+    "type": "Addressing",
+    "topic": "Positional Value of a Member of Array Collection",
+    "question": "How is the positional concept in arrays related to memory addressing?",
+    "options": [
+      "Each position (index) corresponds to a specific offset from the base address of the array in memory.",
+      "Every element shares exactly the same memory address.",
+      "Positional concepts have no connection to memory addressing.",
+      "Position determines only the array's name, not its address."
+    ],
+    "answer": "A",
+    "explanation": "Since arrays are stored contiguously, each index maps to a specific memory offset from the array's base address."
+  },
+  {
+    "id": 45,
+    "level": "Basic",
+    "type": "Relationship",
+    "topic": "Positional Value of a Member of Array Collection",
+    "question": "What is the relationship between an array's index and an element's position?",
+    "options": [
+      "The index always equals the position plus 100.",
+      "The position is only meaningful for the last element.",
+      "The index directly represents the element's position, starting from 0 for the first element.",
+      "The index and position are unrelated."
+    ],
+    "answer": "C",
+    "explanation": "In C, the index is the position identifier itself, beginning at 0."
+  },
+  {
+    "id": 46,
+    "level": "Basic",
+    "type": "Access",
+    "topic": "Positional Value of a Member of Array Collection",
+    "question": "To access the element at the 5th position of an array marks (using standard C indexing), which expression is correct?",
+    "options": [
+      "marks[6]",
+      "marks[4]",
+      "marks(5)",
+      "marks[5]"
+    ],
+    "answer": "B",
+    "explanation": "The 5th positional element corresponds to index 4, since indexing starts at 0."
+  },
+  {
+    "id": 47,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Positional Value of a Member of Array Collection",
+    "question": "Why does knowing an element's positional value matter when processing arrays?",
+    "options": [
+      "It determines the array's total memory size automatically.",
+      "It allows precise access, modification, and reference to that specific element during program execution.",
+      "It only matters for arrays with a single element.",
+      "It has no practical use in programming."
+    ],
+    "answer": "B",
+    "explanation": "Understanding positional value (index) is essential for correctly accessing or updating specific array elements."
+  },
+  {
+    "id": 48,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Positional Value of a Member of Array Collection",
+    "question": "In an array int a[6] = {10,20,30,40,50,60};, what is the positional value (index) of the element with value 40?",
+    "options": [
+      "4",
+      "40",
+      "2",
+      "3"
+    ],
+    "answer": "D",
+    "explanation": "Counting from index 0: 10(0), 20(1), 30(2), 40(3) - so 40 is at index 3."
+  },
+  {
+    "id": 49,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Concept of Dimension and Size of an Array",
+    "question": "The \"dimension\" of an array refers to:",
+    "options": [
+      "The name given to the array.",
+      "The data type of the array elements.",
+      "The number of indices required to access an individual element (e.g., one-dimensional, two-dimensional).",
+      "The total number of bytes the array occupies."
+    ],
+    "answer": "C",
+    "explanation": "Dimension describes how many indices are needed to specify an element - one index for 1-D, two for 2-D, and so on."
+  },
+  {
+    "id": 50,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Concept of Dimension and Size of an Array",
+    "question": "A one-dimensional array is best described as:",
+    "options": [
+      "A collection that stores only characters.",
+      "A linear collection of elements accessed using a single index.",
+      "A collection with no fixed size.",
+      "A collection accessed using two indices."
+    ],
+    "answer": "B",
+    "explanation": "A one-dimensional array is a simple linear list of elements, each accessed via one index value."
+  },
+  {
+    "id": 51,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Concept of Dimension and Size of an Array",
+    "question": "What does the \"size\" of an array represent?",
+    "options": [
+      "The total number of elements the array can hold.",
+      "The name of the array variable.",
+      "The data type used to declare the array.",
+      "The number of dimensions the array has."
+    ],
+    "answer": "A",
+    "explanation": "Size refers to the count of elements an array can store, as specified at declaration."
+  },
+  {
+    "id": 52,
+    "level": "Basic",
+    "type": "Storage",
+    "topic": "Concept of Dimension and Size of an Array",
+    "question": "How is the total memory occupied by an array determined?",
+    "options": [
+      "By adding the array's name length to its size.",
+      "By dividing the size by the number of dimensions.",
+      "By multiplying the number of elements (size) by the memory size of each element's data type.",
+      "It is always exactly 100 bytes regardless of type."
+    ],
+    "answer": "C",
+    "explanation": "Total memory = size x size of each element's data type (e.g., 10 ints x 4 bytes = 40 bytes)."
+  },
+  {
+    "id": 53,
+    "level": "Basic",
+    "type": "Capacity",
+    "topic": "Concept of Dimension and Size of an Array",
+    "question": "If int arr[20]; is declared, what is the array's capacity?",
+    "options": [
+      "20 bytes regardless of type",
+      "19 integer elements",
+      "20 integer elements",
+      "Unlimited elements"
+    ],
+    "answer": "C",
+    "explanation": "The declared size, 20, directly gives the array's capacity - it can hold 20 integers."
+  },
+  {
+    "id": 54,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Concept of Dimension and Size of an Array",
+    "question": "Which scenario best demonstrates the correct use of \"size\" in an array declaration?",
+    "options": [
+      "Declaring int marks[30]; to store the marks of exactly 30 students.",
+      "Declaring int marks; to store 30 students' marks.",
+      "Declaring int marks[]; without ever using it with an initializer.",
+      "Declaring marks[30]; without specifying a data type."
+    ],
+    "answer": "A",
+    "explanation": "The size, 30, exactly matches the number of elements to be stored, which is the correct use of array sizing."
+  },
+  {
+    "id": 55,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Concept of Dimension and Size of an Array",
+    "question": "Statement: \"The size of a standard fixed array in C must be specified as a non-negative integer constant expression at declaration.\" Evaluate.",
+    "options": [
+      "False - sizes must always be floating-point.",
+      "True, but only for two-dimensional arrays.",
+      "False - sizes can be any negative number.",
+      "True - the size must be a non-negative integer constant expression."
+    ],
+    "answer": "D",
+    "explanation": "Standard C array declarations require the size to be a non-negative integer constant expression."
+  },
+  {
+    "id": 56,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Concept of Dimension and Size of an Array",
+    "question": "An array is declared as float temp[15];. What is its \"dimension\" and \"size\" respectively?",
+    "options": [
+      "Dimension: fifteen-dimensional; Size: 1 element",
+      "Dimension: two-dimensional; Size: 15 elements",
+      "Dimension: one-dimensional; Size: 1 element",
+      "Dimension: one-dimensional; Size: 15 elements"
+    ],
+    "answer": "D",
+    "explanation": "temp is a single-indexed (one-dimensional) array capable of holding 15 float elements."
+  },
+  {
+    "id": 57,
+    "level": "Intermediate",
+    "type": "Syntax",
+    "topic": "C Syntax for Declaration of Array",
+    "question": "Which of the following is the correct general syntax for declaring a one-dimensional array in C?",
+    "options": [
+      "data_type array_name[size];",
+      "data_type[size] array_name;",
+      "size array_name[data_type];",
+      "array data_type[size] name;"
+    ],
+    "answer": "A",
+    "explanation": "The standard syntax places the data type first, followed by the array name and the size in square brackets."
+  },
+  {
+    "id": 58,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "C Syntax for Declaration of Array",
+    "question": "Which of the following correctly declares an integer array of 10 elements?",
+    "options": [
+      "int arr[10];",
+      "int arr(10);",
+      "array int arr[10];",
+      "integer arr[10];"
+    ],
+    "answer": "A",
+    "explanation": "int arr[10]; correctly specifies the data type, array name, and size in square brackets."
+  },
+  {
+    "id": 59,
+    "level": "Basic",
+    "type": "Declaration Rule",
+    "topic": "C Syntax for Declaration of Array",
+    "question": "Which of the following array declarations is INVALID in standard C?",
+    "options": [
+      "float arr[20];",
+      "int arr[-5];",
+      "char arr[100];",
+      "int arr[5];"
+    ],
+    "answer": "B",
+    "explanation": "Array sizes must be non-negative; int arr[-5]; is invalid because negative sizes are not allowed."
+  },
+  {
+    "id": 60,
+    "level": "Basic",
+    "type": "Naming Convention",
+    "topic": "C Syntax for Declaration of Array",
+    "question": "Which of the following is a valid array name in C?",
+    "options": [
+      "2ndArray",
+      "studentMarks",
+      "student-marks",
+      "int"
+    ],
+    "answer": "B",
+    "explanation": "Identifiers in C must start with a letter or underscore and cannot use hyphens or reserved keywords like int."
+  },
+  {
+    "id": 61,
+    "level": "Basic",
+    "type": "Valid Declaration",
+    "topic": "C Syntax for Declaration of Array",
+    "question": "Which declaration correctly creates a character array capable of storing 20 characters?",
+    "options": [
+      "char name[20];",
+      "character name[20];",
+      "char name(20);",
+      "char[20] name;"
+    ],
+    "answer": "A",
+    "explanation": "char name[20]; follows correct C syntax: data type, name, then size in brackets."
+  },
+  {
+    "id": 62,
+    "level": "Basic",
+    "type": "Invalid Declaration",
+    "topic": "C Syntax for Declaration of Array",
+    "question": "Which of the following is an invalid array declaration in C?",
+    "options": [
+      "double arr[10];",
+      "int [10] arr;",
+      "int arr[10], brr[5];",
+      "int arr[10];"
+    ],
+    "answer": "B",
+    "explanation": "The size in square brackets must appear after the array name, not before it, making int [10] arr; invalid."
+  },
+  {
+    "id": 63,
+    "level": "Intermediate",
+    "type": "Code-snippet",
+    "topic": "C Syntax for Declaration of Array",
+    "question": "What does the declaration double prices[50]; create?",
+    "options": [
+      "An array named prices capable of holding 50 double (floating-point) values.",
+      "An array of 50 integers named prices.",
+      "A function named prices that returns 50 doubles.",
+      "A single double variable named prices."
+    ],
+    "answer": "A",
+    "explanation": "This declares an array of type double with 50 elements, named prices."
+  },
+  {
+    "id": 64,
+    "level": "Intermediate",
+    "type": "Fill-in-the-Blank",
+    "topic": "C Syntax for Declaration of Array",
+    "question": "Fill in the blank: To declare an array of 100 floating-point numbers named data, you write: _____ data[100];",
+    "options": [
+      "char",
+      "int",
+      "void",
+      "float"
+    ],
+    "answer": "D",
+    "explanation": "Since the array stores floating-point numbers, float is the correct data type keyword to complete the declaration."
+  },
+  {
+    "id": 65,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "C Syntax for Declaration of Array",
+    "question": "Statement: \"In C, the size specified in a basic array declaration must always be a variable, never a constant.\" Evaluate.",
+    "options": [
+      "True, but only in function parameters.",
+      "False - the size in a basic array declaration is typically a constant expression, not necessarily a variable.",
+      "True - sizes must always be variables.",
+      "False - sizes cannot be numbers at all."
+    ],
+    "answer": "B",
+    "explanation": "Standard fixed-size array declarations in C require the size to be a constant expression, not a variable (in classic C)."
+  },
+  {
+    "id": 66,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "C Syntax for Declaration of Array",
+    "question": "A programmer wants to declare an array to store the ages of 25 employees. Which declaration is most appropriate?",
+    "options": [
+      "float age(25);",
+      "int age;",
+      "int age[age];",
+      "int age[25];"
+    ],
+    "answer": "D",
+    "explanation": "Ages are whole numbers, so int age[25]; correctly declares an integer array with 25 elements."
+  },
+  {
+    "id": 67,
+    "level": "Intermediate",
+    "type": "Previous-Year Pattern",
+    "topic": "C Syntax for Declaration of Array",
+    "question": "Which of the following correctly declares an array along with initialization in the same statement?",
+    "options": [
+      "int arr{5} = [1];",
+      "int arr[5] = {1};",
+      "int arr[5] == {1};",
+      "int arr[5]; = {1};"
+    ],
+    "answer": "B",
+    "explanation": "int arr[5] = {1}; is valid syntax - it declares an array of size 5 and initializes the first element to 1 (the rest default to 0)."
+  },
+  {
+    "id": 68,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "C Syntax for Declaration of Array",
+    "question": "What is wrong with the declaration int arr[5.5];?",
+    "options": [
+      "The array name is invalid.",
+      "The array size must be an integer value, but 5.5 is a floating-point number, making this invalid.",
+      "Nothing is wrong; this is perfectly valid C syntax.",
+      "The data type int cannot be used with arrays."
+    ],
+    "answer": "B",
+    "explanation": "Array sizes must be integer constant expressions; using 5.5 (a float) as a size is a syntax error in standard C."
+  },
+  {
+    "id": 69,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Name of the Array and Its Type",
+    "question": "The \"name\" of an array serves which primary purpose?",
+    "options": [
+      "It determines the number of dimensions automatically.",
+      "It specifies only the size of the array.",
+      "It has no functional purpose in C.",
+      "It acts as the identifier used to refer to the entire collection of elements."
+    ],
+    "answer": "D",
+    "explanation": "The array name is the identifier through which the whole collection (and its elements via indexing) is accessed."
+  },
+  {
+    "id": 70,
+    "level": "Basic",
+    "type": "Data Type",
+    "topic": "Name of the Array and Its Type",
+    "question": "In the declaration int scores[10];, what does int specify?",
+    "options": [
+      "The name of the array.",
+      "The number of dimensions of the array.",
+      "The data type of each element stored in the array.",
+      "The total size of the array in bytes only."
+    ],
+    "answer": "C",
+    "explanation": "int specifies that every element in the scores array is an integer."
+  },
+  {
+    "id": 71,
+    "level": "Basic",
+    "type": "Type Specification",
+    "topic": "Name of the Array and Its Type",
+    "question": "Why must all elements of a standard C array share the same declared data type?",
+    "options": [
+      "Because the array's type determines uniform memory allocation and consistent element access.",
+      "Because the array name would otherwise become invalid.",
+      "Because C requires every variable in a program to share one global type.",
+      "Because arrays cannot store numeric values otherwise."
+    ],
+    "answer": "A",
+    "explanation": "A single data type ensures each element occupies the same amount of memory, enabling predictable indexed access."
+  },
+  {
+    "id": 72,
+    "level": "Basic",
+    "type": "Declaration Analysis",
+    "topic": "Name of the Array and Its Type",
+    "question": "Given the declaration char grade[5];, what can be concluded?",
+    "options": [
+      "grade is a single character variable.",
+      "grade is an array of 5 integers.",
+      "grade is an array of 5 characters.",
+      "grade is a function returning characters."
+    ],
+    "answer": "C",
+    "explanation": "The syntax indicates an array named grade, of type char, with 5 elements."
+  },
+  {
+    "id": 73,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Name of the Array and Its Type",
+    "question": "Which factor determines how many bytes each element of an array occupies in memory?",
+    "options": [
+      "The programming environment's operating system only.",
+      "The data type specified when the array is declared.",
+      "The number of elements in the array.",
+      "The name chosen for the array."
+    ],
+    "answer": "B",
+    "explanation": "The declared data type (e.g., int, float, char) determines the memory size of each individual element."
+  },
+  {
+    "id": 74,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Name of the Array and Its Type",
+    "question": "Two arrays are declared as int a[10]; and float b[10];. Why do they occupy different total memory even though both have 10 elements?",
+    "options": [
+      "Because int and float have different sizes per element, so total memory (size x element size) differs.",
+      "Because one array has more dimensions than the other.",
+      "Because their names are different lengths.",
+      "Because arrays with the same size always use the same memory regardless of type."
+    ],
+    "answer": "A",
+    "explanation": "Memory usage depends on element size (dictated by data type) multiplied by number of elements; int and float differ in per-element size."
+  },
+  {
+    "id": 75,
+    "level": "Basic",
+    "type": "Access",
+    "topic": "Referring Individual Elements",
+    "question": "How is an individual element of an array referred to in C?",
+    "options": [
+      "By using the array name followed by the element's index in square brackets, e.g., arr[i].",
+      "By using the array name alone, without any index.",
+      "By using a separate function call for every element.",
+      "By using the array name followed by parentheses, e.g., arr(i)."
+    ],
+    "answer": "A",
+    "explanation": "Individual elements are accessed via index notation: array_name[index]."
+  },
+  {
+    "id": 76,
+    "level": "Basic",
+    "type": "Read Operation",
+    "topic": "Referring Individual Elements",
+    "question": "Which statement correctly reads (retrieves) the value of the 4th element of array data into variable x?",
+    "options": [
+      "x = data[4];",
+      "x = data(3);",
+      "data[3] = x;",
+      "x = data[3];"
+    ],
+    "answer": "D",
+    "explanation": "Since indexing starts at 0, the 4th element is data[3]; assigning it to x reads its value."
+  },
+  {
+    "id": 77,
+    "level": "Basic",
+    "type": "Write Operation",
+    "topic": "Referring Individual Elements",
+    "question": "Which statement correctly writes (assigns) the value 50 to the first element of array marks?",
+    "options": [
+      "50 = marks[0];",
+      "marks[0] = 50;",
+      "marks[0] == 50;",
+      "marks[1] = 50;"
+    ],
+    "answer": "B",
+    "explanation": "The first element is at index 0, and assignment uses =, so marks[0] = 50; is correct."
+  },
+  {
+    "id": 78,
+    "level": "Basic",
+    "type": "Index Notation",
+    "topic": "Referring Individual Elements",
+    "question": "In the expression arr[i+2], what does i+2 represent?",
+    "options": [
+      "A comment ignored by the compiler.",
+      "The computed index used to access a specific element of arr.",
+      "A new array being declared.",
+      "The total size of arr."
+    ],
+    "answer": "B",
+    "explanation": "Any valid integer expression, like i+2, can be used inside square brackets to compute the index."
+  },
+  {
+    "id": 79,
+    "level": "Intermediate",
+    "type": "Code-snippet",
+    "topic": "Referring Individual Elements",
+    "question": "What does the statement printf(\"%d\", list[2]); output, given int list[5] = {5,10,15,20,25};?",
+    "options": [
+      "5",
+      "The entire array",
+      "10",
+      "15"
+    ],
+    "answer": "D",
+    "explanation": "list[2] refers to the third element (index 2), which holds the value 15."
+  },
+  {
+    "id": 80,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Referring Individual Elements",
+    "question": "A program needs to double the value of the 6th element of an array called nums. Which statement achieves this?",
+    "options": [
+      "nums[6] = nums[6] * 2;",
+      "nums(5) = nums(5) * 2;",
+      "nums[5] = nums[5] * 2;",
+      "nums[5] * 2 = nums[5];"
+    ],
+    "answer": "C",
+    "explanation": "The 6th element is at index 5; multiplying it by 2 and reassigning doubles its value correctly."
+  },
+  {
+    "id": 81,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Referring Individual Elements",
+    "question": "Statement: \"Individual array elements in C can be both read from and written to using index notation.\" Evaluate.",
+    "options": [
+      "True, but only for the first element.",
+      "False - index notation only allows writing, never reading.",
+      "True - index notation supports both retrieving and assigning values to array elements.",
+      "False - index notation only allows reading, never writing."
+    ],
+    "answer": "C",
+    "explanation": "arr[i] can appear on the right side of an assignment (read) or the left side (write), supporting both operations."
+  },
+  {
+    "id": 82,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Referring Individual Elements",
+    "question": "What is the output of: int a[4]={1,2,3,4}; a[1]=a[1]+a[2]; printf(\"%d\",a[1]);",
+    "options": [
+      "2",
+      "7",
+      "3",
+      "5"
+    ],
+    "answer": "D",
+    "explanation": "a[1] (2) is added to a[2] (3), giving 5, which is then stored back into a[1] and printed."
+  },
+  {
+    "id": 83,
+    "level": "Basic",
+    "type": "Input Concept",
+    "topic": "Entering Data into an Array",
+    "question": "Which of the following best describes \"entering data\" into an array?",
+    "options": [
+      "Declaring an array without ever assigning it any value.",
+      "Assigning values to array elements either through initialization or user/program input.",
+      "Converting an array into a single variable.",
+      "Deleting all values from an array."
+    ],
+    "answer": "B",
+    "explanation": "Entering data refers to the process of placing values into array elements, whether by initialization or input statements."
+  },
+  {
+    "id": 84,
+    "level": "Intermediate",
+    "type": "Code-snippet",
+    "topic": "Entering Data into an Array",
+    "question": "Which code snippet correctly reads 5 integers from the user into an array arr of size 5?",
+    "options": [
+      "for(i=1;i<=5;i++) scanf(\"%d\",arr[i]);",
+      "for(i=0;i<5;i++) scanf(\"%d\",&arr[i]);",
+      "scanf(\"%d\",&arr);",
+      "for(i=0;i<5;i++) scanf(\"%d\",arr[i]);"
+    ],
+    "answer": "B",
+    "explanation": "The address-of operator (&) must be used with scanf, and the correct loop range (0 to 4) safely fills all 5 elements."
+  },
+  {
+    "id": 85,
+    "level": "Basic",
+    "type": "Assignment",
+    "topic": "Entering Data into an Array",
+    "question": "Which statement directly assigns the value 25 to the third element of an integer array score?",
+    "options": [
+      "score[3] = 25;",
+      "score = 25[2];",
+      "score[2] = 25;",
+      "25 = score[2];"
+    ],
+    "answer": "C",
+    "explanation": "The third element is at index 2; direct assignment uses score[2] = 25;."
+  },
+  {
+    "id": 86,
+    "level": "Basic",
+    "type": "Storage Behavior",
+    "topic": "Entering Data into an Array",
+    "question": "What happens if a program only assigns values to some elements of a partially initialized static/global array?",
+    "options": [
+      "The program will refuse to compile.",
+      "The entire array automatically fills with the value 100.",
+      "The unassigned elements are automatically set to zero.",
+      "The array's size automatically shrinks to match the assigned elements."
+    ],
+    "answer": "C",
+    "explanation": "For static/global arrays, elements not explicitly given a value in a partial initializer default to zero."
+  },
+  {
+    "id": 87,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Entering Data into an Array",
+    "question": "A program must collect 10 temperature readings entered by the user and store them for later processing. What is the appropriate approach?",
+    "options": [
+      "Use a single variable and overwrite it after each reading.",
+      "Ignore user input and hard-code 10 values.",
+      "Store all readings in the array's name variable directly.",
+      "Use a loop with scanf to store each reading into successive elements of a 10-element array."
+    ],
+    "answer": "D",
+    "explanation": "A loop combined with array indexing allows all 10 readings to be captured and retained for later use."
+  },
+  {
+    "id": 88,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Entering Data into an Array",
+    "question": "Statement: \"Values can be entered into an array either at compile-time through initialization or at run-time through input statements like scanf.\" Evaluate.",
+    "options": [
+      "True - both compile-time initialization and run-time input are valid ways of entering data into an array.",
+      "False - arrays can only be filled at run-time.",
+      "False - arrays can only be filled at compile-time.",
+      "True, but only using printf."
+    ],
+    "answer": "A",
+    "explanation": "Both initializer lists and functions like scanf are legitimate methods for populating array elements."
+  },
+  {
+    "id": 89,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Entering Data into an Array",
+    "question": "Why is a loop typically used when entering multiple values into an array via user input?",
+    "options": [
+      "Because loops automatically sort input values.",
+      "Because loops convert the array into a different data type.",
+      "Because it allows repeated input operations to fill each element without writing a separate scanf statement for every index.",
+      "Because loops are required by the C compiler to declare arrays."
+    ],
+    "answer": "C",
+    "explanation": "Loops let one scanf statement be reused across all array indices, avoiding repetitive code."
+  },
+  {
+    "id": 90,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Entering Data into an Array",
+    "question": "In the loop for(i=0;i<=5;i++) scanf(\"%d\",&arr[i]); for an array declared as int arr[5];, what is the problem?",
+    "options": [
+      "The problem is that scanf cannot be used with arrays.",
+      "The problem is that & should not be used with arr[i].",
+      "The loop condition i<=5 causes an out-of-bounds write at index 5, since valid indices are only 0 to 4.",
+      "There is no problem; the loop works perfectly for a 5-element array."
+    ],
+    "answer": "C",
+    "explanation": "Since valid indices for arr[5] range from 0 to 4, the condition i<=5 causes the loop to write one element beyond the array's bounds."
+  },
+  {
+    "id": 91,
+    "level": "Basic",
+    "type": "Retrieval Concept",
+    "topic": "Reading Data from an Array",
+    "question": "\"Reading data from an array\" refers to:",
+    "options": [
+      "Deleting elements from the array.",
+      "Assigning brand-new values into the array unconditionally.",
+      "Declaring the array for the first time.",
+      "Retrieving and using the values already stored at specific array indices."
+    ],
+    "answer": "D",
+    "explanation": "Reading refers to accessing/retrieving existing values from array elements, as opposed to writing new ones."
+  },
+  {
+    "id": 92,
+    "level": "Basic",
+    "type": "Access Method",
+    "topic": "Reading Data from an Array",
+    "question": "Which statement correctly reads and prints the value stored in the 2nd element of array data?",
+    "options": [
+      "printf(\"%d\", data[2]);",
+      "scanf(\"%d\", data[1]);",
+      "printf(\"%d\", data[1]);",
+      "printf(\"%d\", &data[1]);"
+    ],
+    "answer": "C",
+    "explanation": "The 2nd element is at index 1; printf correctly reads and displays its value."
+  },
+  {
+    "id": 93,
+    "level": "Basic",
+    "type": "Sequential Reading",
+    "topic": "Reading Data from an Array",
+    "question": "Which loop correctly reads (prints) every element of an integer array arr of size n sequentially?",
+    "options": [
+      "for(i=0;i<n;i++) printf(\"%d \", arr[i]);",
+      "for(i=n;i>0;i--) printf(\"%d \", arr[i]);",
+      "for(i=1;i<=n;i++) printf(\"%d \", arr[i]);",
+      "for(i=0;i<n;i++) printf(\"%d \", arr);"
+    ],
+    "answer": "A",
+    "explanation": "Looping i from 0 to n-1 and printing arr[i] correctly reads every valid element in sequence."
+  },
+  {
+    "id": 94,
+    "level": "Basic",
+    "type": "Referencing",
+    "topic": "Reading Data from an Array",
+    "question": "Which expression correctly references the last element of an array int arr[8]; using its known size?",
+    "options": [
+      "arr[8]",
+      "arr[7]",
+      "arr[size]",
+      "arr[-1]"
+    ],
+    "answer": "B",
+    "explanation": "For an 8-element array, the last valid index is 7 (size - 1)."
+  },
+  {
+    "id": 95,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Reading Data from an Array",
+    "question": "Statement: \"Reading a value from an array does not modify the original data stored in it.\" Evaluate.",
+    "options": [
+      "True, but only for the first element of the array.",
+      "True - reading simply retrieves the stored value without altering it.",
+      "False - reading deletes the accessed element.",
+      "False - reading always changes the stored value to zero."
+    ],
+    "answer": "B",
+    "explanation": "Reading (e.g., via printf or assignment to another variable) is a non-destructive operation on array data."
+  },
+  {
+    "id": 96,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Reading Data from an Array",
+    "question": "Given int arr[3] = {7,14,21}; and int x = arr[3];, what is the concern with this statement?",
+    "options": [
+      "There is no concern; arr[3] correctly reads the value 21.",
+      "x will automatically and safely become 0.",
+      "arr[3] is an out-of-bounds access, since valid indices for a 3-element array are only 0 to 2.",
+      "This will always print 14 with no issue."
+    ],
+    "answer": "C",
+    "explanation": "Since the array has only indices 0-2, arr[3] accesses memory outside the array, leading to undefined behavior."
+  },
+  {
+    "id": 97,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Array Initialization",
+    "question": "\"Array initialization\" refers to:",
+    "options": [
+      "Declaring an array without specifying its name.",
+      "Deleting the array after it is no longer needed.",
+      "Assigning initial values to array elements at the time the array is declared.",
+      "Changing the array's data type during execution."
+    ],
+    "answer": "C",
+    "explanation": "Initialization is the process of providing starting values to array elements right when the array is declared."
+  },
+  {
+    "id": 98,
+    "level": "Intermediate",
+    "type": "Method",
+    "topic": "Array Initialization",
+    "question": "Which of the following correctly initializes an integer array of 5 elements with the values 1 through 5?",
+    "options": [
+      "int arr[5] = {1,2,3,4,5};",
+      "int arr = {1,2,3,4,5}[5];",
+      "int arr[5] == {1,2,3,4,5};",
+      "int arr[5] = (1,2,3,4,5);"
+    ],
+    "answer": "A",
+    "explanation": "Curly braces with comma-separated values correctly initialize an array at declaration."
+  },
+  {
+    "id": 99,
+    "level": "Basic",
+    "type": "Partial Initialization",
+    "topic": "Array Initialization",
+    "question": "Given int arr[5] = {1,2}; what are the values of arr[2], arr[3], and arr[4]?",
+    "options": [
+      "The array declaration becomes invalid.",
+      "All three remain uninitialized garbage values.",
+      "All three are automatically set to 1.",
+      "All three are automatically set to 0."
+    ],
+    "answer": "D",
+    "explanation": "When an array is partially initialized, the C standard guarantees the remaining elements are set to zero."
+  },
+  {
+    "id": 100,
+    "level": "Basic",
+    "type": "Complete Initialization",
+    "topic": "Array Initialization",
+    "question": "Which of the following represents complete initialization of a 4-element array?",
+    "options": [
+      "int arr[4] = {10, 20, 30, 40};",
+      "int arr[4] = {};",
+      "int arr[4] = {10};",
+      "int arr[4] = {10, 20};"
+    ],
+    "answer": "A",
+    "explanation": "All four positions are explicitly given values, making this a complete initialization."
+  },
+  {
+    "id": 101,
+    "level": "Basic",
+    "type": "Default Values",
+    "topic": "Array Initialization",
+    "question": "If an array is declared as a global/static array without explicit initialization, what are its default element values?",
+    "options": [
+      "The array cannot be declared without initialization.",
+      "All elements default to 1.",
+      "All elements default to garbage/unpredictable values.",
+      "All elements default to 0."
+    ],
+    "answer": "D",
+    "explanation": "Global and static arrays in C are automatically zero-initialized by default, unlike local (automatic) arrays."
+  },
+  {
+    "id": 102,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Array Initialization",
+    "question": "Statement: \"A local (non-static) array that is not explicitly initialized contains garbage values.\" Evaluate.",
+    "options": [
+      "True - uninitialized local arrays typically hold indeterminate garbage values.",
+      "True, but only for character arrays.",
+      "False - local arrays always default to 1.",
+      "False - local arrays are always zero by default."
+    ],
+    "answer": "A",
+    "explanation": "Unlike static/global arrays, local arrays without explicit initialization contain unpredictable garbage values."
+  },
+  {
+    "id": 103,
+    "level": "Intermediate",
+    "type": "Syntax",
+    "topic": "Array Initialization",
+    "question": "Which of these initializations is syntactically INVALID in C?",
+    "options": [
+      "int arr[3] = {1,2,3};",
+      "int arr[3] = {1,2,3,4};",
+      "int arr[3] = {1,2};",
+      "int arr[] = {1,2,3};"
+    ],
+    "answer": "B",
+    "explanation": "Providing more initializer values (4) than the declared size (3) is a compile-time error in C."
+  },
+  {
+    "id": 104,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Array Initialization",
+    "question": "A programmer wants an array of 100 integers, all initialized to zero, without listing 100 zeros manually. What is the simplest correct approach?",
+    "options": [
+      "int arr[100] = 0;",
+      "int arr[100] = {0};",
+      "int arr[100] = {}; (relying on empty braces in classic C)",
+      "Typing {0,0,0,...} manually 100 times"
+    ],
+    "answer": "B",
+    "explanation": "Writing {0} sets the first element to 0, and by the rule for partial initialization, all remaining elements are automatically zeroed too."
+  },
+  {
+    "id": 105,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Array Initialization",
+    "question": "How does partial initialization differ from complete initialization of an array?",
+    "options": [
+      "Partial initialization is only allowed for character arrays.",
+      "Complete initialization always leaves some elements as garbage.",
+      "Partial initialization provides values for only some elements (remaining become 0), while complete initialization provides values for every element.",
+      "They are identical in every respect."
+    ],
+    "answer": "C",
+    "explanation": "Partial initialization leaves the remaining elements zero-filled, whereas complete initialization explicitly sets every element."
+  },
+  {
+    "id": 106,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Array Initialization",
+    "question": "What is the value of arr[4] after the declaration int arr[5] = {1,2,3};?",
+    "options": [
+      "0",
+      "3",
+      "Garbage value",
+      "Undefined and unpredictable"
+    ],
+    "answer": "A",
+    "explanation": "Since only 3 values are provided for a 5-element array, the remaining elements - including arr[4] - are automatically initialized to 0."
+  },
+  {
+    "id": 107,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "List of Initializers",
+    "question": "An \"initializer list\" in an array declaration refers to:",
+    "options": [
+      "A list of all variable names used in the program.",
+      "A separate array used only for storing error codes.",
+      "A function that lists array sizes.",
+      "The comma-separated set of values enclosed in braces used to give initial values to array elements."
+    ],
+    "answer": "D",
+    "explanation": "The initializer list is the { value1, value2, ... } syntax used to assign starting values to an array."
+  },
+  {
+    "id": 108,
+    "level": "Basic",
+    "type": "Rules",
+    "topic": "List of Initializers",
+    "question": "Which rule must be followed when providing an initializer list for an array with an explicit size?",
+    "options": [
+      "The number of initializer values must not exceed the declared size of the array.",
+      "Initializer lists cannot contain the number 0.",
+      "The number of initializer values must always exceed the declared size.",
+      "Initializer values must always be in descending order."
+    ],
+    "answer": "A",
+    "explanation": "C requires that the initializer list not have more elements than the declared array size, or a compile error occurs."
+  },
+  {
+    "id": 109,
+    "level": "Basic",
+    "type": "Valid Initialization",
+    "topic": "List of Initializers",
+    "question": "Which of the following is a valid initializer list for int arr[4];?",
+    "options": [
+      "[5, 10, 15, 20]",
+      "{5, 10, 15, 20, 25}",
+      "{5, 10, 15, 20}",
+      "(5, 10, 15, 20)"
+    ],
+    "answer": "C",
+    "explanation": "Curly braces with exactly (or fewer than) 4 comma-separated values correctly initialize a 4-element array."
+  },
+  {
+    "id": 110,
+    "level": "Intermediate",
+    "type": "Syntax",
+    "topic": "List of Initializers",
+    "question": "What is the correct syntax for initializing a character array to hold the characters 'A', 'B', 'C'?",
+    "options": [
+      "char arr[3] == {'A','B','C'};",
+      "char arr[3] = {'A', 'B', 'C'};",
+      "char arr[3] = \"A, B, C\";",
+      "char arr[3] = ('A', 'B', 'C');"
+    ],
+    "answer": "B",
+    "explanation": "Character literal values, enclosed in single quotes, are correctly placed inside a brace-enclosed initializer list."
+  },
+  {
+    "id": 111,
+    "level": "Basic",
+    "type": "Examples",
+    "topic": "List of Initializers",
+    "question": "Which declaration correctly uses an initializer list to set up an array without explicitly specifying its size?",
+    "options": [
+      "int arr[] = (2,4,6,8);",
+      "int arr[4] = {};",
+      "int arr = {2,4,6,8};",
+      "int arr[] = {2, 4, 6, 8};"
+    ],
+    "answer": "D",
+    "explanation": "When the size is omitted, the compiler infers it from the number of elements in the initializer list - here, 4."
+  },
+  {
+    "id": 112,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "List of Initializers",
+    "question": "Statement: \"If the initializer list has fewer elements than the declared array size, the remaining elements are set to zero.\" Evaluate.",
+    "options": [
+      "True, but only for arrays of size greater than 100.",
+      "True - this is the standard rule for partial initialization in C.",
+      "False - remaining elements always stay as garbage values.",
+      "False - the program will fail to compile in this case."
+    ],
+    "answer": "B",
+    "explanation": "This is a fundamental and guaranteed rule of array initialization in C."
+  },
+  {
+    "id": 113,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "List of Initializers",
+    "question": "Why might a programmer prefer int arr[] = {1,2,3,4,5}; over int arr[5] = {1,2,3,4,5};?",
+    "options": [
+      "To let the compiler automatically determine the size from the initializer list, reducing chances of size-mismatch errors.",
+      "Because omitting the size changes the array's data type.",
+      "Because omitting the size makes the array store unlimited elements.",
+      "Because the C compiler requires the size to always be omitted."
+    ],
+    "answer": "A",
+    "explanation": "Letting the compiler count elements from the initializer list avoids manual counting errors and keeps the size consistent with the list."
+  },
+  {
+    "id": 114,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "List of Initializers",
+    "question": "What is the size of the array declared as int arr[] = {3, 6, 9, 12, 15, 18};?",
+    "options": [
+      "7",
+      "6",
+      "5",
+      "Undefined, since no size was specified"
+    ],
+    "answer": "B",
+    "explanation": "The compiler counts the six comma-separated values in the initializer list and sets the array size to 6 accordingly."
+  },
+  {
+    "id": 115,
+    "level": "Basic",
+    "type": "Explicit Size",
+    "topic": "Size Option",
+    "question": "What does \"explicit size specification\" mean in an array declaration such as int arr[10];?",
+    "options": [
+      "The programmer directly states the number of elements (10) the array will hold.",
+      "The compiler guesses the array size at random.",
+      "The size refers to the data type used.",
+      "The size is determined only at program termination."
+    ],
+    "answer": "A",
+    "explanation": "Explicit size specification means the array's capacity is directly written in the declaration by the programmer."
+  },
+  {
+    "id": 116,
+    "level": "Basic",
+    "type": "Implicit Size",
+    "topic": "Size Option",
+    "question": "In the declaration int arr[] = {4, 8, 12};, how is the array's size determined?",
+    "options": [
+      "Implicitly, based on the number of values (3) in the initializer list.",
+      "It is always fixed at 10 by default.",
+      "Explicitly, since 3 is written in the brackets.",
+      "It must be specified separately using a size() function."
+    ],
+    "answer": "A",
+    "explanation": "Since no size is given in the brackets, the compiler implicitly counts the initializer list's elements (3) to determine the size."
+  },
+  {
+    "id": 117,
+    "level": "Basic",
+    "type": "Relationship",
+    "topic": "Size Option",
+    "question": "What happens when both an explicit size and a shorter initializer list are provided, e.g., int arr[6] = {1,2,3};?",
+    "options": [
+      "The compiler throws an error whenever both are used together.",
+      "The array becomes exactly 3 elements, ignoring the declared size.",
+      "The initializer list size (3) overrides the explicit size (6), shrinking the array.",
+      "The explicit size (6) takes precedence, and any unspecified elements beyond the initializer list default to 0."
+    ],
+    "answer": "D",
+    "explanation": "When an explicit size is larger than the initializer list, the explicit size is honored, and remaining elements default to zero."
+  },
+  {
+    "id": 118,
+    "level": "Basic",
+    "type": "Capacity Concept",
+    "topic": "Size Option",
+    "question": "Which of these declarations relies entirely on implicit size determination?",
+    "options": [
+      "float temp[10];",
+      "float temp[5] = {36.5, 37.0, 98.6};",
+      "float temp[3] = {36.5, 37.0, 98.6};",
+      "float temp[] = {36.5, 37.0, 98.6};"
+    ],
+    "answer": "D",
+    "explanation": "Since no size is given inside the brackets, the array's capacity (3) is implicitly determined from the initializer list."
+  },
+  {
+    "id": 119,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Size Option",
+    "question": "Statement: \"When explicit size and initializer list length do not match (the list is longer), the program compiles successfully.\" Evaluate.",
+    "options": [
+      "False - providing more initializer values than the declared size causes a compilation error.",
+      "True - extra values automatically increase the array size.",
+      "False - the program always crashes at runtime instead of at compile time.",
+      "True - extra values are simply ignored, and the program compiles fine."
+    ],
+    "answer": "A",
+    "explanation": "An initializer list containing more elements than the explicitly declared size results in a compile-time error in standard C."
+  },
+  {
+    "id": 120,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Size Option",
+    "question": "How do int a[5] = {1,2,3}; and int b[] = {1,2,3}; differ?",
+    "options": [
+      "a has a fixed size of 5 with the last two elements defaulting to 0, while b's size is implicitly determined as exactly 3.",
+      "They are functionally identical in every respect, including size.",
+      "b has size 5 as well, matching a.",
+      "a has size 3 and b has size 5."
+    ],
+    "answer": "A",
+    "explanation": "a explicitly reserves 5 slots (with 2 defaulting to zero), while b's size is inferred purely from its 3 initializer values."
+  },
+  {
+    "id": 121,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Bounds Checking",
+    "question": "\"Bounds checking\" in the context of arrays refers to:",
+    "options": [
+      "Ensuring the array is printed in ascending order.",
+      "Checking whether the array's data type matches its name.",
+      "Verifying that the program has no syntax errors.",
+      "Verifying that an index used to access an array falls within its valid, declared range."
+    ],
+    "answer": "D",
+    "explanation": "Bounds checking is specifically about validating that indices stay within the array's valid range."
+  },
+  {
+    "id": 122,
+    "level": "Basic",
+    "type": "Array Limits",
+    "topic": "Bounds Checking",
+    "question": "For an array declared as int arr[8];, what are its valid index limits?",
+    "options": [
+      "1 to 7",
+      "0 to 7",
+      "1 to 8",
+      "0 to 8"
+    ],
+    "answer": "B",
+    "explanation": "With 8 elements and zero-based indexing, valid indices range from 0 to 7 inclusive."
+  },
+  {
+    "id": 123,
+    "level": "Basic",
+    "type": "Valid Indices",
+    "topic": "Bounds Checking",
+    "question": "Which of the following indices is valid for the array int data[12];?",
+    "options": [
+      "-1",
+      "11",
+      "12",
+      "13"
+    ],
+    "answer": "B",
+    "explanation": "For a 12-element array, the highest valid index is 11 (size - 1)."
+  },
+  {
+    "id": 124,
+    "level": "Basic",
+    "type": "Out-of-Bound Conditions",
+    "topic": "Bounds Checking",
+    "question": "Which condition describes an \"out-of-bounds\" access for an array int arr[6];?",
+    "options": [
+      "Accessing arr[5].",
+      "Accessing arr[0].",
+      "Accessing arr[6] or any index beyond 0-5.",
+      "Accessing arr[3]."
+    ],
+    "answer": "C",
+    "explanation": "Valid indices for a 6-element array run from 0 to 5; index 6 (or higher) is outside these bounds."
+  },
+  {
+    "id": 125,
+    "level": "Basic",
+    "type": "Consequences",
+    "topic": "Bounds Checking",
+    "question": "What is a key consequence of C's lack of automatic array bounds checking?",
+    "options": [
+      "Out-of-bounds access may silently corrupt adjacent memory instead of raising an immediate error.",
+      "Out-of-bounds access is always caught and safely ignored at runtime.",
+      "The compiler always halts compilation if bounds are exceeded.",
+      "Arrays automatically expand to accommodate any index used."
+    ],
+    "answer": "A",
+    "explanation": "Since C does not check bounds at runtime, invalid indices can lead to undefined behavior, such as silently corrupting nearby memory."
+  },
+  {
+    "id": 126,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Bounds Checking",
+    "question": "Statement: \"C automatically prevents programs from accessing array indices outside the declared bounds.\" Evaluate.",
+    "options": [
+      "False - C does not perform automatic bounds checking on array accesses.",
+      "False - C prevents this only for two-dimensional arrays.",
+      "True, but only for character arrays.",
+      "True - C always halts the program upon invalid index access."
+    ],
+    "answer": "A",
+    "explanation": "Unlike some higher-level languages, C provides no built-in bounds checking, leaving this responsibility to the programmer."
+  },
+  {
+    "id": 127,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Bounds Checking",
+    "question": "A loop is written as for(i=0;i<=n;i++) processes arr[i]; for an array int arr[n];. What issue does this raise regarding bounds checking?",
+    "options": [
+      "There is no issue; the loop correctly processes all n elements.",
+      "The issue is unrelated to bounds and is purely a syntax error.",
+      "The condition i<=n allows i to reach n, causing an out-of-bounds access since valid indices only go up to n-1.",
+      "The loop accesses too few elements, missing the last one."
+    ],
+    "answer": "C",
+    "explanation": "Using i<=n instead of i<n causes the loop to access index n, one position beyond the array's valid range (0 to n-1)."
+  },
+  {
+    "id": 128,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Bounds Checking",
+    "question": "Why is careful bounds checking especially critical for arrays declared inside functions using local (automatic) storage?",
+    "options": [
+      "Because writing beyond bounds may overwrite other local variables or control data, leading to unpredictable or dangerous behavior.",
+      "Because bounds checking only matters for global arrays, not local ones.",
+      "Because local arrays cannot be indexed at all.",
+      "Because local arrays automatically resize when bounds are exceeded, so checking is unnecessary."
+    ],
+    "answer": "A",
+    "explanation": "Local arrays are typically stored in a region of memory that may hold other important data, so out-of-bounds writes can corrupt that data unpredictably."
+  },
+  {
+    "id": 129,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Two-Dimensional Arrays",
+    "question": "A two-dimensional array can best be described as:",
+    "options": [
+      "A collection where each element is itself a function.",
+      "A collection of elements arranged in rows and columns, accessed using two indices.",
+      "A collection that can hold only character data.",
+      "A collection of elements accessed using only one index."
+    ],
+    "answer": "B",
+    "explanation": "Two-dimensional arrays organize data in a row-and-column (matrix-like) structure, requiring two indices to access an element."
+  },
+  {
+    "id": 130,
+    "level": "Basic",
+    "type": "Declaration",
+    "topic": "Two-Dimensional Arrays",
+    "question": "Which of the following correctly declares a two-dimensional integer array with 3 rows and 4 columns?",
+    "options": [
+      "int arr[3,4];",
+      "int arr[3+4];",
+      "int arr[3][4];",
+      "int arr(3)(4);"
+    ],
+    "answer": "C",
+    "explanation": "The correct syntax for a 2-D array specifies each dimension in its own set of square brackets: [rows][columns]."
+  },
+  {
+    "id": 131,
+    "level": "Intermediate",
+    "type": "Syntax",
+    "topic": "Two-Dimensional Arrays",
+    "question": "Which syntax correctly accesses the element in the 2nd row and 3rd column of a 2-D array named grid?",
+    "options": [
+      "grid(1)(2)",
+      "grid[1][2]",
+      "grid[2][3]",
+      "grid[1,2]"
+    ],
+    "answer": "B",
+    "explanation": "Since indexing starts at 0, the 2nd row is index 1 and the 3rd column is index 2, giving grid[1][2]."
+  },
+  {
+    "id": 132,
+    "level": "Basic",
+    "type": "Dimensions",
+    "topic": "Two-Dimensional Arrays",
+    "question": "How many indices are required to access a single element of a two-dimensional array?",
+    "options": [
+      "One index only.",
+      "No index is required.",
+      "Two - one for the row, one for the column.",
+      "Three indices."
+    ],
+    "answer": "C",
+    "explanation": "A 2-D array requires two indices - row index and column index - to identify a single element."
+  },
+  {
+    "id": 133,
+    "level": "Basic",
+    "type": "Initialization",
+    "topic": "Two-Dimensional Arrays",
+    "question": "Which of the following correctly initializes a 2x2 integer array with the values 1,2,3,4?",
+    "options": [
+      "int arr[2][2] = {1,2,3,4,5};",
+      "int arr[2][2] = {{1,2},{3,4}};",
+      "int arr[2][2] = (1,2,3,4);",
+      "int arr[2][2] = {1,2},{3,4};"
+    ],
+    "answer": "B",
+    "explanation": "Nested braces group each row's values, correctly initializing the 2x2 array as {{1,2},{3,4}}."
+  },
+  {
+    "id": 134,
+    "level": "Basic",
+    "type": "Element Access",
+    "topic": "Two-Dimensional Arrays",
+    "question": "Given int a[2][3] = {{1,2,3},{4,5,6}};, what is the value of a[1][2]?",
+    "options": [
+      "3",
+      "5",
+      "4",
+      "6"
+    ],
+    "answer": "D",
+    "explanation": "Row index 1 corresponds to {4,5,6}, and column index 2 within that row gives the value 6."
+  },
+  {
+    "id": 135,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Two-Dimensional Arrays",
+    "question": "Which real-world scenario is best modeled using a two-dimensional array?",
+    "options": [
+      "Storing one exam's pass/fail status.",
+      "Storing a single integer constant.",
+      "Storing a single student's name.",
+      "Storing a table of student marks across multiple subjects for multiple students."
+    ],
+    "answer": "D",
+    "explanation": "A table of data (students x subjects) naturally maps to rows and columns, making a 2-D array ideal."
+  },
+  {
+    "id": 136,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Two-Dimensional Arrays",
+    "question": "Statement: \"A two-dimensional array in C is essentially stored as a single, contiguous block of memory arranged row by row.\" Evaluate.",
+    "options": [
+      "True, but only for character-type 2-D arrays.",
+      "False - each row of a 2-D array is stored in a completely separate, unrelated memory block.",
+      "True - 2-D arrays are stored in contiguous memory, typically in row-major order.",
+      "False - 2-D arrays cannot be stored contiguously in C."
+    ],
+    "answer": "C",
+    "explanation": "C stores two-dimensional arrays in row-major order within one contiguous memory block."
+  },
+  {
+    "id": 137,
+    "level": "Intermediate",
+    "type": "Code-snippet",
+    "topic": "Two-Dimensional Arrays",
+    "question": "What does the following nested loop print for int a[2][2] = {{5,10},{15,20}};? for(i=0;i<2;i++) for(j=0;j<2;j++) printf(\"%d \", a[i][j]);",
+    "options": [
+      "5 15 10 20",
+      "5 10 15 20",
+      "20 15 10 5",
+      "5 10"
+    ],
+    "answer": "B",
+    "explanation": "The nested loop prints row by row: first row (5,10), then second row (15,20), giving \"5 10 15 20\"."
+  },
+  {
+    "id": 138,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Two-Dimensional Arrays",
+    "question": "A program needs to store the results of a 4-team, 4-round tournament (each team's score per round). Which structure is most suitable?",
+    "options": [
+      "A two-dimensional array with 4 rows (teams) and 4 columns (rounds).",
+      "A single scalar integer variable.",
+      "Four completely unrelated separate programs.",
+      "A single one-dimensional array of size 4."
+    ],
+    "answer": "A",
+    "explanation": "Since data varies across two categories (teams and rounds), a 2-D array (rows x columns) is the natural structure."
+  },
+  {
+    "id": 139,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Two-Dimensional Arrays",
+    "question": "How does a two-dimensional array differ from a one-dimensional array in terms of access?",
+    "options": [
+      "A 2-D array requires no indices at all.",
+      "A 1-D array requires two indices, while a 2-D array requires one.",
+      "A 2-D array requires two indices (row and column) to access an element, while a 1-D array requires only one.",
+      "There is no difference in the number of indices required."
+    ],
+    "answer": "C",
+    "explanation": "The fundamental access difference is the number of indices: one for 1-D arrays, two for 2-D arrays."
+  },
+  {
+    "id": 140,
+    "level": "Intermediate",
+    "type": "Fill-in-the-Blank",
+    "topic": "Two-Dimensional Arrays",
+    "question": "Fill in the blank: In the declaration int mat[4][5];, the array has ____ rows and 5 columns.",
+    "options": [
+      "4",
+      "5",
+      "20",
+      "9"
+    ],
+    "answer": "A",
+    "explanation": "The first bracketed number (4) specifies the number of rows in the two-dimensional array."
+  },
+  {
+    "id": 141,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Two-Dimensional Arrays",
+    "question": "Assertion (A): Two-dimensional arrays are useful for representing matrices. Reason (R): They organize data using two indices representing rows and columns. Choose the correct option.",
+    "options": [
+      "Both A and R are false.",
+      "A is true, but R is false.",
+      "Both A and R are true, and R correctly explains A.",
+      "A is false, but R is true."
+    ],
+    "answer": "C",
+    "explanation": "The row-and-column indexing (R) is exactly why two-dimensional arrays naturally represent matrix-like data (A)."
+  },
+  {
+    "id": 142,
+    "level": "Intermediate",
+    "type": "Previous-Year Pattern",
+    "topic": "Two-Dimensional Arrays",
+    "question": "What is the total number of elements in the array int arr[5][6];?",
+    "options": [
+      "30",
+      "36",
+      "11",
+      "25"
+    ],
+    "answer": "A",
+    "explanation": "Total elements = rows x columns = 5 x 6 = 30."
+  },
+  {
+    "id": 143,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Two-Dimensional Arrays",
+    "question": "What is wrong with the declaration int arr[3][]; intended to create a 3-row 2-D array with unspecified columns?",
+    "options": [
+      "Both dimensions must always be omitted together.",
+      "Nothing is wrong; this is a fully valid declaration in standard C.",
+      "The row size, not the column size, must always be omitted.",
+      "In a multi-dimensional array declaration, only the first (leftmost) dimension may be omitted; the column size cannot be left unspecified without an initializer that determines it."
+    ],
+    "answer": "D",
+    "explanation": "In C, all dimensions except the first must be explicitly specified (or determinable from an initializer) - leaving the column size blank here is invalid."
+  },
+  {
+    "id": 144,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Two-Dimensional Arrays",
+    "question": "For a 2-D array declared as int arr[3][4];, how is the element arr[2][3] typically located in terms of row-major storage relative to the array's start?",
+    "options": [
+      "It is located at offset (3 x 3 + 2), since arrays are stored column by column in C.",
+      "It is always located exactly at the midpoint of the array regardless of size.",
+      "It is located at an offset equal to (2 x 4 + 3) element positions from the start, since the array is stored row by row.",
+      "Row-major storage does not apply to 2-D arrays in C."
+    ],
+    "answer": "C",
+    "explanation": "In row-major order, the offset of arr[i][j] is (i x number_of_columns + j); here (2x4+3) = 11 positions from the start."
+  },
+  {
+    "id": 145,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Similarities Between Dimension and Nesting",
+    "question": "How is the concept of a two-dimensional array related to \"nesting\"?",
+    "options": [
+      "A two-dimensional array can be conceptually viewed as an array of one-dimensional arrays (an array nested within an array).",
+      "Nesting only applies to functions, never to arrays.",
+      "A two-dimensional array is simply a renamed one-dimensional array.",
+      "A two-dimensional array has no relationship to nesting at all."
+    ],
+    "answer": "A",
+    "explanation": "Conceptually, each row of a 2-D array behaves like a separate one-dimensional array, making the whole structure a \"nested\" arrangement of arrays."
+  },
+  {
+    "id": 146,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Similarities Between Dimension and Nesting",
+    "question": "What is a key similarity between the initializer syntax of a two-dimensional array and the concept of nesting?",
+    "options": [
+      "Both use nested (braces within braces) grouping - an outer set of braces containing inner sets for each row.",
+      "Both require exactly one pair of braces with no nesting at all.",
+      "Nesting is only used for loops, not for initializer syntax.",
+      "Neither uses braces in their syntax."
+    ],
+    "answer": "A",
+    "explanation": "The initializer {{1,2},{3,4}} mirrors nesting, with an outer collection (rows) containing inner collections (columns)."
+  },
+  {
+    "id": 147,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Similarities Between Dimension and Nesting",
+    "question": "In what sense can a one-dimensional array be considered the \"building block\" of a two-dimensional array?",
+    "options": [
+      "A 1-D array can only exist independently and never as part of a larger structure.",
+      "Each row of a 2-D array is itself essentially a one-dimensional array, and the 2-D array is a collection of such rows.",
+      "A 2-D array is built from functions, not from 1-D arrays.",
+      "A one-dimensional array has no structural relationship to a two-dimensional array."
+    ],
+    "answer": "B",
+    "explanation": "This reflects the nested relationship: a 2-D array is essentially a \"collection of collections,\" with each row being a 1-D array."
+  },
+  {
+    "id": 148,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Similarities Between Dimension and Nesting",
+    "question": "Statement: \"The relationship between array dimensions and nesting shows that higher-dimensional arrays are structurally built from lower-dimensional ones.\" Evaluate.",
+    "options": [
+      "False - dimensions and nesting are entirely unrelated concepts.",
+      "True - a two-dimensional array is structurally a nested arrangement of one-dimensional arrays.",
+      "False - higher-dimensional arrays have nothing to do with lower-dimensional ones.",
+      "True, but only for arrays of characters."
+    ],
+    "answer": "B",
+    "explanation": "This nested relationship (arrays of arrays) is central to understanding multi-dimensional array concepts."
+  },
+  {
+    "id": 149,
+    "level": "Intermediate",
+    "type": "Comparative",
+    "topic": "Similarities Between Dimension and Nesting",
+    "question": "Which comparison best captures the similarity between \"dimension\" and \"nesting\" in array concepts?",
+    "options": [
+      "Increasing dimension in arrays corresponds to increasing levels of nested grouping of elements.",
+      "Nesting decreases as dimension increases.",
+      "Dimension and nesting are opposite concepts that cannot coexist.",
+      "Dimension refers only to data types, unrelated to nesting."
+    ],
+    "answer": "A",
+    "explanation": "As dimensionality increases (1-D to 2-D), the level of nested grouping (arrays within arrays) also increases correspondingly."
+  },
+  {
+    "id": 150,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Similarities Between Dimension and Nesting",
+    "question": "Why is understanding the similarity between dimension and nesting useful when learning about two-dimensional arrays?",
+    "options": [
+      "It helps learners visualize a 2-D array as rows of one-dimensional arrays, making declaration, initialization, and access easier to understand.",
+      "It is not useful at all and only applies to advanced data structures beyond this syllabus.",
+      "It only helps with understanding functions, not arrays.",
+      "It replaces the need to learn indexing entirely."
+    ],
+    "answer": "A",
+    "explanation": "Seeing 2-D arrays as nested 1-D arrays provides an intuitive mental model for their syntax and behavior."
+  }
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

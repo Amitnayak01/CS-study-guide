@@ -1,0 +1,5139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+@media(max-width:1024px){body{font-size:15px}.q-text{font-size:16px}.option-btn{font-size:14px}.all-q-text{font-size:15px}.all-opt{font-size:14px}.result-stat .val{font-size:28px}.result-title{font-size:26px}}
+@media(max-width:768px){body{font-size:14px}.navbar{padding:0 12px}.logo{font-size:14px}.nav-row1{height:48px;gap:8px}.progress-label{font-size:9px}#timer-display{font-size:11px;padding:3px 8px}.stat-pill{font-size:11px;padding:3px 8px}.filter-select{font-size:12px;min-width:80px}.nav-btn{font-size:13px;padding:8px 14px}.nav-btn svg{width:14px;height:14px}.q-number{font-size:11px}.badge{font-size:10px;padding:2px 7px}.q-body{padding:16px 14px 12px}.q-text{font-size:15px;line-height:1.5}.option-btn{font-size:13.5px;padding:10px 14px;gap:10px}.option-label{width:22px;height:22px;font-size:11px}.exp-body{font-size:13px}.exp-answer{font-size:13px}.show-exp-btn{font-size:12px}.q-counter{font-size:12px}.skip-btn{font-size:11px}.kbd-hint{font-size:10px}.jump-btn{width:32px;height:32px;font-size:11px}.result-grid{grid-template-columns:repeat(3,1fr)}.result-title{font-size:24px}.result-msg{font-size:14px}.result-stat .val{font-size:26px}.result-stat .lbl{font-size:11px}.review-q{font-size:14px}.review-opt{font-size:12.5px}.review-exp{font-size:12px}.all-q-text{font-size:14.5px}.all-opt{font-size:13.5px;padding:9px 12px}.all-exp{font-size:12.5px}.rfbtn{font-size:12px;padding:6px 12px}#app{padding:14px 12px 60px}}
+@media(max-width:480px){body{font-size:13px}.navbar{padding:0 10px}.logo{font-size:13px;letter-spacing:0}.nav-row1{height:44px;gap:6px}.progress-label{display:none}#timer-display{font-size:10px;padding:2px 7px}.icon-btn{width:30px;height:30px}.icon-btn svg{width:15px;height:15px}.nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}.stat-pill{font-size:10px;padding:2px 7px}.nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}.filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}.nav-filter-btns{width:100%;gap:4px}.nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}.card-header{padding:8px 10px;gap:5px}.q-number{font-size:10px;padding:2px 8px}.badge{font-size:9px;padding:2px 6px}.bookmark-btn{width:24px;height:24px}.q-body{padding:12px 10px 10px}.q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}.option-btn{font-size:12.5px;padding:9px 10px;gap:8px}.option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}.option-icon{font-size:14px}.show-exp-btn{font-size:11px;margin:8px 12px}.exp-header{font-size:12px;padding:8px 12px}.exp-body{font-size:12px;padding:10px 12px}.exp-answer{font-size:12.5px}.nav-row{gap:6px;margin-top:10px}.nav-btn{font-size:12px;padding:8px 12px;gap:4px}.nav-btn svg{width:13px;height:13px}.q-counter{font-size:11px}.skip-btn{font-size:10px}.kbd-hint{display:none}.jump-btn{width:28px;height:28px;font-size:10px}.jump-label{font-size:11px}.jump-legend{font-size:10px;gap:8px}.result-hero{padding:20px 14px 16px}.result-emoji{font-size:40px}.result-title{font-size:20px}.result-msg{font-size:13px}.result-grid{grid-template-columns:repeat(2,1fr)}.result-stat{padding:14px 10px}.result-stat .val{font-size:22px}.result-stat .lbl{font-size:10px}.result-actions{padding:12px;gap:8px}.review-q{font-size:13px}.review-opt{font-size:12px;padding:6px 10px}.review-exp{font-size:11.5px;padding:8px 10px}.rfbtn{font-size:11px;padding:5px 10px}.section-title{font-size:17px}.back-link{font-size:12px}.all-q-text{font-size:13px}.all-opt{font-size:12.5px;padding:8px 10px;gap:8px}.all-opt-lbl{width:20px;height:20px;font-size:10px}.all-exp{font-size:11.5px;padding:8px 10px}.all-exp-ans{font-size:12px}#app{padding:10px 8px 60px}}
+@media(max-width:360px){.logo{font-size:12px}.q-text{font-size:13px}.option-btn{font-size:12px;padding:8px 9px}.nav-btn{font-size:11px;padding:7px 10px}.filter-select{font-size:10px}.result-stat .val{font-size:20px}.result-title{font-size:18px}}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+<div id="app">
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+</div>
+<script>
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The Intel 8086 microprocessor was introduced in which year?",
+    "options": [
+      "1974",
+      "1976",
+      "1978",
+      "1980"
+    ],
+    "answer": "C",
+    "explanation": "Intel 8086 was introduced in 1978. It was the first 16-bit microprocessor from Intel."
+  },
+  {
+    "id": 2,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The 8086 microprocessor is a ___-bit processor.",
+    "options": [
+      "8-bit",
+      "16-bit",
+      "32-bit",
+      "4-bit"
+    ],
+    "answer": "B",
+    "explanation": "8086 is a 16-bit microprocessor — it processes 16 bits of data at a time."
+  },
+  {
+    "id": 3,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "How many address lines does the 8086 microprocessor have?",
+    "options": [
+      "16",
+      "20",
+      "24",
+      "32"
+    ],
+    "answer": "B",
+    "explanation": "8086 has 20 address lines (A0–A19), allowing it to address up to = 1 MB of memory."
+  },
+  {
+    "id": 4,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "What is the maximum memory that the 8086 can address?",
+    "options": [
+      "64 KB",
+      "256 KB",
+      "512 KB",
+      "1 MB"
+    ],
+    "answer": "D",
+    "explanation": "With 20 address lines, 8086 can address = 1,048,576 bytes = 1 MB."
+  },
+  {
+    "id": 5,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The data bus width of 8086 is:",
+    "options": [
+      "8-bit",
+      "16-bit",
+      "32-bit",
+      "64-bit"
+    ],
+    "answer": "B",
+    "explanation": "8086 has a 16-bit data bus, allowing it to transfer 16 bits simultaneously."
+  },
+  {
+    "id": 6,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The 8086 microprocessor has how many pins?",
+    "options": [
+      "28",
+      "36",
+      "40",
+      "48"
+    ],
+    "answer": "C",
+    "explanation": "The Intel 8086 is a 40-pin DIP (Dual Inline Package) IC."
+  },
+  {
+    "id": 7,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "What is the clock frequency of the original Intel 8086?",
+    "options": [
+      "1 MHz",
+      "5 MHz",
+      "8 MHz",
+      "10 MHz"
+    ],
+    "answer": "B",
+    "explanation": "The original 8086 operated at 5 MHz. Later versions (8086-2) ran at 8 MHz, and 8086-1 at 10 MHz."
+  },
+  {
+    "id": 8,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "Which company manufactured the Intel 8086?",
+    "options": [
+      "AMD",
+      "Motorola",
+      "Intel",
+      "Zilog"
+    ],
+    "answer": "C",
+    "explanation": "Intel Corporation designed and manufactured the 8086 microprocessor in 1978."
+  },
+  {
+    "id": 9,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The 8086 microprocessor is based on which architecture?",
+    "options": [
+      "Harvard Architecture",
+      "Von Neumann Architecture",
+      "RISC Architecture",
+      "VLIW Architecture"
+    ],
+    "answer": "B",
+    "explanation": "8086 uses Von Neumann architecture where program and data share the same memory and bus. MODERA FREQUENTLY"
+  },
+  {
+    "id": 10,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED How many general-purpose registers does the 8086 have?",
+    "options": [
+      "4",
+      "8",
+      "16",
+      "6"
+    ],
+    "answer": "A",
+    "explanation": "8086 has 4 general-purpose registers: AX, BX, CX, DX (each 16-bit, splittable into H and L bytes)."
+  },
+  {
+    "id": 11,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "Which register in 8086 is used as the accumulator?",
+    "options": [
+      "BX",
+      "CX",
+      "AX",
+      "DX"
+    ],
+    "answer": "C",
+    "explanation": "AX (Accumulator Register) is the primary register used for arithmetic and I/O operations."
+  },
+  {
+    "id": 12,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The BX register in 8086 is also called:",
+    "options": [
+      "Accumulator",
+      "Base Register",
+      "Counter Register",
+      "Data Register"
+    ],
+    "answer": "B",
+    "explanation": "BX is called the Base Register and is commonly used as a memory base address pointer."
+  },
+  {
+    "id": 13,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "CX register in 8086 is primarily used as:",
+    "options": [
+      "Accumulator",
+      "Base Register",
+      "Counter Register",
+      "Data Register"
+    ],
+    "answer": "C",
+    "explanation": "CX is the Counter Register, used in LOOP instructions and repetitive string operations. MODERA FREQUENTLY"
+  },
+  {
+    "id": 14,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED DX register in 8086 is used for:",
+    "options": [
+      "Loop counting only",
+      "I/O port addressing and 32-bit multiplication/division",
+      "Memory base addressing",
+      "Instruction pointer"
+    ],
+    "answer": "B",
+    "explanation": "DX (Data Register) holds I/O port address and upper 16 bits in 32-bit multiply/divide. MODERA FREQUENTLY"
+  },
+  {
+    "id": 15,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED How many segment registers are present in 8086?",
+    "options": [
+      "2",
+      "4",
+      "6",
+      "8"
+    ],
+    "answer": "B",
+    "explanation": "8086 has 4 segment registers: CS (Code), DS (Data), SS (Stack), ES (Extra)."
+  },
+  {
+    "id": 16,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The CS register in 8086 stands for:",
+    "options": [
+      "Counter Segment",
+      "Code Segment",
+      "Control Segment",
+      "Cache Segment"
+    ],
+    "answer": "B",
+    "explanation": "CS = Code Segment register. It holds the base address of the memory segment containing program code. MODERA FREQUENTLY"
+  },
+  {
+    "id": 17,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The IP (Instruction Pointer) in 8086 always points to:",
+    "options": [
+      "The current executing instruction",
+      "The next instruction to be fetched",
+      "The last executed instruction",
+      "The stack top"
+    ],
+    "answer": "B",
+    "explanation": "IP holds the offset address of the NEXT instruction to be fetched from memory by the BIU. MODERA FREQUENTLY"
+  },
+  {
+    "id": 18,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED How many flag bits does the 8086 flag register have?",
+    "options": [
+      "8",
+      "9",
+      "16",
+      "13"
+    ],
+    "answer": "B",
+    "explanation": "8086 has 9 active flag bits: 6 status flags (CF, PF, AF, ZF, SF, OF) + 3 control flags (TF, IF, DF)."
+  },
+  {
+    "id": 19,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "Which flag in 8086 is used to enable or disable maskable interrupts?",
+    "options": [
+      "Trap Flag",
+      "Direction Flag",
+      "Interrupt Flag",
+      "Overflow Flag"
+    ],
+    "answer": "C",
+    "explanation": "The Interrupt Flag (IF): IF=1 enables, IF=0 disables maskable hardware interrupts (INTR pin)."
+  },
+  {
+    "id": 20,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The 8086 operates in how many modes?",
+    "options": [
+      "One",
+      "Two",
+      "Three",
+      "Four"
+    ],
+    "answer": "B",
+    "explanation": "8086 operates in two modes: Minimum Mode (single processor) and Maximum Mode (multiprocessor)."
+  },
+  {
+    "id": 21,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "In 8086, Minimum Mode is selected when MN/MX pin is:",
+    "options": [
+      "Low (0)",
+      "High (1)",
+      "Floating",
+      "Any value"
+    ],
+    "answer": "B",
+    "explanation": "MN/MX = 1 (tied to Vcc) selects Minimum Mode; MN/MX = 0 (tied to GND) selects Maximum Mode. MODERA FREQUENTLY"
+  },
+  {
+    "id": 22,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The instruction queue in 8086 can hold how many bytes?",
+    "options": [
+      "4 bytes",
+      "6 bytes",
+      "8 bytes",
+      "16 bytes"
+    ],
+    "answer": "B",
+    "explanation": "8086 has a 6-byte instruction prefetch queue, fetched ahead by BIU while EU executes. MODERA FREQUENTLY"
+  },
+  {
+    "id": 23,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The physical address in 8086 is formed by:",
+    "options": [
+      "Segment Register + Offset",
+      "Segment Register × 10H + Offset -",
+      "Segment Register + IP",
+      "Segment Register × 16 Offset"
+    ],
+    "answer": "B",
+    "explanation": "Segment Register × 10H + Offset Physical Address = Segment Register × 10H (left-shift 4 bits) + Offset (Effective Address). MODERA FREQUENTLY"
+  },
+  {
+    "id": 24,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The size of each segment in 8086 memory is a maximum of:",
+    "options": [
+      "512 bytes",
+      "1 KB",
+      "64 KB",
+      "1 MB"
+    ],
+    "answer": "C",
+    "explanation": "Each memory segment in 8086 can be a maximum of 64 KB (65,536 bytes) in size."
+  },
+  {
+    "id": 25,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The 8086 microprocessor belongs to which family?",
+    "options": [
+      "x64 family",
+      "x86 family",
+      "MIPS family",
+      "ARM family"
+    ],
+    "answer": "B",
+    "explanation": "8086 is the founding member of Intel's x86 family of processors."
+  },
+  {
+    "id": 26,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "What does BIU stand for in 8086 architecture?",
+    "options": [
+      "Binary Interface Unit",
+      "Bus Interface Unit",
+      "Basic Instruction Unit",
+      "Buffer Interface Unit"
+    ],
+    "answer": "B",
+    "explanation": "BIU = Bus Interface Unit. It manages all bus operations: fetching instructions and transferring data."
+  },
+  {
+    "id": 27,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "What does EU stand for in 8086 architecture?",
+    "options": [
+      "External Unit",
+      "Execution Unit",
+      "Extended Unit",
+      "Effective Unit"
+    ],
+    "answer": "B",
+    "explanation": "EU = Execution Unit. It decodes and executes instructions handed over from the instruction queue."
+  },
+  {
+    "id": 28,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The carry flag (CF) in 8086 is set when:",
+    "options": [
+      "Result is zero",
+      "Result is negative",
+      "Carry out of MSB occurs in arithmetic",
+      "Signed overflow occurs"
+    ],
+    "answer": "C",
+    "explanation": "CF is set when there is a carry out of (or borrow into) the most significant bit during arithmetic."
+  },
+  {
+    "id": 29,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The Zero Flag (ZF) in 8086 is set when:",
+    "options": [
+      "Result is positive",
+      "Result of operation is zero",
+      "Result overflows",
+      "Result is negative"
+    ],
+    "answer": "B",
+    "explanation": "ZF = 1 whenever the result of an ALU operation is zero. MODERA FREQUENTLY"
+  },
+  {
+    "id": 30,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED Which of the following is NOT a status flag in 8086?",
+    "options": [
+      "CF",
+      "ZF",
+      "DF",
+      "SF"
+    ],
+    "answer": "C",
+    "explanation": "DF (Direction Flag) is a CONTROL flag, not a status flag. CF, ZF, SF are status flags."
+  },
+  {
+    "id": 31,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The SP register in 8086 stands for:",
+    "options": [
+      "Stack Pointer",
+      "Segment Pointer",
+      "Source Pointer",
+      "Special Purpose"
+    ],
+    "answer": "A",
+    "explanation": "SP = Stack Pointer. It holds the offset address of the current top of the stack."
+  },
+  {
+    "id": 32,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "How many index registers does 8086 have?",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "answer": "B",
+    "explanation": "8086 has 2 index registers: SI (Source Index) and DI (Destination Index)."
+  },
+  {
+    "id": 33,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The 8086 microprocessor uses which fabrication technology?",
+    "options": [
+      "TTL",
+      "CMOS",
+      "NMOS",
+      "BiCMOS"
+    ],
+    "answer": "C",
+    "explanation": "Intel 8086 uses NMOS (N-channel Metal-Oxide Semiconductor) technology."
+  },
+  {
+    "id": 34,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The number of transistors in 8086 is approximately:",
+    "options": [
+      "6,500",
+      "29,000",
+      "134,000",
+      "275,000"
+    ],
+    "answer": "B",
+    "explanation": "Intel 8086 contains approximately 29,000 transistors."
+  },
+  {
+    "id": 35,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The 8086 supports pipelining with how many stages?",
+    "options": [
+      "1",
+      "2",
+      "4",
+      "5"
+    ],
+    "answer": "B",
+    "explanation": "8086 has a 2-stage pipeline: BIU fetches instructions into queue while EU executes current instruction."
+  },
+  {
+    "id": 36,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The 8086 supports how many I/O port addresses?",
+    "options": [
+      "256",
+      "1024",
+      "65536",
+      "1048576"
+    ],
+    "answer": "C",
+    "explanation": "8086 can address 65,536 (64K) I/O ports using its 16-bit I/O address bus."
+  },
+  {
+    "id": 37,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The 8086 instruction set is classified as:",
+    "options": [
+      "RISC",
+      "CISC",
+      "VLIW",
+      "EPIC"
+    ],
+    "answer": "B",
+    "explanation": "8086 uses CISC (Complex Instruction Set Computing) — many complex, variable-length instructions. MODERA FREQUENTLY"
+  },
+  {
+    "id": 38,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The ALE signal in 8086 stands for:",
+    "options": [
+      "Address Latch Enable",
+      "Arithmetic Logic Enable",
+      "Address Line Enable",
+      "Asynchronous Latch Enable"
+    ],
+    "answer": "A",
+    "explanation": "ALE (Address Latch Enable) is a high pulse used to demultiplex address from AD0–AD15 lines."
+  },
+  {
+    "id": 39,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "In 8086, the BP register is used to:",
+    "options": [
+      "Point to top of stack",
+      "Access stack frame parameters and local variables",
+      "Hold I/O address",
+      "Count loop iterations"
+    ],
+    "answer": "B",
+    "explanation": "BP (Base Pointer) is used to access function parameters and local variables in the stack frame."
+  },
+  {
+    "id": 40,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "Which 8086 register is used with DI for string operations as destination?",
+    "options": [
+      "CS",
+      "DS",
+      "SS",
+      "ES"
+    ],
+    "answer": "D",
+    "explanation": "ES (Extra Segment) is used with DI as the default destination segment in string operations. MODERA FREQUENTLY"
+  },
+  {
+    "id": 41,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The total number of registers in 8086 is:",
+    "options": [
+      "8",
+      "12",
+      "14",
+      "16"
+    ],
+    "answer": "C",
+    "explanation": "8086 has 14 programmer-accessible registers: 4 GP, 4 segment, SP, BP, SI, DI, IP, Flags."
+  },
+  {
+    "id": 42,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The process name for 8086 fabrication was:",
+    "options": [
+      "3-micron NMOS",
+      "3-micron HMOS",
+      "2-micron CMOS",
+      "5-micron NMOS"
+    ],
+    "answer": "B",
+    "explanation": "Intel 8086 was originally fabricated in HMOS (High-density N-channel MOS) 3-micron process technology. MODERA FREQUENTLY"
+  },
+  {
+    "id": 43,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The 8086 can handle how many interrupt types?",
+    "options": [
+      "64",
+      "128",
+      "256",
+      "512"
+    ],
+    "answer": "C",
+    "explanation": "8086 supports 256 interrupt types (INT 0 to INT 255), each with a 4-byte vector in the IVT. MODERA FREQUENTLY"
+  },
+  {
+    "id": 44,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED Where is the Interrupt Vector Table (IVT) stored in 8086?",
+    "options": [
+      "At top of memory (FFFF0H)",
+      "At the first 1024 bytes (00000H–003FFH)",
+      "In segment 8000H",
+      "In the stack segment"
+    ],
+    "answer": "B",
+    "explanation": "The IVT occupies the lowest 1 KB of memory (00000H to 003FFH): 256 vectors × 4 bytes each. MODERA FREQUENTLY"
+  },
+  {
+    "id": 45,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED Each interrupt vector in 8086 IVT contains:",
+    "options": [
+      "2 bytes (IP only)",
+      "4 bytes (IP:CS)",
+      "8 bytes",
+      "1 byte"
+    ],
+    "answer": "B",
+    "explanation": "Each IVT entry = 4 bytes: 2 bytes for IP (offset) + 2 bytes for CS (segment) of the ISR. MODERA FREQUENTLY"
+  },
+  {
+    "id": 46,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The PUSH instruction in 8086 decrements SP by:",
+    "options": [
+      "1",
+      "2",
+      "4",
+      "8"
+    ],
+    "answer": "B",
+    "explanation": "PUSH decrements SP by 2 (word = 2 bytes) before storing. The 8086 stack works with 16-bit words. MODERA FREQUENTLY"
+  },
+  {
+    "id": 47,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The 8086 stack grows in which direction?",
+    "options": [
+      "Upward (toward higher addresses)",
+      "Downward (toward lower addresses)",
+      "Both directions",
+      "No specific direction"
+    ],
+    "answer": "B",
+    "explanation": "The 8086 stack grows downward in memory — SP decrements on PUSH and increments on POP."
+  },
+  {
+    "id": 48,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "Which 8086 instruction unconditionally transfers control to a subroutine?",
+    "options": [
+      "JMP",
+      "CALL",
+      "RET",
+      "INT"
+    ],
+    "answer": "B",
+    "explanation": "CALL saves return address on stack and jumps to the subroutine. RET returns from subroutine."
+  },
+  {
+    "id": 49,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The HLT instruction in 8086 causes:",
+    "options": [
+      "Processor to reset",
+      "Processor to enter halt state until interrupt or reset",
+      "Infinite loop",
+      "Branch to address 0"
+    ],
+    "answer": "B",
+    "explanation": "HLT stops the processor. It resumes only when an NMI, maskable interrupt (if enabled), or RESET occurs."
+  },
+  {
+    "id": 50,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The 8086 supports word addressing. A word in 8086 is:",
+    "options": [
+      "4 bits",
+      "8 bits",
+      "16 bits",
+      "32 bits"
+    ],
+    "answer": "C",
+    "explanation": "A word in 8086 = 16 bits (2 bytes). Doubleword (DWORD) = 32 bits. MODERA FREQUENTLY"
+  },
+  {
+    "id": 51,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED What is the maximum offset value within a segment in 8086?",
+    "options": [
+      "0000H",
+      "7FFFH",
+      "FFFFH",
+      "FFFFFH"
+    ],
+    "answer": "C",
+    "explanation": "The offset (effective address) is 16-bit, so maximum value = FFFFH (65535 decimal) within a 64 KB segment."
+  },
+  {
+    "id": 52,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "In 8086, XLAT instruction uses which register as a table base?",
+    "options": [
+      "AX",
+      "BX",
+      "CX",
+      "DX"
+    ],
+    "answer": "B",
+    "explanation": "‹ XLAT uses BX as the base address of a 256-byte lookup table and AL as the index; AL [DS:BX+AL]."
+  },
+  {
+    "id": 53,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The LEA instruction in 8086 loads:",
+    "options": [
+      "A byte from memory",
+      "The effective address (offset) of a memory operand . . into a register",
+      "A word from memory",
+      "The segment address"
+    ],
+    "answer": "B",
+    "explanation": "The effective address (offset) of a memory operand into a register LEA (Load Effective Address) loads the 16-bit offset (not the data) of a memory operand into a register."
+  },
+  {
+    "id": 54,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The TEST instruction in 8086 is similar to AND except:",
+    "options": [
+      "TEST stores the result",
+      "TEST does not store the result — only sets flags",
+      "TEST works only with bytes",
+      "TEST ignores carry flag"
+    ],
+    "answer": "B",
+    "explanation": "TEST performs bitwise AND and sets flags (ZF, SF, PF) but does NOT store the result, unlike AND. MODERA FREQUENTLY"
+  },
+  {
+    "id": 55,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The LOOP instruction in 8086 decrements ___ and jumps if not zero.",
+    "options": [
+      "AX",
+      "BX",
+      "CX",
+      "DX"
+    ],
+    "answer": "C",
+    "explanation": "„ LOOP decrements CX; if CX 0, jumps to specified label. LOOPZ, LOOPNZ also check ZF."
+  },
+  {
+    "id": 56,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "Which of the following statement about 8086 is TRUE?",
+    "options": [
+      "8086 has an 8-bit internal data bus",
+      "8086 was introduced in 1982",
+      "8086 can address only 64 KB of memory",
+      "8086 has a 16-bit internal and external data bus"
+    ],
+    "answer": "D",
+    "explanation": "8086 is fully 16-bit — both internal and external data buses are 16-bit. It was introduced in 1978 and addresses 1 MB. MODERA FREQUENTLY"
+  },
+  {
+    "id": 57,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED In 8086, the effective address (EA) is computed by:",
+    "options": [
+      "Only the instruction offset",
+      "Base + Index + Displacement (various combinations)",
+      "Segment × 16",
+      "IP + CS"
+    ],
+    "answer": "B",
+    "explanation": "EA = Base register (BX/BP) + Index register (SI/DI) + Displacement (8 or 16-bit offset), any combination. MODERA FREQUENTLY"
+  },
+  {
+    "id": 58,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The 8086 MOV AX, [BX+SI+10H] uses which addressing mode?",
+    "options": [
+      "Register",
+      "Immediate",
+      "Based Indexed with Displacement",
+      "Direct"
+    ],
+    "answer": "C",
+    "explanation": "BX (base) + SI (index) + 10H (displacement) = Based Indexed with Displacement addressing mode. MODERA FREQUENTLY"
+  },
+  {
+    "id": 59,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The 8086 supports which type of I/O?",
+    "options": [
+      "Memory-mapped I/O only",
+      "Isolated I/O (port-mapped) only",
+      "Both memory-mapped and isolated I/O",
+      "Neither"
+    ],
+    "answer": "C",
+    "explanation": "8086 supports both: memory-mapped I/O (using MOV with memory addresses) and isolated/port I/O (using IN/OUT instructions). DIFFICU FREQUENTLY"
+  },
+  {
+    "id": 60,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "LT ASKED The 8086 PUSH AX instruction stores AX in memory at address:",
+    "options": [
+      "SS:SP",
+      "SS:SP+2 then decrements SP",
+      "SS:SP-2 (after decrement)",
+      "DS:SP"
+    ],
+    "answer": "C",
+    "explanation": "PUSH: SP decrements by 2 first, then AX is written to SS:SP. So stored at SS:(SP-2) effectively. MODERA FREQUENTLY"
+  },
+  {
+    "id": 61,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The 8086 NEG instruction performs:",
+    "options": [
+      "Logical NOT",
+      "Two's complement of operand",
+      "One's complement",
+      "XOR with FFH"
+    ],
+    "answer": "B",
+    "explanation": "- NEG performs two's complement negation: result = 0 operand. Equivalent to: NOT operand + 1."
+  },
+  {
+    "id": 62,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "IDIV instruction in 8086 performs:",
+    "options": [
+      "Unsigned division",
+      "Signed (integer) division",
+      "BCD division",
+      "Bit division"
+    ],
+    "answer": "B",
+    "explanation": "IDIV performs signed integer division. DIV is for unsigned division."
+  },
+  {
+    "id": 63,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The 8086 register AH contains:",
+    "options": [
+      "Lower 8 bits of AX",
+      "Upper 8 bits of AX",
+      "All 16 bits of AX",
+      "Upper 4 bits of AX"
+    ],
+    "answer": "B",
+    "explanation": "AX = AH (high byte) + AL (low byte). AH holds bits 8–15 of the 16-bit AX register."
+  },
+  {
+    "id": 64,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The 8086 register AL contains:",
+    "options": [
+      "Upper 8 bits of AX",
+      "Lower 8 bits of AX",
+      "All 16 bits of AX",
+      "Lower 4 bits of AX"
+    ],
+    "answer": "B",
+    "explanation": "AL holds bits 0–7 (lower byte) of AX. Similarly, BL, CL, DL are lower bytes of BX, CX, DX."
+  },
+  {
+    "id": 65,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The maximum clock speed ever achieved by any standard 8086 variant was:",
+    "options": [
+      "5 MHz",
+      "8 MHz",
+      "10 MHz",
+      "12 MHz"
+    ],
+    "answer": "C",
+    "explanation": "The fastest standard 8086 variant (8086-1) ran at 10 MHz. IBM PC/XT used 8088 at 4.77 MHz."
+  },
+  {
+    "id": 66,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The 8086's memory is organized into banks. The even bank contains:",
+    "options": [
+      "Data on D8–D15",
+      "Data on D0–D7",
+      "Both D0–D15",
+      "Neither"
+    ],
+    "answer": "B",
+    "explanation": "Even bank (BHE=1, A0=0): bytes at even addresses accessed via D0–D7. Odd bank: via D8–D15."
+  },
+  {
+    "id": 67,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "In 8086, the SI register stands for:",
+    "options": [
+      "Stack Index",
+      "Source Index",
+      "Segment Index",
+      "System Index"
+    ],
+    "answer": "B",
+    "explanation": "SI = Source Index register, typically used as source pointer in string/array operations."
+  },
+  {
+    "id": 68,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "In 8086, the DI register stands for:",
+    "options": [
+      "Data Index",
+      "Destination Index",
+      "Direct Index",
+      "Double Index"
+    ],
+    "answer": "B",
+    "explanation": "DI = Destination Index register, used as destination pointer in string operations with ES segment. MODERA FREQUENTLY"
+  },
+  {
+    "id": 69,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The maximum number of simultaneously active segments in 8086 is:",
+    "options": [
+      "1",
+      "4",
+      "8",
+      "Unlimited"
+    ],
+    "answer": "B",
+    "explanation": "8086 can have 4 active segments simultaneously: CS (code), DS (data), SS (stack), ES (extra). MODERA FREQUENTLY"
+  },
+  {
+    "id": 70,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The 8086 string instruction MOVSB moves:",
+    "options": [
+      "A word from DS:SI to ES:DI",
+      "A byte from DS:SI to ES:DI",
+      "A byte from ES:DI to DS:SI",
+      "A block of bytes"
+    ],
+    "answer": "B",
+    "explanation": "MOVSB moves 1 byte from DS:SI to ES:DI, then updates SI and DI based on Direction Flag. MODERA FREQUENTLY"
+  },
+  {
+    "id": 71,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED In 8086, the REP prefix is used with:",
+    "options": [
+      "Arithmetic instructions",
+      "String instructions only",
+      "Jump instructions",
+      "Interrupt instructions"
+    ],
+    "answer": "B",
+    "explanation": "REP repeats the following string instruction (MOVS, STOS, LODS, etc.) CX times, decrementing CX each time."
+  },
+  {
+    "id": 72,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The 8086 IN instruction is used for:",
+    "options": [
+      "Reading from memory",
+      "Reading from an I/O port",
+      "Input of keyboard",
+      "Initializing registers"
+    ],
+    "answer": "B",
+    "explanation": "IN AL/AX, port — reads a byte or word from an I/O port into AL or AX register."
+  },
+  {
+    "id": 73,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "The 8086 OUT instruction is used for:",
+    "options": [
+      "Writing to memory",
+      "Writing to an I/O port",
+      "Output to display",
+      "Setting flags"
+    ],
+    "answer": "B",
+    "explanation": "OUT port, AL/AX — writes a byte or word from AL or AX to an I/O port."
+  },
+  {
+    "id": 74,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "Which 8086 instruction exchanges the contents of two registers/memory?",
+    "options": [
+      "MOV",
+      "XCHG",
+      "PUSH/POP",
+      "LDS"
+    ],
+    "answer": "B",
+    "explanation": "XCHG swaps operands: XCHG AX, BX swaps AX and BX without needing a temporary register. MODERA FREQUENTLY"
+  },
+  {
+    "id": 75,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The 8086 DAA instruction is used after ADD for:",
+    "options": [
+      "Double addition",
+      "Decimal Adjust after Addition for BCD",
+      "Divide and Accumulate",
+      "Data Address Adjustment"
+    ],
+    "answer": "B",
+    "explanation": "DAA (Decimal Adjust Accumulator) corrects AL after ADD/ADC to maintain valid BCD representation."
+  },
+  {
+    "id": 76,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "8086 supports how many addressing modes for data?",
+    "options": [
+      "3",
+      "5",
+      "7",
+      "9"
+    ],
+    "answer": "C",
+    "explanation": "8086 has 7 main data addressing modes: Register, Immediate, Direct, Register Indirect, Based, Indexed, Based+Indexed."
+  },
+  {
+    "id": 77,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "What is the purpose of the 8086 AAM instruction?",
+    "options": [
+      "ASCII Adjust after Multiplication — converts binary",
+      "Arithmetic Add Memory . result to BCD .",
+      "Auto Address Modify",
+      "Aligned Address Mode"
+    ],
+    "answer": "A",
+    "explanation": "result to BCD AAM (ASCII Adjust after Multiply) adjusts the binary result in AX after a byte multiply to unpacked BCD. MODERA FREQUENTLY"
+  },
+  {
+    "id": 78,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Introduction to 8086",
+    "question": "TE ASKED The 8086 memory address space is organized as:",
+    "options": [
+      "16-bit flat space",
+      "20-bit segmented space (1 MB total)",
+      "24-bit flat space",
+      "Variable size"
+    ],
+    "answer": "B",
+    "explanation": "8086 has a 20-bit segmented address space: 1 MB total, organized as overlapping 64 KB segments."
+  },
+  {
+    "id": 79,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The Intel 8088 microprocessor was introduced in which year?",
+    "options": [
+      "1976",
+      "1978",
+      "1979",
+      "1982"
+    ],
+    "answer": "C",
+    "explanation": "Intel 8088 was introduced in 1979, one year after the 8086. MODERA FREQUENTLY"
+  },
+  {
+    "id": 80,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED The 8088 is internally a ___-bit processor.",
+    "options": [
+      "8-bit",
+      "16-bit",
+      "32-bit",
+      "4-bit"
+    ],
+    "answer": "B",
+    "explanation": "8088 has a 16-bit internal architecture (same as 8086) but only an 8-bit external data bus."
+  },
+  {
+    "id": 81,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The external data bus width of 8088 is:",
+    "options": [
+      "4-bit",
+      "8-bit",
+      "16-bit",
+      "32-bit"
+    ],
+    "answer": "B",
+    "explanation": "8088 has an 8-bit external data bus, unlike 8086's 16-bit external bus."
+  },
+  {
+    "id": 82,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The address bus width of 8088 is:",
+    "options": [
+      "16-bit",
+      "20-bit",
+      "24-bit",
+      "32-bit"
+    ],
+    "answer": "B",
+    "explanation": "8088 has a 20-bit address bus, same as 8086, giving 1 MB of addressable memory. MODERA FREQUENTLY"
+  },
+  {
+    "id": 83,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED The instruction prefetch queue of 8088 is:",
+    "options": [
+      "4 bytes",
+      "6 bytes",
+      "8 bytes",
+      "2 bytes"
+    ],
+    "answer": "A",
+    "explanation": "8088 has a 4-byte instruction queue (vs 8086's 6-byte queue), smaller due to 8-bit bus. MODERA FREQUENTLY"
+  },
+  {
+    "id": 84,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED The 8088 was used in which famous IBM PC?",
+    "options": [
+      "IBM PC/AT",
+      "IBM PC 5150 (original IBM PC)",
+      "IBM PS/2 Model 30",
+      "IBM System/360"
+    ],
+    "answer": "B",
+    "explanation": "The original IBM PC (Model 5150, 1981) used the Intel 8088 processor at 4.77 MHz. MODERA FREQUENTLY"
+  },
+  {
+    "id": 85,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED Which is the PRIMARY difference between 8086 and 8088?",
+    "options": [
+      "Address bus width",
+      "Internal register size",
+      "External data bus width",
+      "Number of segments"
+    ],
+    "answer": "C",
+    "explanation": "Key difference: 8086 has 16-bit external data bus; 8088 has 8-bit. Internal architecture is identical."
+  },
+  {
+    "id": 86,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The 8088's 8-bit external bus made it compatible with which older chips?",
+    "options": [
+      "8085 peripherals",
+      "Z80 chips",
+      "6800 chips",
+      "Motorola 68000"
+    ],
+    "answer": "A",
+    "explanation": "8088's 8-bit external bus allowed reuse of existing 8085-era 8-bit peripheral chips, reducing system cost."
+  },
+  {
+    "id": 87,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The original 8088 operated at which clock frequency?",
+    "options": [
+      "2 MHz",
+      "5 MHz",
+      "8 MHz",
+      "10 MHz"
+    ],
+    "answer": "B",
+    "explanation": "The original 8088 ran at 5 MHz; the IBM PC used it at 4.77 MHz (3/4 of 6.36 MHz crystal)."
+  },
+  {
+    "id": 88,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The number of pins in 8088 is:",
+    "options": [
+      "28",
+      "36",
+      "40",
+      "44"
+    ],
+    "answer": "C",
+    "explanation": "Intel 8088 is also a 40-pin DIP package, same physical package as 8086. MODERA FREQUENTLY"
+  },
+  {
+    "id": 89,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED In 8088, a 16-bit data transfer requires how many memory cycles?",
+    "options": [
+      "1",
+      "2",
+      "4",
+      "8"
+    ],
+    "answer": "B",
+    "explanation": "8088's 8-bit bus means a 16-bit word requires TWO memory access cycles instead of one."
+  },
+  {
+    "id": 90,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "Which of the following is TRUE about 8088?",
+    "options": [
+      "It has 16-bit external data bus",
+      "It has 24-bit address bus",
+      "It has 8-bit external data bus and 16-bit internal",
+      "It cannot address 1 MB of memory . registers ."
+    ],
+    "answer": "C",
+    "explanation": "registers 8088: 8-bit external data bus, 16-bit internal registers, 20-bit address bus (1 MB). Correct."
+  },
+  {
+    "id": 91,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The IBM PC/XT (1983) also used which processor?",
+    "options": [
+      "8086",
+      "8088",
+      "80286",
+      "80386"
+    ],
+    "answer": "B",
+    "explanation": "IBM PC/XT (1983) used the Intel 8088 running at 4.77 MHz, same as original IBM PC. MODERA FREQUENTLY"
+  },
+  {
+    "id": 92,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED The 8088 is best described as:",
+    "options": [
+      "Pure 8-bit processor",
+      "Pure 16-bit processor",
+      "16-bit processor with 8-bit external data bus interface",
+      "32-bit processor"
+    ],
+    "answer": "C",
+    "explanation": "8088 = 16-bit processor internally with an 8-bit external data bus — a cost-reduced 8086."
+  },
+  {
+    "id": 93,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "Compared to 8086, the 8088 is generally:",
+    "options": [
+      "Faster in data transfers",
+      "Slower in data transfers due to 8-bit bus",
+      "Same speed exactly",
+      "Faster due to smaller queue"
+    ],
+    "answer": "B",
+    "explanation": "8088 is slower than 8086 for 16-bit transfers (needs 2 cycles vs 1) but was cheaper to implement. MODERA FREQUENTLY"
+  },
+  {
+    "id": 94,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED The 8088 was designed primarily to:",
+    "options": [
+      "Increase processing speed over 8086",
+      "Reduce system cost by using cheaper 8-bit peripheral . . chips",
+      "Add Protected Mode support",
+      "Increase addressable memory"
+    ],
+    "answer": "B",
+    "explanation": "Reduce system cost by using cheaper 8-bit peripheral chips 8088 was created to lower system cost — its 8-bit external bus allowed use of cheaper, widely available 8-bit support chips."
+  },
+  {
+    "id": 95,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The 8088's maximum memory addressing capacity is:",
+    "options": [
+      "64 KB",
+      "256 KB",
+      "512 KB",
+      "1 MB"
+    ],
+    "answer": "D",
+    "explanation": "8088 has a 20-bit address bus, so it can address 2^20 = 1 MB of memory — same as 8086."
+  },
+  {
+    "id": 96,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The 8088 chip package is:",
+    "options": [
+      "28-pin DIP",
+      "36-pin DIP",
+      "40-pin DIP",
+      "48-pin DIP"
+    ],
+    "answer": "C",
+    "explanation": "Intel 8088 is housed in a 40-pin DIP (Dual Inline Package), identical in size to the 8086."
+  },
+  {
+    "id": 97,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "In 8088, how many clock cycles does a minimum bus cycle take?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "answer": "C",
+    "explanation": "Like 8086, a minimum 8088 bus cycle takes 4 T-states (T1-T4), but 16-bit data needs two such cycles. MODERA FREQUENTLY"
+  },
+  {
+    "id": 98,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED The clock frequency used in the original IBM PC with 8088 was:",
+    "options": [
+      "2 MHz",
+      "4.77 MHz",
+      "5 MHz",
+      "8 MHz"
+    ],
+    "answer": "B",
+    "explanation": "The original IBM PC (5150, 1981) ran the 8088 at 4.77 MHz — derived as 3/4 of a 14.318 MHz crystal."
+  },
+  {
+    "id": 99,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The 8088 microprocessor is manufactured using which technology?",
+    "options": [
+      "TTL",
+      "CMOS",
+      "HMOS (NMOS)",
+      "BiCMOS"
+    ],
+    "answer": "C",
+    "explanation": "8088, like 8086, uses Intel's HMOS (High-density N-channel MOS) fabrication technology."
+  },
+  {
+    "id": 100,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The number of transistors in the 8088 is approximately:",
+    "options": [
+      "6,500",
+      "29,000",
+      "50,000",
+      "134,000"
+    ],
+    "answer": "B",
+    "explanation": "Intel 8088 contains approximately 29,000 transistors — the same as 8086 since the internal architecture is identical."
+  },
+  {
+    "id": 101,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The 8088 in maximum mode uses which chip for bus control?",
+    "options": [
+      "8282",
+      "8286",
+      "8288",
+      "8237"
+    ],
+    "answer": "C",
+    "explanation": "Like 8086 in maximum mode, the 8088 uses the Intel 8288 Bus Controller to generate memory and I/O control signals."
+  },
+  {
+    "id": 102,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The 8088 has how many segment registers?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "8"
+    ],
+    "answer": "C",
+    "explanation": "8088 has the same 4 segment registers as 8086: CS (Code), DS (Data), SS (Stack), ES (Extra)."
+  },
+  {
+    "id": 103,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The 8088 instruction set is:",
+    "options": [
+      "Completely different from 8086",
+      "Identical to 8086",
+      "A subset of 8086",
+      "A superset of 8086"
+    ],
+    "answer": "B",
+    "explanation": "8088 has an identical instruction set to 8086 — all 8086 programs run on 8088 without any modification. MODERA FREQUENTLY"
+  },
+  {
+    "id": 104,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED The MN/MX pin on 8088 performs the same function as on 8086, which is:",
+    "options": [
+      "Memory/IO select",
+      "Minimum/Maximum mode select",
+      "Multiplexing control",
+      "Mode and Index select"
+    ],
+    "answer": "B",
+    "explanation": "MN/MX pin: tied HIGH (Vcc) = Minimum Mode (single CPU), tied LOW (GND) = Maximum Mode (multiprocessor). Same as 8086. MODERA FREQUENTLY"
+  },
+  {
+    "id": 105,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED Which of the following is IDENTICAL between 8086 and 8088?",
+    "options": [
+      "External data bus width",
+      "Instruction queue size",
+      "Internal register set and architecture",
+      "Number of address pins"
+    ],
+    "answer": "C",
+    "explanation": "The internal register set, architecture, instruction set, flags, and segment model are identical. Data bus and queue differ. MODERA FREQUENTLY"
+  },
+  {
+    "id": 106,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED The 8088's 4-byte instruction queue is smaller than 8086's 6-byte queue because:",
+    "options": [
+      "8088 has fewer registers",
+      "8088's 8-bit bus fetches 1 byte at a time — a 4-byte . . queue is sufficient",
+      "8088 runs at lower frequency",
+      "8088 has smaller ALU"
+    ],
+    "answer": "B",
+    "explanation": "8088's 8-bit bus fetches 1 byte at a time — a 4-byte queue is sufficient 8088 fetches 1 byte per bus cycle (8-bit bus), so a 4-byte queue avoids waste. 8086 fetches 2 bytes needing 6 bytes."
+  },
+  {
+    "id": 107,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The 8088 supports how many I/O port addresses?",
+    "options": [
+      "256",
+      "4096",
+      "65536",
+      "1048576"
+    ],
+    "answer": "C",
+    "explanation": "8088 supports 65,536 (64K) I/O port addresses using its 16-bit I/O address space — same as 8086. MODERA FREQUENTLY"
+  },
+  {
+    "id": 108,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED The physical address generation formula in 8088 is:",
+    "options": [
+      "Segment x 8 + Offset",
+      "Segment x 16 + Offset",
+      "Segment + Offset",
+      "Segment x 256 + Offset"
+    ],
+    "answer": "B",
+    "explanation": "8088 uses the same formula as 8086: Physical Address = Segment x 10H (x16) + Offset (Effective Address). MODERA FREQUENTLY"
+  },
+  {
+    "id": 109,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED The 8088 RESET vector points to physical address:",
+    "options": [
+      "00000H",
+      "0FFFFH",
+      "FFFF0H",
+      "F0000H"
+    ],
+    "answer": "C",
+    "explanation": "On RESET, both 8086 and 8088 start execution from FFFF0H (CS=FFFFH, IP=0000H). Identical behavior. MODERA FREQUENTLY"
+  },
+  {
+    "id": 110,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED Assertion: 8088 is slower than 8086 for 16-bit data operations. Reason: 8088's 8-bit external data bus requires two bus cycles for a 16-bit transfer.",
+    "options": [
+      "Both A and R true; R correctly explains A",
+      "Both A and R true; R does NOT explain A",
+      "A is true; R is false",
+      "A is false; R is true"
+    ],
+    "answer": "A",
+    "explanation": "Both correct and causally linked: 8-bit bus needs 2 cycles per 16-bit word, making it slower than 8086's single cycle."
+  },
+  {
+    "id": 111,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The 8088 general-purpose registers AX, BX, CX, DX are each:",
+    "options": [
+      "8-bit",
+      "16-bit",
+      "32-bit",
+      "4-bit"
+    ],
+    "answer": "B",
+    "explanation": "Like 8086, 8088 has four 16-bit GP registers: AX, BX, CX, DX — each splittable into H and L 8-bit halves. DIFFICU FREQUENTLY"
+  },
+  {
+    "id": 112,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "LT ASKED How does the 8088 handle a 16-bit PUSH instruction?",
+    "options": [
+      "Pushes all 16 bits in one cycle using D0-D15",
+      "Pushes in two separate 8-bit bus cycles",
+      "Converts it to an 8-bit push",
+      "Cannot perform 16-bit PUSH"
+    ],
+    "answer": "B",
+    "explanation": "Since the bus is only 8-bit, the 8088 performs 16-bit PUSH in two consecutive 8-bit bus cycles — high byte then low byte. MODERA FREQUENTLY"
+  },
+  {
+    "id": 113,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED The 8088's NMI behavior compared to 8086 is:",
+    "options": [
+      "Different — 8088 has no NMI",
+      "Different vector number",
+      "Identical — same NMI behavior and vector (Type 2)",
+      "Different — uses Type 3"
+    ],
+    "answer": "C",
+    "explanation": "8088 and 8086 have identical interrupt architecture including NMI (Type 2) with its vector at 00008H."
+  },
+  {
+    "id": 114,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The 8088 is sometimes called a compromise chip because:",
+    "options": [
+      "It compromises between speed and accuracy",
+      "It combines 16-bit internal power with 8-bit external . . bus — balancing cost and performance",
+      "It runs at a compromised clock frequency",
+      "It supports only half the instructions of 8086"
+    ],
+    "answer": "B",
+    "explanation": "It combines 16-bit internal power with 8-bit external bus — balancing cost and performance 8088 offers full 16-bit computing power of 8086 internally, but uses a cheaper 8-bit external interface — a cost/performance balance. MODERA FREQUENTLY"
+  },
+  {
+    "id": 115,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED Which CORRECTLY describes the 8088 operating modes?",
+    "options": [
+      "Real Mode only",
+      "Protected Mode and Real Mode",
+      "Minimum Mode and Maximum Mode",
+      "Virtual Mode and Real Mode"
+    ],
+    "answer": "C",
+    "explanation": "Like 8086, 8088 has two operating modes: Minimum Mode (single CPU) and Maximum Mode (multiprocessor). No Protected Mode. MODERA FREQUENTLY"
+  },
+  {
+    "id": 116,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED The 8088 Interrupt Vector Table (IVT) is located at:",
+    "options": [
+      "Top of memory (FFFF0H)",
+      "First 1024 bytes (00000H-003FFH)",
+      "Middle of memory",
+      "In the stack segment"
+    ],
+    "answer": "B",
+    "explanation": "The IVT in 8088 (same as 8086) occupies addresses 00000H to 003FFH — 256 vectors x 4 bytes = 1 KB."
+  },
+  {
+    "id": 117,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "Which Intel processor directly competed with the 8088 from Zilog?",
+    "options": [
+      "Z8000",
+      "Z80",
+      "Z8",
+      "Z180"
+    ],
+    "answer": "A",
+    "explanation": "Zilog Z8000 was a contemporary 16-bit rival to 8086/8088 in the late 1970s-early 1980s, but Intel's IBM design win made 8088 dominant."
+  },
+  {
+    "id": 118,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "The 8088 SSO pin (S0) in minimum mode indicates:",
+    "options": [
+      "Stack segment overflow",
+      "Status Signal Output — bus cycle type",
+      "System Shutdown Output",
+      "Synchronous Serial Output"
+    ],
+    "answer": "B",
+    "explanation": "SSO (S0) in 8088 minimum mode is a status output replacing 8086's BHE pin, indicating the type of bus cycle in progress."
+  },
+  {
+    "id": 119,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "Which operating system ran natively on the 8088-based IBM PC?",
+    "options": [
+      "Unix",
+      "MS-DOS (PC-DOS)",
+      "OS/2",
+      "CP/M-86 only"
+    ],
+    "answer": "B",
+    "explanation": "MS-DOS (PC-DOS 1.0, 1981) was the primary OS for the 8088-based IBM PC, running in Real Mode. MODERA FREQUENTLY"
+  },
+  {
+    "id": 120,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Introduction to 8088",
+    "question": "TE ASKED Which of the following statement about 8088 is FALSE?",
+    "options": [
+      "8088 has an 8-bit external data bus",
+      "8088 was introduced in 1979",
+      "8088 has a 6-byte instruction queue",
+      "8088 can address 1 MB of memory"
+    ],
+    "answer": "C",
+    "explanation": "8088 has a 4-byte instruction queue (NOT 6-byte). 8086 has 6-byte. The other three statements are true."
+  },
+  {
+    "id": 121,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "The 8086 architecture is divided into how many functional units?",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "answer": "B",
+    "explanation": "8086 is divided into 2 units: Bus Interface Unit (BIU) and Execution Unit (EU)."
+  },
+  {
+    "id": 122,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "Which unit in 8086 is responsible for fetching instructions from memory?",
+    "options": [
+      "EU",
+      "BIU",
+      "ALU",
+      "CU"
+    ],
+    "answer": "B",
+    "explanation": "BIU (Bus Interface Unit) fetches instructions from memory and loads them into the instruction queue."
+  },
+  {
+    "id": 123,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "Which unit in 8086 executes instructions?",
+    "options": [
+      "BIU",
+      "ALU",
+      "EU",
+      "MMU"
+    ],
+    "answer": "C",
+    "explanation": "EU (Execution Unit) decodes and executes instructions taken from the instruction queue. MODERA FREQUENTLY"
+  },
+  {
+    "id": 124,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "TE ASKED The instruction queue in 8086 follows which data structure principle?",
+    "options": [
+      "LIFO",
+      "FIFO",
+      "Random access",
+      "Priority queue"
+    ],
+    "answer": "B",
+    "explanation": "The instruction queue is a FIFO (First In, First Out) — instructions are executed in the order they were fetched. MODERA FREQUENTLY"
+  },
+  {
+    "id": 125,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "TE ASKED The overlap of instruction fetch and execution in 8086 is called:",
+    "options": [
+      "Multitasking",
+      "Pipelining",
+      "Multiplexing",
+      "Time-sharing"
+    ],
+    "answer": "B",
+    "explanation": "BIU fetching next instruction while EU executes current one is called pipelining — increases throughput."
+  },
+  {
+    "id": 126,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "Which register in 8086 holds the offset of the next instruction?",
+    "options": [
+      "SP",
+      "BP",
+      "IP",
+      "SI"
+    ],
+    "answer": "C",
+    "explanation": "IP (Instruction Pointer) holds the offset of the NEXT instruction to be fetched from the code segment."
+  },
+  {
+    "id": 127,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "The BP register in 8086 stands for:",
+    "options": [
+      "Base Pointer",
+      "Bus Pointer",
+      "Block Pointer",
+      "Binary Pointer"
+    ],
+    "answer": "A",
+    "explanation": "BP = Base Pointer. Typically used to point to the base of the stack frame for parameter access. MODERA FREQUENTLY"
+  },
+  {
+    "id": 128,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "TE ASKED In 8086, the physical address is calculated as:",
+    "options": [
+      "Segment + Offset",
+      "Segment × 16 + Offset",
+      "Segment ÷ 16 + Offset",
+      "Segment × 256 + Offset"
+    ],
+    "answer": "B",
+    "explanation": "Physical Address = Segment Register × 16 (or ×10H, shift left 4 bits) + Offset (Effective Address). DIFFICU FREQUENTLY"
+  },
+  {
+    "id": 129,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "LT ASKED If CS = 1000H and IP = 0200H, the physical address is:",
+    "options": [
+      "1200H",
+      "10200H",
+      "12000H",
+      "10020H"
+    ],
+    "answer": "B",
+    "explanation": "PA = CS × 10H + IP = 1000H × 10H + 0200H = 10000H + 0200H = 10200H. MODERA FREQUENTLY"
+  },
+  {
+    "id": 130,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "TE ASKED The Trap Flag (TF) in 8086 is used for:",
+    "options": [
+      "Enabling interrupts",
+      "Single-step mode debugging",
+      "String operation direction",
+      "Arithmetic overflow detection"
+    ],
+    "answer": "B",
+    "explanation": "TF=1 causes 8086 to enter single-step mode — an internal interrupt after each instruction for debugging."
+  },
+  {
+    "id": 131,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "The Direction Flag (DF) in 8086 controls:",
+    "options": [
+      "Interrupt direction",
+      "Stack growth",
+      "String operation direction (increment/decrement)",
+      "Bus direction"
+    ],
+    "answer": "C",
+    "explanation": "DF=0: SI/DI auto-increment after string ops; DF=1: SI/DI auto-decrement (reverse direction). MODERA FREQUENTLY"
+  },
+  {
+    "id": 132,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "TE ASKED The Overflow Flag (OF) is set when:",
+    "options": [
+      "Unsigned overflow occurs",
+      "Signed arithmetic overflow occurs",
+      "Result is zero",
+      "Carry occurs in lower nibble"
+    ],
+    "answer": "B",
+    "explanation": "OF is set when signed arithmetic produces a result too large/small to fit — a signed overflow."
+  },
+  {
+    "id": 133,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "The Auxiliary Carry Flag (AF) in 8086 is specifically used for:",
+    "options": [
+      "16-bit carry",
+      "BCD (Binary Coded Decimal) arithmetic corrections",
+      "String operations",
+      "Stack operations"
+    ],
+    "answer": "B",
+    "explanation": "AF is set when carry/borrow occurs from bit 3 to bit 4 — used by DAA/DAS for BCD arithmetic."
+  },
+  {
+    "id": 134,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "The Sign Flag (SF) in 8086 reflects:",
+    "options": [
+      "MSB of the result",
+      "LSB of the result",
+      "Carry from MSB",
+      "Parity of result"
+    ],
+    "answer": "A",
+    "explanation": "SF equals the MSB of the result. SF=1 indicates a negative number in signed representation."
+  },
+  {
+    "id": 135,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "The Parity Flag (PF) in 8086 is set when:",
+    "options": [
+      "Result is odd",
+      "Lower 8 bits of result have even number of 1s",
+      "Result is positive",
+      "Result overflows"
+    ],
+    "answer": "B",
+    "explanation": "PF=1 when the lower byte of the result contains an even number of 1-bits (even parity)."
+  },
+  {
+    "id": 136,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "In 8086 maximum mode, which chip generates bus control signals?",
+    "options": [
+      "8255",
+      "8253",
+      "8288",
+      "8237"
+    ],
+    "answer": "C",
+    "explanation": "In maximum mode, Intel 8288 Bus Controller chip generates MRDC, MWTC, IORC, IOWC control signals. MODERA FREQUENTLY"
+  },
+  {
+    "id": 137,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "TE ASKED How many total programmer-accessible registers does 8086 have?",
+    "options": [
+      "8",
+      "12",
+      "14",
+      "16"
+    ],
+    "answer": "C",
+    "explanation": "14 registers: AX,BX,CX,DX (4GP), CS,DS,SS,ES (4segment), SP,BP,SI,DI (4pointer/index), IP, Flags."
+  },
+  {
+    "id": 138,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "The segment:offset addressing in 8086 provides how many bytes of overlap between adjacent segments?",
+    "options": [
+      "None",
+      "16 bytes",
+      "256 bytes",
+      "All of 64KB"
+    ],
+    "answer": "B",
+    "explanation": "Adjacent segments (offset by 1 paragraph = 16 bytes) overlap by 64KB - 16 bytes. Adjacent = 16 bytes different start."
+  },
+  {
+    "id": 139,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "Which register pair holds the physical starting address of the stack in 8086?",
+    "options": [
+      "CS:IP",
+      "DS:SI",
+      "SS:SP",
+      "ES:DI"
+    ],
+    "answer": "C",
+    "explanation": "SS (Stack Segment) holds segment base; SP (Stack Pointer) holds the offset of the stack top."
+  },
+  {
+    "id": 140,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "The 8086 memory model divides 1 MB into how many segments of 16 bytes each?",
+    "options": [
+      "4096 segments",
+      "65536 paragraphs",
+      "1024 segments",
+      "16 segments"
+    ],
+    "answer": "B",
+    "explanation": "2n 1 MB = bytes. Each paragraph = 16 bytes. So / = = 65,536 paragraphs."
+  },
+  {
+    "id": 141,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "In 8086, when BIU finds the instruction queue is full, it:",
+    "options": [
+      "Halts execution",
+      "Stops fetching and waits",
+      "Overwrites old instructions",
+      "Sends interrupt"
+    ],
+    "answer": "B",
+    "explanation": "When the 6-byte instruction queue is full, BIU stops bus fetch cycles until EU consumes instructions. MODERA FREQUENTLY"
+  },
+  {
+    "id": 142,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "TE ASKED Match register with its function: fi AX Accumulator fi BX Base addressing fi CX Loop counter fi DX I/O addressing Which matching is CORRECT?",
+    "options": [
+      "AX-Accumulator, BX-Counter, CX-Base, DX-I/O",
+      "AX-Accumulator, BX-Base, CX-Counter, DX-I/O",
+      "AX-Counter, BX-Accumulator, CX-I/O, DX-Base",
+      "AX-I/O, BX-Base, CX-Accumulator, DX-Counter"
+    ],
+    "answer": "B",
+    "explanation": "AX=Accumulator, BX=Base (addressing), CX=Counter (loops), DX=Data (I/O port addressing). Classic 8086. MODERA FREQUENTLY"
+  },
+  {
+    "id": 143,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "TE ASKED Match segment register to its default use: CS - Code DS - Data SS - Stack ES - Extra/String destination Which is CORRECT?",
+    "options": [
+      "CS-Data, DS-Code, SS-Stack, ES-Extra",
+      "CS-Code, DS-Data, SS-Extra, ES-Stack",
+      "CS-Code, DS-Data, SS-Stack, ES-Extra/Dest",
+      "CS-Stack, DS-Data, SS-Code, ES-Extra"
+    ],
+    "answer": "C",
+    "explanation": "CS=Code segment (instructions), DS=Data segment (default data), SS=Stack segment, ES=Extra (string dest). MODERA FREQUENTLY"
+  },
+  {
+    "id": 144,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "TE ASKED Match flag to its type: fi CF, ZF, SF, OF, PF, AF Status flags fi TF, IF, DF Control flags Which count is correct?",
+    "options": [
+      "4 status, 5 control",
+      "6 status, 3 control",
+      "5 status, 4 control",
+      "3 status, 6 control"
+    ],
+    "answer": "B",
+    "explanation": "6 status flags: CF, ZF, SF, OF, PF, AF. 3 control flags: TF (Trap), IF (Interrupt), DF (Direction)."
+  },
+  {
+    "id": 145,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "How many segments can fit in the 8086's 1 MB address space simultaneously?",
+    "options": [
+      "4 maximum",
+      "16",
+      "More than 4 — segments can overlap",
+      "Exactly 1 MB / 64 KB = 16 non-overlapping"
+    ],
+    "answer": "C",
+    "explanation": "Segments can overlap — many more than 16 segment register combinations can map to 1 MB. Only 16 fully non-overlapping 64KB segments possible. MODERA FREQUENTLY"
+  },
+  {
+    "id": 146,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "TE ASKED When the 8086 EU needs data from memory, it requests the bus from:",
+    "options": [
+      "ALU",
+      "BIU",
+      "Stack",
+      "IP"
+    ],
+    "answer": "B",
+    "explanation": "EU requests the BIU to perform memory read/write operations — EU itself has no direct bus access."
+  },
+  {
+    "id": 147,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "The 8086 queue status (QS0, QS1) signals in maximum mode indicate:",
+    "options": [
+      "Memory queue size",
+      "Status of instruction prefetch queue",
+      "DMA queue",
+      "Interrupt queue"
+    ],
+    "answer": "B",
+    "explanation": "QS0 and QS1 outputs in max mode tell external co-processors about queue status: first byte, continuation, empty, etc. MODERA FREQUENTLY"
+  },
+  {
+    "id": 148,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "TE ASKED In 8086, the instruction queue improves performance by:",
+    "options": [
+      "Reducing memory size needed",
+      "Overlapping fetch and execute (pipelining)",
+      "Increasing clock speed",
+      "Reducing number of registers"
+    ],
+    "answer": "B",
+    "explanation": "The instruction queue enables pipelining: BIU pre-fetches ahead so EU rarely waits for next instruction. MODERA FREQUENTLY"
+  },
+  {
+    "id": 149,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "TE ASKED When EU encounters a branch (JUMP) in 8086, the instruction queue is:",
+    "options": [
+      "Saved for later",
+      "Flushed and refilled from new address",
+      "Paused",
+      "Moved to stack"
+    ],
+    "answer": "B",
+    "explanation": "On a taken branch (JMP/CALL/interrupt), the queue is flushed — prefetched bytes are invalid. BIU refills from new address."
+  },
+  {
+    "id": 150,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "The 8086 BIU fetches a new byte from memory whenever the queue has at least ___ empty byte(s).",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "answer": "B",
+    "explanation": "8086 BIU initiates a bus cycle to fetch 2 bytes whenever there are 2 or more empty bytes in the 6-byte queue. MODERA FREQUENTLY"
+  },
+  {
+    "id": 151,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "TE ASKED In 8086, the effective address for [BP+DI+20H] is computed as:",
+    "options": [
+      "BP+DI",
+      "BP+DI+20H",
+      "CS:BP+DI+20H",
+      "SS:BP+DI+20H"
+    ],
+    "answer": "B",
+    "explanation": "EA = BP + DI + 20H. Note: when BP is used, the default segment is SS (stack segment), not DS."
+  },
+  {
+    "id": 152,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "Which register in 8086 is automatically used with PUSH/POP and CALL/RET?",
+    "options": [
+      "BP",
+      "IP",
+      "SP",
+      "SI"
+    ],
+    "answer": "C",
+    "explanation": "SP (Stack Pointer) is automatically incremented/decremented by PUSH, POP, CALL, RET instructions. MODERA FREQUENTLY"
+  },
+  {
+    "id": 153,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Architecture of 8086/8088",
+    "question": "TE ASKED The 8086 internal ALU size is:",
+    "options": [
+      "8-bit",
+      "16-bit",
+      "32-bit",
+      "4-bit"
+    ],
+    "answer": "B",
+    "explanation": "The 8086 ALU (in EU) is 16-bit wide, matching the 16-bit register width of the processor."
+  },
+  {
+    "id": 154,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "The data bus in 8086 is:",
+    "options": [
+      "Unidirectional",
+      "Bidirectional",
+      "Multiplexed only",
+      "Neither directional"
+    ],
+    "answer": "B",
+    "explanation": "The data bus is bidirectional — data flows TO memory (write) and FROM memory (read)."
+  },
+  {
+    "id": 155,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "The address bus in 8086 is:",
+    "options": [
+      "Bidirectional",
+      "Unidirectional",
+      "Always multiplexed",
+      "Tristate only"
+    ],
+    "answer": "B",
+    "explanation": "The address bus is unidirectional — addresses flow only FROM the CPU to memory/I/O devices. MODERA FREQUENTLY"
+  },
+  {
+    "id": 156,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED In 8086, the lower 16 lines AD0–AD15 are:",
+    "options": [
+      "Dedicated address lines",
+      "Dedicated data lines",
+      "Multiplexed address/data lines",
+      "Control lines"
+    ],
+    "answer": "C",
+    "explanation": "AD0–AD15 are multiplexed: carry ADDRESS during T1 clock cycle, then DATA during T2, T3, T4."
+  },
+  {
+    "id": 157,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "The upper 4 address lines A16–A19 in 8086 carry:",
+    "options": [
+      "Only address",
+      "Only data",
+      "Address (in T1) and status S3–S6 (in T2–T4)",
+      "Only control signals"
+    ],
+    "answer": "C",
+    "explanation": "A16/S3–A19/S6 lines carry address bits during T1 and status bits S3–S6 during other clock states. MODERA FREQUENTLY"
+  },
+  {
+    "id": 158,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED The control bus is which type in terms of direction?",
+    "options": [
+      "Always bidirectional",
+      "Always unidirectional",
+      "Both — some signals are input to CPU, some output",
+      "Neither"
+    ],
+    "answer": "C",
+    "explanation": "Control bus has mixed-direction lines: RD/WR are outputs; READY/INTR/NMI are inputs to CPU. MODERA FREQUENTLY"
+  },
+  {
+    "id": 159,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED The READY signal in 8086 is used for:",
+    "options": [
+      "DMA transfer",
+      "Interrupt acknowledge",
+      "Inserting wait states for slow memory/IO",
+      "Bus request by DMA"
+    ],
+    "answer": "C",
+    "explanation": "If READY=0 (low), 8086 inserts wait states (T-wait cycles) to accommodate slow memory/peripherals. MODERA FREQUENTLY"
+  },
+  {
+    "id": 160,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED The RESET signal causes 8086 to start execution from physical address:",
+    "options": [
+      "00000H",
+      "FFFF0H",
+      "F0000H",
+      "0FFFFH"
+    ],
+    "answer": "B",
+    "explanation": "fi On RESET: CS=FFFFH, IP=0000H PA = FFFFH×10H + 0000H = FFFF0H. First instruction at FFFF0H."
+  },
+  {
+    "id": 161,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "The INTR signal in 8086 is:",
+    "options": [
+      "Non-maskable interrupt",
+      "Maskable hardware interrupt",
+      "Software interrupt",
+      "Bus interrupt request"
+    ],
+    "answer": "B",
+    "explanation": "INTR is the maskable hardware interrupt — can be enabled/disabled with STI/CLI (IF flag)."
+  },
+  {
+    "id": 162,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "The NMI signal in 8086 stands for:",
+    "options": [
+      "Normal Mode Interrupt",
+      "Non-Maskable Interrupt",
+      "Negative Memory Interrupt",
+      "Null Memory Interface"
+    ],
+    "answer": "B",
+    "explanation": "NMI = Non-Maskable Interrupt. Cannot be disabled by software; has higher priority than INTR."
+  },
+  {
+    "id": 163,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "The HOLD/HLDA signals in 8086 are used for:",
+    "options": [
+      "Halting CPU",
+      "DMA bus request/acknowledge",
+      "Interrupt service",
+      "Memory hold"
+    ],
+    "answer": "B",
+    "explanation": "HOLD: DMA requests bus. HLDA (Hold Acknowledge): CPU acknowledges, releases bus to DMA controller. MODERA FREQUENTLY"
+  },
+  {
+    "id": 164,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED The M/IO signal in 8086 (minimum mode) indicates:",
+    "options": [
+      "Memory versus I/O operation",
+      "Minimum versus Maximum mode",
+      "Multiplexed versus I/O",
+      "Modular input/output"
+    ],
+    "answer": "A",
+    "explanation": "M/IO=1: memory reference; M/IO=0: I/O port reference. Distinguishes memory and I/O operations. MODERA FREQUENTLY"
+  },
+  {
+    "id": 165,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED The BHE signal in 8086 stands for:",
+    "options": [
+      "Bus High Enable",
+      "Byte High Enable",
+      "Block Hold Enable",
+      "Bus Hold Enable"
+    ],
+    "answer": "B",
+    "explanation": "BHE (Byte High Enable, active low) enables the upper byte (D8–D15) of the 16-bit data bus."
+  },
+  {
+    "id": 166,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "The RD signal in 8086 (active low) indicates:",
+    "options": [
+      "Write operation",
+      "Read operation in progress",
+      "Reset",
+      "DMA request"
+    ],
+    "answer": "B",
+    "explanation": "RD (active low) = CPU is performing a memory or I/O read. The addressed device should drive data onto bus."
+  },
+  {
+    "id": 167,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "The WR signal in 8086 (active low) indicates:",
+    "options": [
+      "Write operation in progress",
+      "Read operation",
+      "Wait state",
+      "Reset operation"
+    ],
+    "answer": "A",
+    "explanation": "WR (active low) = CPU is performing a write. Valid data is on the data bus for memory/IO to capture."
+  },
+  {
+    "id": 168,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "How many address lines are needed to address 1 MB of memory?",
+    "options": [
+      "16",
+      "18",
+      "20",
+      "24"
+    ],
+    "answer": "C",
+    "explanation": "= 1,048,576 bytes = 1 MB. Therefore exactly 20 address lines are required. MODERA FREQUENTLY"
+  },
+  {
+    "id": 169,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED",
+    "options": [
+      "4 MB",
+      "8 MB",
+      "16 MB",
+      "32 MB"
+    ],
+    "answer": "C",
+    "explanation": "= 16,777,216 bytes = 16 MB. This is the capacity of the 80286's address bus. MODERA FREQUENTLY"
+  },
+  {
+    "id": 170,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED",
+    "options": [
+      "256 MB",
+      "1 GB",
+      "4 GB",
+      "16 GB"
+    ],
+    "answer": "C",
+    "explanation": "= 4,294,967,296 bytes = 4 GB. This is the capacity of 80386 and Pentium address buses."
+  },
+  {
+    "id": 171,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "The purpose of the address latch (e.g., 74LS373) in 8086 systems is:",
+    "options": [
+      "To amplify signals",
+      "To hold/demultiplex addresses from AD0–AD15",
+      "To control memory speed",
+      "To generate interrupts"
+    ],
+    "answer": "B",
+    "explanation": "Latches like 74LS373/8282 capture and hold the address presented by AD0–AD15 during ALE pulse, demultiplexing it."
+  },
+  {
+    "id": 172,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "During which clock state does 8086 put the address on the bus?",
+    "options": [
+      "T2",
+      "T3",
+      "T1",
+      "T4"
+    ],
+    "answer": "C",
+    "explanation": "In T1 state, 8086 puts the address on AD0–AD19 and asserts ALE to latch it externally. MODERA FREQUENTLY"
+  },
+  {
+    "id": 173,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED How many bytes can 8086 transfer in one bus cycle with 16-bit data bus?",
+    "options": [
+      "1 byte",
+      "2 bytes",
+      "4 bytes",
+      "8 bytes"
+    ],
+    "answer": "B",
+    "explanation": "8086 transfers 2 bytes (1 word = 16 bits) per bus cycle using its 16-bit data bus."
+  },
+  {
+    "id": 174,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "The 8086 bus cycle consists of minimum how many T-states?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "answer": "C",
+    "explanation": "A minimum 8086 bus cycle has 4 T-states: T1 (address), T2 (data setup), T3 (data valid), T4 (complete)."
+  },
+  {
+    "id": 175,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "Wait states (T-wait) in 8086 are inserted between which T-states?",
+    "options": [
+      "T1 and T2",
+      "T2 and T3",
+      "T3 and T4",
+      "T4 and T1"
+    ],
+    "answer": "C",
+    "explanation": "Wait states are inserted between T3 and T4 when READY signal is low, extending the bus cycle."
+  },
+  {
+    "id": 176,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "The 8086 bus operates in which mode for idle periods?",
+    "options": [
+      "T-idle",
+      "T-hold",
+      "Ti (idle state)",
+      "T-wait"
+    ],
+    "answer": "C",
+    "explanation": "When no bus cycle is needed, 8086 enters Ti (idle) states — NOP cycles on the bus."
+  },
+  {
+    "id": 177,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "The S0, S1, S2 status signals in 8086 maximum mode indicate:",
+    "options": [
+      "Interrupt type",
+      "Type of bus cycle being performed",
+      "Memory size",
+      "DMA type"
+    ],
+    "answer": "B",
+    "explanation": "S0–S2 outputs in maximum mode encode the type of bus cycle: memory read/write, I/O, interrupt ack, halt, etc."
+  },
+  {
+    "id": 178,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "Which signal in 8086 indicates that a bus cycle is in progress?",
+    "options": [
+      "ALE",
+      "BHE",
+      "LOCK",
+      "INTA"
+    ],
+    "answer": "A",
+    "explanation": "ALE (Address Latch Enable) pulse marks the start of a bus cycle — address is valid on the bus."
+  },
+  {
+    "id": 179,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "The LOCK prefix in 8086 instruction set is used to:",
+    "options": [
+      "Lock the keyboard",
+      "Assert LOCK signal to prevent other bus masters . . during critical section",
+      "Lock the interrupt",
+      "Lock the DMA"
+    ],
+    "answer": "B",
+    "explanation": "Assert LOCK signal to prevent other bus masters during critical section LOCK prefix asserts the LOCK pin, preventing other bus masters (in max mode) from acquiring the bus. MODERA FREQUENTLY"
+  },
+  {
+    "id": 180,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED The INTA signal in 8086 is generated during:",
+    "options": [
+      "Reset",
+      "Interrupt acknowledge cycle",
+      "DMA transfer",
+      "Memory read"
+    ],
+    "answer": "B",
+    "explanation": "INTA (Interrupt Acknowledge, active low) is driven low during two consecutive bus cycles to acknowledge an interrupt. MODERA FREQUENTLY"
+  },
+  {
+    "id": 181,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED Match bus type to its direction: fi Data Bus Bidirectional fi Address Bus Unidirectional (CPU out) fi Control Bus Mixed (bidirectional depending on signal) Which is CORRECTLY described?",
+    "options": [
+      "Data=Unidirectional, Address=Bidirectional,",
+      "Data=Bidirectional, Address=Unidirectional, . Control=Mixed . Control=Mixed",
+      "Data=Mixed, Address=Unidirectional,",
+      "All three are bidirectional . Control=Bidirectional ."
+    ],
+    "answer": "B",
+    "explanation": "Data=Bidirectional, Address=Unidirectional, Control=Mixed Data bus: bidirectional (read/write). Address bus: unidirectional (CPU to memory). Control: mixed (RD/WR out, READY/INTR in). MODERA FREQUENTLY"
+  },
+  {
+    "id": 182,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED If DS = 3000H and effective address = 0500H, the physical address is:",
+    "options": [
+      "3500H",
+      "30500H",
+      "35000H",
+      "30050H"
+    ],
+    "answer": "B",
+    "explanation": "PA = DS × 10H + EA = 3000H × 10H + 0500H = 30000H + 0500H = 30500H. MODERA FREQUENTLY"
+  },
+  {
+    "id": 183,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED If SS = 2000H and SP = FF00H, the physical address of stack top is:",
+    "options": [
+      "2FF00H",
+      "20F00H",
+      "22F00H",
+      "2F000H"
+    ],
+    "answer": "A",
+    "explanation": "PA = SS × 10H + SP = 2000H × 10H + FF00H = 20000H + FF00H = 2FF00H."
+  },
+  {
+    "id": 184,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "Two segment registers S1=1000H and S2=1400H start segments that:",
+    "options": [
+      "Do not overlap",
+      "Partially overlap — second starts inside first",
+      "Are identical",
+      "S2 is entirely outside S1"
+    ],
+    "answer": "B",
+    "explanation": "fi S1 covers 10000H–1FFFFH; S2 covers 14000H–23FFFH. S2 starts at 14000H which is inside S1's range partial overlap."
+  },
+  {
+    "id": 185,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "Which of the following is a function of the control bus?",
+    "options": [
+      "Carries data between CPU and memory",
+      "Specifies the memory or I/O address",
+      "Carries read/write, interrupt, clock and",
+      "Provides power to memory chips . synchronization signals ."
+    ],
+    "answer": "C",
+    "explanation": "synchronization signals Control bus carries timing, read/write control, interrupt, reset, bus-request/grant and other coordination signals. MODERA FREQUENTLY"
+  },
+  {
+    "id": 186,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED The 8086 bus cycle in minimum mode uses which signals as control?",
+    "options": [
+      "S0-S2",
+      "RD, WR, M/IO, ALE, DT/R, DEN",
+      "LOCK, QS0, QS1",
+      "MRDC, MWTC"
+    ],
+    "answer": "B",
+    "explanation": "Minimum mode: 8086 directly generates RD, WR, M/IO, ALE, DT/R (data transmit/receive), DEN (data enable). MODERA FREQUENTLY"
+  },
+  {
+    "id": 187,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED The DEN signal in 8086 minimum mode stands for:",
+    "options": [
+      "Data Enable — enables data bus transceivers",
+      "Decoder Enable",
+      "Direct Entry Node",
+      "Data End signal"
+    ],
+    "answer": "A",
+    "explanation": "DEN (Data Enable) enables the external 8286 data bus transceivers for data transfer. MODERA FREQUENTLY"
+  },
+  {
+    "id": 188,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED The DT/R signal in 8086 minimum mode indicates:",
+    "options": [
+      "Data transfer rate",
+      "Data Transmit (1) or Data Receive (0)",
+      "DMA transfer request",
+      "Data test result"
+    ],
+    "answer": "B",
+    "explanation": "DT/R: when HIGH = transmit (CPU sending data); when LOW = receive (CPU receiving data). Controls 8286 direction. MODERA FREQUENTLY"
+  },
+  {
+    "id": 189,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Bus System",
+    "question": "TE ASKED The 8086 has a multiplexed address/data bus. The number of multiplexed lines is:",
+    "options": [
+      "8",
+      "16",
+      "20",
+      "24"
+    ],
+    "answer": "B",
+    "explanation": "8086 has 16 multiplexed AD0–AD15 lines (address/data) plus 4 A16–A19/S3–S6 lines."
+  },
+  {
+    "id": 190,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "The Intel 80286 was introduced in which year?",
+    "options": [
+      "1978",
+      "1980",
+      "1982",
+      "1984"
+    ],
+    "answer": "C",
+    "explanation": "Intel 80286 was introduced in February 1982."
+  },
+  {
+    "id": 191,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "The 80286 is a ___-bit microprocessor.",
+    "options": [
+      "8-bit",
+      "16-bit",
+      "32-bit",
+      "64-bit"
+    ],
+    "answer": "B",
+    "explanation": "80286 is a 16-bit processor — both internal registers and external data bus are 16-bit."
+  },
+  {
+    "id": 192,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "The address bus width of 80286 is:",
+    "options": [
+      "20-bit",
+      "22-bit",
+      "24-bit",
+      "32-bit"
+    ],
+    "answer": "C",
+    "explanation": "80286 has a 24-bit address bus, allowing it to address = 16 MB of physical memory."
+  },
+  {
+    "id": 193,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "What is the maximum physical memory addressable by 80286?",
+    "options": [
+      "1 MB",
+      "4 MB",
+      "16 MB",
+      "64 MB"
+    ],
+    "answer": "C",
+    "explanation": "80286 with 24-bit address bus: = 16,777,216 bytes = 16 MB."
+  },
+  {
+    "id": 194,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "The 80286 operates in how many modes?",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "answer": "B",
+    "explanation": "80286 has two operating modes: Real Address Mode (Real Mode) and Protected Virtual Address Mode."
+  },
+  {
+    "id": 195,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "Which mode of 80286 is compatible with 8086 programs?",
+    "options": [
+      "Protected Mode",
+      "Virtual Mode",
+      "Real Mode",
+      "System Mode"
+    ],
+    "answer": "C",
+    "explanation": "Real Mode in 80286 behaves like a fast 8086, running 8086 programs without modification."
+  },
+  {
+    "id": 196,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "In Protected Mode, 80286 can use virtual memory up to:",
+    "options": [
+      "1 MB",
+      "16 MB physical",
+      "1 GB virtual",
+      "4 GB virtual"
+    ],
+    "answer": "C",
+    "explanation": "80286 Protected Mode: 16 MB physical memory + up to 1 GB virtual address space per task. MODERA FREQUENTLY"
+  },
+  {
+    "id": 197,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "TE ASKED The IBM PC/AT (1984) used which microprocessor?",
+    "options": [
+      "8086",
+      "8088",
+      "80286",
+      "80386"
+    ],
+    "answer": "C",
+    "explanation": "IBM PC/AT (Advanced Technology, 1984) was the first mainstream PC based on Intel 80286."
+  },
+  {
+    "id": 198,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "The 80286 has how many pins?",
+    "options": [
+      "40",
+      "48",
+      "68",
+      "100"
+    ],
+    "answer": "C",
+    "explanation": "80286 has 68 pins in a PGA (Pin Grid Array) package, compared to 8086's 40 pins."
+  },
+  {
+    "id": 199,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "The clock speed of the original IBM PC/AT with 80286 was:",
+    "options": [
+      "5 MHz",
+      "6 MHz",
+      "8 MHz",
+      "10 MHz"
+    ],
+    "answer": "C",
+    "explanation": "IBM PC/AT used 80286 at 8 MHz. The chip itself ran at 8, 10, 12, and 16 MHz variants. MODERA FREQUENTLY"
+  },
+  {
+    "id": 200,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "TE ASKED Protected Mode in 80286 provides which primary feature?",
+    "options": [
+      "Faster execution",
+      "Memory protection with privilege levels",
+      "Floating-point support",
+      "Built-in graphics"
+    ],
+    "answer": "B",
+    "explanation": "Protected Mode provides hardware-enforced memory protection, privilege levels (rings 0–3), and virtual memory. MODERA FREQUENTLY"
+  },
+  {
+    "id": 201,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "TE ASKED 80286 Protected Mode has how many privilege rings?",
+    "options": [
+      "2",
+      "4",
+      "8",
+      "16"
+    ],
+    "answer": "B",
+    "explanation": "80286 has 4 privilege levels: Ring 0 (OS kernel, most privileged) to Ring 3 (user application, least). DIFFICU FREQUENTLY"
+  },
+  {
+    "id": 202,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "LT ASKED",
+    "options": [
+      "Virtual Mode",
+      "Real Mode without hardware reset",
+      "Supervisor Mode",
+      "Extended Mode"
+    ],
+    "answer": "B",
+    "explanation": "80286 cannot switch from Protected Mode back to Real Mode without a CPU reset — fixed in 80386."
+  },
+  {
+    "id": 203,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "The 80286 introduced which memory management tables?",
+    "options": [
+      "GDT and LDT only",
+      "PDT (Page Descriptor Table)",
+      "GDT, LDT, and IDT",
+      "TLB only"
+    ],
+    "answer": "A",
+    "explanation": "80286 introduced GDT (Global Descriptor Table), LDT (Local Descriptor Table), and IDT in Protected Mode."
+  },
+  {
+    "id": 204,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "The 80286 contains approximately how many transistors?",
+    "options": [
+      "29,000",
+      "134,000",
+      "275,000",
+      "1,200,000"
+    ],
+    "answer": "B",
+    "explanation": "Intel 80286 contains approximately 134,000 transistors (vs 8086's ~29,000). MODERA FREQUENTLY"
+  },
+  {
+    "id": 205,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "TE ASKED The improvement of 80286 over 8086 in memory capacity is:",
+    "options": [
+      "Same — both 1 MB",
+      "80286 = 16× more (16 MB vs 1 MB)",
+      "80286 = 4× more (4 MB vs 1 MB)",
+      "80286 = 256× more"
+    ],
+    "answer": "B",
+    "explanation": "8086 = 1 MB (20-bit bus); 80286 = 16 MB (24-bit bus). 16 MB / 1 MB = 16× improvement."
+  },
+  {
+    "id": 206,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "The 80286 GDTR (Global Descriptor Table Register) stores:",
+    "options": [
+      "Physical address and size of GDT",
+      "Virtual address of GDT",
+      "LDT location",
+      "IDT location"
+    ],
+    "answer": "A",
+    "explanation": "GDTR holds the 24-bit linear base address and 16-bit limit of the Global Descriptor Table."
+  },
+  {
+    "id": 207,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "The 80286 maximum virtual memory per task in Protected Mode is:",
+    "options": [
+      "16 MB",
+      "64 MB",
+      "1 GB",
+      "4 GB"
+    ],
+    "answer": "C",
+    "explanation": "80286 Protected Mode provides up to 1 GB of virtual address space per task using segmentation."
+  },
+  {
+    "id": 208,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "The 80286 data bus is how many bits wide?",
+    "options": [
+      "8-bit",
+      "16-bit",
+      "24-bit",
+      "32-bit"
+    ],
+    "answer": "B",
+    "explanation": "80286 has a full 16-bit external data bus — same width as 8086 but with much more memory."
+  },
+  {
+    "id": 209,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "The 80286 was used in which Microsoft OS that exploited Protected Mode?",
+    "options": [
+      "MS-DOS 3.0",
+      "OS/2 1.x",
+      "Windows 1.0",
+      "CP/M-86"
+    ],
+    "answer": "B",
+    "explanation": "IBM/Microsoft OS/2 1.x (1987) was the first OS to use 80286 Protected Mode for multi-tasking. MODERA FREQUENTLY"
+  },
+  {
+    "id": 210,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "TE ASKED The 80286 has how many privilege levels (rings)?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "8"
+    ],
+    "answer": "C",
+    "explanation": "80286 implements 4 privilege levels: Ring 0 (kernel), Ring 1, Ring 2, Ring 3 (user applications). MODERA FREQUENTLY"
+  },
+  {
+    "id": 211,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "TE ASKED In 80286 Real Mode, memory access is limited to:",
+    "options": [
+      "64 KB",
+      "1 MB",
+      "16 MB",
+      "4 GB"
+    ],
+    "answer": "B",
+    "explanation": "In Real Mode, 80286 behaves like a fast 8086 — limited to 1 MB (20-bit effective addressing). MODERA FREQUENTLY"
+  },
+  {
+    "id": 212,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "TE ASKED Which of the following about 80286 is FALSE?",
+    "options": [
+      "80286 introduced Protected Mode",
+      "80286 has 24-bit address bus",
+      "80286 can freely switch from Protected to Real Mode",
+      "80286 has 4 privilege levels"
+    ],
+    "answer": "C",
+    "explanation": "80286 CANNOT easily switch from Protected to Real Mode without a hardware reset. This is FALSE/limitation. DIFFICU FREQUENTLY"
+  },
+  {
+    "id": 213,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "LT ASKED The 80286's segment descriptor contains which information?",
+    "options": [
+      "Segment base address only",
+      "Base address, limit, access rights, and type",
+      "Only limit",
+      "Only access rights"
+    ],
+    "answer": "B",
+    "explanation": "An 80286 segment descriptor (8 bytes) contains: 24-bit base, 16-bit limit, access rights byte, and attribute bits. MODERA FREQUENTLY"
+  },
+  {
+    "id": 214,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "TE ASKED 80286 Real Mode segment limit is always:",
+    "options": [
+      "Variable (programmable)",
+      "Fixed at 64 KB",
+      "Fixed at 16 KB",
+      "Fixed at 1 MB"
+    ],
+    "answer": "B",
+    "explanation": "In 80286 Real Mode (like 8086), all segment sizes are fixed at maximum 64 KB (FFFFH offset). MODERA FREQUENTLY"
+  },
+  {
+    "id": 215,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "TE ASKED In 80286 Protected Mode, segments can be how large?",
+    "options": [
+      "64 KB maximum",
+      "16 MB maximum (24-bit base)",
+      "Variable 1 byte to 64 KB",
+      "Fixed 4 KB"
+    ],
+    "answer": "B",
+    "explanation": "In Protected Mode, 80286 segments: base is 24-bit (16 MB range) with 16-bit limit up to 64 KB per segment."
+  },
+  {
+    "id": 216,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "The 80286 Local Descriptor Table (LDT) is for:",
+    "options": [
+      "Global OS-level segment descriptions",
+      "Per-task private segment descriptions",
+      "Interrupt handling",
+      "DMA control"
+    ],
+    "answer": "B",
+    "explanation": "LDT holds per-task segment descriptors (private to each task), while GDT holds global/system-wide descriptors."
+  },
+  {
+    "id": 217,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "80286 SGDT instruction is used to:",
+    "options": [
+      "Set up the GDT",
+      "Store GDTR (save the GDT base+limit)",
+      "Switch to Protected Mode",
+      "Load segment descriptor"
+    ],
+    "answer": "B",
+    "explanation": "SGDT (Store GDT Register) saves the GDTR contents (base address + limit) to a memory location. DIFFICU FREQUENTLY"
+  },
+  {
+    "id": 218,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80286 Microprocessor",
+    "question": "LT ASKED The 80286 CALLgate provides:",
+    "options": [
+      "A way to call OS routines at higher privilege",
+      "A hardware interrupt",
+      "A DMA channel",
+      "A memory bank switch"
+    ],
+    "answer": "A",
+    "explanation": "A call gate in 80286 Protected Mode allows controlled privilege escalation — user code calling OS at ring 0."
+  },
+  {
+    "id": 219,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "The Intel 80386 was introduced in which year?",
+    "options": [
+      "1984",
+      "1985",
+      "1986",
+      "1988"
+    ],
+    "answer": "B",
+    "explanation": "Intel 80386 (i386) was introduced in October 1985."
+  },
+  {
+    "id": 220,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "The 80386 is Intel's first ___-bit microprocessor.",
+    "options": [
+      "16-bit",
+      "24-bit",
+      "32-bit",
+      "64-bit"
+    ],
+    "answer": "C",
+    "explanation": "80386 was Intel's first true 32-bit processor with 32-bit registers, 32-bit data bus, and 32-bit address bus."
+  },
+  {
+    "id": 221,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "The data bus width of 80386DX is:",
+    "options": [
+      "16-bit",
+      "24-bit",
+      "32-bit",
+      "64-bit"
+    ],
+    "answer": "C",
+    "explanation": "80386DX has a full 32-bit external data bus, enabling 32 bits transferred in one bus cycle."
+  },
+  {
+    "id": 222,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "The address bus width of 80386 is:",
+    "options": [
+      "24-bit",
+      "32-bit",
+      "36-bit",
+      "40-bit"
+    ],
+    "answer": "B",
+    "explanation": "80386 has a 32-bit address bus, enabling addressing of = 4 GB of physical memory."
+  },
+  {
+    "id": 223,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "Maximum physical memory addressable by 80386 is:",
+    "options": [
+      "16 MB",
+      "64 MB",
+      "256 MB",
+      "4 GB"
+    ],
+    "answer": "D",
+    "explanation": "80386 with 32-bit address bus: = 4,294,967,296 bytes = 4 GB. MODERA FREQUENTLY"
+  },
+  {
+    "id": 224,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "TE ASKED The 80386 operates in how many modes?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "answer": "B",
+    "explanation": "80386 has 3 operating modes: Real Mode, Protected Mode, and Virtual 8086 (V86) Mode. MODERA FREQUENTLY"
+  },
+  {
+    "id": 225,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "TE ASKED Virtual 8086 mode in 80386 allows:",
+    "options": [
+      "Running 16-bit protected apps",
+      "Running multiple 8086 programs simultaneously . . under a multitasking OS",
+      "Accessing 4 GB directly from each app",
+      "Floating-point operations only"
+    ],
+    "answer": "B",
+    "explanation": "Running multiple 8086 programs simultaneously under a multitasking OS V86 Mode lets 80386 run multiple 8086 programs simultaneously, each in protected virtual memory space. MODERA FREQUENTLY"
+  },
+  {
+    "id": 226,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "TE ASKED 80386 was the first Intel x86 processor to support:",
+    "options": [
+      "Protected Mode",
+      "Paging (hardware demand-paged virtual memory)",
+      "Segmentation",
+      "Hardware interrupts"
+    ],
+    "answer": "B",
+    "explanation": "80386 was the first x86 chip to include a hardware Paging Unit for demand-paged virtual memory. MODERA FREQUENTLY"
+  },
+  {
+    "id": 227,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "TE ASKED The page size in 80386 paging is:",
+    "options": [
+      "512 bytes",
+      "1 KB",
+      "4 KB",
+      "64 KB"
+    ],
+    "answer": "C",
+    "explanation": "80386 paging uses 4 KB (4096-byte) pages as the basic unit of virtual-to-physical memory translation. MODERA FREQUENTLY"
+  },
+  {
+    "id": 228,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "TE ASKED Unlike 80286, the 80386 can switch between Protected and Real modes:",
+    "options": [
+      "Not at all",
+      "Only with hardware reset",
+      "Freely in software without reset",
+      "Only with OS assistance"
+    ],
+    "answer": "C",
+    "explanation": "80386 fixed the 80286 limitation — it can freely switch between modes in software using CR0 register. MODERA FREQUENTLY"
+  },
+  {
+    "id": 229,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "TE ASKED The 80386DX has which external bus configuration?",
+    "options": [
+      "32-bit data, 32-bit address",
+      "32-bit data, 24-bit address",
+      "16-bit data, 32-bit address",
+      "16-bit data, 24-bit address"
+    ],
+    "answer": "A",
+    "explanation": "80386DX (full version): 32-bit external data bus + 32-bit external address bus. Full 32-bit chip."
+  },
+  {
+    "id": 230,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "The 80386SX has which external bus configuration?",
+    "options": [
+      "32-bit data, 32-bit address",
+      "32-bit data, 24-bit address",
+      "16-bit data, 24-bit address",
+      "16-bit data, 32-bit address"
+    ],
+    "answer": "C",
+    "explanation": "80386SX: 32-bit internal architecture but 16-bit external data bus and 24-bit external address bus."
+  },
+  {
+    "id": 231,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "80386 contains approximately how many transistors?",
+    "options": [
+      "134,000",
+      "275,000",
+      "1,200,000",
+      "3,100,000"
+    ],
+    "answer": "B",
+    "explanation": "Intel 80386 contains approximately 275,000 transistors — twice as many as 80286."
+  },
+  {
+    "id": 232,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "The 80386 clock speed range was approximately:",
+    "options": [
+      "5–10 MHz",
+      "12–40 MHz",
+      "50–100 MHz",
+      "100–200 MHz"
+    ],
+    "answer": "B",
+    "explanation": "80386 variants ranged from 12 MHz (80386-12) to 40 MHz (80386-40)."
+  },
+  {
+    "id": 233,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "The 80386DX has how many pins?",
+    "options": [
+      "40",
+      "68",
+      "100",
+      "132"
+    ],
+    "answer": "D",
+    "explanation": "80386DX uses a 132-pin PGA (Pin Grid Array) package. MODERA FREQUENTLY"
+  },
+  {
+    "id": 234,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "TE ASKED The improvement of 80386 over 80286 in memory capacity is:",
+    "options": [
+      "Same",
+      "80386 = 256× more (4 GB vs 16 MB)",
+      "80386 = 16× more",
+      "80386 = 64× more"
+    ],
+    "answer": "B",
+    "explanation": "80286 = 16 MB; 80386 = 4 GB. 4 GB / 16 MB = 256× improvement in physical memory addressing. DIFFICU FREQUENTLY"
+  },
+  {
+    "id": 235,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "LT ASKED The 80386 Control Register CR0 bit 0 (PE) controls:",
+    "options": [
+      "Paging enable",
+      "Protection Enable (Real vs Protected mode)",
+      "Cache enable",
+      "Coprocessor enable"
+    ],
+    "answer": "B",
+    "explanation": "CR0.PE=0: Real Mode; CR0.PE=1: Protected Mode. Setting PE switches the 80386 to Protected Mode."
+  },
+  {
+    "id": 236,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "The 80386 Control Register CR0 bit 31 (PG) controls:",
+    "options": [
+      "Protection",
+      "Paging unit enable/disable",
+      "Cache",
+      "Floating point"
+    ],
+    "answer": "B",
+    "explanation": "CR0.PG=1 enables the paging unit. CR0.PG=0 disables paging (flat physical memory used)."
+  },
+  {
+    "id": 237,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "The 80386 page directory has how many entries?",
+    "options": [
+      "256",
+      "512",
+      "1024",
+      "4096"
+    ],
+    "answer": "C",
+    "explanation": "( ) 80386 two-level paging: Page Directory has 1024 entries, each pointing to a Page Table."
+  },
+  {
+    "id": 238,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "The 80386 extended general-purpose registers are named:",
+    "options": [
+      "AX, BX, CX, DX",
+      "EAX, EBX, ECX, EDX",
+      "RAX, RBX, RCX, RDX",
+      "MAX, MBX, MCX, MDX"
+    ],
+    "answer": "B",
+    "explanation": "80386 extended 16-bit registers to 32-bit by adding 'E' prefix: EAX, EBX, ECX, EDX."
+  },
+  {
+    "id": 239,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "The 80386 has how many debug registers?",
+    "options": [
+      "2",
+      "4",
+      "6",
+      "8"
+    ],
+    "answer": "D",
+    "explanation": "80386 has 8 debug registers (DR0–DR7): DR0–DR3 for breakpoint addresses, DR6 for status, DR7 for control. MODERA FREQUENTLY"
+  },
+  {
+    "id": 240,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "TE ASKED 80386 Linear (virtual) address space is:",
+    "options": [
+      "1 MB",
+      "16 MB",
+      "4 GB",
+      "1 TB"
+    ],
+    "answer": "C",
+    "explanation": "80386 provides a 32-bit linear address space = 4 GB per task (with paging, this is virtual/linear space)."
+  },
+  {
+    "id": 241,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "Which 80386 mode allows protected multitasking AND backward compatibility with 8086 apps?",
+    "options": [
+      "Real Mode",
+      "Protected Mode without paging",
+      "Protected Mode with Virtual 8086 Mode",
+      "System Management Mode"
+    ],
+    "answer": "C",
+    "explanation": "Protected Mode + Virtual 8086 Mode: each V86 task runs an 8086 program in its own protected 1 MB space. MODERA FREQUENTLY"
+  },
+  {
+    "id": 242,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "TE ASKED Which of the following about 80386 is TRUE?",
+    "options": [
+      "80386 introduced Protected Mode in x86",
+      "80386 has a 24-bit address bus",
+      "80386 was the first Intel 32-bit x86 CPU",
+      "80386 has no paging support"
+    ],
+    "answer": "C",
+    "explanation": "80386 was indeed the first 32-bit Intel x86 CPU (1985). It introduced paging. Protected Mode was 80286. DIFFICU FREQUENTLY"
+  },
+  {
+    "id": 243,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "LT ASKED In 80386 paging, a 32-bit linear address is split as:",
+    "options": [
+      "10+10+12 bits (dir+table+offset)",
+      "12+10+10 bits",
+      "16+16 bits",
+      "20+12 bits"
+    ],
+    "answer": "A",
+    "explanation": "80386: bits 31–22 = Page Directory index (10 bits), bits 21–12 = Page Table index (10 bits), bits 11–0 = offset (12 bits). MODERA FREQUENTLY"
+  },
+  {
+    "id": 244,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "TE ASKED The 80386's EIP register corresponds to 8086's:",
+    "options": [
+      "AX",
+      "IP (Instruction Pointer), extended to 32 bits",
+      "CS",
+      "SP"
+    ],
+    "answer": "B",
+    "explanation": "EIP is the 32-bit extended version of the 8086's 16-bit IP (Instruction Pointer) register. MODERA FREQUENTLY"
+  },
+  {
+    "id": 245,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "TE ASKED In 80386, EFLAGS extends the 8086 FLAGS register to how many bits?",
+    "options": [
+      "16-bit",
+      "32-bit",
+      "64-bit",
+      "24-bit"
+    ],
+    "answer": "B",
+    "explanation": "80386 EFLAGS is 32 bits wide (extending the 8086 16-bit FLAGS), adding bits for VM, RF, NT, IOPL flags. DIFFICU FREQUENTLY"
+  },
+  {
+    "id": 246,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "LT ASKED The VM bit in 80386 EFLAGS register, when set to 1, indicates:",
+    "options": [
+      "Video Mode",
+      "Virtual 8086 Mode is active",
+      "Virtual Memory enabled",
+      "Version Mode"
+    ],
+    "answer": "B",
+    "explanation": "VM (Virtual Mode) bit in EFLAGS: if set, the processor operates in Virtual 8086 Mode within Protected Mode."
+  },
+  {
+    "id": 247,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "80386 System Management Mode (SMM) is entered via:",
+    "options": [
+      "RESET signal",
+      "Software INT",
+      "SMI# (System Management Interrupt) pin",
+      "NMI"
+    ],
+    "answer": "C",
+    "explanation": "SMM is entered when SMI# pin is asserted — used for power management, hardware control, outside OS knowledge. MODERA FREQUENTLY"
+  },
+  {
+    "id": 248,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "TE ASKED In 80386, FS and GS are:",
+    "options": [
+      "Flag registers",
+      "Two additional segment registers added in 80386",
+      "General purpose registers",
+      "Index registers"
+    ],
+    "answer": "B",
+    "explanation": "80386 added two more segment registers FS and GS (beyond 8086's CS/DS/SS/ES) for extra data segments. DIFFICU FREQUENTLY"
+  },
+  {
+    "id": 249,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "80386 Microprocessor",
+    "question": "LT ASKED The 80386's TLB (Translation Lookaside Buffer) is used for:",
+    "options": [
+      "Translating segment addresses",
+      "Caching recent virtual-to-physical page address . . translations",
+      "Translation of ASCII to binary",
+      "Storing branch history"
+    ],
+    "answer": "B",
+    "explanation": "Caching recent virtual-to-physical page address translations TLB caches recent page-table translations so repeated access to same page doesn't require full page-table walk."
+  },
+  {
+    "id": 250,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The Intel Pentium processor was introduced in which year?",
+    "options": [
+      "1989",
+      "1991",
+      "1993",
+      "1995"
+    ],
+    "answer": "C",
+    "explanation": "Intel Pentium (P5, 5th generation) was introduced in March 1993."
+  },
+  {
+    "id": 251,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The Pentium processor features which architecture?",
+    "options": [
+      "Scalar",
+      "Superscalar",
+      "VLIW",
+      "EPIC"
+    ],
+    "answer": "B",
+    "explanation": "Pentium uses superscalar architecture — two parallel integer execution pipes (U and V) per clock cycle."
+  },
+  {
+    "id": 252,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The external data bus width of the Pentium is:",
+    "options": [
+      "16-bit",
+      "32-bit",
+      "64-bit",
+      "128-bit"
+    ],
+    "answer": "C",
+    "explanation": "Pentium has a 64-bit external data bus — double the 80486's 32-bit bus for faster memory bandwidth."
+  },
+  {
+    "id": 253,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The address bus width of the Pentium is:",
+    "options": [
+      "24-bit",
+      "32-bit",
+      "36-bit",
+      "64-bit"
+    ],
+    "answer": "B",
+    "explanation": "Pentium has a 32-bit address bus — same as 80386/486, addressing up to 4 GB of physical memory. MODERA FREQUENTLY"
+  },
+  {
+    "id": 254,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "TE ASKED The Pentium processor has how many integer execution pipelines?",
+    "options": [
+      "1",
+      "2",
+      "4",
+      "8"
+    ],
+    "answer": "B",
+    "explanation": "Pentium has 2 integer pipelines: U-pipe (any instruction) and V-pipe (simple instructions only). MODERA FREQUENTLY"
+  },
+  {
+    "id": 255,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "TE ASKED The L1 cache in the original Pentium is:",
+    "options": [
+      "4 KB unified",
+      "8 KB code + 8 KB data",
+      "32 KB unified",
+      "64 KB unified"
+    ],
+    "answer": "B",
+    "explanation": "Original Pentium: split L1 cache of 8 KB instruction cache + 8 KB data cache = 16 KB total."
+  },
+  {
+    "id": 256,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The Pentium processor was the successor to:",
+    "options": [
+      "80286",
+      "80386",
+      "80486",
+      "8088"
+    ],
+    "answer": "C",
+    "explanation": "Pentium (5th generation, P5) succeeded the Intel 80486 (4th generation) in the x86 lineup. MODERA FREQUENTLY"
+  },
+  {
+    "id": 257,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "TE ASKED The internal register width of Pentium is:",
+    "options": [
+      "16-bit",
+      "32-bit",
+      "64-bit",
+      "128-bit"
+    ],
+    "answer": "B",
+    "explanation": "Pentium's internal registers are 32-bit (EAX, EBX, etc.) — same as 80386/486. External data bus is 64-bit. MODERA FREQUENTLY"
+  },
+  {
+    "id": 258,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "TE ASKED The initial clock speeds of the original Pentium were:",
+    "options": [
+      "25 and 33 MHz",
+      "50 and 66 MHz",
+      "60 and 66 MHz",
+      "100 and 133 MHz"
+    ],
+    "answer": "C",
+    "explanation": "The original Pentium was released at 60 MHz and 66 MHz clock speeds in 1993."
+  },
+  {
+    "id": 259,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The Pentium processor contains approximately how many transistors?",
+    "options": [
+      "275,000",
+      "1.2 million",
+      "3.1 million",
+      "5.5 million"
+    ],
+    "answer": "C",
+    "explanation": "Original Pentium (P5) contains approximately 3.1 million transistors."
+  },
+  {
+    "id": 260,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "Pentium supports which multiprocessing configuration?",
+    "options": [
+      "Asymmetric only",
+      "Symmetric Multiprocessing (SMP) — dual processors",
+      "NUMA only",
+      "Cluster computing"
+    ],
+    "answer": "B",
+    "explanation": "Pentium supports SMP (Symmetric Multiprocessing), allowing dual-Pentium system configurations. MODERA FREQUENTLY"
+  },
+  {
+    "id": 261,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "TE ASKED The Pentium integer pipeline has how many stages?",
+    "options": [
+      "2",
+      "4",
+      "5",
+      "8"
+    ],
+    "answer": "C",
+    "explanation": "Pentium integer pipeline: 5 stages — PF (Prefetch), D1 (Decode1), D2 (Decode2), EX (Execute), WB (Write Back). MODERA FREQUENTLY"
+  },
+  {
+    "id": 262,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "TE ASKED MMX technology was introduced with which Pentium variant?",
+    "options": [
+      "Original Pentium",
+      "Pentium Pro",
+      "Pentium MMX",
+      "Pentium II"
+    ],
+    "answer": "C",
+    "explanation": "MMX (MultiMedia eXtensions) — 57 new SIMD instructions — was introduced in Pentium MMX (1997). MODERA FREQUENTLY"
+  },
+  {
+    "id": 263,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "TE ASKED The famous Pentium FDIV bug was related to:",
+    "options": [
+      "Integer addition errors",
+      "Incorrect floating-point division results",
+      "Memory addressing fault",
+      "Cache coherency error"
+    ],
+    "answer": "B",
+    "explanation": "The Pentium FDIV bug (1994): incorrect results for certain floating-point division operations in the FPU. MODERA FREQUENTLY"
+  },
+  {
+    "id": 264,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "TE ASKED Compared to 80386, the Pentium's external data bus is:",
+    "options": [
+      "Same (32-bit)",
+      "Smaller (16-bit)",
+      "Twice as wide (64-bit)",
+      "Four times wider (128-bit)"
+    ],
+    "answer": "C",
+    "explanation": "80386 has 32-bit external data bus; Pentium has 64-bit — doubled for higher memory bandwidth."
+  },
+  {
+    "id": 265,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The Pentium Pro (P6) introduced which on-chip cache?",
+    "options": [
+      "128 KB L1",
+      "256 KB or 512 KB L2 in same package",
+      "32 KB L1 only",
+      "No cache"
+    ],
+    "answer": "B",
+    "explanation": "Pentium Pro included 256 KB or 512 KB L2 cache mounted in the same MCM package as the CPU."
+  },
+  {
+    "id": 266,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The Pentium's V-pipe can only execute which type of instructions?",
+    "options": [
+      "All instructions",
+      "Simple (short-latency) instructions only",
+      "Floating-point only",
+      "Memory operations only"
+    ],
+    "answer": "B",
+    "explanation": "The V-pipe handles only 'simple' instructions (those without dependencies/conflicts). U-pipe handles all."
+  },
+  {
+    "id": 267,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "Pentium's branch prediction is implemented using:",
+    "options": [
+      "Branch History Table (BHT)",
+      "Branch Target Buffer (BTB)",
+      "Both BTB and BHT",
+      "Static prediction only"
+    ],
+    "answer": "C",
+    "explanation": "Pentium uses Branch Target Buffer (BTB) for dynamic branch prediction to reduce pipeline stalls."
+  },
+  {
+    "id": 268,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The Pentium bus clock speed is what fraction of core clock?",
+    "options": [
+      "Equal (1:1)",
+      "Half of core clock (1:2)",
+      "Quarter (1:4)",
+      "Double (2:1)"
+    ],
+    "answer": "B",
+    "explanation": "Pentium uses a 2:1 clock multiplier internally — core runs at 2× the external bus clock frequency."
+  },
+  {
+    "id": 269,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The Pentium FPU improved performance compared to 80486 by approximately:",
+    "options": [
+      "2×",
+      "5×",
+      "10×",
+      "No improvement"
+    ],
+    "answer": "B",
+    "explanation": "Pentium's pipelined FPU provided approximately 5× better floating-point throughput compared to 80486."
+  },
+  {
+    "id": 270,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "Pentium Overdrive processors were used to upgrade which older machines?",
+    "options": [
+      "8086-based PCs",
+      "80286-based PCs",
+      "80486-based PCs",
+      "80386-based PCs"
+    ],
+    "answer": "C",
+    "explanation": "Pentium Overdrive chips were drop-in upgrades for 80486-based systems using the same Socket 3/2 socket."
+  },
+  {
+    "id": 271,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The Pentium processor package type used in most systems was:",
+    "options": [
+      "DIP-40",
+      "PGA-132",
+      "Socket 7 PGA-296",
+      "QFP-240"
+    ],
+    "answer": "C",
+    "explanation": "Most Pentium processors used Socket 5 or Socket 7 with a 296-pin SPGA (Staggered PGA) package."
+  },
+  {
+    "id": 272,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The Pentium II used which packaging technology?",
+    "options": [
+      "Socket 7",
+      "Slot 1 (SEC cartridge)",
+      "Socket 370",
+      "LGA 775"
+    ],
+    "answer": "B",
+    "explanation": "Pentium II used Slot 1 with SEC (Single Edge Contact) cartridge packaging, abandoning the socket design."
+  },
+  {
+    "id": 273,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "SSE (Streaming SIMD Extensions) was introduced in which processor?",
+    "options": [
+      "Pentium MMX",
+      "Pentium II",
+      "Pentium III",
+      "Pentium 4"
+    ],
+    "answer": "C",
+    "explanation": "SSE with 70 new SIMD instructions was introduced in Intel Pentium III (1999)."
+  },
+  {
+    "id": 274,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The Pentium 4 used which microarchitecture with deep pipeline?",
+    "options": [
+      "P5",
+      "P6",
+      "NetBurst",
+      "Core"
+    ],
+    "answer": "C",
+    "explanation": "Pentium 4 used Intel's NetBurst microarchitecture with a 20-stage (later 31-stage) pipeline."
+  },
+  {
+    "id": 275,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The original Pentium's die size was manufactured at which process node?",
+    "options": [
+      "1 micron",
+      "0.8 micron (800 nm)",
+      "0.5 micron",
+      "0.35 micron"
+    ],
+    "answer": "B",
+    "explanation": "The original Pentium (60/66 MHz) was manufactured at 0.8 micron (800 nm) BICMOS process. MODERA FREQUENTLY"
+  },
+  {
+    "id": 276,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "TE ASKED Which of the following about Pentium is FALSE?",
+    "options": [
+      "Pentium is superscalar",
+      "Pentium has 64-bit external data bus",
+      "Pentium has 32-bit address bus",
+      "Pentium internal registers are 64-bit"
+    ],
+    "answer": "D",
+    "explanation": "Pentium's internal registers are 32-bit (same as 80386/486). Only the EXTERNAL data bus is 64-bit. MODERA FREQUENTLY"
+  },
+  {
+    "id": 277,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "TE ASKED The Pentium can execute how many instructions per clock cycle ideally?",
+    "options": [
+      "1",
+      "2",
+      "4",
+      "8"
+    ],
+    "answer": "B",
+    "explanation": "Pentium's superscalar U+V pipeline can issue 2 instructions per clock cycle under ideal (pairing) conditions."
+  },
+  {
+    "id": 278,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The Pentium Pro introduced which out-of-order execution concept?",
+    "options": [
+      "In-order pipeline",
+      "Dynamic Execution (out-of-order with speculative . . execution)",
+      "VLIW",
+      "Barrel processing"
+    ],
+    "answer": "B",
+    "explanation": "Dynamic Execution (out-of-order with speculative execution) Pentium Pro's P6 microarchitecture introduced Dynamic Execution: out-of-order execution + speculative + branch prediction. MODERA FREQUENTLY"
+  },
+  {
+    "id": 279,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "TE ASKED The Pentium's U-pipe can execute:",
+    "options": [
+      "Only simple instructions",
+      "Any x86 instruction (pipelined)",
+      "Floating-point only",
+      "String operations only"
+    ],
+    "answer": "B",
+    "explanation": "U-pipe (main pipeline) can execute any x86 instruction. V-pipe handles only 'pairable' simple instructions."
+  },
+  {
+    "id": 280,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "Pentium Overdrive processors operated at what clock multiplier?",
+    "options": [
+      "1×",
+      "2× (double speed internally)",
+      "3×",
+      "4×"
+    ],
+    "answer": "B",
+    "explanation": "Pentium Overdrive chips typically ran at 2× the external bus frequency internally (clock doubling). MODERA FREQUENTLY"
+  },
+  {
+    "id": 281,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "TE ASKED Which new instruction set extension did Pentium NOT introduce?",
+    "options": [
+      "MMX",
+      "SSE",
+      "x87 FPU support",
+      "LOCK prefix support"
+    ],
+    "answer": "B",
+    "explanation": "SSE was introduced with Pentium III (1999), not original Pentium. MMX came with Pentium MMX (1997). MODERA FREQUENTLY"
+  },
+  {
+    "id": 282,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "TE ASKED Pentium's on-chip FPU supports which floating-point standard?",
+    "options": [
+      "IEEE 754",
+      "IBM hexadecimal float",
+      "BCD float only",
+      "Custom Intel format"
+    ],
+    "answer": "A",
+    "explanation": "Pentium FPU is IEEE 754 compatible — supports single (32-bit), double (64-bit), and extended (80-bit) precision."
+  },
+  {
+    "id": 283,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The Pentium uses which technology process?",
+    "options": [
+      "0.5 micron CMOS (Pentium at 75+ MHz)",
+      "NMOS 3-micron",
+      "Bipolar ECL",
+      "GaAs"
+    ],
+    "answer": "A",
+    "explanation": "Later Pentiums (75 MHz+) used 0.5 micron BiCMOS/CMOS. Original 60/66 MHz used 0.8 micron process."
+  },
+  {
+    "id": 284,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "The Pentium's data bus provides what peak theoretical bandwidth at 66 MHz?",
+    "options": [
+      "66 MB/s",
+      "264 MB/s",
+      "528 MB/s",
+      "1 GB/s"
+    ],
+    "answer": "C",
+    "explanation": "Bandwidth = bus freq × bus width = 66 MHz × 8 bytes (64-bit) = 528 MB/s theoretical peak. MODERA FREQUENTLY"
+  },
+  {
+    "id": 285,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "TE ASKED In Pentium's dual-pipeline execution, 'pairing' refers to:",
+    "options": [
+      "Two CPUs working together",
+      "Two instructions executing simultaneously in U and V . . pipes",
+      "Pairing instruction and data cache",
+      "Branch and loop pairing"
+    ],
+    "answer": "B",
+    "explanation": "Two instructions executing simultaneously in U and V pipes Instruction pairing = two compatible instructions executed in parallel in U-pipe and V-pipe per clock cycle. DIFFICU FREQUENTLY"
+  },
+  {
+    "id": 286,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Pentium Processor",
+    "question": "LT ASKED The Pentium Pro introduced which advance NOT in original Pentium?",
+    "options": [
+      "64-bit data bus",
+      "Superscalar execution",
+      "Out-of-order Dynamic Execution",
+      "On-chip FPU"
+    ],
+    "answer": "C",
+    "explanation": "Pentium Pro (P6, 1995) introduced Dynamic Execution (out-of-order + speculative), absent in original Pentium (P5)."
+  },
+  {
+    "id": 287,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "The main difference between 8086 and 8088 external data bus is:",
+    "options": [
+      "8086 is 8-bit, 8088 is 16-bit",
+      "8086 is 16-bit, 8088 is 8-bit",
+      "Both are 16-bit",
+      "Both are 8-bit"
+    ],
+    "answer": "B",
+    "explanation": "8086 = 16-bit external data bus. 8088 = 8-bit external data bus. Internal architecture is identical. MODERA FREQUENTLY"
+  },
+  {
+    "id": 288,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Instruction queue size: 8086 has ___ bytes and 8088 has ___ bytes.",
+    "options": [
+      "4, 6",
+      "6, 4",
+      "4, 4",
+      "6, 6"
+    ],
+    "answer": "B",
+    "explanation": "8086 = 6-byte prefetch queue (wider bus fetches more); 8088 = 4-byte queue (narrower 8-bit bus). MODERA FREQUENTLY"
+  },
+  {
+    "id": 289,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Compared to 8086, the 80286 has a wider address bus by how many bits?",
+    "options": [
+      "2 bits",
+      "4 bits",
+      "8 bits",
+      "16 bits"
+    ],
+    "answer": "B",
+    "explanation": "8086: 20-bit address bus; 80286: 24-bit address bus. Difference = 4 bits more in 80286."
+  },
+  {
+    "id": 290,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "Which processor first introduced 32-bit registers in Intel's x86 line?",
+    "options": [
+      "8086",
+      "80286",
+      "80386",
+      "Pentium"
+    ],
+    "answer": "C",
+    "explanation": "80386 was Intel's first 32-bit processor, introducing 32-bit extended registers EAX, EBX, etc."
+  },
+  {
+    "id": 291,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "Protected Mode was first introduced in Intel x86 with:",
+    "options": [
+      "8086",
+      "80286",
+      "80386",
+      "Pentium"
+    ],
+    "answer": "B",
+    "explanation": "Protected Mode was first introduced in the Intel 80286 (1982). MODERA FREQUENTLY"
+  },
+  {
+    "id": 292,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Paging (hardware virtual memory) was first introduced in x86 with:",
+    "options": [
+      "8086",
+      "80286",
+      "80386",
+      "Pentium"
+    ],
+    "answer": "C",
+    "explanation": "Hardware paging for virtual memory was introduced for the first time in the Intel 80386. MODERA FREQUENTLY"
+  },
+  {
+    "id": 293,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Superscalar architecture in Intel x86 was first introduced with:",
+    "options": [
+      "80486",
+      "Pentium",
+      "Pentium Pro",
+      "80386"
+    ],
+    "answer": "B",
+    "explanation": "Pentium was Intel's first superscalar x86 processor, capable of executing 2 instructions per clock. MODERA FREQUENTLY"
+  },
+  {
+    "id": 294,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Which correctly compares 80286 and 80386?",
+    "options": [
+      "80286 supports paging; 80386 does not",
+      "80386 is 32-bit; 80286 is 16-bit",
+      "Both have same physical memory capacity",
+      "80286 has Virtual 8086 Mode"
+    ],
+    "answer": "B",
+    "explanation": "80386 is 32-bit; 80286 is 16-bit. Additionally 80386 has paging and V86 mode — 80286 has neither. DIFFICU FREQUENTLY"
+  },
+  {
+    "id": 295,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Which processor first had an on-chip FPU in x86?",
+    "options": [
+      "80386",
+      "80486",
+      "Pentium",
+      "80287"
+    ],
+    "answer": "B",
+    "explanation": "80486 was the first x86 processor with an integrated on-chip FPU (no separate 80487 needed). MODERA FREQUENTLY"
+  },
+  {
+    "id": 296,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Which correctly states data bus widths for these processors?",
+    "options": [
+      "8088=8, 8086=8, 80286=16, 80386=32",
+      "8088=8, 8086=16, 80286=16, 80386=32",
+      "8088=16, 8086=16, 80286=32, 80386=32",
+      "8088=8, 8086=16, 80286=32, 80386=64"
+    ],
+    "answer": "B",
+    "explanation": "8088 external=8-bit, 8086=16-bit, 80286=16-bit, 80386=32-bit data bus. MODERA FREQUENTLY"
+  },
+  {
+    "id": 297,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Virtual 8086 (V86) mode was introduced in:",
+    "options": [
+      "8086",
+      "80286",
+      "80386",
+      "Pentium"
+    ],
+    "answer": "C",
+    "explanation": "Virtual 8086 Mode was introduced in 80386 to run multiple 8086 programs under a Protected Mode OS. MODERA FREQUENTLY"
+  },
+  {
+    "id": 298,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Assertion: 8086 can address 1 MB. Reason: 8086 has a 20-bit address bus.",
+    "options": [
+      "Both true; Reason correctly explains Assertion",
+      "Both true; Reason does NOT explain Assertion",
+      "Assertion true; Reason false",
+      "Assertion false; Reason true"
+    ],
+    "answer": "A",
+    "explanation": "fi Both are correct AND causally linked: 20-bit bus = 1 MB. R directly explains A. MODERA FREQUENTLY"
+  },
+  {
+    "id": 299,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Which of the following is FALSE about 8086?",
+    "options": [
+      "It has 20-bit address bus",
+      "It has 16-bit data bus",
+      "It has a 4-byte instruction queue",
+      "It uses CISC instruction set"
+    ],
+    "answer": "C",
+    "explanation": "8086 has a 6-byte instruction queue. 8088 has 4-byte queue. The other three options are all TRUE. DIFFICU FREQUENTLY"
+  },
+  {
+    "id": 300,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "LT ASKED Statement: Physical address FFFF0H is reached after 8086 RESET. This corresponds to CS:IP =",
+    "options": [
+      "FFFF:0000H",
+      "0000:FFF0H",
+      "FFFF:FFFFH",
+      "F000:FFF0H"
+    ],
+    "answer": "A",
+    "explanation": "fi CS=FFFFH, IP=0000H PA = FFFF0H + 0000H = FFFF0H. After RESET, CS=FFFFH, IP=0000H."
+  },
+  {
+    "id": 301,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "The 80486 (not directly in syllabus) was significant because it:",
+    "options": [
+      "First 32-bit CPU",
+      "First with on-chip FPU and 8KB L1 cache in x86",
+      "First with Protected Mode",
+      "First superscalar"
+    ],
+    "answer": "B",
+    "explanation": "80486 integrated FPU on-chip (previous x86s needed external co-processor) and added 8 KB L1 cache + 5-stage pipeline. MODERA FREQUENTLY"
+  },
+  {
+    "id": 302,
+    "level": "Intermediate",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED In terms of external data bus width: Pentium vs 80386 ratio is:",
+    "options": [
+      "1:1",
+      "2:1",
+      "4:1",
+      "8:1"
+    ],
+    "answer": "B",
+    "explanation": "80386=32-bit external data bus; Pentium=64-bit. Ratio = 64/32 = 2:1 (Pentium is twice as wide). MODERA FREQUENTLY"
+  },
+  {
+    "id": 303,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Which processor first broke the 16-bit data bus barrier in Intel x86?",
+    "options": [
+      "80286",
+      "80386",
+      "80486",
+      "Pentium"
+    ],
+    "answer": "B",
+    "explanation": "80386 was first with a 32-bit external data bus, breaking the 16-bit barrier of 8086/80286. MODERA FREQUENTLY"
+  },
+  {
+    "id": 304,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Which pair of processors have IDENTICAL physical memory capacity?",
+    "options": [
+      "8086 and 8088",
+      "80286 and 80386",
+      "80386 and Pentium",
+      "8086 and 80286"
+    ],
+    "answer": "C",
+    "explanation": "fi 80386 and Pentium both have 32-bit address buses both can address 4 GB physical memory."
+  },
+  {
+    "id": 305,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "Which processor introduced hardware task switching in x86?",
+    "options": [
+      "8086",
+      "80286",
+      "80386",
+      "Pentium"
+    ],
+    "answer": "B",
+    "explanation": "80286 introduced hardware-assisted task switching in Protected Mode using TSS (Task State Segment). MODERA FREQUENTLY"
+  },
+  {
+    "id": 306,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED The term 'segment descriptor' was introduced in which x86 processor?",
+    "options": [
+      "8086",
+      "80286",
+      "80386",
+      "Pentium"
+    ],
+    "answer": "B",
+    "explanation": "Segment descriptors (8-byte structures in GDT/LDT) were introduced with 80286 Protected Mode. MODERA FREQUENTLY"
+  },
+  {
+    "id": 307,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED The concept of 'rings' (privilege levels) was introduced in x86 with:",
+    "options": [
+      "8086",
+      "80286",
+      "80386",
+      "Pentium"
+    ],
+    "answer": "B",
+    "explanation": "80286 introduced privilege rings (0–3) in Protected Mode for OS security and memory protection."
+  },
+  {
+    "id": 308,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "Which Intel processor was NOT backward compatible with 8086 software?",
+    "options": [
+      "80286 in Real Mode",
+      "8088",
+      "80386 in Real Mode",
+      "None — all were backward compatible"
+    ],
+    "answer": "D",
+    "explanation": "All these processors (80286, 8088, 80386) maintained backward compatibility with 8086 in Real Mode. MODERA FREQUENTLY"
+  },
+  {
+    "id": 309,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Assertion: Pentium has a wider external data bus than 80386. Reason: Pentium's 64-bit bus provides higher memory bandwidth.",
+    "options": [
+      "Both true; Reason correctly explains Assertion",
+      "Both true; Reason does not explain",
+      "Assertion true; Reason false",
+      "Assertion false; Reason true"
+    ],
+    "answer": "A",
+    "explanation": "Both correct and causally linked: 64-bit bus (vs 32-bit) directly provides higher memory bandwidth. DIFFICU FREQUENTLY"
+  },
+  {
+    "id": 310,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "LT ASKED The total on-chip memory (L1 cache) comparison: 80486 vs Original Pentium",
+    "options": [
+      "80486=8KB, Pentium=16KB",
+      "80486=16KB, Pentium=8KB",
+      "Both=8KB",
+      "Both=16KB"
+    ],
+    "answer": "A",
+    "explanation": "80486 has 8 KB unified L1; Pentium has 16 KB split (8KB I + 8KB D). Pentium has 2× more L1. MODERA FREQUENTLY"
+  },
+  {
+    "id": 311,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Match processor to its address bus width: 8086fi20-bit, 8088fi20-bit, 80286fi24-bit, 80386fi32-bit, Pentiumfi32-bit Which is CORRECT?",
+    "options": [
+      "All correct as stated",
+      "8086=16-bit, rest same",
+      "80286=32-bit, 80386=24-bit",
+      "Pentium=64-bit"
+    ],
+    "answer": "A",
+    "explanation": "8086=20-bit, 8088=20-bit, 80286=24-bit, 80386=32-bit, Pentium=32-bit. All as stated are correct. MODERA FREQUENTLY"
+  },
+  {
+    "id": 312,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Which processor introduced the concept of instruction queue / prefetch buffer in x86?",
+    "options": [
+      "8088",
+      "8086",
+      "80286",
+      "80386"
+    ],
+    "answer": "B",
+    "explanation": "8086 introduced the 6-byte prefetch instruction queue — the first x86 processor with this feature. MODERA FREQUENTLY"
+  },
+  {
+    "id": 313,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Which was NOT a feature of 8086 but WAS added in 80286?",
+    "options": [
+      "16-bit registers",
+      "Instruction queue",
+      "Protected Mode with memory segmentation",
+      "CISC instruction set"
+    ],
+    "answer": "C",
+    "explanation": "Protected Mode was added in 80286. 8086 has only Real Mode. The other features existed in 8086."
+  },
+  {
+    "id": 314,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "The term 'i386' commonly refers to:",
+    "options": [
+      "Intel 8086",
+      "Intel 80386 and its 32-bit x86 architecture",
+      "Intel 386SX only",
+      "IBM 386"
+    ],
+    "answer": "B",
+    "explanation": "i386 = Intel 80386. The term also describes the 32-bit x86 ISA (instruction set architecture) in general."
+  },
+  {
+    "id": 315,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "Which processor's Protected Mode is NOT backward compatible with the previous processor's Protected Mode?",
+    "options": [
+      "80386 vs 80286",
+      "80286 vs 8086 (8086 has no PM)",
+      "Pentium vs 80386",
+      "All are compatible"
+    ],
+    "answer": "D",
+    "explanation": "80386 PM is backward compatible with 80286 PM (extended it). Pentium PM is compatible with 80386 PM. All are compatible."
+  },
+  {
+    "id": 316,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "Fill in the blank: 8086 has __ address lines; this was increased to __ in 80286.",
+    "options": [
+      "16, 20",
+      "20, 24",
+      "24, 32",
+      "20, 32"
+    ],
+    "answer": "B",
+    "explanation": "8086 has 20 address lines (1 MB); 80286 increased this to 24 address lines (16 MB)."
+  },
+  {
+    "id": 317,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "Which of the following processors introduced the 64-bit external data bus?",
+    "options": [
+      "80386",
+      "80486",
+      "Pentium",
+      "Pentium Pro"
+    ],
+    "answer": "C",
+    "explanation": "Pentium was the first Intel x86 processor with a 64-bit external data bus (1993)."
+  },
+  {
+    "id": 318,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "Which of the following is the correct full form of HMOS used in 8086 fabrication?",
+    "options": [
+      "High-density Metal Oxide Semiconductor",
+      "High-speed NMOS",
+      "High-density N-channel MOS",
+      "High-performance MOS"
+    ],
+    "answer": "C",
+    "explanation": "HMOS = High-density N-channel MOS — Intel's improved NMOS technology used for 8086/8088 fabrication. MODERA FREQUENTLY"
+  },
+  {
+    "id": 319,
+    "level": "Advanced",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED The 80386 improved upon 80286 by adding all EXCEPT:",
+    "options": [
+      "32-bit registers",
+      "Paging unit",
+      "Virtual 8086 Mode",
+      "On-chip FPU"
+    ],
+    "answer": "D",
+    "explanation": "80386 added 32-bit architecture, paging, and V86 mode. On-chip FPU was added with 80486, not 80386. MODERA FREQUENTLY"
+  },
+  {
+    "id": 320,
+    "level": "Basic",
+    "type": "MCQ",
+    "topic": "Comparative Questions",
+    "question": "TE ASKED Which statement about the x86 family evolution is TRUE?",
+    "options": [
+      "Each generation uses completely different instruction",
+      "x86 ISA maintained backward compatibility through . set . all generations",
+      "80386 cannot run 8086 code",
+      "Pentium uses different memory model than 80386"
+    ],
+    "answer": "B",
+    "explanation": "x86 ISA maintained backward compatibility through all generations A core strength of x86: each generation maintained backward compatibility — 8086 code runs on Pentium in Real Mode. All 8 topics · Mixed difficulty · Answer key on next pages Instructions: This is a 100-question mixed practice test covering all 8 topics. Circle your answer before checking the Answer Key at the end. Each question carries equal marks."
+  }
+];
+const S={filtered:[],idx:0,answers:{},bookmarks:new Set(),dark:false,jumpOpen:false,expVisible:false,startTime:Date.now(),timerInterval:null,phase:'quiz',reviewFilter:'all',showBookmarkOnly:false,viewAll:false};
+const OPT=['A','B','C','D'];
+const $=id=>document.getElementById(id);
+function init(){populateFilters();applyFilters();buildJumpGrid();startTimer();render();updateStats();const d=localStorage.getItem('mcq-dark');toggleDark(d===null?true:d==='1');}
+function populateFilters(){['topic','type'].forEach(k=>{const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();const el=$('filter-'+k);vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});});}
+function applyFilters(){const lv=$('filter-level').value,tp=$('filter-topic').value,ty=$('filter-type').value;S.filtered=QUESTIONS.filter(q=>(lv==='all'||q.level===lv)&&(tp==='all'||q.topic===tp)&&(ty==='all'||q.type===ty)&&(!S.showBookmarkOnly||S.bookmarks.has(q.id)));S.idx=0;buildJumpGrid();S.viewAll?renderAllQuestions():render();updateStats();}
+function render(){const card=$('question-card'),noRes=document.querySelector('.no-results');if(!S.filtered.length){card.style.display='none';if(!noRes){const d=document.createElement('div');d.className='no-results';d.textContent=QUESTIONS.length===0?'No questions loaded.':'No questions match your filters.';card.parentNode.insertBefore(d,card.nextSibling);}$('q-counter').textContent='0 / 0';$('prog-label').textContent='No questions';$('progress-fill').style.width='0%';$('prog-pct').textContent='0%';return;}if(noRes)noRes.remove();card.style.display='';const q=S.filtered[S.idx],ans=S.answers[q.id],done=ans&&ans.selected;card.style.animation='none';void card.offsetWidth;card.style.animation='';const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';$('card-header').innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span><button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})"><svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>`;$('q-text').innerHTML=q.question.replace(/\n/g,'<br>');const ol=$('options-list');ol.innerHTML='';q.options.forEach((opt,i)=>{const lbl=OPT[i];let cls='option-btn',icon='';if(done){if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}}const btn=document.createElement('button');btn.className=cls;btn.disabled=!!done;btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));ol.appendChild(btn);});const expBox=$('explanation-box'),expBtn=$('show-exp-btn');expBox.classList.add('hidden');expBtn.classList.add('hidden');S.expVisible=false;setExpBtnText(false);if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}const total=S.filtered.length,cur=S.idx+1;$('q-counter').textContent=`${cur} / ${total}`;$('prog-label').textContent=`Question ${cur} of ${total}`;const pct=Math.round(cur/total*100);$('progress-fill').style.width=pct+'%';$('prog-pct').textContent=pct+'%';$('s-total').textContent=total;document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));}
+function setExpBtnText(visible){const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';$('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');}
+function selectAnswer(qid,selected,correct){if(S.answers[qid]?.selected)return;const ok=selected===correct;S.answers[qid]={selected,correct:ok};const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}updateStats();if(ok){render();setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);}else{S.expVisible=true;render();}}
+function showExplanation(q){$('explanation-box').className='explanation-box';$('explanation-box').innerHTML=`<div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div><div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;setExpBtnText(true);}
+function hideExplanation(){$('explanation-box').className='explanation-box hidden';setExpBtnText(false);}
+function goTo(idx){if(idx<0||idx>=S.filtered.length)return;S.idx=idx;S.expVisible=false;render();window.scrollTo({top:0,behavior:'smooth'});}
+function buildJumpGrid(){const grid=$('jump-grid');grid.innerHTML='';S.filtered.forEach((q,i)=>{const btn=document.createElement('button');btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;if(i===S.idx)btn.classList.add('current');const a=S.answers[q.id];if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});grid.appendChild(btn);});}
+function toggleBookmark(qid){S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);render();buildJumpGrid();}
+function updateStats(){const ans=Object.values(S.answers).filter(a=>a?.selected);const ok=ans.filter(a=>a.correct).length;$('s-attempted').textContent=ans.length;$('s-correct').textContent=ok;$('s-wrong').textContent=ans.length-ok;$('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';}
+function finishQuiz(){stopTimer();const total=S.filtered.length;const ans=Object.values(S.answers).filter(a=>a?.selected);const ok=ans.filter(a=>a.correct).length;const pct=ans.length?Math.round(ok/total*100):0;const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];$('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];$('res-msg').textContent=`You scored ${ok} out of ${total}`;$('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;$('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;$('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;showScreen('result-screen');}
+function renderReview(){const list=$('review-list');list.innerHTML='';const rf=S.reviewFilter;S.filtered.forEach(q=>{const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);if(rf==='correct'&&(!a||!ok))return;if(rf==='wrong'&&(!a||ok||skip))return;if(rf==='skipped'&&!skip)return;if(rf==='bookmarked'&&!bm)return;const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';const card=document.createElement('div');card.className='review-card';const optsH=q.options.map((opt,i)=>{const l=OPT[i];let c='review-opt';if(l===q.answer)c+=' correct-ans';else if(l===sel&&sel!==q.answer)c+=' user-wrong';return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;}).join('');card.innerHTML=`<div class="review-header"><span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span><span class="review-status">${skip?'—':ok?'✅':'❌'}</span></div><div class="review-body"><div class="review-q">${q.question.replace(/\n/g,'<br>')}</div><div class="review-opts">${optsH}</div><div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div><div class="review-exp">${q.explanation}</div></div>`;list.appendChild(card);});if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function startTimer(){S.startTime=Date.now();S.timerInterval=setInterval(()=>{const e=Math.floor((Date.now()-S.startTime)/1000);const el=$('timer-display');el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');el.classList.toggle('warn',e>3600);},1000);}
+function stopTimer(){clearInterval(S.timerInterval);}
+function toggleDark(force){S.dark=force!==undefined?force:!S.dark;document.body.toggleAttribute('data-dark',S.dark);localStorage.setItem('mcq-dark',S.dark?'1':'0');const p=document.querySelector('#dark-toggle svg path');p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');}
+function restartQuiz(){S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;$('quiz-body').style.display='';$('all-panel').style.display='none';resetViewAllBtn();stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();}
+function resetViewAllBtn(){const btn=$('view-all-btn');btn.style.cssText='';btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';}
+function renderAllQuestions(){const list=$('all-list');list.innerHTML='';const qs=S.filtered;const hdr=document.createElement('div');hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;list.appendChild(hdr);if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}qs.forEach(q=>list.appendChild(buildAllCard(q)));}
+function buildAllCard(q){const ans=S.answers[q.id],done=ans?.selected;const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';const bm=S.bookmarks.has(q.id);const card=document.createElement('div');card.className='all-q-card';card.id='allcard-'+q.id;const hdr=document.createElement('div');hdr.className='all-q-header';hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span><button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto"><svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>`;hdr.querySelector('.bookmark-btn').addEventListener('click',function(){const qid=parseInt(this.dataset.qid);S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);if(S.showBookmarkOnly){renderAllQuestions();return;}const a=S.bookmarks.has(qid);this.classList.toggle('active',a);this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');});const body=document.createElement('div');body.className='all-q-body';const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');body.appendChild(qt);const ol=document.createElement('div');ol.className='all-opts';OPT.forEach((lbl,i)=>{const btn=document.createElement('button');btn.className='all-opt';let icon='';if(done){btn.disabled=true;if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}}btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;if(!done){btn.addEventListener('click',()=>{const ok=lbl===q.answer;S.answers[q.id]={selected:lbl,correct:ok};updateStats();const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}card.replaceWith(buildAllCard(q));});}ol.appendChild(btn);});body.appendChild(ol);const exp=document.createElement('div');exp.className='all-exp'+(done?' visible':'');exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;body.appendChild(exp);card.appendChild(hdr);card.appendChild(body);return card;}
+function toggleViewAll(){const btn=$('view-all-btn');if(S.viewAll){$('quiz-body').style.display='none';$('all-panel').style.display='block';btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';renderAllQuestions();const currentQ=S.filtered[S.idx];if(currentQ){setTimeout(()=>{const card=document.getElementById('allcard-'+currentQ.id);if(card){const navH=$('top-bar').offsetHeight;const top=card.getBoundingClientRect().top+window.scrollY-navH-12;window.scrollTo({top,behavior:'smooth'});}},150);}}else{$('quiz-body').style.display='';$('all-panel').style.display='none';resetViewAllBtn();render();window.scrollTo({top:0,behavior:'smooth'});}}
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{S.reviewFilter='all';document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));renderReview();showScreen('review-screen');});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{const q=S.filtered[S.idx];if(!q)return;S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();});
+$('bookmark-filter-btn').addEventListener('click',function(){S.showBookmarkOnly=!S.showBookmarkOnly;this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';applyFilters();});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();}));
+document.addEventListener('keydown',e=>{if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;const q=S.filtered[S.idx];if(!q)return;if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}if(e.key==='ArrowRight'){goTo(S.idx+1);return;}if(e.key==='e'||e.key==='E'){if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}return;}const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);});
+window.addEventListener('beforeunload', e => { e.preventDefault(); e.returnValue = ''; });
+init();
+</script>
+</body>
+</html>

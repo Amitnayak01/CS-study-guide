@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {"id": 1, "level": "Basic", "type": "Definition", "topic": "Concept of Pointers", "question": "A pointer in C is a variable that:", "options": ["Stores the memory address of another variable", "Stores the size of a data type", "Stores multiple values of the same type", "Stores a constant literal value"], "answer": "A", "explanation": "A pointer variable holds the memory address where a value is stored, not the value itself."},
+  {"id": 2, "level": "Basic", "type": "Concept", "topic": "Concept of Pointers", "question": "The value stored in a pointer variable is called its:", "options": ["Address", "Index", "Content", "Identifier"], "answer": "A", "explanation": "The value held by a pointer variable is the address of the variable it points to."},
+  {"id": 3, "level": "Basic", "type": "Concept", "topic": "Concept of Pointers", "question": "Which of the following best describes the \"content\" pointed to by a pointer variable?", "options": ["The value stored at the memory address it holds", "The size of the pointer variable", "The data type of the pointer", "The name of the variable it points to"], "answer": "A", "explanation": "Dereferencing a pointer gives the value stored at the address it holds — this is its 'content'."},
+  {"id": 4, "level": "Basic", "type": "Concept", "topic": "Concept of Pointers", "question": "Which of these is a characteristic of pointer variables in C?", "options": ["Pointer variables cannot be reused", "Pointers must always point to arrays only", "Pointer size always varies with the type it points to", "On a given machine, all data-pointer types generally occupy the same fixed size in memory"], "answer": "D", "explanation": "Since a pointer stores only an address, its own size is typically fixed for a given system/architecture."},
+  {"id": 5, "level": "Basic", "type": "Concept", "topic": "Concept of Pointers", "question": "What is the main purpose of using pointers in C programs?", "options": ["To increase the readability of source code only", "To allow indirect access and manipulation of memory/variables", "To avoid using arithmetic operators", "To replace all data types in a program"], "answer": "B", "explanation": "Pointers provide a mechanism for indirect access to data through memory addresses."},
+  {"id": 6, "level": "Intermediate", "type": "Statement", "topic": "Concept of Pointers", "question": "Which of the following is an advantage of using pointers?", "options": ["They make programs immune to runtime errors", "They eliminate the need for variable declarations", "They allow efficient handling of arrays and strings through direct memory access", "They automatically increase execution speed of every program"], "answer": "C", "explanation": "Pointers enable efficient traversal and manipulation of arrays/strings via address-based access."},
+  {"id": 7, "level": "Intermediate", "type": "Application", "topic": "Concept of Pointers", "question": "Pointers are commonly used in C for all of the following EXCEPT:", "options": ["Passing arguments indirectly through addresses", "Efficient traversal of array elements", "Defining new data types like enum", "Efficient handling of arrays"], "answer": "C", "explanation": "Defining an enum does not involve pointers; the other options are classic pointer-based applications."},
+  {"id": 8, "level": "Basic", "type": "Syntax", "topic": "Concept of Pointers", "question": "A pointer variable in C must be declared with:", "options": ["The keyword 'ptr' as a mandatory prefix", "An ampersand (&) before its name", "No type information at all", "An asterisk (*) before its name, indicating the type it points to"], "answer": "D", "explanation": "The syntax type *name; declares a pointer of the given base type."},
+  {"id": 9, "level": "Intermediate", "type": "Statement-Based", "topic": "Concept of Pointers", "question": "Which statement about pointers is TRUE?", "options": ["A pointer variable can point to a variable of any compatible data type", "A pointer variable cannot be reassigned once initialized", "A pointer always holds an integer value", "A pointer variable can only be declared inside main()"], "answer": "A", "explanation": "A pointer can be reassigned any time to point to a different, type-compatible variable."},
+  {"id": 10, "level": "Advanced", "type": "Tricky", "topic": "Concept of Pointers", "question": "Which of the following is NOT stored by a pointer variable?", "options": ["The memory address of a variable", "The value of the variable it points to", "The address of another pointer", "A NULL value"], "answer": "B", "explanation": "A pointer stores an address, not the actual value of the pointed-to variable."},
+  {"id": 11, "level": "Intermediate", "type": "Scenario", "topic": "Concept of Pointers", "question": "In embedded and system-level programming, pointers are widely used mainly because they:", "options": ["Simplify mathematical calculations only", "Are the only way to declare variables", "Provide direct and efficient access to memory locations", "Automatically manage program memory"], "answer": "C", "explanation": "System-level programs need direct, efficient memory access, which pointers provide."},
+  {"id": 12, "level": "Basic", "type": "Definition", "topic": "Concept of Pointers", "question": "A pointer that does not point to any valid memory location is called a:", "options": ["Void pointer", "NULL pointer", "Static pointer", "Wild pointer"], "answer": "B", "explanation": "A NULL pointer is explicitly assigned to point to nothing (commonly represented as address 0)."},
+  {"id": 13, "level": "Advanced", "type": "Tricky", "topic": "Concept of Pointers", "question": "A pointer variable that has been declared but not assigned any valid address is known as a:", "options": ["Wild pointer", "Static pointer", "Void pointer", "NULL pointer"], "answer": "A", "explanation": "An uninitialized pointer holding a garbage/indeterminate address is called a wild pointer."},
+  {"id": 14, "level": "Basic", "type": "Concept", "topic": "Concept of Pointers", "question": "Which pair of operators is fundamental to pointer operations in C?", "options": ["+ and - only", "& (address-of) and * (dereference)", "% and / only", "&& and || only"], "answer": "B", "explanation": "The address-of (&) and indirection (*) operators form the core of pointer operations."},
+  {"id": 15, "level": "Advanced", "type": "Assertion-Reason", "topic": "Concept of Pointers", "question": "Assertion (A): Pointers increase the efficiency of a C program.\nReason (R): Pointers allow direct access to memory addresses, reducing the need for copying large data.", "options": ["Both A and R are false", "Both A and R are true, and R correctly explains A", "A is true, R is false", "A is false, R is true"], "answer": "B", "explanation": "Direct memory access via pointers avoids costly copying of data, which correctly explains the efficiency gain."},
+  {"id": 16, "level": "Intermediate", "type": "Comparison", "topic": "Concept of Pointers", "question": "How does a pointer variable differ from a normal (non-pointer) variable?", "options": ["A pointer stores an address, while a normal variable stores a data value", "A normal variable can also directly store addresses without being declared as a pointer", "A pointer always requires more memory than any normal variable", "There is no difference between the two"], "answer": "A", "explanation": "The fundamental distinction is that pointers hold addresses while ordinary variables hold data values."},
+  {"id": 17, "level": "Basic", "type": "Concept", "topic": "Pointer as an Address Variable", "question": "Every variable in a C program is stored in memory at a:", "options": ["Sequential number starting from 0", "Unique address", "Random index", "Fixed value"], "answer": "B", "explanation": "Each variable occupies a distinct memory location identified by a unique address."},
+  {"id": 18, "level": "Basic", "type": "Definition", "topic": "Pointer as an Address Variable", "question": "The address of a variable is best described as:", "options": ["The data type of the variable", "The size of the variable in bytes", "The location in memory where the variable's value is stored", "The value assigned to the variable"], "answer": "C", "explanation": "An address identifies the memory location holding the variable's value."},
+  {"id": 19, "level": "Intermediate", "type": "Statement", "topic": "Pointer as an Address Variable", "question": "Which statement about memory addresses is correct?", "options": ["Memory addresses are typically displayed in hexadecimal form when printed", "Memory addresses are always shown in decimal only", "Memory addresses can be freely modified by the programmer", "Every variable in a program shares the same address"], "answer": "A", "explanation": "printf with the %p format specifier conventionally displays addresses in hexadecimal."},
+  {"id": 20, "level": "Basic", "type": "Concept", "topic": "Pointer as an Address Variable", "question": "A pointer variable can be used to:", "options": ["Replace loop control variables", "Store only integer constants", "Store the name of a variable as text", "Store the address of another variable"], "answer": "D", "explanation": "This is the basic role of a pointer — holding the address of another variable."},
+  {"id": 21, "level": "Intermediate", "type": "Statement", "topic": "Pointer as an Address Variable", "question": "Which of these statements about pointer initialization is TRUE?", "options": ["A pointer can be safely initialized with any random integer", "A pointer must always be initialized to the value 100", "A pointer should be initialized with the address of a variable of a compatible type", "Pointer initialization is never necessary before use"], "answer": "C", "explanation": "Using an uninitialized or incompatible pointer leads to undefined behaviour; proper, type-matched initialization is required."},
+  {"id": 22, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointer as an Address Variable", "question": "In the statement `int a = 10; int *p = &a;`, what does `p` hold?", "options": ["The address of variable a", "The value 10", "The address of pointer p itself", "The data type int"], "answer": "A", "explanation": "p is assigned the address-of expression &a, so it holds a's address."},
+  {"id": 23, "level": "Basic", "type": "Fill-in-the-Blank", "topic": "Pointer as an Address Variable", "question": "To assign the address of variable `x` to pointer `p`, the correct statement is: `p = ____ x;`", "options": ["%", "++", "&", "*"], "answer": "C", "explanation": "The & operator retrieves the address of a variable."},
+  {"id": 24, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointer as an Address Variable", "question": "Which of the following correctly stores the address of variable `num` into pointer `ptr`?", "options": ["ptr = &num;", "*ptr = num;", "ptr = num;", "ptr = *num;"], "answer": "A", "explanation": "The & operator must be used to obtain num's address before assigning it to the pointer."},
+  {"id": 25, "level": "Advanced", "type": "Tricky", "topic": "Pointer as an Address Variable", "question": "If a pointer variable is not assigned any address, its value is:", "options": ["Undefined/garbage until it is initialized", "Always equal to the address of main()", "Always zero automatically", "Always equal to -1"], "answer": "A", "explanation": "An uninitialized local pointer contains an indeterminate (garbage) value."},
+  {"id": 26, "level": "Basic", "type": "Syntax", "topic": "Pointer as an Address Variable", "question": "Address representation of a variable is generally displayed using the format specifier:", "options": ["%f", "%p", "%d", "%s"], "answer": "B", "explanation": "%p is the standard printf specifier used to print pointer/address values."},
+  {"id": 27, "level": "Advanced", "type": "Assertion-Reason", "topic": "Pointer as an Address Variable", "question": "Assertion (A): In C, a pointer variable can be assigned the address of a variable of any data type without restriction.\nReason (R): The compiler enforces type compatibility between a pointer and the address it stores, for type safety.", "options": ["A is false, R is true", "Both A and R are false", "Both A and R are true, but R does not explain A", "Both A and R are true, and R explains A"], "answer": "A", "explanation": "Assigning an address of a mismatched type generally requires a cast; the compiler does enforce type compatibility, so A is false and R is true."},
+  {"id": 28, "level": "Advanced", "type": "Tricky", "topic": "Pointer as an Address Variable", "question": "Which of the following pointer assignments is INVALID without an explicit typecast (assuming standard declarations)?", "options": ["int *p; p = 0;", "int *p; int a; p = &a;", "int *p; float f; p = &f;", "int *p; int *q; p = q;"], "answer": "C", "explanation": "Assigning the address of a float variable to an int pointer is a type mismatch and needs a cast."},
+  {"id": 29, "level": "Basic", "type": "Concept", "topic": "Pointer as an Address Variable", "question": "Two pointer variables of the same type can:", "options": ["Only be compared using arithmetic operators", "Never be assigned to each other", "Never be compared to each other", "Be assigned to each other, copying the address they hold"], "answer": "D", "explanation": "Same-type pointers can be directly assigned and compared."},
+  {"id": 30, "level": "Basic", "type": "Concept", "topic": "Pointer as an Address Variable", "question": "The address stored in a pointer variable changes when:", "options": ["The pointer variable's data type is printed", "The value at the pointed variable changes", "The program is recompiled without any code changes", "The pointer is reassigned to point to a different variable"], "answer": "D", "explanation": "Reassignment (e.g., p = &b;) is what changes the address a pointer stores."},
+  {"id": 31, "level": "Basic", "type": "Syntax", "topic": "Pointer Data Type and Syntax", "question": "The general syntax for declaring a pointer variable in C is:", "options": ["*datatype pointer_name;", "datatype pointer_name*;", "datatype *pointer_name;", "pointer datatype_name;"], "answer": "C", "explanation": "A pointer declaration places * before the identifier, after the base data type."},
+  {"id": 32, "level": "Basic", "type": "Concept", "topic": "Pointer Data Type and Syntax", "question": "In the declaration `int *p;`, the data type of `p` is:", "options": ["int", "Pointer to char", "float", "Pointer to int"], "answer": "D", "explanation": "p's declared type is 'pointer to int', distinct from a plain int variable."},
+  {"id": 33, "level": "Basic", "type": "Syntax", "topic": "Pointer Data Type and Syntax", "question": "Which of the following is a VALID pointer declaration?", "options": ["float fp&;", "*float fp;", "float *fp;", "float fp*;"], "answer": "C", "explanation": "The asterisk must precede the identifier name in a valid declaration."},
+  {"id": 34, "level": "Advanced", "type": "Tricky", "topic": "Pointer Data Type and Syntax", "question": "Which of the following is an INVALID pointer declaration?", "options": ["int *p;", "int * p;", "int* p;", "int p*;"], "answer": "D", "explanation": "The asterisk must appear before the identifier; 'int p*;' is syntactically incorrect (spacing around * is otherwise flexible)."},
+  {"id": 35, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointer Data Type and Syntax", "question": "In `char *cp, c;`, which variable is a pointer?", "options": ["Neither cp nor c", "Only c", "Both cp and c", "Only cp"], "answer": "D", "explanation": "In a comma-separated declaration list, * binds only to the identifier immediately following it."},
+  {"id": 36, "level": "Basic", "type": "Concept", "topic": "Pointer Data Type and Syntax", "question": "What does the base data type in a pointer declaration (e.g., int in `int *p`) indicate?", "options": ["The number of variables the pointer can store", "The value stored at the address, without needing dereferencing", "The type of variable/data the pointer is intended to point to", "The size of the pointer variable itself"], "answer": "C", "explanation": "The base type tells the compiler how to interpret the data found at the address the pointer holds."},
+  {"id": 37, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointer Data Type and Syntax", "question": "Which statement correctly declares and initializes an integer pointer?", "options": ["int *p = a;", "int p = &a;", "int *p = 5;", "int a = 5, *p = &a;"], "answer": "D", "explanation": "p must be assigned an address (&a), not a plain value."},
+  {"id": 38, "level": "Intermediate", "type": "Comparison", "topic": "Pointer Data Type and Syntax", "question": "Pointer variables declared for different data types (int*, float*, char*) mainly differ in:", "options": ["Whether they can be printed using printf", "Their ability to store addresses at all", "The number of bytes the pointer variable itself occupies, which usually varies drastically by type", "How they interpret data at the pointed address and how far they move during pointer arithmetic"], "answer": "D", "explanation": "The pointer's own storage size is typically fixed per system, but its base type governs data interpretation and arithmetic step size."},
+  {"id": 39, "level": "Basic", "type": "Definition", "topic": "Pointer Data Type and Syntax", "question": "Which keyword, when used with a pointer declaration, indicates it can point to a variable of any data type?", "options": ["extern", "void", "static", "int"], "answer": "B", "explanation": "void* is C's generic pointer type, usable (with casting) for any data type."},
+  {"id": 40, "level": "Basic", "type": "Concept", "topic": "Pointer Data Type and Syntax", "question": "The declaration `double *dp;` means:", "options": ["dp is a pointer that will store the address of a double variable", "dp is a pointer that stores two addresses", "dp is itself a double variable", "dp stores the value of a double variable directly"], "answer": "A", "explanation": "dp is declared as a pointer to double, meant to hold the address of a double."},
+  {"id": 41, "level": "Basic", "type": "Syntax", "topic": "Pointer Data Type and Syntax", "question": "Which of the following correctly declares a pointer to a character variable?", "options": ["char *cptr;", "character *cptr;", "ptr char cptr;", "char cptr*;"], "answer": "A", "explanation": "This is the standard syntax for declaring a character pointer."},
+  {"id": 42, "level": "Intermediate", "type": "Match-the-Following", "topic": "Pointer Data Type and Syntax", "question": "Match the pointer declarations (Column A) with what they point to (Column B):\nA) int *p   B) float *q   C) char *r\n1. Character   2. Integer   3. Float", "options": ["A-3, B-1, C-2", "A-1, B-2, C-3", "A-2, B-1, C-3", "A-2, B-3, C-1"], "answer": "D", "explanation": "int *p points to an int, float *q to a float, and char *r to a character."},
+  {"id": 43, "level": "Advanced", "type": "Tricky", "topic": "Pointer Data Type and Syntax", "question": "Declaring `int *p, q;` means:", "options": ["p is a pointer to int, and q is a normal int variable", "Both p and q are normal int variables", "Both p and q are pointers to int", "p is a normal int, and q is a pointer to int"], "answer": "A", "explanation": "The * applies only to the identifier it directly precedes, not to the whole declaration list."},
+  {"id": 44, "level": "Basic", "type": "Concept", "topic": "Pointer Data Type and Syntax", "question": "A pointer declared as `int *p;` without initialization contains:", "options": ["The value of the last used variable in the program", "Automatically the address of a variable named p", "An undefined/garbage address", "The value 0 always"], "answer": "C", "explanation": "Local pointers in standard C are not automatically initialized."},
+  {"id": 45, "level": "Basic", "type": "Syntax", "topic": "Pointer Data Type and Syntax", "question": "Which of the following is the correct syntax to declare a pointer to a double variable and initialize it to point to variable `d`?", "options": ["double *dp = &d;", "dp double = &d;", "double dp = *d;", "double *dp = d;"], "answer": "A", "explanation": "This correctly combines declaration and initialization using the address-of operator."},
+  {"id": 46, "level": "Advanced", "type": "Assertion-Reason", "topic": "Pointer Data Type and Syntax", "question": "Assertion (A): The syntax `int* p;` and `int *p;` both declare p as a pointer to int.\nReason (R): In a single-variable declaration, whitespace around the * symbol does not affect its binding.", "options": ["A is true, R is false", "Both A and R are true, and R correctly explains A", "Both A and R are false", "A is false, R is true"], "answer": "B", "explanation": "Spacing around * is cosmetic in a single declaration; both forms declare an equivalent pointer."},
+  {"id": 47, "level": "Basic", "type": "Definition", "topic": "Built-in Address Operator (&)", "question": "What does the & operator do when applied to a variable?", "options": ["Declares the variable as a pointer", "Returns the memory address of the variable", "Performs a bitwise AND with itself", "Returns the value stored in the variable"], "answer": "B", "explanation": "& is the address-of operator, returning the memory location of its operand."},
+  {"id": 48, "level": "Basic", "type": "Concept", "topic": "Built-in Address Operator (&)", "question": "The & operator is classified as a:", "options": ["Binary operator", "Logical operator", "Ternary operator", "Unary operator"], "answer": "D", "explanation": "The address-of operator (&) takes exactly one operand."},
+  {"id": 49, "level": "Intermediate", "type": "Code Snippet", "topic": "Built-in Address Operator (&)", "question": "In `scanf(\"%d\", &num);`, the & operator is used to:", "options": ["Compare num with another variable", "Multiply num by an unknown factor", "Pass the address of num so scanf can store the input value there", "Permanently declare num as a pointer"], "answer": "C", "explanation": "scanf needs the variable's address to write the entered value directly into it."},
+  {"id": 50, "level": "Intermediate", "type": "Code Snippet", "topic": "Built-in Address Operator (&)", "question": "Which of the following correctly prints the address of an int variable `x`?", "options": ["printf(\"%d\", x);", "printf(\"%p\", x);", "printf(\"%p\", &x);", "printf(\"%p\", *x);"], "answer": "C", "explanation": "&x yields the address, and %p is the appropriate format specifier for it."},
+  {"id": 51, "level": "Intermediate", "type": "Application", "topic": "Built-in Address Operator (&)", "question": "The result of applying & to a variable is best stored in:", "options": ["An array of characters", "A floating-point variable, regardless of the original type", "A pointer variable of a compatible type", "A normal variable of the same base type"], "answer": "C", "explanation": "An address value should be captured in a properly typed pointer variable."},
+  {"id": 52, "level": "Intermediate", "type": "Statement", "topic": "Built-in Address Operator (&)", "question": "Which statement about the & operator is TRUE?", "options": ["It always returns a value of type int", "It changes the value of the variable it is applied to", "It can be applied to any literal value, such as &5", "It cannot be applied to a constant literal (e.g., &5 is invalid)"], "answer": "D", "explanation": "& requires an addressable lvalue; constant literals do not have a storage location, so &5 is invalid."},
+  {"id": 53, "level": "Intermediate", "type": "Code Snippet", "topic": "Built-in Address Operator (&)", "question": "In the expression `p = &a;`, if `a` is declared as `float`, then `p` must be declared as:", "options": ["int *p;", "char *p;", "float *p;", "float p;"], "answer": "C", "explanation": "The pointer's declared type must match the type of variable whose address it holds."},
+  {"id": 54, "level": "Advanced", "type": "Tricky", "topic": "Built-in Address Operator (&)", "question": "Applying & directly to the result of another & (like &&a as address-of-address, without an intermediate pointer) is:", "options": ["The standard way to declare double pointers", "Perfectly valid and gives the address of the address", "Equivalent to using the logical AND operator", "Invalid, since the result of & is not itself an addressable lvalue"], "answer": "D", "explanation": "& requires an lvalue operand; the result of & is a value, not storage, so applying & to it again is invalid."},
+  {"id": 55, "level": "Basic", "type": "Concept", "topic": "Built-in Address Operator (&)", "question": "The address-of operator is primarily used together with which other concept to enable indirect access?", "options": ["Arrays only", "Loops", "Functions returning void", "Pointer variables"], "answer": "D", "explanation": "& supplies the address that a pointer variable then stores for indirect access."},
+  {"id": 56, "level": "Intermediate", "type": "Code Snippet", "topic": "Built-in Address Operator (&)", "question": "Which of the following retrieves the address of the first element of array `arr[5]`?", "options": ["arr[0]", "&arr[0]", "*arr[0]", "&&arr"], "answer": "B", "explanation": "&arr[0] explicitly gives the address of the element at index 0."},
+  {"id": 57, "level": "Intermediate", "type": "Code Snippet", "topic": "Built-in Address Operator (&)", "question": "Given `int a = 5, *p = &a;`, what does `&a` represent?", "options": ["The address of pointer p", "The size of variable a", "The value 5 itself", "The memory address where a's value (5) is stored"], "answer": "D", "explanation": "& applied to a yields its memory address, which is assigned to p."},
+  {"id": 58, "level": "Intermediate", "type": "Application", "topic": "Built-in Address Operator (&)", "question": "Which of the following is a classic application of the address-of operator in C programs?", "options": ["Converting an integer to a floating-point number", "Passing a variable's address to a function so it can modify the original value", "Declaring a new function", "Performing arithmetic operations on the variable's value"], "answer": "B", "explanation": "Passing &variable allows a function to alter the caller's original data through the received address."},
+  {"id": 59, "level": "Advanced", "type": "Assertion-Reason", "topic": "Built-in Address Operator (&)", "question": "Assertion (A): The & operator can be applied to an already declared pointer variable.\nReason (R): & retrieves the address at which the pointer variable itself is stored in memory.", "options": ["A is false, R is true", "Both A and R are true, and R correctly explains A", "A is true, R is false", "Both A and R are false"], "answer": "B", "explanation": "&p gives the address of pointer p itself, which is a valid and meaningful operation."},
+  {"id": 60, "level": "Basic", "type": "Definition", "topic": "Built-in Address Operator (&)", "question": "Which symbol is used exclusively as the address-of operator in standard C?", "options": ["#", "&", "*", "@"], "answer": "B", "explanation": "& is C's designated address-of operator."},
+  {"id": 61, "level": "Basic", "type": "Concept", "topic": "Pointers to Variables of Different Data Types", "question": "A pointer declared as `int *ip;` is best suited to point to a variable of type:", "options": ["double", "float", "char", "int"], "answer": "D", "explanation": "An int pointer is intended to point to and correctly interpret int-typed data."},
+  {"id": 62, "level": "Basic", "type": "Syntax", "topic": "Pointers to Variables of Different Data Types", "question": "Which pointer declaration is appropriate for pointing to a character variable?", "options": ["float *cp;", "char *cp;", "double *cp;", "int *cp;"], "answer": "B", "explanation": "A character pointer must be declared with the char base type."},
+  {"id": 63, "level": "Basic", "type": "Concept", "topic": "Pointers to Variables of Different Data Types", "question": "A float pointer (`float *fp;`) is used to:", "options": ["Automatically convert integers into floats", "Store the address of an int variable only", "Store a float value directly, without needing an address", "Store the address of a float variable and interpret data at that address as float"], "answer": "D", "explanation": "The float pointer's base type governs how the data at its address is read."},
+  {"id": 64, "level": "Basic", "type": "Concept", "topic": "Pointers to Variables of Different Data Types", "question": "In this syllabus, a pointer declared as `double *dp;` refers to:", "options": ["A pointer meant to point to a double-type variable", "A variable that stores two double values", "A pointer that always points to two variables", "A pointer to a pointer variable in every case"], "answer": "A", "explanation": "Here, 'double pointer' means a pointer to a double, distinct from the separate pointer-to-pointer concept."},
+  {"id": 65, "level": "Advanced", "type": "Tricky", "topic": "Pointers to Variables of Different Data Types", "question": "Assigning the address of a `char` variable directly to an `int *` pointer (without a cast) is generally:", "options": ["Always completely safe and recommended", "Considered a type mismatch that may trigger a compiler warning/error", "Required for character pointers to function correctly", "Automatically converted without issue in standard C"], "answer": "B", "explanation": "Pointer assignment normally requires matching (or compatible) base types."},
+  {"id": 66, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointers to Variables of Different Data Types", "question": "Which of these correctly declares and initializes a character pointer to variable `ch`?", "options": ["char ch = 'A', cp = &ch;", "char ch = 'A', *cp = &ch;", "char cp = &ch;", "char *cp = ch;"], "answer": "B", "explanation": "cp must be declared with * and assigned ch's address using &."},
+  {"id": 67, "level": "Basic", "type": "Concept", "topic": "Pointers to Variables of Different Data Types", "question": "Pointer 'compatibility' in C generally means:", "options": ["Compatibility refers only to arithmetic operators", "Compatibility refers to matching variable names", "A pointer can point to any data type interchangeably without issue", "A pointer variable should point to a variable of the same (or compatible) base data type"], "answer": "D", "explanation": "Type compatibility ensures the pointer correctly interprets the data it points to."},
+  {"id": 68, "level": "Basic", "type": "Concept", "topic": "Pointers to Variables of Different Data Types", "question": "When a float pointer is dereferenced, the compiler treats the data at that address as:", "options": ["A float value", "An int value, always", "A char value, always", "A string, always"], "answer": "A", "explanation": "Dereferencing interprets the bytes at the address according to the pointer's declared base type."},
+  {"id": 69, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointers to Variables of Different Data Types", "question": "Which of the following is the correct way to reference a double variable `d` using a pointer `dp`?", "options": ["double *dp = d;", "double d, dp = &d;", "double d, *dp = &d;", "double dp = d;"], "answer": "C", "explanation": "dp must be declared as a pointer and assigned &d."},
+  {"id": 70, "level": "Advanced", "type": "Tricky", "topic": "Pointers to Variables of Different Data Types", "question": "Using an `int *` pointer to point to a `double` variable and then dereferencing it will typically:", "options": ["Automatically convert the double value to int correctly", "Produce incorrect/unexpected results because of differing sizes and interpretation", "Work perfectly fine on all systems", "Cause the double's value to be doubled"], "answer": "B", "explanation": "Mismatched pointer types misinterpret the underlying bytes, leading to incorrect results."},
+  {"id": 71, "level": "Basic", "type": "Concept", "topic": "Pointers to Variables of Different Data Types", "question": "Which pointer type would you use to point to a variable declared as `char grade;`?", "options": ["float *", "char *", "int *", "double *"], "answer": "B", "explanation": "A char variable requires a char pointer for correct interpretation."},
+  {"id": 72, "level": "Basic", "type": "Concept", "topic": "Pointers to Variables of Different Data Types", "question": "The concept of \"pointer compatibility\" mainly ensures that:", "options": ["Only one pointer type can exist in a single program", "Pointers of any type can be freely interchanged with no side effects", "Pointers always occupy sizes based only on the variable's current value", "Dereferencing a pointer accesses the correct number of bytes with the correct interpretation"], "answer": "D", "explanation": "Compatibility guarantees correct byte-count and interpretation on dereferencing."},
+  {"id": 73, "level": "Intermediate", "type": "Statement", "topic": "Pointers to Variables of Different Data Types", "question": "Which of the following statements is TRUE regarding pointers to different data types?", "options": ["Data type has no effect on pointer usage", "All pointer types behave identically regardless of declared type", "Each pointer type is intended to correctly interpret the data at the address it points to, based on its declared type", "A char pointer cannot point to a char variable"], "answer": "C", "explanation": "The declared base type of a pointer determines how the pointed-to data is interpreted."},
+  {"id": 74, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointers to Variables of Different Data Types", "question": "Given `float f = 3.14, *fp = &f;`, what is the variable being referenced (pointed to) in this statement?", "options": ["3.14", "f", "fp", "&f"], "answer": "B", "explanation": "fp is assigned the address of f, so f is the referenced variable."},
+  {"id": 75, "level": "Intermediate", "type": "Application", "topic": "Pointers to Variables of Different Data Types", "question": "Which of these applications commonly uses character pointers?", "options": ["Handling strings (arrays of characters)", "Performing floating-point arithmetic directly", "Declaring loop counters", "Storing large numeric calculations"], "answer": "A", "explanation": "Character pointers are the standard mechanism used to represent and manipulate strings in C."},
+  {"id": 76, "level": "Advanced", "type": "Assertion-Reason", "topic": "Pointers to Variables of Different Data Types", "question": "Assertion (A): A pointer of type `int *` can safely and portably store the address of a `double` variable without a cast.\nReason (R): All pointer types in C are treated identically by the compiler.", "options": ["A is false, R is true", "A is true, R is false", "Both A and R are false", "Both A and R are true, and R explains A"], "answer": "C", "explanation": "Pointer types are NOT treated identically; assigning across incompatible types without a cast is neither safe nor portable, so both statements are false."},
+  {"id": 77, "level": "Basic", "type": "Definition", "topic": "Indirection Operator (*)", "question": "The * operator, when used with an already-declared pointer variable in an expression (not in a declaration), is called the:", "options": ["Address-of operator", "Indirection/dereference operator", "Multiplication operator", "Assignment operator"], "answer": "B", "explanation": "In expressions, * applied to a pointer dereferences it to access the pointed-to value."},
+  {"id": 78, "level": "Intermediate", "type": "Code Snippet", "topic": "Indirection Operator (*)", "question": "What does `*p` give, if `p` is a pointer holding the address of variable `a`?", "options": ["The address of pointer p", "The address of variable a", "The size of variable a", "The value stored in variable a"], "answer": "D", "explanation": "Dereferencing p retrieves the value at the address it holds, which is a's value."},
+  {"id": 79, "level": "Intermediate", "type": "Code Snippet", "topic": "Indirection Operator (*)", "question": "Given `int a = 10, *p = &a;`, what is the value of `*p`?", "options": ["The address of a", "Undefined", "10", "The address of p"], "answer": "C", "explanation": "p points to a, so *p evaluates to a's current value, 10."},
+  {"id": 80, "level": "Intermediate", "type": "Code Snippet", "topic": "Indirection Operator (*)", "question": "Which statement modifies the value of `a` using pointer `p` (where `p = &a`)?", "options": ["*p = 20;", "&p = 20;", "a = *p + p;", "p = 20;"], "answer": "A", "explanation": "*p = 20; dereferences p and assigns 20 to the memory location it points to, i.e., a."},
+  {"id": 81, "level": "Intermediate", "type": "Code Snippet", "topic": "Indirection Operator (*)", "question": "In `int a=5, *p=&a; *p = *p + 1;`, after execution, the value of `a` becomes:", "options": ["The address of a, incremented", "6", "Undefined", "5"], "answer": "B", "explanation": "*p reads a's current value (5), adds 1, and stores it back at a's address, making a equal to 6."},
+  {"id": 82, "level": "Basic", "type": "Concept", "topic": "Indirection Operator (*)", "question": "The indirection operator is classified as a:", "options": ["Unary operator", "Relational operator", "Binary operator", "Ternary operator"], "answer": "A", "explanation": "The dereference operator (*) takes a single operand — the pointer."},
+  {"id": 83, "level": "Basic", "type": "Syntax", "topic": "Indirection Operator (*)", "question": "Which of the following is the correct symbol used for dereferencing a pointer in C?", "options": ["#", "%", "*", "&"], "answer": "C", "explanation": "* is the indirection/dereference operator."},
+  {"id": 84, "level": "Intermediate", "type": "Code Snippet", "topic": "Indirection Operator (*)", "question": "Given `int x = 15, *p = &x; printf(\"%d\", *p);`, the output will be:", "options": ["15", "A garbage value", "The address of x", "A compilation error"], "answer": "A", "explanation": "*p dereferences p to print x's value, which is 15."},
+  {"id": 85, "level": "Basic", "type": "Definition", "topic": "Indirection Operator (*)", "question": "Using * to read the value pointed to by a pointer is called:", "options": ["Casting", "Declaring", "Dereferencing", "Addressing"], "answer": "C", "explanation": "This action of accessing the pointed-to value is termed dereferencing."},
+  {"id": 86, "level": "Advanced", "type": "Tricky", "topic": "Indirection Operator (*)", "question": "Applying * to a pointer that has NOT been properly initialized (a wild pointer) is:", "options": ["A syntax error caught at compile time", "Always guaranteed to return 0", "Undefined behavior, which may crash the program or return a garbage value", "Always guaranteed to return the pointer's own address"], "answer": "C", "explanation": "Dereferencing an uninitialized pointer accesses an arbitrary memory location, leading to undefined behavior."},
+  {"id": 87, "level": "Intermediate", "type": "Code Snippet", "topic": "Indirection Operator (*)", "question": "Given `float f = 2.5, *fp = &f; *fp = *fp * 2;`, after execution the value of `f` is:", "options": ["2.5", "0.0", "A compilation error", "5.0"], "answer": "D", "explanation": "*fp reads f (2.5), doubles it, and stores 5.0 back at f's address."},
+  {"id": 88, "level": "Intermediate", "type": "Code Snippet", "topic": "Indirection Operator (*)", "question": "Which of the following correctly reads and prints the value pointed to by an int pointer `p`?", "options": ["printf(\"%d\", p);", "printf(\"%d\", &p);", "printf(\"%p\", *p);", "printf(\"%d\", *p);"], "answer": "D", "explanation": "*p gives the pointed-to int value, correctly matched with the %d specifier."},
+  {"id": 89, "level": "Intermediate", "type": "Statement-Based", "topic": "Indirection Operator (*)", "question": "'The indirection operator can also be used to modify the value at the address a pointer points to.' This statement is:", "options": ["True, for all compatible pointer types", "False, pointers are read-only", "True, but only for int pointers", "False, only the & operator can modify values"], "answer": "A", "explanation": "*p = value works for any pointer type pointing to a modifiable variable of a compatible type."},
+  {"id": 90, "level": "Intermediate", "type": "Code Snippet", "topic": "Indirection Operator (*)", "question": "Given `int a=1, b=2, *p=&a, *q=&b; *p = *q;`, after execution the value of `a` becomes:", "options": ["2", "1", "The address of b", "Undefined"], "answer": "A", "explanation": "*q reads b's value (2), which is then stored at the location p points to (a), making a equal to 2."},
+  {"id": 91, "level": "Intermediate", "type": "Comparison", "topic": "Indirection Operator (*)", "question": "Which best describes the relationship between the & and * operators?", "options": ["& is used only with arrays, * only with pointers to functions", "They perform the same operation", "They are complementary/inverse operators — & obtains an address, * obtains the value at an address", "Both always return a result of type int"], "answer": "C", "explanation": "& and * work as inverses of one another with respect to addresses and values."},
+  {"id": 92, "level": "Advanced", "type": "Tricky", "topic": "Indirection Operator (*)", "question": "In the expression `*(&a)`, the result is equivalent to:", "options": ["Always 0", "The address of a", "The address of a pointer to a", "a (the value of variable a itself)"], "answer": "D", "explanation": "Dereferencing the address-of a variable returns the variable's own value, undoing the & operation."},
+  {"id": 93, "level": "Basic", "type": "Concept", "topic": "Array Name as a Pointer Variable", "question": "In C, the name of an array (without any subscript) represents:", "options": ["The total number of elements in the array", "The base address (address of the first element) of the array", "The sum of all array elements", "The value of the last element"], "answer": "B", "explanation": "An array name, when used in most expressions, decays to the address of its first element."},
+  {"id": 94, "level": "Intermediate", "type": "Code Snippet", "topic": "Array Name as a Pointer Variable", "question": "Given `int arr[5];`, the expression `arr` is equivalent to:", "options": ["arr[0]", "&arr[0]", "&arr[5]", "arr[5]"], "answer": "B", "explanation": "The array name decays to the address of index 0, i.e., &arr[0]."},
+  {"id": 95, "level": "Intermediate", "type": "Comparison", "topic": "Array Name as a Pointer Variable", "question": "Unlike a normal pointer variable, the array name:", "options": ["Automatically increases in size as elements are added", "Can be freely reassigned like any pointer", "Stores the value of the last element", "Is a constant and cannot be reassigned to point elsewhere"], "answer": "D", "explanation": "An array name is a non-modifiable lvalue, so it cannot be made to point to a different location."},
+  {"id": 96, "level": "Intermediate", "type": "Code Snippet", "topic": "Array Name as a Pointer Variable", "question": "Given `int arr[5] = {10,20,30,40,50};`, what does `*arr` give?", "options": ["50", "The base address of arr", "Undefined", "10"], "answer": "D", "explanation": "*arr dereferences the array name (its base address), giving the first element's value, 10."},
+  {"id": 97, "level": "Intermediate", "type": "Code Snippet", "topic": "Array Name as a Pointer Variable", "question": "Given `int arr[5];`, the expression `*(arr+2)` accesses:", "options": ["arr[2]", "The address of arr[2]", "arr[0]", "arr[3]"], "answer": "A", "explanation": "Adding 2 to the base address and dereferencing gives the element at index 2."},
+  {"id": 98, "level": "Intermediate", "type": "Statement", "topic": "Array Name as a Pointer Variable", "question": "Which statement is TRUE about array names and pointers?", "options": ["Array names always store a copy of the entire array's data", "An array name behaves like a pointer to its first element but is not itself a reassignable pointer variable", "Array names cannot be used in pointer expressions", "An array name is identical to a pointer variable in every respect, including reassignability"], "answer": "B", "explanation": "Array names decay to pointers for many purposes, but remain constant addresses, unlike true pointer variables."},
+  {"id": 99, "level": "Intermediate", "type": "Code Snippet", "topic": "Array Name as a Pointer Variable", "question": "Given `int arr[4]; int *p = arr;`, this statement is:", "options": ["Valid, but p points to the last element", "Invalid — requires the & operator before arr", "Invalid — arrays cannot be assigned to pointers", "Valid — p now points to the first element of arr"], "answer": "D", "explanation": "Since arr decays to its base address, it can be directly assigned to a compatible pointer."},
+  {"id": 100, "level": "Advanced", "type": "Tricky", "topic": "Array Name as a Pointer Variable", "question": "Since `arr` decays to a pointer in most expressions, `sizeof(arr)` used in the same scope as its declaration gives:", "options": ["Always the size of a single pointer (e.g., 8 bytes)", "Always exactly 4 bytes regardless of array type", "The total size of the array in bytes (not the size of a single pointer)", "Only the number of elements, with no size information"], "answer": "C", "explanation": "sizeof applied directly to an array (in its declaring scope) evaluates the array's full size, since it does not decay in this context."},
+  {"id": 101, "level": "Basic", "type": "Concept", "topic": "Array Name as a Pointer Variable", "question": "The expression `arr[i]` is internally treated by the compiler as equivalent to:", "options": ["(arr * i)", "&(arr + i)", "*(arr - i)", "*(arr + i)"], "answer": "D", "explanation": "Array subscripting is defined in terms of pointer arithmetic and dereferencing."},
+  {"id": 102, "level": "Intermediate", "type": "Statement", "topic": "Array Name as a Pointer Variable", "question": "Which of the following about the array's base address is TRUE?", "options": ["The base address is the address of the array's first (index 0) element", "The base address is the address of the last element", "The base address changes each time the array is accessed", "The base address is always numerically 0"], "answer": "A", "explanation": "The base address is a fixed reference point: the location of index 0."},
+  {"id": 103, "level": "Intermediate", "type": "Code Snippet", "topic": "Array Name as a Pointer Variable", "question": "Given `char str[] = \"HI\";`, what does the expression `str` represent?", "options": ["The last character '\\0'", "The address of the first character 'H'", "The total length of the string", "The character 'H' itself"], "answer": "B", "explanation": "As an array name, str decays to the address of its first character."},
+  {"id": 104, "level": "Intermediate", "type": "Comparison", "topic": "Array Name as a Pointer Variable", "question": "Which similarity exists between array names and pointer variables?", "options": ["Both can be reassigned to point to different memory locations", "Both are automatically initialized to NULL", "Both occupy exactly one byte of memory", "Both can be used with the * operator to access the value at an address"], "answer": "D", "explanation": "Dereferencing works on both array names (via decay) and pointer variables."},
+  {"id": 105, "level": "Intermediate", "type": "Code Snippet", "topic": "Array Name as a Pointer Variable", "question": "Given `int a[3] = {1,2,3}, *p = a;`, evaluating `p == a` is:", "options": ["True, since both hold the same base address", "True only after incrementing p once", "A compile-time error", "False, they can never be equal"], "answer": "A", "explanation": "p is initialized to a's base address, so the comparison is true."},
+  {"id": 106, "level": "Advanced", "type": "Assertion-Reason", "topic": "Array Name as a Pointer Variable", "question": "Assertion (A): `arr + 1` (where arr is an int array) advances the address by 1 byte.\nReason (R): Pointer arithmetic moves by the size of one element of the pointer's data type, not by a fixed 1 byte.", "options": ["Both A and R are false", "A is true, R is false", "A is false, R is true", "Both A and R are true, and R explains A"], "answer": "C", "explanation": "arr+1 actually moves by sizeof(int) bytes, making the Assertion false, while the Reason correctly states the general rule."},
+  {"id": 107, "level": "Intermediate", "type": "Statement", "topic": "Pointers and Arrays", "question": "Which of the following statements about pointers and arrays is TRUE?", "options": ["Array elements can only be accessed using indexing, never pointers", "Pointers cannot be used to traverse arrays", "Arrays and pointers are always identical data types", "Array elements can be accessed using both array indexing and pointer notation"], "answer": "D", "explanation": "C allows equivalent access to array elements via a[i] or *(p+i)."},
+  {"id": 108, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointers and Arrays", "question": "Given `int a[5]={1,2,3,4,5}, *p=a;`, which expression accesses the 3rd element (index 2, value 3)?", "options": ["*(p+3)", "*(p+2)", "*p+2", "p+2"], "answer": "B", "explanation": "Adding 2 to p and dereferencing accesses index 2, giving the value 3."},
+  {"id": 109, "level": "Intermediate", "type": "Comparison", "topic": "Pointers and Arrays", "question": "A key DIFFERENCE between an array name and a pointer variable is:", "options": ["Pointers cannot be incremented, but array names can", "An array name is a constant address, while a pointer variable can be reassigned to point elsewhere", "Both are identical with no difference at all", "An array name can store any address, but pointer variables are fixed"], "answer": "B", "explanation": "This constancy vs reassignability is the core distinguishing feature."},
+  {"id": 110, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointers and Arrays", "question": "Given `int a[4] = {2,4,6,8};` and `int *p = a;`, evaluating `p++;` then `*p` gives:", "options": ["The address of a[1]", "4", "2", "6"], "answer": "B", "explanation": "p++ advances p to a[1] (value 4), so *p now yields 4."},
+  {"id": 111, "level": "Basic", "type": "Concept", "topic": "Pointers and Arrays", "question": "To traverse all elements of array `a[5]` using a pointer `p` initialized as `p = a`, the typical loop condition uses:", "options": ["p == 5", "p > a - 5", "p < a + 5 (comparing against one-past-the-end address)", "p != NULL only"], "answer": "C", "explanation": "Comparing the pointer against the base address plus the element count is the standard traversal bound."},
+  {"id": 112, "level": "Advanced", "type": "Tricky", "topic": "Pointers and Arrays", "question": "Which of the following is FALSE regarding arrays and pointers?", "options": ["Both indexing and pointer dereferencing can access the same element", "An array pointer, once decayed, can cause the original array's declared size to grow dynamically", "The array name gives the base address", "Array elements can be accessed via pointer arithmetic"], "answer": "B", "explanation": "Pointer decay does not change the array's fixed, compile-time-declared size; this statement is false."},
+  {"id": 113, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointers and Arrays", "question": "Given `int a[3]={5,10,15}, *p=a;`, what does `p[1]` return?", "options": ["10", "5", "15", "The address of a[1]"], "answer": "A", "explanation": "Pointer indexing p[1] is equivalent to *(p+1), giving the second element, 10."},
+  {"id": 114, "level": "Intermediate", "type": "Comparison", "topic": "Pointers and Arrays", "question": "The similarity between `a[i]` and `*(p+i)` (where p points to array a) is that:", "options": ["*(p+i) always causes an error", "They access different elements", "a[i] works only for char arrays", "Both expressions access the same array element at index i"], "answer": "D", "explanation": "Both notations are equivalent ways of referring to the same element."},
+  {"id": 115, "level": "Basic", "type": "Concept", "topic": "Pointers and Arrays", "question": "When traversing an array using a pointer, incrementing the pointer (`p++`) moves it to:", "options": ["The previous element in the array", "The same element again", "The next element in the array (advancing by the size of one element)", "A completely random memory address"], "answer": "C", "explanation": "p++ advances the pointer by one element's worth of bytes."},
+  {"id": 116, "level": "Advanced", "type": "Tricky", "topic": "Pointers and Arrays", "question": "Given `int a[5], *p = a;`, which statement is INVALID?", "options": ["a = p; (attempting to reassign the array name)", "p = a;", "p = a + 2;", "p++;"], "answer": "A", "explanation": "Array names are non-modifiable lvalues and cannot be reassigned, unlike pointer variables."},
+  {"id": 117, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointers and Arrays", "question": "Element referencing using pointer notation `*(a+i)` is equivalent in value to:", "options": ["a[i]", "a[i-1]", "a[i+1]", "&a[i]"], "answer": "A", "explanation": "This is the defining equivalence between pointer notation and array indexing."},
+  {"id": 118, "level": "Basic", "type": "Concept", "topic": "Pointers and Arrays", "question": "A key relationship between arrays and pointers in C is that:", "options": ["Pointers are automatically converted into arrays", "The array name decays into a pointer to its first element in most expressions", "Arrays cannot interact with pointers at all", "Arrays are stored internally as linked lists of pointers"], "answer": "B", "explanation": "This decay is the foundation of the close relationship between arrays and pointers in C."},
+  {"id": 119, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointers and Arrays", "question": "Given `int a[4]={1,2,3,4}, *p=&a[2];`, what does `*(p-1)` give?", "options": ["2", "1", "4", "3"], "answer": "A", "explanation": "p points to a[2]; moving back one element points to a[1], value 2."},
+  {"id": 120, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointers and Arrays", "question": "Which loop correctly prints all elements of `int a[5]` using pointer `p`, starting with `p = a`?", "options": ["for(int i=0;i<5;i++) printf(\"%d\", p+i);", "for(int i=0;i<5;i++) printf(\"%d\", *(p+i));", "for(int i=5;i>0;i--) printf(\"%d\", *p+i);", "for(int i=0;i<5;i++) printf(\"%d\", a[p]);"], "answer": "B", "explanation": "Dereferencing p+i for each i correctly prints every array element."},
+  {"id": 121, "level": "Advanced", "type": "Assertion-Reason", "topic": "Pointers and Arrays", "question": "Assertion (A): Pointer notation and array indexing are functionally interchangeable for accessing array elements.\nReason (R): The compiler translates a[i] internally into *(a+i).", "options": ["A is false, R is true", "Both A and R are true, and R correctly explains A", "Both A and R are false", "A is true, R is false"], "answer": "B", "explanation": "Since a[i] is defined as *(a+i), the two notations are indeed interchangeable, and R explains why."},
+  {"id": 122, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointers and Arrays", "question": "Given `char s[]=\"CAT\"; char *p = s;`, what does `*(p+1)` output?", "options": ["'\\0'", "'C'", "'T'", "'A'"], "answer": "D", "explanation": "p+1 points to the second character of \"CAT\", which is 'A'."},
+  {"id": 123, "level": "Basic", "type": "Concept", "topic": "Pointer Arithmetic", "question": "If `int *p` points to an array element, `p+1` advances the address by:", "options": ["1 byte always", "2 bytes always", "sizeof(float) bytes", "sizeof(int) bytes"], "answer": "D", "explanation": "Pointer arithmetic scales by the size of the pointed-to type."},
+  {"id": 124, "level": "Advanced", "type": "Tricky", "topic": "Pointer Arithmetic", "question": "Which arithmetic operation is INVALID between two pointers of the same type pointing into the same array?", "options": ["Adding an integer to one pointer", "Multiplying the two pointers", "Subtracting the two pointers", "Comparing the two pointers"], "answer": "B", "explanation": "Pointer multiplication is meaningless and not permitted; subtraction and comparison are valid for same-array pointers."},
+  {"id": 125, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointer Arithmetic", "question": "Given `int a[5], *p=&a[1], *q=&a[4];`, what does `q - p` give?", "options": ["3 bytes, regardless of element type", "12, as a raw byte difference", "Undefined in all cases", "3 (the number of elements between them)"], "answer": "D", "explanation": "Pointer subtraction within the same array yields the element count between the two addresses, not raw bytes."},
+  {"id": 126, "level": "Basic", "type": "Concept", "topic": "Pointer Arithmetic", "question": "Which of the following pointer arithmetic operations is generally considered VALID and meaningful?", "options": ["Adding two pointers together", "Multiplying a pointer by a float", "Dividing two pointers", "Subtracting a smaller pointer from a larger pointer within the same array"], "answer": "D", "explanation": "Only subtraction (within the same array), addition of an integer, and comparison are meaningful pointer operations."},
+  {"id": 127, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointer Arithmetic", "question": "Given `int a[5]={1,2,3,4,5}, *p=a; p = p + 3;`, what does `*p` give?", "options": ["1", "5", "3", "4"], "answer": "D", "explanation": "p+3 points to index 3 (value 4)."},
+  {"id": 128, "level": "Basic", "type": "Concept", "topic": "Pointer Arithmetic", "question": "For a `char *p`, incrementing `p` by 1 moves the address forward by:", "options": ["2 bytes always", "1 byte (the size of char)", "8 bytes always", "4 bytes always"], "answer": "B", "explanation": "char has a size of 1 byte, so pointer arithmetic steps by 1 byte."},
+  {"id": 129, "level": "Basic", "type": "Concept", "topic": "Pointer Arithmetic", "question": "For a `double *dp`, `dp + 1` typically advances the address by:", "options": ["4 bytes always regardless of type", "1 byte", "sizeof(double) bytes (commonly 8 bytes)", "sizeof(int) bytes"], "answer": "C", "explanation": "Pointer arithmetic on a double pointer scales by the size of a double."},
+  {"id": 130, "level": "Basic", "type": "Concept", "topic": "Pointer Arithmetic", "question": "Pointer arithmetic rule: Adding an integer `n` to a pointer `p` results in:", "options": ["A syntax error in all cases", "p being advanced by exactly n bytes, regardless of type", "p being advanced by n elements (n times the size of the pointed type)", "p's stored value being multiplied by n"], "answer": "C", "explanation": "This scaling by element size is the defining rule of pointer arithmetic."},
+  {"id": 131, "level": "Advanced", "type": "Tricky", "topic": "Pointer Arithmetic", "question": "Which of these is an INVALID pointer arithmetic operation in standard C?", "options": ["Adding two pointer variables together (p1 + p2)", "p + 5", "p1 - p2 (pointers into the same array)", "p++"], "answer": "A", "explanation": "Adding two pointers has no defined meaning and is disallowed."},
+  {"id": 132, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointer Arithmetic", "question": "Given `int a[6], *p=&a[5];`, evaluating `p--;` moves the pointer to point at:", "options": ["a[0]", "a[4]", "a[6]", "a[5]"], "answer": "B", "explanation": "Decrementing the pointer moves it back by one element."},
+  {"id": 133, "level": "Basic", "type": "Concept", "topic": "Pointer Arithmetic", "question": "Pointer arithmetic is meaningful primarily when pointers point to:", "options": ["Different data types simultaneously", "Completely unrelated memory blocks", "Constant literals only", "Elements within the same array (a contiguous memory block)"], "answer": "D", "explanation": "Standard pointer arithmetic guarantees meaningful results only within the same array."},
+  {"id": 134, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointer Arithmetic", "question": "Given `float f[3], *fp=&f[0]; fp += 2;`, `fp` now points to:", "options": ["f[0]", "f[2]", "f[3]", "f[1]"], "answer": "B", "explanation": "fp += 2 advances fp by two float elements, landing on f[2]."},
+  {"id": 135, "level": "Basic", "type": "Concept", "topic": "Pointer Arithmetic", "question": "Which statement correctly explains why pointer arithmetic differs from normal integer arithmetic?", "options": ["Because pointers ignore the data type entirely during arithmetic", "Because pointer arithmetic scales the operation by the size of the data type the pointer points to", "Because pointer arithmetic always results in a float value", "Because pointers cannot be added or subtracted at all"], "answer": "B", "explanation": "The key distinction is the type-based scaling applied to pointer operations."},
+  {"id": 136, "level": "Advanced", "type": "Tricky", "topic": "Pointer Arithmetic", "question": "Which of the following is generally NOT allowed in pointer arithmetic?", "options": ["Incrementing a pointer using ++", "Multiplying a pointer with an integer", "Comparing two pointers using relational operators", "Subtracting an integer from a pointer"], "answer": "B", "explanation": "Multiplication of a pointer is not a defined or valid pointer arithmetic operation."},
+  {"id": 137, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointer Arithmetic", "question": "Given `int a[4]={10,20,30,40}, *p=a+3;`, what does `*(p-2)` return?", "options": ["30", "40", "20", "10"], "answer": "C", "explanation": "p points to a[3]; moving back 2 elements reaches a[1], value 20."},
+  {"id": 138, "level": "Basic", "type": "Concept", "topic": "Pointer Arithmetic", "question": "The result of subtracting two pointers pointing into the same array is of type:", "options": ["A character", "A pointer type", "An integer representing the number of elements between them", "A float value"], "answer": "C", "explanation": "Pointer subtraction yields an integer (element count), not another pointer."},
+  {"id": 139, "level": "Intermediate", "type": "Code Snippet", "topic": "Pointer Arithmetic", "question": "Given `char *s = \"HELLO\"; s += 2;`, what does `*s` output?", "options": ["'E'", "'L'", "'O'", "'H'"], "answer": "B", "explanation": "s+2 points to the third character of \"HELLO\", which is 'L'."},
+  {"id": 140, "level": "Advanced", "type": "Assertion-Reason", "topic": "Pointer Arithmetic", "question": "Assertion (A): Pointer arithmetic on a `void *` pointer is straightforward and follows the same rules as `int *`.\nReason (R): Since `void` has no defined size, standard C does not permit direct arithmetic on `void *` pointers without a cast.", "options": ["A is true, R is false", "Both A and R are false", "A is false, R is true", "Both A and R are true, and R explains A"], "answer": "C", "explanation": "Arithmetic on void* is not standard because void has no defined size, making the Assertion false while the Reason is correct."},
+  {"id": 141, "level": "Intermediate", "type": "Code Snippet", "topic": "Unary Operators (++, --) with Pointers", "question": "Given `int a[5], *p=a; p++;`, the pointer `p` now points to:", "options": ["a[-1]", "a[0]", "a[1]", "a[2]"], "answer": "C", "explanation": "p++ advances the pointer by one element, from a[0] to a[1]."},
+  {"id": 142, "level": "Basic", "type": "Concept", "topic": "Unary Operators (++, --) with Pointers", "question": "In the expression `*p++`, the order of operations is:", "options": ["Both operations happen simultaneously with no defined order", "The expression is a syntax error", "The current value pointed to by p is accessed first, then p is incremented (postfix)", "p is incremented first, then dereferenced"], "answer": "C", "explanation": "Postfix ++ has higher precedence than * for binding, but its side effect (incrementing p) applies after the value is used."},
+  {"id": 143, "level": "Basic", "type": "Concept", "topic": "Unary Operators (++, --) with Pointers", "question": "In the expression `*++p`, the order of operations is:", "options": ["The current value is accessed first, then p is incremented", "p is incremented first, then the new location is dereferenced (prefix)", "Both operators cancel each other out", "This expression is invalid in C"], "answer": "B", "explanation": "Prefix ++ increments p before the dereference occurs."},
+  {"id": 144, "level": "Intermediate", "type": "Code Snippet", "topic": "Unary Operators (++, --) with Pointers", "question": "Given `int a[3]={10,20,30}, *p=a;`, what does `*p++` evaluate to (the value returned by the expression)?", "options": ["30", "20", "The address of a[1]", "10"], "answer": "D", "explanation": "The current value at p (10) is used first; p is then incremented afterward."},
+  {"id": 145, "level": "Intermediate", "type": "Code Snippet", "topic": "Unary Operators (++, --) with Pointers", "question": "Given `int a[3]={10,20,30}, *p=a;`, what does `*++p` evaluate to?", "options": ["10", "The address of a[0]", "30", "20"], "answer": "D", "explanation": "p is incremented to a[1] first, then dereferenced to give 20."},
+  {"id": 146, "level": "Basic", "type": "Concept", "topic": "Unary Operators (++, --) with Pointers", "question": "Postfix decrement on a pointer, `p--`, does which of the following?", "options": ["Uses the pointer's current value in the expression, then moves p to the previous element", "Deletes the value pointed to", "Moves p first, then uses the new value", "Has no effect on the pointer's address"], "answer": "A", "explanation": "Postfix decrement applies its effect after the current value is used."},
+  {"id": 147, "level": "Basic", "type": "Concept", "topic": "Unary Operators (++, --) with Pointers", "question": "Prefix decrement on a pointer, `--p`, does which of the following?", "options": ["Uses the current value first, then decrements", "Increments the pointer instead", "Moves p to the previous element first, then that new value is used in the expression", "Only works with float pointers"], "answer": "C", "explanation": "Prefix decrement applies its effect before the value is used."},
+  {"id": 148, "level": "Intermediate", "type": "Code Snippet", "topic": "Unary Operators (++, --) with Pointers", "question": "Given `int a[4]={1,2,3,4}, *p=&a[3];`, what does `*p--` return (the value returned by the expression)?", "options": ["2", "1", "3", "4"], "answer": "D", "explanation": "The current value (a[3]=4) is used first, then p is decremented afterward."},
+  {"id": 149, "level": "Intermediate", "type": "Code Snippet", "topic": "Unary Operators (++, --) with Pointers", "question": "After `*p--;` executes in the previous scenario (starting at a[3]), where does p now point?", "options": ["a[1]", "a[2]", "a[0]", "a[3]"], "answer": "B", "explanation": "The postfix decrement moves p back by one element after use, from a[3] to a[2]."},
+  {"id": 150, "level": "Advanced", "type": "Tricky", "topic": "Unary Operators (++, --) with Pointers", "question": "Which statement is TRUE about using ++ or -- directly on array names (not pointer variables)?", "options": ["It is invalid, since array names are constant and cannot be incremented or decremented", "It deletes the first array element", "It resizes the array", "It is valid and moves the array's base address"], "answer": "A", "explanation": "Array names are non-modifiable lvalues, so applying ++ or -- to them is not allowed."},
+  {"id": 151, "level": "Intermediate", "type": "Code Snippet", "topic": "Unary Operators (++, --) with Pointers", "question": "Given `char *s = \"AB\"; printf(\"%c\", *s++); printf(\"%c\", *s);`, the output is:", "options": ["BA", "AA", "BB", "AB"], "answer": "D", "explanation": "The first call prints 'A' and advances s; the second call then prints the new current character, 'B'."},
+  {"id": 152, "level": "Advanced", "type": "Tricky", "topic": "Unary Operators (++, --) with Pointers", "question": "The expression `++*p` (as opposed to `*++p`) means:", "options": ["This is an invalid expression in C", "Increment the pointer's own address value", "Increment the value stored at the address p points to (the pointer itself does not move)", "Move the pointer to the next address"], "answer": "C", "explanation": "++*p applies increment to the dereferenced value, not to the pointer."},
+  {"id": 153, "level": "Intermediate", "type": "Code Snippet", "topic": "Unary Operators (++, --) with Pointers", "question": "Given `int a=5, *p=&a; ++*p;`, what is the value of `a` after execution?", "options": ["6", "A compilation error", "The address of a, incremented", "5"], "answer": "A", "explanation": "++*p increments the value at the address p points to, so a becomes 6."},
+  {"id": 154, "level": "Advanced", "type": "Assertion-Reason", "topic": "Unary Operators (++, --) with Pointers", "question": "Assertion (A): `*p++` and `(*p)++` behave identically.\nReason (R): Postfix ++ binds to p (not to the dereferenced value) in the expression `*p++`, since it has higher precedence than the unary * for binding purposes.", "options": ["A is false, R is true", "Both A and R are true, and R explains A", "A is true, R is false", "Both A and R are false"], "answer": "A", "explanation": "*p++ increments the pointer p, while (*p)++ increments the pointed-to value — these are different operations, so A is false while R correctly explains the mechanism."},
+  {"id": 155, "level": "Basic", "type": "Concept", "topic": "One-Dimensional Arrays and Pointers", "question": "To traverse a 1D array using pointer notation, the pointer should typically be initialized to:", "options": ["The address of the last element only", "The value of the first element", "The base address of the array (e.g., p = arr;)", "NULL, in every case"], "answer": "C", "explanation": "Traversal begins by pointing to the array's first element (its base address)."},
+  {"id": 156, "level": "Intermediate", "type": "Code Snippet", "topic": "One-Dimensional Arrays and Pointers", "question": "Given `int a[5]={1,2,3,4,5};` and pointer `p=a`, which expression gives the sum of the first two elements?", "options": ["*p + p+1", "*p + *(p+1)", "p + p+1", "*(p+p+1)"], "answer": "B", "explanation": "Dereferencing p and p+1 separately and adding gives the sum of a[0] and a[1]."},
+  {"id": 157, "level": "Basic", "type": "Concept", "topic": "One-Dimensional Arrays and Pointers", "question": "Which pointer notation form is equivalent to array indexing `a[i]` for a 1D array?", "options": ["a*(i)", "*a+i", "*(a+i)", "*(a-i)"], "answer": "C", "explanation": "This is the standard equivalence between indexing and pointer notation."},
+  {"id": 158, "level": "Advanced", "type": "Tricky", "topic": "One-Dimensional Arrays and Pointers", "question": "Given a 1D array `int a[4]`, and pointer `p=a`, the expression `p+4` refers to:", "options": ["The address one position past the last valid element (a valid end marker, though not dereferenceable)", "An invalid pointer expression in C", "The address of a[0]", "The address of a[3], the last valid element"], "answer": "A", "explanation": "C permits forming (but not dereferencing) a pointer one position past the end of an array, often used as a loop boundary."},
+  {"id": 159, "level": "Basic", "type": "Concept", "topic": "One-Dimensional Arrays and Pointers", "question": "In pointer-based array traversal, incrementing the pointer variable in a loop is sometimes considered efficient because:", "options": ["It reduces the array's size in memory", "It works only for character arrays", "It can access the next element directly without recomputing an offset via multiplication", "It always changes the array's actual stored values"], "answer": "C", "explanation": "Simple pointer increment avoids recalculating i * element_size on each iteration."},
+  {"id": 160, "level": "Intermediate", "type": "Code Snippet", "topic": "One-Dimensional Arrays and Pointers", "question": "Given `int a[3]={7,8,9}, *p=a;`, which of these correctly prints all elements using pointer notation in a loop?", "options": ["for(int i=0;i<3;i++) printf(\"%d \", *(p+i));", "for(int i=0;i<3;i++) printf(\"%d \", p+i);", "for(int i=0;i<3;i++) printf(\"%d \", *p);", "for(int i=0;i<3;i++) printf(\"%d \", &p[i]);"], "answer": "A", "explanation": "Dereferencing p+i for each i correctly prints each successive element's value."},
+  {"id": 161, "level": "Basic", "type": "Concept", "topic": "One-Dimensional Arrays and Pointers", "question": "The relationship between a 1D array and a pointer variable pointing to it is that:", "options": ["The pointer automatically resizes along with the array", "The pointer must always be declared as void *", "The pointer can only ever access the first element", "The pointer can access every element of the array through address arithmetic based on the array's base address"], "answer": "D", "explanation": "Given the base address, arithmetic on the pointer reaches every element."},
+  {"id": 162, "level": "Intermediate", "type": "Code Snippet", "topic": "One-Dimensional Arrays and Pointers", "question": "Given `int a[5]={1,2,3,4,5}, *p=a; p=p+2;`, `*p` refers to:", "options": ["a[4], value 5", "a[2], value 3", "a[1], value 2", "a[0], value 1"], "answer": "B", "explanation": "p+2 moves the pointer to index 2 of the array."},
+  {"id": 163, "level": "Intermediate", "type": "Code Snippet", "topic": "One-Dimensional Arrays and Pointers", "question": "Which of the following correctly uses pointer notation to access the last element of `int a[6]`?", "options": ["*(a+5)", "*(a+6)", "*(a-5)", "a[6]"], "answer": "A", "explanation": "The last valid index is 5, accessed as *(a+5)."},
+  {"id": 164, "level": "Basic", "type": "Concept", "topic": "One-Dimensional Arrays and Pointers", "question": "Pointer indexing `p[i]` (where p points to an array) is functionally equivalent to:", "options": ["&p[i-1]", "*(p-i)", "*(p+i)", "p*i"], "answer": "C", "explanation": "p[i] is defined in C to mean *(p+i), regardless of whether p is an array name or pointer variable."},
+  {"id": 165, "level": "Intermediate", "type": "Comparison", "topic": "One-Dimensional Arrays and Pointers", "question": "Which statement correctly compares array indexing and pointer notation for 1D arrays?", "options": ["Both `a[i]` and `*(a+i)` access the same memory location and produce identical results", "`*(a+i)` cannot be used for arrays, only for pointer variables", "They access different memory locations", "`a[i]` is always faster than `*(a+i)` on every compiler"], "answer": "A", "explanation": "The two notations are semantically equivalent for accessing array elements."},
+  {"id": 166, "level": "Intermediate", "type": "Code Snippet", "topic": "One-Dimensional Arrays and Pointers", "question": "Given `int a[4]={2,4,6,8}, *p=a;`, evaluate: `*(p+1) + *(p+2)`", "options": ["8", "10", "12", "6"], "answer": "B", "explanation": "*(p+1) is 4 and *(p+2) is 6; their sum is 10."},
+  {"id": 167, "level": "Basic", "type": "Fill-in-the-Blank", "topic": "One-Dimensional Arrays and Pointers", "question": "To point to the third element of array `a[10]` using pointer p (p = a), you write: `p = a ____ 2;`", "options": ["-", "*", "/", "+"], "answer": "D", "explanation": "Adding 2 to the base address moves the pointer to index 2 (the third element)."},
+  {"id": 168, "level": "Basic", "type": "Concept", "topic": "One-Dimensional Arrays and Pointers", "question": "A pointer traversing a 1D array typically stops when:", "options": ["It reaches the array's first element again", "It reaches address 0 in every case", "It is manually reset to NULL mid-loop", "It reaches an address equal to (base address + number of elements), one past the last valid element"], "answer": "D", "explanation": "The one-past-the-end address is the conventional loop termination boundary."},
+  {"id": 169, "level": "Intermediate", "type": "Code Snippet", "topic": "One-Dimensional Arrays and Pointers", "question": "Given `int a[3]={100,200,300};`, which statement correctly initializes pointer p to point to the array?", "options": ["int *p = &a;", "int *p = a[];", "int p = *a;", "int *p = a;"], "answer": "D", "explanation": "p = a assigns the decayed base address; &a has a different (array-pointer) type, not directly suited to simple element traversal."},
+  {"id": 170, "level": "Advanced", "type": "Assertion-Reason", "topic": "One-Dimensional Arrays and Pointers", "question": "Assertion (A): `*(a+i)` and `a[i]` always yield the same result for a 1D array `a`.\nReason (R): The C compiler internally converts array subscript notation `a[i]` into pointer arithmetic `*(a+i)`.", "options": ["Both A and R are false", "A is false, R is true", "Both A and R are true, and R correctly explains A", "A is true, R is false"], "answer": "C", "explanation": "Since a[i] is defined as *(a+i) by the language, both statements are true, with R explaining A."},
+  {"id": 171, "level": "Basic", "type": "Definition", "topic": "Array of Pointers", "question": "An array of pointers is defined as:", "options": ["A single pointer that stores multiple arrays", "An array that stores pointer sizes", "An array that stores only the addresses of other arrays, never variables", "An array whose elements are themselves pointer variables"], "answer": "D", "explanation": "Each element of such an array is a pointer, capable of holding an address."},
+  {"id": 172, "level": "Basic", "type": "Syntax", "topic": "Array of Pointers", "question": "Which of the following correctly declares an array of 5 integer pointers?", "options": ["int ptrArr[5]*;", "pointer int ptrArr[5];", "int *ptrArr(5);", "int *ptrArr[5];"], "answer": "D", "explanation": "This declares ptrArr as an array of 5 elements, each of type 'pointer to int'."},
+  {"id": 173, "level": "Intermediate", "type": "Application", "topic": "Array of Pointers", "question": "A common application of an array of character pointers (`char *names[]`) is:", "options": ["Declaring loop counters only", "Performing floating-point calculations", "Storing a single large number", "Storing and managing a list of strings efficiently"], "answer": "D", "explanation": "An array of char pointers is the classic way to represent a list of strings in C."},
+  {"id": 174, "level": "Intermediate", "type": "Code Snippet", "topic": "Array of Pointers", "question": "Given `int a=1,b=2,c=3; int *arr[3] = {&a,&b,&c};`, what does `*arr[1]` give?", "options": ["1", "The address of b", "3", "2"], "answer": "D", "explanation": "arr[1] holds &b; dereferencing it gives b's value, 2."},
+  {"id": 175, "level": "Intermediate", "type": "Code Snippet", "topic": "Array of Pointers", "question": "In `char *names[3] = {\"Ravi\",\"Meena\",\"Om\"};`, the expression `names[0]` gives:", "options": ["The character 'R'", "The address of the first character of \"Ravi\"", "The entire array of all names combined", "The number 0"], "answer": "B", "explanation": "names[0] is a char pointer holding the address of the string \"Ravi\"."},
+  {"id": 176, "level": "Intermediate", "type": "Statement", "topic": "Array of Pointers", "question": "Which statement about arrays of pointers is TRUE?", "options": ["Each element of the array can point to a separate, independently located memory block", "An array of pointers can only be declared for integers", "An array of pointers cannot be initialized at the point of declaration", "All elements must point to consecutive memory addresses"], "answer": "A", "explanation": "Unlike a regular array's contiguous data, each pointer element can independently reference any address."},
+  {"id": 177, "level": "Intermediate", "type": "Code Snippet", "topic": "Array of Pointers", "question": "To access the value pointed to by the second element of `int *arr[4]`, the correct expression is:", "options": ["arr*[1]", "arr[1]*", "*arr[1]", "*arr(1)"], "answer": "C", "explanation": "arr[1] gives the pointer stored at index 1; * dereferences it to get the pointed-to value."},
+  {"id": 178, "level": "Intermediate", "type": "Application", "topic": "Array of Pointers", "question": "An array of pointers is particularly useful for handling:", "options": ["A collection of strings of varying lengths (an array of char pointers)", "A constant that never changes", "A single fixed numeric value", "A single character only"], "answer": "A", "explanation": "This is the classic use case, since each string can have a different length without wasted space."},
+  {"id": 179, "level": "Intermediate", "type": "Code Snippet", "topic": "Array of Pointers", "question": "Given `int x=10, y=20, *p[2]; p[0]=&x; p[1]=&y;`, what does `*p[0] + *p[1]` evaluate to?", "options": ["Undefined", "20", "30", "10"], "answer": "C", "explanation": "*p[0] gives x (10) and *p[1] gives y (20); their sum is 30."},
+  {"id": 180, "level": "Basic", "type": "Concept", "topic": "Array of Pointers", "question": "Which of the following best describes the initialization of an array of pointers?", "options": ["It must always be initialized only with numeric constants", "All elements are automatically initialized to point to the same variable", "Each element must be assigned the address of a valid variable individually or via an initializer list", "Initialization is unnecessary; elements default to usable addresses"], "answer": "C", "explanation": "Each pointer element needs a valid address assigned, whether via an initializer list or individual assignment."},
+  {"id": 181, "level": "Intermediate", "type": "Code Snippet", "topic": "Array of Pointers", "question": "Given `char *arr[2] = {\"Hi\", \"Bye\"};`, `arr[1]` points to:", "options": ["The first character 'B' of the string \"Bye\"", "The first character 'H' of \"Hi\"", "NULL", "The character count of the array"], "answer": "A", "explanation": "arr[1] holds the address of the string literal \"Bye\", pointing at its first character."},
+  {"id": 182, "level": "Intermediate", "type": "Comparison", "topic": "Array of Pointers", "question": "What is the key characteristic that differentiates an \"array of pointers\" from a \"pointer to an array\"?", "options": ["An array of pointers can only ever hold one address total", "An array of pointers holds multiple separate addresses (one per element), whereas a pointer to an array holds one address referring to the whole array", "They are exactly the same concept with different names", "A pointer to an array cannot be declared in C"], "answer": "B", "explanation": "These are distinct concepts: multiple independent addresses versus a single address referring to an entire array."},
+  {"id": 183, "level": "Basic", "type": "Syntax", "topic": "Array of Pointers", "question": "Which declaration correctly represents an array of 3 character pointers used to store 3 strings?", "options": ["char *str[3];", "char *str;", "char str[3][];", "char str[3];"], "answer": "A", "explanation": "This declares str as an array of 3 elements, each a pointer to char, suitable for holding 3 string addresses."},
+  {"id": 184, "level": "Advanced", "type": "Assertion-Reason", "topic": "Array of Pointers", "question": "Assertion (A): An array of pointers, `int *arr[5]`, occupies memory equal to 5 times the size of the int data it points to.\nReason (R): Each element of `arr` is itself a pointer, and a pointer's size is determined by the system's address width, not by the size of the pointed-to data type.", "options": ["Both A and R are false", "A is true, R is false", "A is false, R is true", "Both A and R are true, and R explains A"], "answer": "C", "explanation": "The array itself occupies 5 times the pointer size (not the int size), making the Assertion false while the Reason correctly explains this."},
+  {"id": 185, "level": "Basic", "type": "Syntax", "topic": "Command Line Arguments for main()", "question": "Which function signature correctly supports command-line arguments in C?", "options": ["void main(int argc)", "int main(int argv, char *argc[])", "int main(int argc, char *argv[])", "int main(char argc, int *argv[])"], "answer": "C", "explanation": "This is the standard signature used to receive command-line arguments in main()."},
+  {"id": 186, "level": "Basic", "type": "Definition", "topic": "Command Line Arguments for main()", "question": "In `int main(int argc, char *argv[])`, what does `argc` represent?", "options": ["The count of command-line arguments, including the program name", "The total number of characters typed", "The address of the first argument", "The name of the program only"], "answer": "A", "explanation": "argc holds the total number of arguments passed, counting the program name as the first."},
+  {"id": 187, "level": "Basic", "type": "Concept", "topic": "Command Line Arguments for main()", "question": "In `int main(int argc, char *argv[])`, what does `argv[0]` typically contain?", "options": ["The name (or path) of the executable program itself", "Always NULL", "The first user-supplied argument", "The total number of arguments"], "answer": "A", "explanation": "By convention, argv[0] is the invoked program's own name/path."},
+  {"id": 188, "level": "Intermediate", "type": "Code Snippet", "topic": "Command Line Arguments for main()", "question": "If a program is run as `./prog hello world`, what is the value of `argc`?", "options": ["2", "3", "0", "1"], "answer": "B", "explanation": "argc counts the program name plus the two arguments: 'prog', 'hello', 'world' = 3."},
+  {"id": 189, "level": "Intermediate", "type": "Code Snippet", "topic": "Command Line Arguments for main()", "question": "For the command `./prog hello world`, what does `argv[1]` contain?", "options": ["\"./prog\"", "\"world\"", "\"hello\"", "NULL"], "answer": "C", "explanation": "argv[1] is the first user-supplied argument after the program name, which is 'hello'."},
+  {"id": 190, "level": "Basic", "type": "Concept", "topic": "Command Line Arguments for main()", "question": "The data type of `argv` in `main(int argc, char *argv[])` is:", "options": ["An array of character pointers (equivalently, a pointer to a pointer to char)", "A single character pointer", "An array of floats", "An array of integers"], "answer": "A", "explanation": "argv is an array of strings, i.e., char pointers, one per command-line token."},
+  {"id": 191, "level": "Advanced", "type": "Tricky", "topic": "Command Line Arguments for main()", "question": "Which of the following is TRUE about `argv[argc]`?", "options": ["It always holds the program's name", "Accessing it always causes a compile-time error", "It is conventionally a NULL pointer, marking the end of the argument list", "It always equals argv[0]"], "answer": "C", "explanation": "By convention, the array of argument pointers is NULL-terminated at index argc."},
+  {"id": 192, "level": "Basic", "type": "Concept", "topic": "Command Line Arguments for main()", "question": "Command-line arguments are primarily used to:", "options": ["Declare global variables inside main()", "Pass input values/parameters to a program at the time of execution", "Automatically compile the program", "Completely replace the need for input functions like scanf"], "answer": "B", "explanation": "They let a user supply parameters to a program when launching it."},
+  {"id": 193, "level": "Intermediate", "type": "Statement", "topic": "Command Line Arguments for main()", "question": "Which statement about `argc` is TRUE?", "options": ["argc is always at least 1, since it includes the program name", "argc is always exactly equal to 10", "argc counts only numeric arguments", "argc can be 0 even when a program name is present"], "answer": "A", "explanation": "Since the program name itself is always counted, argc is never less than 1."},
+  {"id": 194, "level": "Intermediate", "type": "Code Snippet", "topic": "Command Line Arguments for main()", "question": "To print all command-line arguments, which loop is correct (given `argc`, `argv`)?", "options": ["for(int i=0;i<argc;i++) printf(\"%d \", argv[i]);", "for(int i=1;i<=argc;i++) printf(\"%s \", argv);", "for(int i=0;i<argc;i++) printf(\"%s \", argv[i]);", "for(int i=argc;i>0;i--) printf(\"%s \", argc[i]);"], "answer": "C", "explanation": "Iterating i from 0 to argc-1 and printing argv[i] as a string correctly lists all arguments."},
+  {"id": 195, "level": "Advanced", "type": "Tricky", "topic": "Command Line Arguments for main()", "question": "Which of the following about command-line argument syntax is CORRECT?", "options": ["The second parameter can also be written as `char **argv` instead of `char *argv[]`", "argv must always be of type int", "Command-line arguments cannot be declared using pointer notation", "The second parameter must always be written as `char argv[]` only"], "answer": "A", "explanation": "char **argv and char *argv[] are equivalent parameter declarations for this purpose."},
+  {"id": 196, "level": "Intermediate", "type": "Code Snippet", "topic": "Command Line Arguments for main()", "question": "If no extra arguments are passed when running a program (only the program name), the value of `argc` is:", "options": ["1", "2", "0", "Undefined"], "answer": "A", "explanation": "With only the program name present, argc equals 1."},
+  {"id": 197, "level": "Basic", "type": "Concept", "topic": "Command Line Arguments for main()", "question": "Each element `argv[i]` (for i from 0 to argc-1) is of type:", "options": ["float *", "int", "char (a single character)", "char * (a pointer to a null-terminated string)"], "answer": "D", "explanation": "Each argument is represented as a string, accessed via a char pointer."},
+  {"id": 198, "level": "Intermediate", "type": "Application", "topic": "Command Line Arguments for main()", "question": "A practical application of command-line arguments is:", "options": ["Replacing the main() function entirely", "Automatically declaring all program variables", "Allowing a user to specify a filename to be processed when launching the program", "Preventing the program from compiling"], "answer": "C", "explanation": "e.g., running ./prog data.txt lets the program receive 'data.txt' as an argument to process."},
+  {"id": 199, "level": "Intermediate", "type": "Scenario", "topic": "Command Line Arguments for main()", "question": "Given the command `./calc 10 20`, which statement correctly describes reading the arguments?", "options": ["argv[1] holds \"10\" and argv[2] holds \"20\" as strings, which may need conversion (e.g., using atoi) to use as numbers", "argc holds \"10\" and \"20\"", "argv[0] holds \"10\"", "argv[1] and argv[2] are automatically integers, needing no conversion"], "answer": "A", "explanation": "Command-line arguments always arrive as strings and typically need explicit conversion for numeric use."},
+  {"id": 200, "level": "Advanced", "type": "Assertion-Reason", "topic": "Command Line Arguments for main()", "question": "Assertion (A): Command-line arguments allow a C program to receive input without using scanf().\nReason (R): argv provides the arguments as an array of strings directly accessible in main(), captured at the time the program is launched.", "options": ["A is false, R is true", "Both A and R are true, and R correctly explains A", "Both A and R are false", "A is true, R is false"], "answer": "B", "explanation": "Since argv already contains the launch-time arguments as strings, no scanf call is needed to obtain them, and R correctly explains why."},
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

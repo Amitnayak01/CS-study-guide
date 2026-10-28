@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {"id": 1, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "Visual Basic 6.0 is best described as:", "options": ["A text-based command-line tool for batch file automation", "A markup language for designing and publishing web pages", "A relational database engine for storing and querying records", "An event-driven programming language with a graphical IDE"], "answer": "D", "explanation": "VB 6.0 is Microsoft's event-driven, GUI-based language; applications are built by designing forms and responding to events."},
+  {"id": 2, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "What does IDE stand for in Visual Basic 6.0?", "options": ["Integrated Development Environment", "Internal Development Engine", "Integrated Design Editor", "Interactive Debugging Environment"], "answer": "A", "explanation": "The IDE combines the tools for designing, coding, running and debugging an application in one window."},
+  {"id": 3, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "The VB 6.0 IDE works in which three modes?", "options": ["Design, Test and Deploy", "Edit, Debug and Execute", "Design, Compile and Link", "Design, Run and Break"], "answer": "D", "explanation": "The IDE title bar shows [design], [run] or [break] to indicate the current mode."},
+  {"id": 4, "level": "Intermediate", "type": "Scenario", "topic": "VB 6.0 Environment", "question": "A student is drawing controls on a form and changing their Caption property. In which mode is the IDE?", "options": ["Compile mode", "Break mode", "Run mode", "Design mode"], "answer": "D", "explanation": "Building the form and setting properties is done at design time, i.e. in design mode."},
+  {"id": 5, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "When the IDE title bar shows [break], it means that:", "options": ["The project is being compiled to an EXE", "The form is open for visual editing", "The running program is temporarily suspended", "The project is being saved to disk"], "answer": "C", "explanation": "Break mode pauses a running application (for example with Run &gt; Break) so it can be examined and resumed."},
+  {"id": 6, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "Visual Basic 6.0 was released as a part of which software package?", "options": ["Windows 98 Resource Kit", "Microsoft Visual Studio 6.0", "Microsoft Office 2000", "Microsoft Project 98"], "answer": "B", "explanation": "VB 6.0 shipped in 1998 as a component of Microsoft Visual Studio 6.0."},
+  {"id": 7, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "VB 6.0 is called an event-driven language because:", "options": ["Programs always run from top to bottom in a single pass", "Code runs in response to events such as a click or key press", "All code is executed only at compile time", "It can only be used to handle calendar events"], "answer": "B", "explanation": "Actions by the user or system (events) trigger the code attached to them."},
+  {"id": 8, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "Which project type is highlighted by default in the New Project dialog box when VB 6.0 starts?", "options": ["ActiveX Control", "VB Application Wizard", "Standard EXE", "ActiveX DLL"], "answer": "C", "explanation": "Standard EXE creates an ordinary Windows application and is the default choice."},
+  {"id": 9, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "Which of the following is an edition of VB 6.0?", "options": ["Home Edition", "Enterprise Edition", "Express Edition", "Ultimate Edition"], "answer": "B", "explanation": "VB 6.0 was sold in Learning, Professional and Enterprise editions."},
+  {"id": 10, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "In the default (MDI-style) VB 6.0 IDE, the IDE windows are arranged:", "options": ["Only inside the Windows taskbar", "Inside a single parent IDE window", "As separate floating windows on the desktop", "As full-screen tabs shown one at a time"], "answer": "B", "explanation": "In MDI mode all IDE windows sit inside one parent window; the SDI option (Tools &gt; Options &gt; Advanced) makes them separate."},
+  {"id": 11, "level": "Basic", "type": "Identification", "topic": "VB 6.0 Environment", "question": "Which of the following is NOT a part of the VB 6.0 IDE?", "options": ["Windows Registry Editor", "Form Designer", "Toolbox", "Project Explorer"], "answer": "A", "explanation": "Project Explorer, Form Designer and Toolbox are IDE windows; the Registry Editor is a Windows utility."},
+  {"id": 12, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "VB is called a visual programming language mainly because:", "options": ["It can only display pictures, animations and videos", "Its source files are stored as images", "The user interface is built by drawing controls on a form", "It needs no code of any kind"], "answer": "C", "explanation": "Controls are drawn and arranged visually instead of being created through code alone."},
+  {"id": 13, "level": "Intermediate", "type": "Application", "topic": "VB 6.0 Environment", "question": "Which IDE element lets you choose the kind of project to create when VB 6.0 opens?", "options": ["Project Explorer", "Form Layout window", "Properties Window", "New Project dialog box"], "answer": "D", "explanation": "The New Project dialog lists project types such as Standard EXE and ActiveX types."},
+  {"id": 14, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "The main purpose of the IDE in VB 6.0 is to:", "options": ["Store data records for applications", "Provide design, coding, running and debugging tools in one place", "Translate VB programs into Java byte code for browsers", "Connect computers on a network"], "answer": "B", "explanation": "An IDE gathers all development tools into one working environment."},
+  {"id": 15, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "Which tab of the Tools &gt; Options dialog box controls which IDE windows can be docked?", "options": ["Editor", "Docking", "General", "Environment"], "answer": "B", "explanation": "The Docking tab lists windows such as Toolbox, Project Explorer and Properties Window and lets each be made dockable or not."},
+  {"id": 16, "level": "Basic", "type": "Identification", "topic": "VB 6.0 Environment", "question": "Which IDE window lists the classes, properties, methods and events available to a project?", "options": ["Object Browser", "Form Layout window", "Project Explorer", "Properties Window"], "answer": "A", "explanation": "The Object Browser (F2) is used to look up the members of objects and libraries."},
+  {"id": 17, "level": "Advanced", "type": "Tricky", "topic": "VB 6.0 Environment", "question": "In the IDE title bar 'Project1 - Microsoft Visual Basic [design]', what does 'Project1' show?", "options": ["The name of the open form", "The name of the current project", "The name of the EXE file", "The name of the selected control"], "answer": "B", "explanation": "The title bar shows the project name followed by the current mode in square brackets."},
+  {"id": 18, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "Which edition of VB 6.0 is meant for beginners who are learning to program?", "options": ["Standard Edition", "Enterprise Edition", "Learning Edition", "Professional Edition"], "answer": "C", "explanation": "The Learning Edition is the basic one; Professional adds more tools and Enterprise supports team development."},
+  {"id": 19, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "Which of the following is an example of an event in VB 6.0?", "options": ["BackColor", "Caption", "Visible", "Click"], "answer": "D", "explanation": "Click is an event that occurs when the user clicks an object; the others are properties."},
+  {"id": 20, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "The characteristics of an object, such as its colour, size and caption, are called its:", "options": ["Procedures", "Methods", "Properties", "Events"], "answer": "C", "explanation": "Properties describe the object; methods are the actions it can perform and events are the things that happen to it."},
+  {"id": 21, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "Which term describes the actions that an object can perform, such as Move or SetFocus?", "options": ["Properties", "Events", "Attributes", "Methods"], "answer": "D", "explanation": "A method is a built-in action of an object."},
+  {"id": 22, "level": "Basic", "type": "Concept", "topic": "VB 6.0 Environment", "question": "The 'Prompt To Save Changes' setting on the Environment tab of Tools &gt; Options decides:", "options": ["What happens to unsaved changes when a program is run", "How the grid is displayed on the form", "Which windows are docked when the IDE starts up", "Which project type is opened first by the IDE"], "answer": "A", "explanation": "The Environment tab offers Save Changes, Prompt To Save Changes and Don't Save Changes for when the program starts."},
+  {"id": 23, "level": "Basic", "type": "Concept", "topic": "Menu Bar", "question": "Which menu contains the command to make an executable (.exe) file of the project?", "options": ["Tools", "File", "Run", "Project"], "answer": "B", "explanation": "File &gt; Make Project1.exe creates the executable file."},
+  {"id": 24, "level": "Basic", "type": "Concept", "topic": "Menu Bar", "question": "Which menu contains the Components and References commands?", "options": ["View", "Project", "Add-Ins", "Tools"], "answer": "B", "explanation": "The Project menu also holds Add Form, Add Module and Project Properties."},
+  {"id": 25, "level": "Basic", "type": "Concept", "topic": "Menu Bar", "question": "The Menu Editor is opened from which menu?", "options": ["Format", "Project", "Edit", "Tools"], "answer": "D", "explanation": "Tools &gt; Menu Editor (Ctrl+E) opens the Menu Editor; a Standard toolbar button also opens it."},
+  {"id": 26, "level": "Basic", "type": "Concept", "topic": "Menu Bar", "question": "Align, Make Same Size and Center in Form are commands of the:", "options": ["Format menu", "View menu", "Tools menu", "Edit menu"], "answer": "A", "explanation": "The Format menu arranges controls on the form."},
+  {"id": 27, "level": "Basic", "type": "Concept", "topic": "Menu Bar", "question": "Start, Break and End belong to which menu?", "options": ["File", "Window", "Run", "Debug"], "answer": "C", "explanation": "The Run menu controls execution of the application from the IDE."},
+  {"id": 28, "level": "Basic", "type": "Concept", "topic": "Menu Bar", "question": "Which menu is used to show or hide IDE windows such as the Toolbox and Project Explorer?", "options": ["Window", "Format", "Tools", "View"], "answer": "D", "explanation": "The Window menu only arranges open windows (Cascade, Tile); the View menu opens or hides them."},
+  {"id": 29, "level": "Basic", "type": "Concept", "topic": "Menu Bar", "question": "Toggle Breakpoint and Step Into are commands of the:", "options": ["Run menu", "Tools menu", "Debug menu", "Edit menu"], "answer": "C", "explanation": "The Debug menu gathers commands for stepping through and testing code."},
+  {"id": 30, "level": "Basic", "type": "Concept", "topic": "Menu Bar", "question": "Undo, Cut, Copy, Paste and Find are available in which menu?", "options": ["View", "File", "Edit", "Format"], "answer": "C", "explanation": "The Edit menu has the standard editing commands."},
+  {"id": 31, "level": "Basic", "type": "Identification", "topic": "Menu Bar", "question": "Which of the following is NOT a menu on the VB 6.0 menu bar?", "options": ["Add-Ins", "Format", "Debug", "Insert"], "answer": "D", "explanation": "The menu bar has File, Edit, View, Project, Format, Debug, Run, Query, Diagram, Tools, Add-Ins, Window and Help."},
+  {"id": 32, "level": "Basic", "type": "Concept", "topic": "Menu Bar", "question": "The Add-In Manager command is available under which menu?", "options": ["Project menu", "Window menu", "Tools menu", "Add-Ins menu"], "answer": "D", "explanation": "Add-Ins &gt; Add-In Manager loads or unloads add-ins."},
+  {"id": 33, "level": "Basic", "type": "Concept", "topic": "Menu Bar", "question": "The Window menu of the VB 6.0 menu bar is mainly used to:", "options": ["Add new forms to the project", "Change the properties of controls", "Arrange and switch between open windows", "Set the start-up object"], "answer": "C", "explanation": "It provides Tile, Cascade and a list of open windows."},
+  {"id": 34, "level": "Intermediate", "type": "Application", "topic": "Menu Bar", "question": "Which function key runs the application from within the IDE?", "options": ["F5", "F2", "F7", "F4"], "answer": "A", "explanation": "F5 = Run &gt; Start. F4 opens the Properties Window, F2 the Object Browser and F7 the Code window."},
+  {"id": 35, "level": "Basic", "type": "Concept", "topic": "Toolbars", "question": "Which toolbar is displayed by default in the VB 6.0 IDE?", "options": ["Form Editor toolbar", "Standard toolbar", "Debug toolbar", "Edit toolbar"], "answer": "B", "explanation": "The Standard toolbar appears below the menu bar by default."},
+  {"id": 36, "level": "Basic", "type": "Identification", "topic": "Toolbars", "question": "Which of the following is NOT a built-in VB 6.0 toolbar?", "options": ["Debug toolbar", "Form Editor toolbar", "Standard toolbar", "Formatting toolbar"], "answer": "D", "explanation": "The four built-in toolbars are Standard, Edit, Debug and Form Editor."},
+  {"id": 37, "level": "Basic", "type": "Concept", "topic": "Toolbars", "question": "Bring to Front, Send to Back, Align and Center buttons appear on which toolbar?", "options": ["Form Editor toolbar", "Standard toolbar", "Debug toolbar", "Edit toolbar"], "answer": "A", "explanation": "The Form Editor toolbar offers layout tools for controls on the form."},
+  {"id": 38, "level": "Basic", "type": "Concept", "topic": "Toolbars", "question": "Step Into, Step Over and Step Out buttons are found on which toolbar?", "options": ["Standard toolbar", "Form Editor toolbar", "Edit toolbar", "Debug toolbar"], "answer": "D", "explanation": "The Debug toolbar supports testing and tracing a program."},
+  {"id": 39, "level": "Basic", "type": "Concept", "topic": "Toolbars", "question": "Comment Block, Uncomment Block, Indent and Outdent buttons are found on which toolbar?", "options": ["Edit toolbar", "Standard toolbar", "Form Editor toolbar", "Debug toolbar"], "answer": "A", "explanation": "The Edit toolbar contains tools that help in working with code."},
+  {"id": 40, "level": "Intermediate", "type": "Application", "topic": "Toolbars", "question": "Which path displays a hidden toolbar such as the Debug toolbar?", "options": ["Tools &gt; Toolbars &gt; Debug", "Project &gt; Toolbars &gt; Debug", "Window &gt; Toolbars &gt; Debug", "View &gt; Toolbars &gt; Debug"], "answer": "D", "explanation": "View &gt; Toolbars lists all toolbars; right-clicking the toolbar area does the same."},
+  {"id": 41, "level": "Basic", "type": "Concept", "topic": "Toolbars", "question": "Which command is used to add or remove buttons on a toolbar?", "options": ["Float", "Customize", "Align", "Dock"], "answer": "B", "explanation": "View &gt; Toolbars &gt; Customize lets you add, remove or create toolbars."},
+  {"id": 42, "level": "Basic", "type": "Concept", "topic": "Toolbars", "question": "The position and size values on the right side of the Standard toolbar are shown by default in:", "options": ["Pixels", "Centimetres", "Points", "Twips"], "answer": "D", "explanation": "The default unit for a form is the twip; 1440 twips = 1 inch."},
+  {"id": 43, "level": "Basic", "type": "Identification", "topic": "Toolbars", "question": "Which Standard toolbar button is used to create menus for an application?", "options": ["Visual Component Manager", "Menu Editor", "Object Browser", "Data View Window"], "answer": "B", "explanation": "The Menu Editor button opens the same dialog as Tools &gt; Menu Editor."},
+  {"id": 44, "level": "Basic", "type": "Concept", "topic": "Toolbars", "question": "The Start, Break and End buttons on the Standard toolbar are used to:", "options": ["Add new forms to the project", "Change the form's start-up position", "Align controls on the form", "Control the execution of the application"], "answer": "D", "explanation": "They are shortcuts for the Run menu commands."},
+  {"id": 45, "level": "Basic", "type": "Concept", "topic": "Menu Bar", "question": "Which File menu command adds a second project to the current one to form a project group?", "options": ["New Project", "Open Project", "Add Project", "Save Project"], "answer": "C", "explanation": "Add Project places another project in the same Project Explorer under a Project Group."},
+  {"id": 46, "level": "Intermediate", "type": "Application", "topic": "Menu Bar", "question": "What is the shortcut key combination for the Open Project command?", "options": ["Ctrl+P", "Ctrl+T", "Ctrl+R", "Ctrl+O"], "answer": "D", "explanation": "Ctrl+O opens a project; Ctrl+N creates a new one, Ctrl+R opens Project Explorer and Ctrl+T opens Components."},
+  {"id": 47, "level": "Intermediate", "type": "Application", "topic": "Menu Bar", "question": "Which function key executes the Step Into command while debugging?", "options": ["F2", "F5", "F9", "F8"], "answer": "D", "explanation": "F8 = Step Into; F9 toggles a breakpoint and F5 runs the program."},
+  {"id": 48, "level": "Intermediate", "type": "Application", "topic": "Menu Bar", "question": "Which key combination pauses a running program and switches the IDE to break mode?", "options": ["Ctrl+Break", "Ctrl+Q", "Ctrl+Alt+Del", "Shift+F5"], "answer": "A", "explanation": "Ctrl+Break is the shortcut for Run &gt; Break."},
+  {"id": 49, "level": "Basic", "type": "Concept", "topic": "Menu Bar", "question": "Which Project menu command adds a code-only file that is saved with a .bas extension?", "options": ["Add Form", "Add Class Module", "Add MDI Form", "Add Module"], "answer": "D", "explanation": "A standard module has no form and is saved as a .bas file."},
+  {"id": 50, "level": "Basic", "type": "Concept", "topic": "Menu Bar", "question": "Which menu contains the 'About Microsoft Visual Basic' command?", "options": ["Window", "Tools", "Help", "Add-Ins"], "answer": "C", "explanation": "The Help menu gives access to the documentation and version information."},
+  {"id": 51, "level": "Basic", "type": "Concept", "topic": "Menu Bar", "question": "Which View menu command switches from the Code window back to the form's design?", "options": ["Code", "Toolbox", "Object", "Properties Window"], "answer": "C", "explanation": "View &gt; Object (Shift+F7) shows the form in the Form Designer; View &gt; Code (F7) shows its Code window."},
+  {"id": 52, "level": "Basic", "type": "Concept", "topic": "Menu Bar", "question": "A menu command followed by an ellipsis (...) indicates that it:", "options": ["Has no keyboard shortcut assigned", "Opens a dialog box for more information", "Has a submenu with more commands", "Is currently disabled and cannot be used"], "answer": "B", "explanation": "A triangle arrow indicates a submenu, whereas an ellipsis indicates a dialog box."},
+  {"id": 53, "level": "Basic", "type": "Identification", "topic": "Toolbars", "question": "Which of the following has its own button on the Standard toolbar?", "options": ["Locals Window", "Immediate Window", "Watch Window", "Object Browser"], "answer": "D", "explanation": "The Standard toolbar has buttons for Project Explorer, Properties Window, Form Layout Window, Object Browser and Toolbox."},
+  {"id": 54, "level": "Basic", "type": "Concept", "topic": "Toolbars", "question": "The drop-down arrow next to the Add Form button of the Standard toolbar is used to:", "options": ["Open the list of recently used projects", "Switch between the design and run modes", "Add other items such as a module or MDI form to the project", "Change the position of the toolbar on screen"], "answer": "C", "explanation": "The button adds a new form; its drop-down list offers other component types."},
+  {"id": 55, "level": "Basic", "type": "Concept", "topic": "Toolbars", "question": "A toolbar that is attached to an edge of the IDE window is said to be:", "options": ["Docked", "Hidden", "Floating", "Locked"], "answer": "A", "explanation": "A toolbar dragged away from the edge becomes a floating toolbar with its own title bar."},
+  {"id": 56, "level": "Intermediate", "type": "Application", "topic": "Toolbars", "question": "Which tab of the Customize dialog box is used to drag new buttons onto a toolbar?", "options": ["Commands", "Options", "Menus", "Toolbars"], "answer": "A", "explanation": "The Commands tab lists commands by category; the Toolbars tab shows, hides or creates toolbars."},
+  {"id": 57, "level": "Basic", "type": "Concept", "topic": "Toolbars", "question": "The two sets of numbers at the right end of the Standard toolbar show the selected control's:", "options": ["Name and Caption of the control", "Position (Left, Top) and size (Width, Height)", "Font name and font size only", "Colour and border style"], "answer": "B", "explanation": "The first pair gives the location of the control on the form and the second pair gives its dimensions."},
+  {"id": 58, "level": "Basic", "type": "Concept", "topic": "Toolbars", "question": "What appears when the mouse pointer pauses over a toolbar button?", "options": ["A list of the button's properties", "The code written for the button", "A ToolTip showing the button's name", "The file name of the button's icon"], "answer": "C", "explanation": "ToolTips help identify the button without clicking it."},
+  {"id": 59, "level": "Basic", "type": "Concept", "topic": "Menu Bar", "question": "A shortcut (context) menu in the IDE appears when the user:", "options": ["Double-clicks the title bar", "Right-clicks an item", "Presses the Esc key", "Presses the Tab key"], "answer": "B", "explanation": "Right-clicking an item such as a control, a form or a toolbar shows commands relevant to that item."},
+  {"id": 60, "level": "Basic", "type": "Concept", "topic": "Tool Box", "question": "What does the Toolbox in VB 6.0 contain?", "options": ["Icons of controls that can be placed on a form", "A tree of all files in the project", "The menus of the IDE", "A list of properties of the selected object"], "answer": "A", "explanation": "The Toolbox holds controls such as Label, TextBox and CommandButton; they appear on the General tab by default."},
+  {"id": 61, "level": "Basic", "type": "Concept", "topic": "Tool Box", "question": "The Pointer tool in the Toolbox is used to:", "options": ["Select, move and resize controls on the form", "Draw rectangles, ovals and circles on the form", "Display static text and captions on the form", "Generate time-based events at fixed intervals"], "answer": "A", "explanation": "The Pointer is a selection tool, not a control; it creates nothing on the form."},
+  {"id": 62, "level": "Basic", "type": "Identification", "topic": "Tool Box", "question": "Which control displays text that the user cannot edit directly at run time?", "options": ["ComboBox", "ListBox", "TextBox", "Label"], "answer": "D", "explanation": "A Label is used for captions and messages, whereas a TextBox accepts typed input."},
+  {"id": 63, "level": "Basic", "type": "Identification", "topic": "Tool Box", "question": "Which control is mainly used to accept typed input from the user?", "options": ["TextBox", "Frame", "Shape", "Label"], "answer": "A", "explanation": "The TextBox holds the text the user enters in its Text property."},
+  {"id": 64, "level": "Intermediate", "type": "Scenario", "topic": "Tool Box", "question": "Two independent groups of option buttons are needed on one form so that a choice in one group does not affect the other. Each group should be placed in a:", "options": ["Line", "Timer", "Label", "Frame"], "answer": "D", "explanation": "Option buttons in the same container work as one group; each Frame provides its own container."},
+  {"id": 65, "level": "Basic", "type": "Identification", "topic": "Tool Box", "question": "Which control lets the user select only one option from a group of choices?", "options": ["OptionButton", "CheckBox", "HScrollBar", "CommandButton"], "answer": "A", "explanation": "OptionButtons in the same container are mutually exclusive."},
+  {"id": 66, "level": "Basic", "type": "Identification", "topic": "Tool Box", "question": "Which control allows several independent True/False selections?", "options": ["Timer", "CheckBox", "OptionButton", "Image"], "answer": "B", "explanation": "Each CheckBox can be ticked or cleared without affecting the others."},
+  {"id": 67, "level": "Basic", "type": "Identification", "topic": "Tool Box", "question": "Which Toolbox control is invisible at run time?", "options": ["Label", "Frame", "Timer", "Shape"], "answer": "C", "explanation": "The Timer appears as an icon on the form at design time but is not visible when the program runs."},
+  {"id": 68, "level": "Basic", "type": "Identification", "topic": "Tool Box", "question": "Which control displays the list of available disk drives?", "options": ["FileListBox", "DriveListBox", "ComboBox", "DirListBox"], "answer": "B", "explanation": "DriveListBox, DirListBox and FileListBox show drives, folders and files respectively."},
+  {"id": 69, "level": "Basic", "type": "Identification", "topic": "Tool Box", "question": "Which control draws rectangles, ovals and circles without any code?", "options": ["Image", "Frame", "Shape", "Line"], "answer": "C", "explanation": "The Shape control's Shape property selects the figure displayed."},
+  {"id": 70, "level": "Basic", "type": "Identification", "topic": "Tool Box", "question": "Which control draws a straight line on a form at design time?", "options": ["Image", "Frame", "Line", "Shape"], "answer": "C", "explanation": "The Line control draws straight lines; the Shape control draws closed figures."},
+  {"id": 71, "level": "Basic", "type": "Identification", "topic": "Tool Box", "question": "Which control combines a text box and a drop-down list?", "options": ["ComboBox", "Frame", "DirListBox", "ListBox"], "answer": "A", "explanation": "A ComboBox lets the user type a value or pick one from the list."},
+  {"id": 72, "level": "Basic", "type": "Identification", "topic": "Tool Box", "question": "Which Toolbox control is used to link or embed objects from other Windows applications?", "options": ["Image", "Shape", "PictureBox", "OLE"], "answer": "D", "explanation": "The OLE container control holds linked or embedded objects."},
+  {"id": 73, "level": "Basic", "type": "Identification", "topic": "Tool Box", "question": "Which control is used to start an action when the user clicks it?", "options": ["CommandButton", "Frame", "Label", "Shape"], "answer": "A", "explanation": "The CommandButton's Click event normally holds the action to be performed."},
+  {"id": 74, "level": "Basic", "type": "Concept", "topic": "Tool Box", "question": "On which Toolbox tab do the standard (intrinsic) controls appear by default?", "options": ["Controls", "Standard", "General", "Default"], "answer": "C", "explanation": "The General tab holds the built-in controls; more tabs can be added by right-clicking the Toolbox."},
+  {"id": 75, "level": "Intermediate", "type": "Scenario", "topic": "Tool Box", "question": "The Toolbox has disappeared from the IDE. How can it be displayed again?", "options": ["View &gt; Toolbox", "Format &gt; Toolbox", "Project &gt; Toolbox", "Tools &gt; Toolbox"], "answer": "A", "explanation": "The View menu or the Toolbox button on the Standard toolbar re-opens it."},
+  {"id": 76, "level": "Intermediate", "type": "Application", "topic": "Tool Box", "question": "Which command is used to add extra controls to the Toolbox?", "options": ["Project &gt; Components", "Project &gt; References", "File &gt; Add Project", "Tools &gt; Options"], "answer": "A", "explanation": "The Components dialog (Ctrl+T) lists additional controls; References is used for code libraries, not Toolbox controls."},
+  {"id": 77, "level": "Basic", "type": "Identification", "topic": "Tool Box", "question": "Which control is used to scroll horizontally through a range of values?", "options": ["DirListBox", "Timer", "HScrollBar", "VScrollBar"], "answer": "C", "explanation": "HScrollBar is horizontal and VScrollBar is vertical."},
+  {"id": 78, "level": "Basic", "type": "Concept", "topic": "Tool Box", "question": "Apart from the Pointer, how many intrinsic controls does the default Toolbox of a Standard EXE project contain?", "options": ["20", "24", "12", "16"], "answer": "A", "explanation": "The default Toolbox has the Pointer and 20 intrinsic controls, from PictureBox to OLE."},
+  {"id": 79, "level": "Intermediate", "type": "Application", "topic": "Tool Box", "question": "Which Toolbox shortcut menu command creates a new tab to group controls?", "options": ["Add Section", "Add Group", "Add Tab", "New Page"], "answer": "C", "explanation": "Right-click the Toolbox and choose Add Tab; Components adds extra controls."},
+  {"id": 80, "level": "Basic", "type": "Concept", "topic": "Tool Box", "question": "Controls of the same type that share one name but have different Index values form a:", "options": ["Control library", "Control array", "Property list", "Project group"], "answer": "B", "explanation": "In a control array the elements are identified by their Index property."},
+  {"id": 81, "level": "Basic", "type": "Concept", "topic": "Tool Box", "question": "Which Toolbox control can hold other controls inside it?", "options": ["Label", "Frame", "Shape", "Line"], "answer": "B", "explanation": "A Frame is a container; PictureBox can also act as a container."},
+  {"id": 82, "level": "Advanced", "type": "Tricky", "topic": "Tool Box", "question": "Which Style setting of a ComboBox lets the user choose from the list only and not type?", "options": ["2 - Dropdown List", "3 - Fixed List", "1 - Simple Combo", "0 - Dropdown Combo"], "answer": "A", "explanation": "Style 0 allows typing and a drop-down list, style 1 shows the list always, and style 2 allows only selection."},
+  {"id": 83, "level": "Intermediate", "type": "Application", "topic": "Tool Box", "question": "Which control must be added through the Components dialog to show the standard Open or Save dialog boxes?", "options": ["DriveListBox control", "Timer control", "OLE control", "Microsoft Common Dialog Control"], "answer": "D", "explanation": "The Common Dialog control is not in the default Toolbox and has to be added using Project &gt; Components."},
+  {"id": 84, "level": "Basic", "type": "Identification", "topic": "Tool Box", "question": "Which control automatically shows a scroll bar when its items do not fit in its height?", "options": ["Shape", "Frame", "ListBox", "Label"], "answer": "C", "explanation": "A ListBox displays a vertical scroll bar when the list is longer than the control."},
+  {"id": 85, "level": "Basic", "type": "Concept", "topic": "Project Explorer", "question": "Which window shows the forms and modules that make up the current project?", "options": ["Form Layout window", "Properties Window", "Toolbox", "Project Explorer"], "answer": "D", "explanation": "Project Explorer displays the components of a project and helps users move between them."},
+  {"id": 86, "level": "Basic", "type": "Concept", "topic": "Project Explorer", "question": "Which shortcut key combination opens the Project Explorer?", "options": ["Ctrl+E", "Ctrl+P", "F4", "Ctrl+R"], "answer": "D", "explanation": "Ctrl+R opens Project Explorer; F4 opens Properties and Ctrl+E opens the Menu Editor."},
+  {"id": 87, "level": "Basic", "type": "Identification", "topic": "Project Explorer", "question": "Which three buttons appear at the top of the Project Explorer?", "options": ["Run, Break, End the program", "Add Form, Add Module, Save Project", "View Code, View Object, Toggle Folders", "Cut, Copy, Paste and Delete"], "answer": "C", "explanation": "These buttons open the code, open the form design, and change how items are grouped."},
+  {"id": 88, "level": "Intermediate", "type": "Application", "topic": "Project Explorer", "question": "Which Project Explorer button opens the selected form in the Form Designer?", "options": ["Toggle Folders", "View Code", "View Object", "Save Project"], "answer": "C", "explanation": "View Object shows the visual form; View Code shows its code window."},
+  {"id": 89, "level": "Basic", "type": "Concept", "topic": "Project Explorer", "question": "What does the Toggle Folders button do in Project Explorer?", "options": ["Sorts files by date", "Creates a new folder on the disk for the project", "Locks the selected form against any further editing", "Switches between a folder-wise view and a plain list of items"], "answer": "D", "explanation": "Items can be grouped under Forms, Modules and so on, or shown as a single list."},
+  {"id": 90, "level": "Basic", "type": "Concept", "topic": "Project Explorer", "question": "A form saved from VB 6.0 gets which file extension?", "options": [".frm", ".bas", ".vbp", ".cls"], "answer": "A", "explanation": ".frm = form, .vbp = project, .bas = standard module, .cls = class module."},
+  {"id": 91, "level": "Basic", "type": "Concept", "topic": "Project Explorer", "question": "The project file of a Standard EXE project has the extension:", "options": [".vbp", ".vbg", ".exe", ".frx"], "answer": "A", "explanation": ".vbp stores the list of items and settings of a project; .vbg belongs to a project group."},
+  {"id": 92, "level": "Basic", "type": "Concept", "topic": "Project Explorer", "question": "Which file extension is used to save a standard module?", "options": [".cls", ".ctl", ".bas", ".frm"], "answer": "C", "explanation": "Standard modules are saved as .bas files."},
+  {"id": 93, "level": "Advanced", "type": "Tricky", "topic": "Project Explorer", "question": "Which file is created automatically with a form to hold binary data such as pictures and icons?", "options": [".vbw", ".bas", ".res", ".frx"], "answer": "D", "explanation": "The .frx file stores binary data of a form and must be kept together with the .frm file."},
+  {"id": 94, "level": "Basic", "type": "Concept", "topic": "Project Explorer", "question": "When more than one project is loaded at the same time, the top node in Project Explorer is called:", "options": ["Project Folder", "Project Group", "Application Set", "Workspace"], "answer": "B", "explanation": "A project group can be saved as a .vbg file."},
+  {"id": 95, "level": "Basic", "type": "Identification", "topic": "Project Explorer", "question": "Which of the following is NOT displayed in the Project Explorer?", "options": ["Class modules", "Standard modules and class modules", "Property values of the selected control", "Forms"], "answer": "C", "explanation": "Property values appear in the Properties Window, not in Project Explorer."},
+  {"id": 96, "level": "Advanced", "type": "Tricky", "topic": "Project Explorer", "question": "What happens when 'Remove Form1' is chosen from the Project Explorer shortcut menu?", "options": ["Form1 leaves the project but its file stays on disk", "Form1 is hidden but stays in the project", "Form1 is permanently deleted from the disk", "Form1 is moved to the Recycle Bin"], "answer": "A", "explanation": "Remove only takes the form out of the project; the .frm file is not deleted."},
+  {"id": 97, "level": "Intermediate", "type": "Application", "topic": "Project Explorer", "question": "Which dialog box is used to choose the Startup Object, i.e. the form shown first at run time?", "options": ["References", "Project Properties", "Properties Window", "Components"], "answer": "B", "explanation": "Project &gt; Project1 Properties &gt; General tab &gt; Startup Object."},
+  {"id": 98, "level": "Basic", "type": "Concept", "topic": "Project Explorer", "question": "What is the default name of a new Standard EXE project shown in Project Explorer?", "options": ["Standard1", "VBProject1", "Application1", "Project1"], "answer": "D", "explanation": "A new project is named Project1 and its first form Form1."},
+  {"id": 99, "level": "Intermediate", "type": "Application", "topic": "Project Explorer", "question": "What is the quickest way to open a form's design from the Project Explorer?", "options": ["Right-click the project and choose Make", "Press F4", "Double-click the form's name", "Press F5 to run the project"], "answer": "C", "explanation": "Double-clicking a form displays it in the Form Designer."},
+  {"id": 100, "level": "Advanced", "type": "Tricky", "topic": "Project Explorer", "question": "Which file stores the IDE workspace information of a project, such as which windows were open?", "options": [".vbw", ".vbp", ".frx", ".vbg"], "answer": "A", "explanation": ".vbw is the project workspace file; .vbp is the project file itself."},
+  {"id": 101, "level": "Intermediate", "type": "Application", "topic": "Project Explorer", "question": "To add a new form using Project Explorer, you right-click and choose:", "options": ["Insert &gt; Form", "Add &gt; Form", "Create &gt; Form", "New &gt; Form"], "answer": "B", "explanation": "The Add submenu of the shortcut menu includes Form, MDI Form, Module and Class Module."},
+  {"id": 102, "level": "Intermediate", "type": "Application", "topic": "Project Explorer", "question": "Which Project Explorer shortcut menu command saves the selected form under a different file name?", "options": ["Save Project As", "Remove Form1", "Make Form1", "Save Form1 As"], "answer": "D", "explanation": "Save Form1 As writes a copy of the form file; Remove Form1 only takes it out of the project."},
+  {"id": 103, "level": "Basic", "type": "Identification", "topic": "Project Explorer", "question": "Which of the following is a folder name seen in the Project Explorer folder view?", "options": ["Properties", "Controls", "Toolbox Items", "Related Documents"], "answer": "D", "explanation": "Project Explorer groups items under Forms, Modules, Class Modules, User Controls and Related Documents."},
+  {"id": 104, "level": "Advanced", "type": "Tricky", "topic": "Project Explorer", "question": "How many MDI forms can a single VB 6.0 project contain?", "options": ["Two", "One", "Three", "Any number"], "answer": "B", "explanation": "A project can have only one MDI form but many ordinary forms."},
+  {"id": 105, "level": "Intermediate", "type": "Application", "topic": "Project Explorer", "question": "In a project group, which shortcut command makes a particular project start first when the program is run?", "options": ["Add as First", "Make Default", "Start Project", "Set as Start Up"], "answer": "D", "explanation": "The start-up project is shown in bold in Project Explorer."},
+  {"id": 106, "level": "Intermediate", "type": "Application", "topic": "Project Explorer", "question": "Which tab of the Add Form dialog box is used to add a form that is already saved on disk?", "options": ["Existing", "Recent", "New", "Saved"], "answer": "A", "explanation": "The New tab creates a fresh form from a template; the Existing tab browses for a saved .frm file."},
+  {"id": 107, "level": "Basic", "type": "Concept", "topic": "Properties Window", "question": "What is the Properties Window used for?", "options": ["Choosing the controls to be drawn on the form", "Listing the forms and modules of the project", "Setting where the form appears on the screen", "Viewing and setting design-time properties of the selected object"], "answer": "D", "explanation": "It lists the properties of the selected form or control and their current values."},
+  {"id": 108, "level": "Basic", "type": "Identification", "topic": "Properties Window", "question": "Which part of the Properties Window lets you select any object of the current form from a list?", "options": ["Tab selector", "Object box", "Description pane", "Property list"], "answer": "B", "explanation": "The drop-down Object box at the top lists the form and all its controls."},
+  {"id": 109, "level": "Advanced", "type": "Tricky", "topic": "Properties Window", "question": "How many tabs does the Properties Window have?", "options": ["One - Alphabetic only", "Two - Alphabetic and Categorized", "Two - Properties and Methods", "Three - Alphabetic, Categorized and Events"], "answer": "B", "explanation": "VB 6.0 has no Events tab in this window; it shows only Alphabetic and Categorized views."},
+  {"id": 110, "level": "Basic", "type": "Concept", "topic": "Properties Window", "question": "Which tab groups properties under headings such as Appearance, Behavior and Font?", "options": ["Categorized", "Alphabetic", "Events", "Methods"], "answer": "A", "explanation": "The Categorized tab arranges properties by category."},
+  {"id": 111, "level": "Basic", "type": "Concept", "topic": "Properties Window", "question": "What does the description pane at the bottom of the Properties Window show?", "options": ["The event code of the selected control", "The file name of the form on the disk", "The list of project components", "A short description of the selected property"], "answer": "D", "explanation": "It explains the property currently highlighted."},
+  {"id": 112, "level": "Advanced", "type": "Tricky", "topic": "Properties Window", "question": "On the Alphabetic tab, the (Name) property appears at the top because:", "options": ["VB always places the most important property first", "Names starting with a parenthesis sort before letters", "It was the last property changed", "It is the only property that cannot be edited"], "answer": "B", "explanation": "The opening parenthesis sorts ahead of alphabetic characters."},
+  {"id": 113, "level": "Basic", "type": "Identification", "topic": "Properties Window", "question": "Which property sets the text shown in a form's title bar?", "options": ["Caption", "Title", "Name", "Text"], "answer": "A", "explanation": "Caption is the visible text; Name identifies the form in code."},
+  {"id": 114, "level": "Basic", "type": "Identification", "topic": "Properties Window", "question": "Which property holds the text typed into a TextBox?", "options": ["Name", "Caption", "Text", "Value"], "answer": "C", "explanation": "A TextBox uses Text, whereas a Label or CommandButton uses Caption."},
+  {"id": 115, "level": "Basic", "type": "Concept", "topic": "Properties Window", "question": "If several controls are selected together, the Properties Window shows:", "options": ["No properties until one control is chosen", "The properties of the first control only", "Only the properties common to all selected controls", "Only the Name and Caption properties"], "answer": "C", "explanation": "A common property can be changed for all selected controls in one step."},
+  {"id": 116, "level": "Intermediate", "type": "Application", "topic": "Properties Window", "question": "Which of the following is a valid name for a control?", "options": ["cmd-Save", "1stText", "Text Box", "txtMarks"], "answer": "D", "explanation": "A name must begin with a letter, contain only letters, digits or underscores, and be at most 40 characters."},
+  {"id": 117, "level": "Basic", "type": "Concept", "topic": "Properties Window", "question": "As per the standard naming convention, which prefix is used for a CommandButton?", "options": ["btn", "cb", "cmd", "com"], "answer": "C", "explanation": "Common prefixes: cmd, txt, lbl, chk, opt, lst, cbo, tmr."},
+  {"id": 118, "level": "Basic", "type": "Identification", "topic": "Properties Window", "question": "Which property sets the colour of the text displayed in a Label?", "options": ["FontColor", "ForeColor", "BackColor", "FillColor"], "answer": "B", "explanation": "ForeColor controls text colour; BackColor controls the background colour."},
+  {"id": 119, "level": "Intermediate", "type": "Application", "topic": "Properties Window", "question": "To hide a control from the user at run time without deleting it, which property is set to False?", "options": ["Visible", "Locked", "TabStop", "Enabled"], "answer": "A", "explanation": "A control with Visible = False is hidden but still exists on the form."},
+  {"id": 120, "level": "Basic", "type": "Concept", "topic": "Properties Window", "question": "Clicking the ellipsis (...) button next to the Font property opens:", "options": ["The Color palette", "The Menu Editor", "The Code window", "The Font dialog box"], "answer": "D", "explanation": "The dialog lets you choose font name, style and size."},
+  {"id": 121, "level": "Advanced", "type": "Tricky", "topic": "Properties Window", "question": "Which property is read-only at run time?", "options": ["Caption", "Name", "Enabled", "Visible"], "answer": "B", "explanation": "The Name property can be set only at design time."},
+  {"id": 122, "level": "Basic", "type": "Identification", "topic": "Properties Window", "question": "Which form property decides whether the Maximize button appears in the title bar?", "options": ["ControlBox", "BorderStyle", "MaxButton", "MinButton"], "answer": "C", "explanation": "MaxButton and MinButton control the Maximize and Minimize buttons separately."},
+  {"id": 123, "level": "Basic", "type": "Concept", "topic": "Properties Window", "question": "What is the default BorderStyle of a new form?", "options": ["2 - Sizable", "0 - None", "1 - Fixed Single", "3 - Fixed Dialog"], "answer": "A", "explanation": "A Sizable border lets the user resize the form."},
+  {"id": 124, "level": "Basic", "type": "Identification", "topic": "Properties Window", "question": "Which property shows a small hint when the mouse pauses over a control?", "options": ["Tag", "MousePointer", "Caption", "ToolTipText"], "answer": "D", "explanation": "ToolTipText holds the hint text shown on hover."},
+  {"id": 125, "level": "Basic", "type": "Identification", "topic": "Properties Window", "question": "Which property decides the order in which controls receive focus when the Tab key is pressed?", "options": ["TabStop", "TabIndex", "Alignment", "Index"], "answer": "B", "explanation": "TabIndex sets the tab order; TabStop = False makes a control skip focus."},
+  {"id": 126, "level": "Basic", "type": "Identification", "topic": "Properties Window", "question": "Which property sets the horizontal distance of a control from the left edge of its container?", "options": ["Top", "Width", "Left", "Align"], "answer": "C", "explanation": "Left and Top give the position of the control; Width and Height give its size."},
+  {"id": 127, "level": "Basic", "type": "Identification", "topic": "Properties Window", "question": "Which property can store extra information about a control without affecting how it looks or works?", "options": ["Tag", "Index", "ToolTipText", "DataField"], "answer": "A", "explanation": "Tag is a free-use property provided for the programmer's own notes."},
+  {"id": 128, "level": "Basic", "type": "Identification", "topic": "Properties Window", "question": "Which property identifies each element of a control array?", "options": ["TabIndex", "Index", "Name", "Tag"], "answer": "B", "explanation": "All elements share the same Name but have different Index values."},
+  {"id": 129, "level": "Basic", "type": "Identification", "topic": "Properties Window", "question": "Which property decides whether the background of a Label is opaque or transparent?", "options": ["FillStyle", "BackStyle", "BackColor", "Appearance"], "answer": "B", "explanation": "BackStyle takes 0 - Transparent or 1 - Opaque."},
+  {"id": 130, "level": "Basic", "type": "Identification", "topic": "Properties Window", "question": "Which property changes the shape of the mouse pointer when it is over a control?", "options": ["MousePointer", "MouseIcon", "Cursor", "DragIcon"], "answer": "A", "explanation": "MousePointer selects a standard pointer shape such as an arrow, hourglass or cross."},
+  {"id": 131, "level": "Basic", "type": "Identification", "topic": "Properties Window", "question": "Which property gives a control a flat or a 3D look?", "options": ["DrawStyle", "BackStyle", "Appearance", "BorderStyle"], "answer": "C", "explanation": "Appearance takes 0 - Flat or 1 - 3D."},
+  {"id": 132, "level": "Basic", "type": "Identification", "topic": "Properties Window", "question": "Which form property decides whether the user can move the form on the screen?", "options": ["WindowState", "Enabled", "Locked", "Moveable"], "answer": "D", "explanation": "Setting Moveable to False prevents the form from being dragged."},
+  {"id": 133, "level": "Advanced", "type": "Tricky", "topic": "Properties Window", "question": "Double-clicking a property whose settings are True and False in the Properties Window will:", "options": ["Open the Code window", "Toggle the value between True and False", "Reset it to its default value", "Display the property's description"], "answer": "B", "explanation": "For properties with a list of values, double-clicking cycles through them."},
+  {"id": 134, "level": "Basic", "type": "Identification", "topic": "Properties Window", "question": "Which property displays a title along the border of a Frame control?", "options": ["Name", "Caption", "Title", "Text"], "answer": "B", "explanation": "A Frame has a Caption property but no Text property."},
+  {"id": 135, "level": "Basic", "type": "Identification", "topic": "Properties Window", "question": "Which TextBox property limits the number of characters that can be typed into it?", "options": ["Text", "SelLength", "MaxLength", "Width"], "answer": "C", "explanation": "MaxLength = 0 means no limit other than the control's own capacity."},
+  {"id": 136, "level": "Basic", "type": "Concept", "topic": "Properties Window", "question": "As per the standard naming convention, which prefix is used for a Form?", "options": ["form", "frm", "fr", "fm"], "answer": "B", "explanation": "Other common prefixes are lbl for Label, txt for TextBox and cmd for CommandButton."},
+  {"id": 137, "level": "Basic", "type": "Concept", "topic": "Form Designer", "question": "Which IDE window is used to design the visual interface of a form?", "options": ["Form Layout window", "Properties Window", "Form Designer", "Project Explorer"], "answer": "C", "explanation": "The Form Designer shows the form with a dotted grid where controls are placed."},
+  {"id": 138, "level": "Basic", "type": "Concept", "topic": "Form Designer", "question": "The dotted grid on a form in the Form Designer appears:", "options": ["At design time only", "At both design time and run time", "At run time only", "Only in break mode"], "answer": "A", "explanation": "The grid helps in aligning controls and is not visible when the program runs."},
+  {"id": 139, "level": "Intermediate", "type": "Application", "topic": "Form Designer", "question": "Where can the display and size of the grid be changed?", "options": ["Tools &gt; Options &gt; General tab", "View &gt; Toolbars", "Format &gt; Lock Controls", "Project &gt; Project1 Properties"], "answer": "A", "explanation": "The General tab has Show Grid, Grid Units and Align Controls to Grid settings."},
+  {"id": 140, "level": "Basic", "type": "Concept", "topic": "Form Designer", "question": "The default grid size in the Form Designer is:", "options": ["60 x 60 twips", "120 x 120 twips", "240 x 240 twips", "1440 x 1440 twips"], "answer": "B", "explanation": "The default grid width and height are both 120 twips."},
+  {"id": 141, "level": "Intermediate", "type": "Application", "topic": "Form Designer", "question": "Double-clicking a control in the Toolbox places that control:", "options": ["At the bottom of the form", "At the centre of the form with its default size", "Next to the previously placed control on the form", "At the top-left corner of the form"], "answer": "B", "explanation": "To choose the position and size yourself, select the tool and drag on the form."},
+  {"id": 142, "level": "Intermediate", "type": "Application", "topic": "Form Designer", "question": "How can a control be drawn at a particular position and size on a form?", "options": ["Select it in the Toolbox, then drag on the form", "Type its size in the Code window", "Double-click it in the Toolbox", "Select it in the Project Explorer and press Enter"], "answer": "A", "explanation": "Dragging with the selected tool defines the control's position and size."},
+  {"id": 143, "level": "Basic", "type": "Concept", "topic": "Form Designer", "question": "Which key can be held while clicking to select multiple controls on a form?", "options": ["Alt", "Ctrl or Shift", "Tab", "Esc"], "answer": "B", "explanation": "You can also drag a selection rectangle with the Pointer around the controls."},
+  {"id": 144, "level": "Basic", "type": "Concept", "topic": "Form Designer", "question": "How many sizing handles appear around a selected control?", "options": ["8", "6", "4", "12"], "answer": "A", "explanation": "Eight handles appear: four at the corners and four at the sides."},
+  {"id": 145, "level": "Advanced", "type": "Tricky", "topic": "Form Designer", "question": "When several controls are selected for alignment, which one is the reference control?", "options": ["The control with hollow white handles", "The largest of the selected controls", "The control with solid dark handles", "The control drawn first on the form"], "answer": "C", "explanation": "Align and Make Same Size use the dominant control, shown with solid handles, as the reference."},
+  {"id": 146, "level": "Intermediate", "type": "Application", "topic": "Form Designer", "question": "Which command prevents controls from being moved or resized accidentally?", "options": ["Tools &gt; Options", "Edit &gt; Select All", "Format &gt; Lock Controls", "Format &gt; Align &gt; To Grid"], "answer": "C", "explanation": "Lock Controls fixes the position and size of all controls on the form."},
+  {"id": 147, "level": "Intermediate", "type": "Scenario", "topic": "Form Designer", "question": "A control is hidden behind another control on the form. Which command brings it forward?", "options": ["Format &gt; Order &gt; Send to Back", "Format &gt; Order &gt; Bring to Front", "Format &gt; Center in Form", "Format &gt; Lock Controls"], "answer": "B", "explanation": "Bring to Front moves the selected control to the top of the Z-order."},
+  {"id": 148, "level": "Intermediate", "type": "Application", "topic": "Form Designer", "question": "Which command makes the selected controls equal in both width and height?", "options": ["Format &gt; Center in Form", "Format &gt; Align &gt; Middles", "Format &gt; Size to Grid", "Format &gt; Make Same Size &gt; Both"], "answer": "D", "explanation": "Make Same Size has Width, Height and Both options; Size to Grid only snaps sizes to the grid."},
+  {"id": 149, "level": "Intermediate", "type": "Application", "topic": "Form Designer", "question": "Which command gives equal horizontal gaps between the selected controls?", "options": ["Format &gt; Horizontal Spacing &gt; Make Equal", "Format &gt; Make Same Size &gt; Width", "Format &gt; Center in Form &gt; Horizontally", "Format &gt; Align &gt; Lefts"], "answer": "A", "explanation": "Horizontal Spacing has Make Equal, Increase, Decrease and Remove."},
+  {"id": 150, "level": "Advanced", "type": "Tricky", "topic": "Form Designer", "question": "Which command places a control exactly in the middle of the form?", "options": ["Format &gt; Align &gt; Centers", "Format &gt; Center in Form", "Format &gt; Order", "Format &gt; Lock Controls"], "answer": "B", "explanation": "Align &gt; Centers lines up controls with each other, not with the form."},
+  {"id": 151, "level": "Advanced", "type": "Tricky", "topic": "Form Designer", "question": "Pasting a copy of a control onto the same form makes VB ask whether you want to:", "options": ["Create a new project", "Rename the form", "Create a control array", "Delete the original control"], "answer": "C", "explanation": "Because the copy has the same name as the original, VB offers to create a control array."},
+  {"id": 152, "level": "Basic", "type": "Concept", "topic": "Form Designer", "question": "Double-clicking a control in the Form Designer opens:", "options": ["The Form Layout window", "The Code window", "The Properties Window", "The Menu Editor"], "answer": "B", "explanation": "The code window opens at the control's default event procedure."},
+  {"id": 153, "level": "Advanced", "type": "Tricky", "topic": "Form Designer", "question": "In the title 'Project1 - Form1 (Form)' of the Form Designer window, 'Form1' is:", "options": ["The name of the EXE file", "The Name of the form", "The Caption of the form", "The name of the project file"], "answer": "B", "explanation": "The title shows the project name, the form's Name and the object type."},
+  {"id": 154, "level": "Intermediate", "type": "Application", "topic": "Form Designer", "question": "Which command snaps the selected controls to the nearest grid points?", "options": ["Format &gt; Align &gt; To Grid", "Format &gt; Center in Form", "Edit &gt; Select All", "Format &gt; Lock Controls"], "answer": "A", "explanation": "To Grid moves each selected control's top-left corner to the nearest grid dot."},
+  {"id": 155, "level": "Intermediate", "type": "Application", "topic": "Form Designer", "question": "Which key combination selects all the controls on a form?", "options": ["Ctrl+F", "Ctrl+S", "Ctrl+Z", "Ctrl+A"], "answer": "D", "explanation": "Ctrl+A is the shortcut for Edit &gt; Select All."},
+  {"id": 156, "level": "Advanced", "type": "Tricky", "topic": "Form Designer", "question": "In the Form Designer, which key combination moves a selected control by one grid unit?", "options": ["Ctrl + an arrow key", "Alt + an arrow key", "Tab + an arrow key", "Shift + an arrow key"], "answer": "A", "explanation": "Ctrl + arrow moves the control; Shift + arrow resizes it by one grid unit."},
+  {"id": 157, "level": "Intermediate", "type": "Scenario", "topic": "Form Designer", "question": "A TextBox already on the form is dragged over a Frame, but it does not become part of the Frame. How can it be made to belong to the Frame?", "options": ["Rename it with the frm prefix", "Press Ctrl+A over the Frame", "Set its Container property to Frame", "Cut it, select the Frame and paste it"], "answer": "D", "explanation": "A control becomes a child only if it is drawn on the Frame or pasted into a selected Frame."},
+  {"id": 158, "level": "Advanced", "type": "Tricky", "topic": "Form Designer", "question": "Setting a form's BorderStyle to 0 - None removes:", "options": ["Only the grid", "Only the title text", "Only the Maximize button", "The borders and the title bar"], "answer": "D", "explanation": "With no border the form has no title bar, no control box and cannot be resized."},
+  {"id": 159, "level": "Intermediate", "type": "Application", "topic": "Form Designer", "question": "Which form property decides whether the form's button appears on the Windows taskbar?", "options": ["ShowInTaskbar", "WindowState", "Visible", "ControlBox"], "answer": "A", "explanation": "Setting ShowInTaskbar to False hides the form's taskbar button."},
+  {"id": 160, "level": "Advanced", "type": "Tricky", "topic": "Form Designer", "question": "When a form itself is selected in the Form Designer, how many sizing handles are displayed?", "options": ["8", "3", "2", "4"], "answer": "B", "explanation": "A form shows handles only on the right edge, the bottom edge and the bottom-right corner, unlike a control, which shows 8."},
+  {"id": 161, "level": "Intermediate", "type": "Application", "topic": "Form Designer", "question": "Which command lines up the left edges of the selected controls with the reference control?", "options": ["Format &gt; Align &gt; Tops", "Format &gt; Align &gt; Lefts", "Format &gt; Align &gt; Centers", "Format &gt; Size to Grid"], "answer": "B", "explanation": "Lefts aligns the left edges; Tops aligns the top edges and Centers aligns the vertical centres."},
+  {"id": 162, "level": "Basic", "type": "Concept", "topic": "Form Layout", "question": "What is the main purpose of the Form Layout window?", "options": ["To list all the controls placed on the form", "To set the font of all the controls", "To set the initial position of a form on the screen", "To save the forms of the project to disk"], "answer": "C", "explanation": "It shows where the form will appear on the screen when the application runs."},
+  {"id": 163, "level": "Basic", "type": "Identification", "topic": "Form Layout", "question": "The Form Layout window displays:", "options": ["A palette of controls to draw on the form", "A miniature screen with a small image of the form", "A tree of forms and modules of the project", "A list of property names with their values"], "answer": "B", "explanation": "The small form can be dragged to a new position on the miniature screen."},
+  {"id": 164, "level": "Intermediate", "type": "Application", "topic": "Form Layout", "question": "Which command opens the Form Layout window?", "options": ["Format &gt; Form Layout", "Project &gt; Form Layout", "View &gt; Form Layout Window", "Tools &gt; Form Layout"], "answer": "C", "explanation": "A Standard toolbar button also opens it."},
+  {"id": 165, "level": "Basic", "type": "Concept", "topic": "Form Layout", "question": "Which StartUpPosition setting opens a form at the centre of the screen?", "options": ["2 - CenterScreen", "3 - Windows Default", "1 - CenterOwner", "0 - Manual"], "answer": "A", "explanation": "The options are 0 Manual, 1 CenterOwner, 2 CenterScreen and 3 Windows Default."},
+  {"id": 166, "level": "Basic", "type": "Concept", "topic": "Form Layout", "question": "Which Form Layout feature shows how the form will look at different screen resolutions?", "options": ["Layout Wizard", "Grid Lines", "Zoom Tool", "Resolution Guides"], "answer": "D", "explanation": "Right-click in the Form Layout window and choose Resolution Guides."},
+  {"id": 167, "level": "Basic", "type": "Concept", "topic": "Form Layout", "question": "What is the default StartUpPosition of a new form?", "options": ["2 - CenterScreen", "3 - Windows Default", "0 - Manual", "1 - CenterOwner"], "answer": "B", "explanation": "With Windows Default, Windows decides where the form appears."},
+  {"id": 168, "level": "Intermediate", "type": "Scenario", "topic": "Form Layout", "question": "A project has three forms and each must open at a different screen position, without writing code. Which IDE window helps most?", "options": ["Form Designer", "Project Explorer", "Form Layout window", "Toolbox"], "answer": "C", "explanation": "The start-up position of each form can be dragged into place in the Form Layout window."},
+  {"id": 169, "level": "Advanced", "type": "Tricky", "topic": "Form Layout", "question": "The position set in the Form Layout window affects the form:", "options": ["Only after the EXE is made", "Only in break mode", "When the application runs", "Only inside the Form Designer"], "answer": "C", "explanation": "It sets the Left and Top values used at run time, not the look of the Form Designer."},
+  {"id": 170, "level": "Basic", "type": "Concept", "topic": "Form Layout", "question": "Moving the form in the Form Layout window changes which pair of properties?", "options": ["Caption and Name", "ScaleLeft and ScaleTop", "Width and Height", "Left and Top"], "answer": "D", "explanation": "Left and Top store the distance of the form from the screen's left and top edges."},
+  {"id": 171, "level": "Basic", "type": "Concept", "topic": "Form Layout", "question": "Which StartUpPosition setting places a form at the centre of the form that opened it?", "options": ["1 - CenterOwner", "2 - CenterScreen", "0 - Manual", "3 - Windows Default"], "answer": "A", "explanation": "CenterOwner centres the form on its owner (parent) form."},
+  {"id": 172, "level": "Advanced", "type": "Tricky", "topic": "Form Layout", "question": "If a form's WindowState is set to Maximized, its position set in the Form Layout window:", "options": ["Changes the Caption shown on the form", "Has no visible effect because the form fills the screen", "Is used to reduce the size of the form", "Moves the maximized form to the chosen spot"], "answer": "B", "explanation": "A maximized form fills the whole screen, so the start-up position cannot be seen."},
+  {"id": 173, "level": "Intermediate", "type": "Application", "topic": "Form Layout", "question": "Which shortcut-menu command of the Form Layout window sets the StartUpPosition without using the Properties Window?", "options": ["Resolution Guides", "Startup Position", "Form Position", "Docked"], "answer": "B", "explanation": "Right-clicking the Form Layout window gives the Startup Position submenu with the four settings."},
+  {"id": 174, "level": "Intermediate", "type": "Scenario", "topic": "Form Layout", "question": "A teacher wants to check whether a form designed on a large monitor will fit on a 640 x 480 screen. Which IDE feature helps most?", "options": ["The Toggle Folders button of Project Explorer", "The grid in the Form Designer", "Resolution Guides in the Form Layout window", "The Description pane of the Properties Window"], "answer": "C", "explanation": "The Resolution Guides draw the screen boundaries of different resolutions over the miniature screen."},
+  {"id": 175, "level": "Intermediate", "type": "Comparison", "topic": "Comparison", "question": "Which statement correctly differentiates the Project Explorer from the Properties Window?", "options": ["Project Explorer lists attributes of the selected object; Properties Window lists project components", "Project Explorer lists project components; Properties Window lists attributes of the selected object", "Both show the same list in different layouts", "Project Explorer works only at run time; Properties Window only at design time"], "answer": "B", "explanation": "Project Explorer organises files; the Properties Window edits the settings of a form or control."},
+  {"id": 176, "level": "Intermediate", "type": "Comparison", "topic": "Comparison", "question": "How does the Form Designer differ from the Form Layout window?", "options": ["Form Designer works only at run time; Form Layout only at design time", "They are two names for the same window", "Form Designer sets the start-up position; Form Layout designs the form", "Form Designer is for designing the form; Form Layout sets where it opens"], "answer": "D", "explanation": "Form Designer = the form's contents; Form Layout = the form's position on the screen."},
+  {"id": 177, "level": "Intermediate", "type": "Comparison", "topic": "Comparison", "question": "How does the Toolbox differ from the Properties Window?", "options": ["Toolbox sets control attributes; Properties Window supplies controls to place", "Toolbox supplies controls to place on a form; Properties Window sets their attributes", "Toolbox shows project files; Properties Window shows menus", "Toolbox runs the project; Properties Window compiles it"], "answer": "B", "explanation": "Controls are first drawn from the Toolbox, then customised in the Properties Window."},
+  {"id": 178, "level": "Intermediate", "type": "Comparison", "topic": "Comparison", "question": "Compared with the menu bar, a toolbar:", "options": ["Can be used only at run time", "Gives one-click buttons for frequently used commands", "Cannot be customized or hidden", "Contains every command of the IDE in grouped lists"], "answer": "B", "explanation": "Menus hold all commands; toolbars give quick access to common ones."},
+  {"id": 179, "level": "Intermediate", "type": "Comparison", "topic": "Comparison", "question": "Which statement about Label and TextBox is correct?", "options": ["A TextBox accepts typed input, whereas a Label only displays text", "Neither can display text at run time", "Both accept typed input but in different fonts", "A Label accepts typed input, whereas a TextBox only displays text"], "answer": "A", "explanation": "Use Label for captions and messages and TextBox for user input."},
+  {"id": 180, "level": "Intermediate", "type": "Comparison", "topic": "Comparison", "question": "Which statement about the Image control and PictureBox is correct?", "options": ["Image can hold other controls; PictureBox cannot", "Image supports drawing methods; PictureBox does not", "PictureBox can act as a container; Image cannot", "Both use exactly the same amount of memory"], "answer": "C", "explanation": "Image is lightweight; PictureBox is heavier but can contain controls and support drawing."},
+  {"id": 181, "level": "Intermediate", "type": "Comparison", "topic": "Comparison", "question": "Which statement about Enabled and Visible is correct?", "options": ["Enabled = False hides the control; Visible = False greys it out", "Both work only for Label controls", "Both properties delete the control from the form", "Enabled = False greys the control out; Visible = False hides it"], "answer": "D", "explanation": "A disabled control is seen but does not respond; an invisible control is not seen."},
+  {"id": 182, "level": "Intermediate", "type": "Comparison", "topic": "Comparison", "question": "Which statement about CheckBox and OptionButton is correct?", "options": ["CheckBox choices are independent; OptionButtons in one group are mutually exclusive", "Both allow only one choice at a time", "CheckBox choices are mutually exclusive; OptionButtons are independent", "Neither can be placed inside a Frame"], "answer": "A", "explanation": "Use CheckBox for multiple selections and OptionButton for a single choice."},
+  {"id": 183, "level": "Intermediate", "type": "Comparison", "topic": "Comparison", "question": "Which statement about the Name and Caption properties is correct?", "options": ["Name identifies the object in code; Caption is the text the user sees", "Both must always be identical", "Name is the text the user sees; Caption identifies the object in code", "Name is used only for forms; Caption only for controls"], "answer": "A", "explanation": "Every control has a Name, but Caption exists only for controls that show a title."},
+  {"id": 184, "level": "Intermediate", "type": "Comparison", "topic": "Comparison", "question": "Which statement about ComboBox and ListBox is correct?", "options": ["Neither can show a list", "Both accept typed text", "A ComboBox can accept typed text; a ListBox allows only selection", "A ListBox can accept typed text; a ComboBox allows only selection"], "answer": "C", "explanation": "The ComboBox adds a text area to the list; the ListBox only shows items to pick from."},
+  {"id": 185, "level": "Intermediate", "type": "Comparison", "topic": "Comparison", "question": "Which statement about a form module (.frm) and a standard module (.bas) is correct?", "options": ["Both can be run on their own", "A standard module has a visual form; a form module holds only code", "A form module has a visual form; a standard module holds only code", "Both contain a visual form"], "answer": "C", "explanation": "Only forms have a Form Designer window; standard modules open only in the Code window."},
+  {"id": 186, "level": "Intermediate", "type": "Comparison", "topic": "Comparison", "question": "Which statement about design-time and run-time settings is correct?", "options": ["Design-time values are set in the Properties Window; run-time values are changed by code", "Both are set only in the Toolbox", "Run-time values must be set before opening the IDE", "Design-time values are set by code; run-time values in the Properties Window"], "answer": "A", "explanation": "Initial values are fixed in the Properties Window; code can change many of them while the program runs."},
+  {"id": 187, "level": "Intermediate", "type": "Comparison", "topic": "Comparison", "question": "Which statement correctly differentiates Object Browser from Project Explorer?", "options": ["Object Browser lists classes and their members; Project Explorer lists the project's files", "Both windows display identical information in different formats", "Object Browser works only at run time; Project Explorer works only at design time", "Object Browser lists the project's files; Project Explorer lists classes and their members"], "answer": "A", "explanation": "Project Explorer organises the forms and modules; Object Browser is used to look up available objects."},
+  {"id": 188, "level": "Intermediate", "type": "Comparison", "topic": "Comparison", "question": "Which pair correctly identifies a property and an event?", "options": ["Visible - event; Click - property", "Move - property; Caption - event", "BackColor - property; Click - event", "Click - property; BackColor - event"], "answer": "C", "explanation": "Properties describe an object, whereas events are things that happen to it, such as a click."},
+  {"id": 189, "level": "Intermediate", "type": "Comparison", "topic": "Comparison", "question": "Which statement about Frame and PictureBox controls is correct?", "options": ["Only Frame can contain other controls", "Both can contain other controls and both can display a picture", "Neither can contain other controls", "Both can contain other controls, but only PictureBox can display a picture"], "answer": "D", "explanation": "A Frame has no Picture property; it is used only for grouping and titling."},
+  {"id": 190, "level": "Intermediate", "type": "Comparison", "topic": "Comparison", "question": "Which statement about Save Project and Make EXE is correct?", "options": ["Save Project stores the source files; Make EXE creates the executable file", "Both create the same file type", "Save Project creates the executable file; Make EXE stores the source files", "Both are available only in run mode"], "answer": "A", "explanation": "Source files (.vbp, .frm) are used for editing, and the .exe is what is run."},
+  {"id": 191, "level": "Advanced", "type": "Assertion-Reason", "topic": "Important & Tricky", "question": "Assertion (A): Project Explorer shows an entry such as frmMain (Main.frm).\nReason (R): The first part is the form's Name and the part in brackets is its saved file name.", "options": ["Both Assertion and Reason are true, and Reason is the correct explanation of Assertion", "Both Assertion and Reason are true, but Reason is not the correct explanation of Assertion", "Assertion is true, but Reason is false", "Assertion is false, but Reason is true"], "answer": "A", "explanation": "Both are true and R explains A: the Name property is shown first, followed by the file name."},
+  {"id": 192, "level": "Advanced", "type": "Assertion-Reason", "topic": "Important & Tricky", "question": "Assertion (A): The Properties Window can be opened by pressing F4.\nReason (R): The Properties Window has Alphabetic and Categorized tabs.", "options": ["Both Assertion and Reason are true, and Reason is the correct explanation of Assertion", "Both Assertion and Reason are true, but Reason is not the correct explanation of Assertion", "Assertion is true, but Reason is false", "Assertion is false, but Reason is true"], "answer": "B", "explanation": "Both statements are true, but the tabs have nothing to do with the shortcut key."},
+  {"id": 193, "level": "Advanced", "type": "Assertion-Reason", "topic": "Important & Tricky", "question": "Assertion (A): The Pointer in the Toolbox is not a control.\nReason (R): The Pointer is used to draw rectangles and ovals on the form.", "options": ["Both Assertion and Reason are true, and Reason is the correct explanation of Assertion", "Both Assertion and Reason are true, but Reason is not the correct explanation of Assertion", "Assertion is true, but Reason is false", "Assertion is false, but Reason is true"], "answer": "C", "explanation": "The Pointer only selects, moves and resizes controls; rectangles and ovals are drawn with the Shape control."},
+  {"id": 194, "level": "Advanced", "type": "Assertion-Reason", "topic": "Important & Tricky", "question": "Assertion (A): Setting ControlBox to False removes only the Maximize button.\nReason (R): The ControlBox property decides whether the Control-menu box is shown on the form.", "options": ["Both Assertion and Reason are true, and Reason is the correct explanation of Assertion", "Both Assertion and Reason are true, but Reason is not the correct explanation of Assertion", "Assertion is true, but Reason is false", "Assertion is false, but Reason is true"], "answer": "D", "explanation": "ControlBox = False removes the Control-menu box together with the Minimize, Maximize and Close buttons, so A is false."},
+  {"id": 195, "level": "Advanced", "type": "Assertion-Reason", "topic": "Important & Tricky", "question": "Assertion (A): Dragging the miniature form in the Form Layout window sets StartUpPosition to Manual.\nReason (R): With Manual, VB uses the form's Left and Top values as its start-up position.", "options": ["Both Assertion and Reason are true, and Reason is the correct explanation of Assertion", "Both Assertion and Reason are true, but Reason is not the correct explanation of Assertion", "Assertion is true, but Reason is false", "Assertion is false, but Reason is true"], "answer": "A", "explanation": "Both are true and R explains A."},
+  {"id": 196, "level": "Intermediate", "type": "Statement", "topic": "Important & Tricky", "question": "Consider the statements:\nI. Toolbars can be docked at the edges of the IDE or left floating.\nII. The Standard toolbar is the only toolbar and cannot be hidden.\nIII. Toolbar buttons can be added or removed using Customize.\nWhich statements are correct?", "options": ["I only", "II and III only", "I and III only", "I, II and III"], "answer": "C", "explanation": "Statement II is false; the Edit, Debug and Form Editor toolbars exist and any toolbar can be hidden."},
+  {"id": 197, "level": "Intermediate", "type": "Statement", "topic": "Important & Tricky", "question": "Consider the statements:\nI. Extra tabs can be added to the Toolbox by right-clicking it.\nII. Only the 20 intrinsic controls can ever be placed in the Toolbox.\nIII. The Components dialog is used to add extra controls to the Toolbox.\nWhich statements are correct?", "options": ["II and III only", "I only", "I, II and III", "I and III only"], "answer": "D", "explanation": "Extra controls can be added through Project &gt; Components, so II is false."},
+  {"id": 198, "level": "Intermediate", "type": "Statement", "topic": "Important & Tricky", "question": "Consider the statements:\nI. A control name can be up to 40 characters long.\nII. A control name may begin with a digit.\nIII. A control name may contain spaces.\nWhich statements are correct?", "options": ["I only", "I and II only", "II and III only", "III only"], "answer": "A", "explanation": "A name must begin with a letter and cannot contain spaces; only the 40-character limit is correct."},
+  {"id": 199, "level": "Intermediate", "type": "Statement", "topic": "Important & Tricky", "question": "Consider the statements:\nI. Moving the form in the Form Layout window changes where it opens at run time.\nII. Project Explorer is used to change the Caption of a form.\nIII. The Form Designer shows a dotted grid at design time.\nWhich statement(s) is/are FALSE?", "options": ["I only", "II only", "III only", "I and III only"], "answer": "B", "explanation": "The Caption is changed in the Properties Window, not in Project Explorer."},
+  {"id": 200, "level": "Intermediate", "type": "Match", "topic": "Important & Tricky", "question": "Match Column I with Column II:\nColumn I: (a) Toolbox   (b) Properties Window   (c) Project Explorer   (d) Form Layout\nColumn II: (1) Lists the files of the project   (2) Holds controls to draw   (3) Sets design-time values of properties   (4) Previews start-up position of the form", "options": ["a-1, b-2, c-3, d-4", "a-3, b-2, c-1, d-4", "a-2, b-1, c-3, d-4", "a-2, b-3, c-1, d-4"], "answer": "D", "explanation": "Toolbox - controls; Properties Window - property values; Project Explorer - project files; Form Layout - start-up position."},
+  {"id": 201, "level": "Intermediate", "type": "Match", "topic": "Important & Tricky", "question": "Match Column I with Column II:\nColumn I: (a) File   (b) Format   (c) Run   (d) Tools\nColumn II: (1) Align controls   (2) Make EXE   (3) Start / Break / End   (4) Menu Editor", "options": ["a-1, b-2, c-3, d-4", "a-2, b-1, c-4, d-3", "a-2, b-1, c-3, d-4", "a-3, b-1, c-2, d-4"], "answer": "C", "explanation": "File makes the EXE, Format aligns controls, Run starts or stops the program, Tools has the Menu Editor."},
+  {"id": 202, "level": "Intermediate", "type": "Match", "topic": "Important & Tricky", "question": "Match Column I with Column II:\nColumn I: (a) Standard   (b) Edit   (c) Debug   (d) Form Editor\nColumn II: (1) Step Into / Step Over   (2) Comment Block / Indent   (3) Bring to Front / Align   (4) Start / Open Project / Save", "options": ["a-4, b-1, c-2, d-3", "a-4, b-2, c-1, d-3", "a-2, b-4, c-1, d-3", "a-4, b-2, c-3, d-1"], "answer": "B", "explanation": "Each toolbar holds the buttons for its own kind of work."},
+  {"id": 203, "level": "Intermediate", "type": "Match", "topic": "Important & Tricky", "question": "Match Column I with Column II:\nColumn I: (a) .vbp   (b) .frm   (c) .bas   (d) .frx\nColumn II: (1) Standard module   (2) Binary data of a form   (3) Project file   (4) Form file", "options": ["a-3, b-4, c-1, d-2", "a-4, b-3, c-1, d-2", "a-3, b-4, c-2, d-1", "a-1, b-4, c-3, d-2"], "answer": "A", "explanation": ".vbp = project, .frm = form, .bas = standard module, .frx = binary form data."},
+  {"id": 204, "level": "Advanced", "type": "Tricky", "topic": "Important & Tricky", "question": "1440 twips are equal to:", "options": ["1 pixel", "1 centimetre", "1 inch", "1 point"], "answer": "C", "explanation": "A twip is 1/1440 of an inch; it is the default unit shown on the Standard toolbar."},
+  {"id": 205, "level": "Advanced", "type": "Tricky", "topic": "Important & Tricky", "question": "Which of the following can be done in design mode but not in run mode?", "options": ["Clicking a command button to run code", "Drawing a new control from the Toolbox onto the form", "Minimizing the running form to the taskbar", "Typing text into a text box at run time"], "answer": "B", "explanation": "New controls are added from the Toolbox only while designing the form."},
+  {"id": 206, "level": "Advanced", "type": "Tricky", "topic": "Important & Tricky", "question": "Project Explorer was closed by mistake. Which of the following will NOT reopen it?", "options": ["View &gt; Project Explorer", "The Project Explorer button on the Standard toolbar", "Pressing Ctrl+R", "Pressing F4"], "answer": "D", "explanation": "F4 opens the Properties Window, not the Project Explorer."},
+  {"id": 207, "level": "Advanced", "type": "Tricky", "topic": "Important & Tricky", "question": "The Object box of the Properties Window shows 'Command1 CommandButton'. What do the two parts mean?", "options": ["The project name followed by the form name", "The property name followed by its value", "The caption followed by the file name", "The object's name followed by its control type"], "answer": "D", "explanation": "The Object box lists each object by Name and class."},
+  {"id": 208, "level": "Advanced", "type": "Assertion-Reason", "topic": "Important & Tricky", "question": "Assertion (A): Controls placed on a Frame move along with the Frame.\nReason (R): A Frame is a container control.", "options": ["Both Assertion and Reason are true, and Reason is the correct explanation of Assertion", "Both Assertion and Reason are true, but Reason is not the correct explanation of Assertion", "Assertion is true, but Reason is false", "Assertion is false, but Reason is true"], "answer": "A", "explanation": "Both are true and R explains A: controls drawn inside a container become its children."},
+  {"id": 209, "level": "Advanced", "type": "Assertion-Reason", "topic": "Important & Tricky", "question": "Assertion (A): The Timer control is not visible to the user at run time.\nReason (R): The Timer control has no properties that can be set at design time.", "options": ["Both Assertion and Reason are true, and Reason is the correct explanation of Assertion", "Both Assertion and Reason are true, but Reason is not the correct explanation of Assertion", "Assertion is true, but Reason is false", "Assertion is false, but Reason is true"], "answer": "C", "explanation": "A is true, but R is false: the Timer has properties such as Interval and Enabled."},
+  {"id": 210, "level": "Intermediate", "type": "Match", "topic": "Important & Tricky", "question": "Match the IDE windows in Column I with their shortcut keys in Column II:\nColumn I: (a) Properties Window   (b) Project Explorer   (c) Object Browser   (d) Code window\nColumn II: (1) F2   (2) F4   (3) Ctrl+R   (4) F7", "options": ["a-1, b-3, c-2, d-4", "a-2, b-3, c-1, d-4", "a-2, b-1, c-3, d-4", "a-4, b-3, c-1, d-2"], "answer": "B", "explanation": "Properties Window - F4; Project Explorer - Ctrl+R; Object Browser - F2; Code window - F7."},
+  {"id": 211, "level": "Intermediate", "type": "Match", "topic": "Important & Tricky", "question": "Match the properties in Column I with their uses in Column II:\nColumn I: (a) Name   (b) Caption   (c) Tag   (d) Index\nColumn II: (1) Stores extra information   (2) Identifies the control in code   (3) Position in a control array   (4) Text shown on the control", "options": ["a-4, b-2, c-1, d-3", "a-2, b-4, c-3, d-1", "a-1, b-4, c-2, d-3", "a-2, b-4, c-1, d-3"], "answer": "D", "explanation": "Name identifies the control, Caption is the displayed text, Tag holds extra data and Index numbers the elements of a control array."},
+  {"id": 212, "level": "Intermediate", "type": "Statement", "topic": "Important & Tricky", "question": "Consider the statements:\nI. The Form Layout window can show Resolution Guides.\nII. The Form Layout window is used to change the size of a form.\nIII. The Form Layout window helps to set the start-up position of a form.\nWhich statements are correct?", "options": ["I and III only", "I and II only", "II and III only", "I, II and III"], "answer": "A", "explanation": "Size is changed in the Form Designer; the Form Layout window deals only with start-up position."},
+  {"id": 213, "level": "Intermediate", "type": "Statement", "topic": "Important & Tricky", "question": "Consider the statements:\nI. A project can contain more than one ordinary form.\nII. A project can contain more than one MDI form.\nIII. A project can contain more than one standard module.\nWhich statements are correct?", "options": ["II only", "I and II only", "II and III only", "I and III only"], "answer": "D", "explanation": "A project may have many forms and modules but only one MDI form."},
+  {"id": 214, "level": "Intermediate", "type": "Application", "topic": "Mixed Practice", "question": "Which TextBox property displays typed characters as asterisks (*) for a password field?", "options": ["MaxLength", "PasswordChar", "MultiLine", "Locked"], "answer": "B", "explanation": "Setting PasswordChar to * masks whatever the user types."},
+  {"id": 215, "level": "Intermediate", "type": "Application", "topic": "Mixed Practice", "question": "To let a TextBox show more than one line of text, which property is set to True?", "options": ["WordWrap", "AutoSize", "Alignment", "MultiLine"], "answer": "D", "explanation": "MultiLine = True allows several lines; it is set at design time."},
+  {"id": 216, "level": "Advanced", "type": "Tricky", "topic": "Mixed Practice", "question": "Which CommandButton property makes it respond to the Enter key?", "options": ["Default", "Cancel", "Enabled", "TabStop"], "answer": "A", "explanation": "Default = True makes Enter act as a click; Cancel = True does the same for the Esc key."},
+  {"id": 217, "level": "Intermediate", "type": "Application", "topic": "Mixed Practice", "question": "To make a form open maximized, the WindowState property should be set to:", "options": ["2 - Maximized", "1 - Minimized", "0 - Normal", "3 - Fixed"], "answer": "A", "explanation": "WindowState values are 0 Normal, 1 Minimized and 2 Maximized."},
+  {"id": 218, "level": "Intermediate", "type": "Application", "topic": "Mixed Practice", "question": "Which Label property makes the label resize automatically to fit its caption?", "options": ["Stretch", "Alignment", "AutoSize", "BorderStyle"], "answer": "C", "explanation": "AutoSize = True adjusts the label's size to the text."},
+  {"id": 219, "level": "Intermediate", "type": "Application", "topic": "Mixed Practice", "question": "Which form property is used to place a background picture on the form at design time?", "options": ["Image", "Icon", "Picture", "BackStyle"], "answer": "C", "explanation": "Picture holds a graphic displayed on the form; Icon sets the title-bar icon."},
+  {"id": 220, "level": "Intermediate", "type": "Application", "topic": "Mixed Practice", "question": "Which property sets the icon shown in a form's title bar and on the taskbar?", "options": ["Picture", "Icon", "MouseIcon", "Appearance"], "answer": "B", "explanation": "The Icon property accepts an icon (.ico) file."},
+  {"id": 221, "level": "Intermediate", "type": "Scenario", "topic": "Mixed Practice", "question": "The Form Designer window of Form1 has been closed. How can it be displayed again?", "options": ["Press Ctrl+T to open the Components dialog", "Choose Format &gt; Lock Controls and then press OK", "Press F5 to run the project from the Run menu", "Select Form1 in Project Explorer and click View Object"], "answer": "D", "explanation": "View Object (or double-clicking the form) reopens its design window."},
+  {"id": 222, "level": "Basic", "type": "Identification", "topic": "Mixed Practice", "question": "What is the default value of the Value property of a new CheckBox?", "options": ["1 - Checked", "True", "0 - Unchecked", "2 - Grayed"], "answer": "C", "explanation": "Values are 0 Unchecked, 1 Checked and 2 Grayed."},
+  {"id": 223, "level": "Basic", "type": "Concept", "topic": "Mixed Practice", "question": "The Interval property of a Timer control is measured in:", "options": ["Milliseconds", "Microseconds", "Minutes", "Seconds"], "answer": "A", "explanation": "An Interval of 1000 means one second."},
+  {"id": 224, "level": "Basic", "type": "Identification", "topic": "Mixed Practice", "question": "Which pair of properties defines the range of values of a scroll bar?", "options": ["Index and Name", "Left and Top", "Min and Max", "Width and Height"], "answer": "C", "explanation": "Min and Max set the smallest and largest values the scroll bar can reach."},
+  {"id": 225, "level": "Basic", "type": "Identification", "topic": "Mixed Practice", "question": "Which Image control property resizes the picture to fit the size of the control?", "options": ["Stretch", "DragMode", "AutoSize", "Appearance"], "answer": "A", "explanation": "Stretch = True resizes the picture; AutoSize on a PictureBox resizes the control instead."},
+  {"id": 226, "level": "Intermediate", "type": "Application", "topic": "Mixed Practice", "question": "Which property of a ListBox is used to enter its items in the Properties Window at design time?", "options": ["ItemData", "Text", "List", "Caption"], "answer": "C", "explanation": "The List property accepts the items to be shown in the ListBox."},
+  {"id": 227, "level": "Advanced", "type": "Tricky", "topic": "Mixed Practice", "question": "Which TextBox property stops the user from editing the text while still allowing it to be selected and copied?", "options": ["TabStop", "Enabled", "Visible", "Locked"], "answer": "D", "explanation": "Enabled = False greys out the control and blocks selection; Locked = True only blocks editing."},
+  {"id": 228, "level": "Basic", "type": "Concept", "topic": "Mixed Practice", "question": "A CommandButton is drawn on a new form. Its default Name and Caption are:", "options": ["Button1 and Command1", "Command1 and Button1", "Command1 and Command1", "Cmd1 and Command1"], "answer": "C", "explanation": "VB gives the first CommandButton the Name and Caption Command1."},
+  {"id": 229, "level": "Intermediate", "type": "Application", "topic": "Mixed Practice", "question": "Which ListBox property allows the user to select more than one item?", "options": ["Style", "Sorted", "Columns", "MultiSelect"], "answer": "D", "explanation": "MultiSelect is set at design time to 1 - Simple or 2 - Extended."},
+  {"id": 230, "level": "Intermediate", "type": "Application", "topic": "Mixed Practice", "question": "Which settings in the Properties Window give a Label bold red text?", "options": ["Caption and BackStyle", "Font (Bold) and ForeColor", "Font and BackColor", "FontStyle and FillColor"], "answer": "B", "explanation": "Bold is chosen in the Font dialog and the text colour is set with ForeColor."},
+  {"id": 231, "level": "Advanced", "type": "Tricky", "topic": "Mixed Practice", "question": "A picture is assigned to the Picture property of a CommandButton but it is not displayed. Which property must be set to 1 - Graphical?", "options": ["BackColor", "Default", "Appearance", "Style"], "answer": "D", "explanation": "A CommandButton shows a picture only when its Style is Graphical."},
+  {"id": 232, "level": "Intermediate", "type": "Application", "topic": "Mixed Practice", "question": "Which OptionButton property is set to True to select it by default at design time?", "options": ["Default", "Enabled", "Value", "Caption"], "answer": "C", "explanation": "Only one OptionButton in a group can have Value = True."},
+  {"id": 233, "level": "Intermediate", "type": "Application", "topic": "Mixed Practice", "question": "Which character placed before a letter in a Caption creates an underlined access key?", "options": ["@ (at sign)", "* (asterisk)", "&amp; (ampersand)", "# (hash)"], "answer": "C", "explanation": "For example, a Caption of '&amp;Save' underlines S so Alt+S activates the button."},
+  {"id": 234, "level": "Advanced", "type": "Tricky", "topic": "Mixed Practice", "question": "The ScrollBars property of a TextBox works only when which property is True?", "options": ["MultiLine", "WordWrap", "Locked", "AutoSize"], "answer": "A", "explanation": "A single-line TextBox cannot show scroll bars."},
+  {"id": 235, "level": "Basic", "type": "Concept", "topic": "Mixed Practice", "question": "Which Timer property is set to False to stop the timer from working?", "options": ["Locked", "Enabled", "Interval", "Visible"], "answer": "B", "explanation": "Enabled = False switches the timer off; Interval = 0 also disables it."}
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

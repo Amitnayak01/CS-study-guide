@@ -1,0 +1,2161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>OAVS Computer Fundamentals MCQ Bank</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+
+/* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">OAVS Computer Fundamentals</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  // SECTION 1: Introduction to Computers
+  {id:1,level:"Basic",type:"Definition",topic:"Introduction to Computers",
+   question:"Which of the following is the most accurate definition of a computer?",
+   options:["An electronic device that stores data","An electronic device that accepts data, processes it, stores it and produces output","A machine that performs calculations only","A device that displays information"],
+   answer:"B",explanation:"A computer is defined by its four functions: Input → Process → Output → Storage."},
+  {id:2,level:"Basic",type:"Definition",topic:"Introduction to Computers",
+   question:"The full form of COMPUTER as an acronym is:",
+   options:["Common Operating Machine Particularly Used for Training, Education and Research","Common Operated Machine Particularly Used for Technical, Education and Research","Commonly Operated Machine Particularly Used for Trade, Education and Research","None of the above"],
+   answer:"A",explanation:"This is a backronym; the actual word 'computer' comes from 'compute'."},
+  {id:3,level:"Basic",type:"Definition",topic:"Introduction to Computers",
+   question:"The term 'computer' is derived from the Latin word:",
+   options:["Computo","Computare","Computatio","Computus"],
+   answer:"B",explanation:"'Computare' means 'to calculate' in Latin."},
+  {id:4,level:"Basic",type:"Concept",topic:"Introduction to Computers",
+   question:"Charles Babbage is known as the 'Father of Computer' because he invented the:",
+   options:["Analytical Engine","Difference Engine","Both A and B","ENIAC"],
+   answer:"C",explanation:"Babbage designed both the Difference Engine (1822) and the Analytical Engine (1837)."},
+  {id:5,level:"Basic",type:"Concept",topic:"Introduction to Computers",
+   question:"The first electronic digital computer was:",
+   options:["UNIVAC","ENIAC","ABC","EDVAC"],
+   answer:"B",explanation:"ENIAC (Electronic Numerical Integrator and Computer) was completed in 1945 at the University of Pennsylvania."},
+  {id:6,level:"Basic",type:"Definition",topic:"Introduction to Computers",
+   question:"UNIVAC stands for:",
+   options:["Universal Automatic Computer","Universal Analog Computer","Unique Automatic Computer","Universal Advanced Computer"],
+   answer:"A",explanation:"UNIVAC (1951) was the first commercially available computer in the USA."},
+  {id:7,level:"Basic",type:"Concept",topic:"Computer Generations",
+   question:"Which generation of computers used vacuum tubes?",
+   options:["First Generation","Second Generation","Third Generation","Fourth Generation"],
+   answer:"A",explanation:"First-generation computers (1940–1956) used vacuum tubes as basic building blocks."},
+  {id:8,level:"Basic",type:"Concept",topic:"Computer Generations",
+   question:"Transistors were used in which generation of computers?",
+   options:["First","Second","Third","Fourth"],
+   answer:"B",explanation:"Second-generation computers (1956–1963) replaced vacuum tubes with transistors."},
+  {id:9,level:"Basic",type:"Concept",topic:"Computer Generations",
+   question:"Integrated Circuits (ICs) were introduced in which computer generation?",
+   options:["Second","Third","Fourth","Fifth"],
+   answer:"B",explanation:"Third-generation computers (1964–1971) used Small Scale Integration (SSI) ICs."},
+  {id:10,level:"Basic",type:"Concept",topic:"Computer Generations",
+   question:"Microprocessors were introduced in which generation of computers?",
+   options:["Third","Fourth","Fifth","Sixth"],
+   answer:"B",explanation:"Fourth-generation (1971–present) computers use microprocessors – entire CPU on a single chip."},
+  {id:11,level:"Basic",type:"Concept",topic:"Introduction to Computers",
+   question:"Which of the following is NOT a characteristic of a computer?",
+   options:["Speed","Accuracy","Intelligence","Diligence"],
+   answer:"C",explanation:"Computers have speed, accuracy, diligence, and memory but they lack human-like intelligence."},
+  {id:12,level:"Basic",type:"Concept",topic:"Introduction to Computers",
+   question:"The speed of a computer processor is measured in:",
+   options:["Hertz (Hz)","Bits per second","Bytes","Volts"],
+   answer:"A",explanation:"Processor speed is measured in Hertz (Hz), typically GHz (gigahertz) for modern CPUs."},
+  {id:13,level:"Basic",type:"Concept",topic:"Types of Computers",
+   question:"Which of the following is the fastest type of computer?",
+   options:["Minicomputer","Mainframe","Supercomputer","Microcomputer"],
+   answer:"C",explanation:"Supercomputers are the fastest and most powerful computers, used for complex scientific calculations."},
+  {id:14,level:"Basic",type:"Definition",topic:"Introduction to Computers",
+   question:"Data processed by a computer is known as:",
+   options:["Input","Raw data","Information","Code"],
+   answer:"C",explanation:"When raw data is processed and given meaning, it becomes information."},
+  {id:15,level:"Basic",type:"Concept",topic:"Introduction to Computers",
+   question:"Which of the following is an example of data?",
+   options:["'The average temperature is 35°C'","'35'","'It is very hot today'","'Summer is hot in Delhi'"],
+   answer:"B",explanation:"Raw, unprocessed facts like numbers are data; interpreted results are information."},
+
+  // SECTION 2: Block Diagram of Digital Computer
+  {id:16,level:"Basic",type:"Concept",topic:"Block Diagram of Computer",
+   question:"The five main functional units of a computer are:",
+   options:["Input, Output, Memory, CPU, Bus","Input Unit, Output Unit, Memory Unit, ALU, Control Unit","Keyboard, Monitor, RAM, ROM, Processor","Hardware, Software, Memory, Storage, Display"],
+   answer:"B",explanation:"The five units: Input Unit, Output Unit, Memory Unit, ALU, Control Unit. Together ALU + CU = CPU."},
+  {id:17,level:"Basic",type:"Concept",topic:"Block Diagram of Computer",
+   question:"Which unit of the computer directs and coordinates all operations?",
+   options:["ALU","Memory Unit","Control Unit","Input Unit"],
+   answer:"C",explanation:"The Control Unit (CU) acts as the 'brain's manager' – it directs and coordinates all computer operations."},
+  {id:18,level:"Basic",type:"Concept",topic:"Block Diagram of Computer",
+   question:"Which unit performs arithmetic and logical operations?",
+   options:["Control Unit","ALU","Memory Unit","Output Unit"],
+   answer:"B",explanation:"ALU (Arithmetic Logic Unit) performs all arithmetic (+, −, ×, ÷) and logical (AND, OR, NOT) operations."},
+  {id:19,level:"Basic",type:"Definition",topic:"Block Diagram of Computer",
+   question:"CPU stands for:",
+   options:["Central Processing Unit","Computer Processing Unit","Central Program Unit","Core Processing Unit"],
+   answer:"A",explanation:"CPU = Central Processing Unit, comprising the Control Unit and ALU."},
+  {id:20,level:"Basic",type:"Fill-Blank",topic:"Block Diagram of Computer",
+   question:"The CPU is often called the _______ of the computer.",
+   options:["Heart","Brain","Memory","Spine"],
+   answer:"B",explanation:"The CPU processes all data and instructions, hence it is called the brain of the computer."},
+  {id:21,level:"Basic",type:"Concept",topic:"Output Devices",
+   question:"Which of the following is an output device?",
+   options:["Keyboard","Scanner","Monitor","Mouse"],
+   answer:"C",explanation:"A monitor displays output. Keyboard, scanner, and mouse are input devices."},
+  {id:22,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"Which of the following is an input device?",
+   options:["Printer","Plotter","Monitor","Light Pen"],
+   answer:"D",explanation:"A light pen is an input device used to select items on a screen."},
+  {id:23,level:"Basic",type:"Definition",topic:"Block Diagram of Computer",
+   question:"The process of converting data into information is called:",
+   options:["Storage","Input","Processing","Output"],
+   answer:"C",explanation:"Processing transforms raw data into meaningful information."},
+  {id:24,level:"Intermediate",type:"Concept",topic:"Block Diagram of Computer",
+   question:"The data bus in a computer is used to:",
+   options:["Transfer addresses","Transfer data between components","Send control signals","Connect to the internet"],
+   answer:"B",explanation:"The data bus carries actual data between CPU, memory, and I/O devices."},
+  {id:25,level:"Intermediate",type:"Concept",topic:"Block Diagram of Computer",
+   question:"Which register in the CPU holds the address of the next instruction to be executed?",
+   options:["Accumulator","Program Counter (PC)","Instruction Register","Memory Address Register"],
+   answer:"B",explanation:"The Program Counter (PC) keeps track of the address of the next instruction to fetch."},
+  {id:26,level:"Intermediate",type:"Concept",topic:"Block Diagram of Computer",
+   question:"The register that holds the instruction currently being executed is called:",
+   options:["Program Counter","Stack Pointer","Instruction Register (IR)","Memory Buffer Register"],
+   answer:"C",explanation:"IR holds the current instruction being decoded and executed."},
+  {id:27,level:"Basic",type:"Definition",topic:"Block Diagram of Computer",
+   question:"MAR stands for:",
+   options:["Memory Address Register","Main Access Register","Memory Arithmetic Register","Master Access Register"],
+   answer:"A",explanation:"MAR stores the address of memory location being accessed."},
+  {id:28,level:"Basic",type:"Definition",topic:"Block Diagram of Computer",
+   question:"MDR/MBR stands for:",
+   options:["Memory Data Register / Memory Buffer Register","Main Data Register / Main Bus Register","Memory Drive Register / Memory Binary Register","None of the above"],
+   answer:"A",explanation:"MDR (Memory Data Register) or MBR (Memory Buffer Register) holds data being transferred to/from memory."},
+  {id:29,level:"Basic",type:"Concept",topic:"Block Diagram of Computer",
+   question:"The accumulator register is part of which unit?",
+   options:["Control Unit","Input Unit","ALU","Output Unit"],
+   answer:"C",explanation:"The accumulator is a special-purpose register in the ALU that stores intermediate arithmetic results."},
+  {id:30,level:"Intermediate",type:"Concept",topic:"Block Diagram of Computer",
+   question:"Which bus carries signals for read/write operations?",
+   options:["Data Bus","Address Bus","Control Bus","System Bus"],
+   answer:"C",explanation:"The Control Bus carries control signals like read, write, clock, interrupt, etc."},
+
+  // SECTION 3: Memory
+  {id:31,level:"Basic",type:"Concept",topic:"Memory",
+   question:"Which type of memory is directly accessible by the CPU?",
+   options:["Secondary Memory","Primary Memory","Tertiary Memory","Virtual Memory"],
+   answer:"B",explanation:"Primary memory (RAM, ROM, Cache) is directly accessed by the CPU at high speed."},
+  {id:32,level:"Basic",type:"Definition",topic:"Memory",
+   question:"RAM stands for:",
+   options:["Random Access Memory","Read Access Memory","Rapid Access Memory","Read Arithmetic Memory"],
+   answer:"A",explanation:"RAM = Random Access Memory; it is volatile and stores data temporarily."},
+  {id:33,level:"Basic",type:"Definition",topic:"Memory",
+   question:"ROM stands for:",
+   options:["Read Only Memory","Random Only Memory","Read Operational Memory","Rapid Output Memory"],
+   answer:"A",explanation:"ROM = Read Only Memory; it is non-volatile and contains firmware."},
+  {id:34,level:"Basic",type:"Concept",topic:"Memory",
+   question:"Which of the following memory is volatile?",
+   options:["ROM","EPROM","RAM","Flash Memory"],
+   answer:"C",explanation:"RAM loses its data when power is switched off (volatile); ROM and Flash are non-volatile."},
+  {id:35,level:"Basic",type:"Concept",topic:"Memory",
+   question:"Which memory is the fastest in the memory hierarchy?",
+   options:["RAM","Cache Memory","Registers","Hard Disk"],
+   answer:"C",explanation:"Registers inside the CPU are the fastest memory (sub-nanosecond access), followed by Cache → RAM → Secondary."},
+  {id:36,level:"Basic",type:"Concept",topic:"Memory",
+   question:"Cache memory is located:",
+   options:["On the hard disk","On the motherboard away from CPU","Between CPU and RAM (on or near CPU)","Inside the RAM stick"],
+   answer:"C",explanation:"Cache sits between CPU and RAM to reduce the speed gap, storing frequently used data."},
+  {id:37,level:"Basic",type:"Definition",topic:"Memory",
+   question:"EPROM stands for:",
+   options:["Erasable Programmable Read Only Memory","Electronic Programmable Read Only Memory","Erasable Peripheral Read Only Memory","Extra Programmable Read Only Memory"],
+   answer:"A",explanation:"EPROM can be erased using ultraviolet (UV) light and reprogrammed."},
+  {id:38,level:"Basic",type:"Definition",topic:"Memory",
+   question:"EEPROM stands for:",
+   options:["Electrically Erasable Programmable Read Only Memory","Electronic Erasable Programmable Read Only Memory","Extra Erasable Programmable ROM","Electronically Extended Programmable ROM"],
+   answer:"A",explanation:"EEPROM can be erased and reprogrammed using electrical signals."},
+  {id:39,level:"Basic",type:"Concept",topic:"Memory",
+   question:"Which memory technology is used in pen drives and SSDs?",
+   options:["DRAM","SRAM","Flash Memory","EPROM"],
+   answer:"C",explanation:"Flash memory (a type of EEPROM) is used in pen drives, SSDs, and memory cards."},
+  {id:40,level:"Basic",type:"Definition",topic:"Memory",
+   question:"DRAM stands for:",
+   options:["Dynamic Random Access Memory","Direct Random Access Memory","Digital Random Access Memory","Double Random Access Memory"],
+   answer:"A",explanation:"DRAM stores data using capacitors that need periodic refreshing; it is slower but cheaper than SRAM."},
+  {id:41,level:"Basic",type:"Definition",topic:"Memory",
+   question:"SRAM stands for:",
+   options:["Static Random Access Memory","Standard Random Access Memory","Synchronous Random Access Memory","Simple Random Access Memory"],
+   answer:"A",explanation:"SRAM uses flip-flops; it is faster and more expensive than DRAM, used for cache memory."},
+  {id:42,level:"Basic",type:"Concept",topic:"Memory",
+   question:"The correct order of memory hierarchy from fastest to slowest is:",
+   options:["Registers → Cache → RAM → Secondary Storage","RAM → Cache → Registers → Secondary Storage","Cache → Registers → RAM → Secondary Storage","Secondary Storage → RAM → Cache → Registers"],
+   answer:"A",explanation:"Registers (fastest, smallest) → Cache → RAM → Secondary Storage (slowest, largest)."},
+  {id:43,level:"Basic",type:"Concept",topic:"Memory",
+   question:"How many bits are in one byte?",
+   options:["4","8","16","32"],
+   answer:"B",explanation:"1 byte = 8 bits. This is a fundamental unit of digital information."},
+  {id:44,level:"Basic",type:"Concept",topic:"Memory",
+   question:"1 Kilobyte (KB) equals how many bytes?",
+   options:["1000 bytes","1024 bytes","512 bytes","2048 bytes"],
+   answer:"B",explanation:"1 KB = 2^10 = 1024 bytes (binary system used in computing)."},
+  {id:45,level:"Basic",type:"Concept",topic:"Memory",
+   question:"1 Megabyte (MB) equals:",
+   options:["1024 KB","1000 KB","2048 KB","512 KB"],
+   answer:"A",explanation:"1 MB = 1024 KB = 2^20 bytes = 1,048,576 bytes."},
+  {id:46,level:"Basic",type:"Concept",topic:"Memory",
+   question:"1 Gigabyte (GB) equals:",
+   options:["1024 MB","1000 MB","1024 KB","1000 KB"],
+   answer:"A",explanation:"1 GB = 1024 MB = 2^30 bytes."},
+  {id:47,level:"Basic",type:"Concept",topic:"Memory",
+   question:"1 Terabyte (TB) equals:",
+   options:["1024 MB","1024 GB","1000 GB","1024 KB"],
+   answer:"B",explanation:"1 TB = 1024 GB = 2^40 bytes."},
+  {id:48,level:"Basic",type:"Concept",topic:"Memory",
+   question:"The correct ascending order of memory units is:",
+   options:["Bit < Byte < KB < MB < GB < TB < PB","Byte < Bit < KB < MB < TB < GB","Bit < Byte < MB < KB < GB < TB","Bit < Byte < KB < GB < MB < TB"],
+   answer:"A",explanation:"Petabyte (PB) = 1024 TB. The order is: Bit → Nibble(4 bits) → Byte(8 bits) → KB → MB → GB → TB → PB → EB."},
+  {id:49,level:"Intermediate",type:"Concept",topic:"Memory",
+   question:"Virtual memory is a technique that:",
+   options:["Increases the physical size of RAM","Uses secondary storage to extend RAM capacity","Speeds up the hard disk","Replaces cache memory"],
+   answer:"B",explanation:"Virtual memory uses part of the hard disk as an extension of RAM, allowing larger programs to run."},
+  {id:50,level:"Intermediate",type:"Concept",topic:"Memory",
+   question:"Which type of RAM retains data as long as power is applied and needs NO refreshing?",
+   options:["DRAM","SDRAM","SRAM","DDR-RAM"],
+   answer:"C",explanation:"SRAM (Static RAM) uses flip-flops and does not need periodic refresh cycles."},
+  {id:51,level:"Basic",type:"Concept",topic:"Memory",
+   question:"The BIOS of a computer is stored in:",
+   options:["RAM","Hard Disk","ROM/Flash Memory","Cache"],
+   answer:"C",explanation:"BIOS (Basic Input/Output System) is stored in ROM or Flash memory on the motherboard."},
+  {id:52,level:"Intermediate",type:"Concept",topic:"Memory",
+   question:"Which memory level in cache hierarchy is closest to the CPU?",
+   options:["L3 Cache","L2 Cache","L1 Cache","L4 Cache"],
+   answer:"C",explanation:"L1 (Level 1) cache is the closest to the processor core, fastest but smallest."},
+  {id:53,level:"Basic",type:"Concept",topic:"Memory",
+   question:"A nibble consists of how many bits?",
+   options:["2","4","8","16"],
+   answer:"B",explanation:"A nibble = 4 bits = half a byte."},
+  {id:54,level:"Intermediate",type:"Definition",topic:"Memory",
+   question:"DDR stands for (in context of RAM):",
+   options:["Double Data Rate","Dual Data Register","Direct Data Read","Dynamic Data Ram"],
+   answer:"A",explanation:"DDR SDRAM (Double Data Rate Synchronous DRAM) transfers data on both rising and falling edges of the clock."},
+  {id:55,level:"Basic",type:"Concept",topic:"Memory",
+   question:"Which of the following is secondary storage?",
+   options:["RAM","Cache","Hard Disk Drive (HDD)","ROM"],
+   answer:"C",explanation:"HDD, SSD, CD, DVD, pen drives are all secondary (auxiliary) storage devices."},
+  // SECTION 4: CPU
+  {id:56,level:"Basic",type:"Concept",topic:"CPU",
+   question:"The two main components of the CPU are:",
+   options:["RAM and ROM","ALU and Control Unit","Input and Output Unit","Hard Disk and Processor"],
+   answer:"B",explanation:"CPU = ALU + Control Unit. Registers are also part of CPU."},
+  {id:57,level:"Basic",type:"Concept",topic:"CPU",
+   question:"The clock speed of a modern CPU is typically measured in:",
+   options:["MHz only","GHz","KHz","THz"],
+   answer:"B",explanation:"Modern CPUs operate at GHz (Gigahertz) speeds, e.g., 3.5 GHz."},
+  {id:58,level:"Intermediate",type:"Concept",topic:"CPU",
+   question:"Which of the following best describes the fetch-decode-execute cycle?",
+   options:["The cycle of buying, installing, and running software","The basic operation cycle of a CPU: fetch instruction → decode it → execute it","The process of reading, writing, and storing data","The input-process-output cycle"],
+   answer:"B",explanation:"The instruction cycle (Fetch → Decode → Execute) is the fundamental operation of any CPU."},
+  {id:59,level:"Intermediate",type:"Definition",topic:"CPU",
+   question:"RISC stands for:",
+   options:["Reduced Instruction Set Computer","Rapid Instruction Set Computer","Random Instruction Set Computer","Revised Instruction Set Computer"],
+   answer:"A",explanation:"RISC processors have a small, highly optimized set of instructions (e.g., ARM processors)."},
+  {id:60,level:"Intermediate",type:"Definition",topic:"CPU",
+   question:"CISC stands for:",
+   options:["Complex Instruction Set Computer","Complete Instruction Set Computer","Compressed Instruction Set Computer","Central Instruction Set Computer"],
+   answer:"A",explanation:"CISC processors (like x86) have a large set of complex instructions (e.g., Intel/AMD CPUs)."},
+  {id:61,level:"Basic",type:"Concept",topic:"CPU",
+   question:"Which company manufactures the Pentium processor?",
+   options:["AMD","Intel","IBM","ARM"],
+   answer:"B",explanation:"Intel manufactures Pentium, Core i3/i5/i7/i9 series processors."},
+  {id:62,level:"Intermediate",type:"Concept",topic:"CPU",
+   question:"The first microprocessor was:",
+   options:["Intel 8086","Intel 4004","Intel 8080","Intel 80286"],
+   answer:"B",explanation:"Intel 4004 (1971) was the world's first commercially available microprocessor."},
+  {id:63,level:"Intermediate",type:"Concept",topic:"CPU",
+   question:"A multi-core processor means:",
+   options:["A processor with multiple CPUs on different chips","A processor with multiple processing cores on a single chip","A processor with multiple hard drives","A processor that processes multiple programs on different computers"],
+   answer:"B",explanation:"Dual-core, quad-core, octa-core processors have 2, 4, 8 processing cores on one chip."},
+  {id:64,level:"Basic",type:"Concept",topic:"CPU",
+   question:"ALU performs which of the following operations?",
+   options:["Arithmetic operations only","Logical operations only","Both arithmetic and logical operations","Memory management operations"],
+   answer:"C",explanation:"ALU handles: arithmetic (+, −, ×, ÷) AND logical (AND, OR, NOT, XOR, comparisons)."},
+  {id:65,level:"Basic",type:"Concept",topic:"CPU",
+   question:"Which unit manages the sequence of operations in a CPU?",
+   options:["ALU","Cache","Control Unit","Register"],
+   answer:"C",explanation:"The Control Unit sequences and coordinates all CPU operations by sending control signals."},
+  {id:66,level:"Intermediate",type:"Concept",topic:"CPU",
+   question:"Word length of a CPU refers to:",
+   options:["The number of instructions in memory","The number of bits processed by CPU in one operation","The number of words in a program","The speed of the CPU"],
+   answer:"B",explanation:"Word length (8-bit, 16-bit, 32-bit, 64-bit) defines how much data CPU processes at once."},
+  {id:67,level:"Basic",type:"Concept",topic:"CPU",
+   question:"Modern operating systems and most PCs use a ___-bit processor architecture.",
+   options:["8-bit","16-bit","32-bit","64-bit"],
+   answer:"D",explanation:"64-bit CPUs can address up to 16 exabytes of RAM theoretically and process 64 bits simultaneously."},
+  {id:68,level:"Advanced",type:"Concept",topic:"CPU",
+   question:"The term 'overclocking' refers to:",
+   options:["Running a CPU slower than its rated speed","Running a CPU faster than its rated speed","Adding more cores to a CPU","Cooling a CPU below 0°C"],
+   answer:"B",explanation:"Overclocking increases CPU clock speed beyond manufacturer specifications for better performance."},
+  {id:69,level:"Basic",type:"Concept",topic:"CPU",
+   question:"Which of the following is a function of the Control Unit?",
+   options:["Execute arithmetic operations","Store data permanently","Interpret instructions and generate control signals","Display output on monitor"],
+   answer:"C",explanation:"The Control Unit interprets instructions and generates control signals to coordinate all operations."},
+  {id:70,level:"Advanced",type:"Concept",topic:"CPU",
+   question:"Pipelining in CPU refers to:",
+   options:["Connecting multiple CPUs","Overlapping execution of multiple instructions simultaneously","Increasing memory size","A cooling technique for processors"],
+   answer:"B",explanation:"Pipelining allows different stages of multiple instructions to overlap, improving throughput."},
+
+  // SECTION 5: Input Devices
+  {id:71,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"Which of the following is NOT an input device?",
+   options:["Keyboard","Mouse","Printer","Scanner"],
+   answer:"C",explanation:"Printer is an output device. Keyboard, mouse, and scanner are input devices."},
+  {id:72,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"A keyboard is primarily which type of device?",
+   options:["Output","Input","Storage","Processing"],
+   answer:"B",explanation:"A keyboard is the primary input device used for text and command entry."},
+  {id:73,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"The standard keyboard layout used in most computers is:",
+   options:["DVORAK","QWERTY","AZERTY","COLEMAK"],
+   answer:"B",explanation:"QWERTY layout was designed by Christopher Sholes in 1873 and is the most widely used."},
+  {id:74,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"A mouse is which type of input device?",
+   options:["Pointing device","Scanning device","Typing device","Recognition device"],
+   answer:"A",explanation:"A mouse is a pointing/cursor-control input device."},
+  {id:75,level:"Basic",type:"Definition",topic:"Input Devices",
+   question:"OCR stands for:",
+   options:["Optical Character Recognition","Optical Character Reader","Optical Code Recognition","Both A and B"],
+   answer:"D",explanation:"OCR is both the process (recognition) and device (reader) that converts printed/handwritten text to digital format."},
+  {id:76,level:"Basic",type:"Definition",topic:"Input Devices",
+   question:"OMR stands for:",
+   options:["Optical Mark Reader","Optical Mark Recognition","Both A and B","Original Mark Reader"],
+   answer:"C",explanation:"OMR detects marks made in pre-defined positions (used in multiple-choice answer sheets, lotteries)."},
+  {id:77,level:"Basic",type:"Definition",topic:"Input Devices",
+   question:"MICR stands for:",
+   options:["Magnetic Ink Character Recognition","Magnetic Ink Character Reader","Both A and B","Machine Input Character Recognition"],
+   answer:"C",explanation:"MICR is used by banks to process cheques; characters are printed with magnetic ink."},
+  {id:78,level:"Basic",type:"Application",topic:"Input Devices",
+   question:"Which input technology is used at the bottom of bank cheques?",
+   options:["OCR","OMR","MICR","Barcode Reader"],
+   answer:"C",explanation:"MICR characters (account number, cheque number, bank code) are printed with magnetic ink on cheques."},
+  {id:79,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"A barcode reader works on which principle?",
+   options:["Magnetic","Optical (laser or light)","Infrared","Ultrasonic"],
+   answer:"B",explanation:"Barcode readers use laser or LED light to read the pattern of black bars and white spaces."},
+  {id:80,level:"Basic",type:"Definition",topic:"Input Devices",
+   question:"QR code stands for:",
+   options:["Quick Response code","Query Response code","Queue Reader code","Quantified Response code"],
+   answer:"A",explanation:"QR codes are 2D barcodes that can store much more data than 1D barcodes; readable by smartphones."},
+  {id:81,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"A scanner converts physical documents into:",
+   options:["Printed copies","Digital images/text files","Audio files","Video files"],
+   answer:"B",explanation:"A scanner digitizes physical documents, photos, or images into electronic format."},
+  {id:82,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"Which type of scanner moves a scanning head across the document?",
+   options:["Flatbed scanner","Drum scanner","Handheld scanner","Sheet-fed scanner"],
+   answer:"A",explanation:"Flatbed scanners are the most common; the document is placed on a glass bed and a scanning head moves beneath it."},
+  {id:83,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"Touch screen is which type of device?",
+   options:["Input only","Output only","Both Input and Output","Storage device"],
+   answer:"C",explanation:"A touchscreen is both an input device (touch input) and output device (display)."},
+  {id:84,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"A joystick is primarily used for:",
+   options:["Text input","Gaming and flight simulators","Scanning documents","Printing"],
+   answer:"B",explanation:"Joysticks are primarily used in gaming, flight simulators, and industrial control systems."},
+  {id:85,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"Which of the following is a biometric input device?",
+   options:["Keyboard","Fingerprint scanner","Web camera","Both B and C"],
+   answer:"D",explanation:"Fingerprint scanners and web cameras (for facial recognition) are biometric input devices."},
+  {id:86,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"A light pen is used to:",
+   options:["Print text","Draw on or select items on a CRT screen","Scan barcodes","Read MICR characters"],
+   answer:"B",explanation:"Light pens detect light emitted by CRT phosphor and allow direct drawing/selecting on screen."},
+  {id:87,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"Digitizer/Graphics tablet is used to:",
+   options:["Print high-quality images","Convert analog drawings to digital format","Display 3D images","Scan photographs"],
+   answer:"B",explanation:"A digitizer/graphics tablet converts hand-drawn sketches into digital data using a stylus."},
+  {id:88,level:"Basic",type:"Application",topic:"Input Devices",
+   question:"Which device is used to read printed bar codes on grocery products?",
+   options:["OMR","OCR","Barcode Reader","MICR"],
+   answer:"C",explanation:"Barcode readers use laser/optical technology to scan product barcodes at retail checkouts."},
+  {id:89,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"Trackball is a variation of which device?",
+   options:["Keyboard","Mouse","Joystick","Scanner"],
+   answer:"B",explanation:"A trackball is an upside-down mouse where you roll the ball with your fingers instead of moving the device."},
+  {id:90,level:"Basic",type:"Application",topic:"Input Devices",
+   question:"Which input device is used in ATM machines?",
+   options:["Mouse","Scanner","Numeric Keypad / PIN pad","Joystick"],
+   answer:"C",explanation:"ATMs use numeric keypads for PIN entry and sometimes touchscreens."},
+
+  // SECTION 6: Output Devices
+  {id:91,level:"Basic",type:"Concept",topic:"Output Devices",
+   question:"Which of the following is NOT an output device?",
+   options:["Monitor","Printer","Speaker","Keyboard"],
+   answer:"D",explanation:"Keyboard is an input device. Monitor, printer, and speakers are output devices."},
+  {id:92,level:"Basic",type:"Definition",topic:"Output Devices",
+   question:"A monitor is also known as:",
+   options:["VDU (Visual Display Unit)","CPU","Scanner","Plotter"],
+   answer:"A",explanation:"Monitor = VDU (Visual Display Unit) – the primary visual output device."},
+  {id:93,level:"Basic",type:"Definition",topic:"Output Devices",
+   question:"LCD stands for:",
+   options:["Liquid Crystal Display","Light Crystal Display","Liquid Color Display","Light Color Display"],
+   answer:"A",explanation:"LCD = Liquid Crystal Display; uses liquid crystals to produce images."},
+  {id:94,level:"Basic",type:"Definition",topic:"Output Devices",
+   question:"LED in context of monitors stands for:",
+   options:["Light Emitting Diode","Liquid Emitting Display","Light Emitting Display","Liquid Electronic Display"],
+   answer:"A",explanation:"LED monitors use Light Emitting Diodes for backlighting or pixel illumination."},
+  {id:95,level:"Basic",type:"Definition",topic:"Output Devices",
+   question:"OLED stands for:",
+   options:["Organic Light Emitting Diode","Optical Light Emitting Display","Organic Liquid Electronic Display","Output Light Emitting Diode"],
+   answer:"A",explanation:"OLED displays have each pixel emit its own light, providing superior contrast and thinner form factor."},
+  {id:96,level:"Basic",type:"Concept",topic:"Output Devices",
+   question:"Resolution of a monitor is measured in:",
+   options:["Hertz","Pixels (width × height)","Bytes","Watts"],
+   answer:"B",explanation:"Resolution = number of pixels (e.g., 1920×1080 Full HD). More pixels = sharper image."},
+  {id:97,level:"Basic",type:"Application",topic:"Output Devices",
+   question:"A plotter is best used for:",
+   options:["Printing text documents","Printing large engineering/architectural drawings","Scanning images","Displaying videos"],
+   answer:"B",explanation:"Plotters produce large-format, high-precision drawings used in engineering, architecture, and GIS."},
+  {id:98,level:"Basic",type:"Concept",topic:"Output Devices",
+   question:"Which type of printer uses laser technology?",
+   options:["Inkjet printer","Dot matrix printer","Laser printer","Thermal printer"],
+   answer:"C",explanation:"Laser printers use a laser beam to transfer toner onto paper, producing high-quality prints."},
+  {id:99,level:"Basic",type:"Concept",topic:"Output Devices",
+   question:"Which printer is an impact printer?",
+   options:["Laser","Inkjet","Dot Matrix","Thermal"],
+   answer:"C",explanation:"Dot matrix printers are impact printers – pins strike an inked ribbon to form characters."},
+  {id:100,level:"Basic",type:"Definition",topic:"Output Devices",
+   question:"DPI stands for (in context of printers/scanners):",
+   options:["Dots Per Inch","Data Per Inch","Display Per Inch","Digital Print Index"],
+   answer:"A",explanation:"DPI = Dots Per Inch; higher DPI means better print/scan quality."},
+  {id:101,level:"Basic",type:"Application",topic:"Output Devices",
+   question:"Which type of printer is most suitable for printing carbon copies?",
+   options:["Laser","Inkjet","Dot Matrix","3D Printer"],
+   answer:"C",explanation:"Dot matrix printers can print multiple carbon copies because they physically strike the paper."},
+  {id:102,level:"Basic",type:"Concept",topic:"Output Devices",
+   question:"A projector is used to:",
+   options:["Enlarge and project images/video onto a large screen","Scan large documents","Print on large paper","Store data"],
+   answer:"A",explanation:"Projectors display computer screen output enlarged on a wall or screen, used in presentations."},
+  {id:103,level:"Basic",type:"Concept",topic:"Output Devices",
+   question:"Which of the following is a non-impact printer?",
+   options:["Dot Matrix","Daisy Wheel","Laser","Line printer"],
+   answer:"C",explanation:"Laser and inkjet printers are non-impact (no physical contact with paper during printing)."},
+  {id:104,level:"Basic",type:"Concept",topic:"Output Devices",
+   question:"Inkjet printers work by:",
+   options:["Striking ink ribbons onto paper","Spraying tiny droplets of ink onto paper","Using laser to fuse toner powder","Using heated wax"],
+   answer:"B",explanation:"Inkjet printers spray tiny droplets of ink through nozzles onto paper."},
+  {id:105,level:"Basic",type:"Concept",topic:"Output Devices",
+   question:"Which output device converts digital audio signals to sound?",
+   options:["Microphone","Speakers","Headphone","Both B and C"],
+   answer:"D",explanation:"Both speakers and headphones are audio output devices that convert digital signals to audible sound."},
+  // SECTION 7: Secondary Storage
+  {id:106,level:"Basic",type:"Concept",topic:"Secondary Storage",
+   question:"Secondary storage is also called:",
+   options:["Main memory","Auxiliary/External memory","Cache memory","Virtual memory"],
+   answer:"B",explanation:"Secondary storage = auxiliary/external storage; it is non-volatile and stores data permanently."},
+  {id:107,level:"Basic",type:"Concept",topic:"Secondary Storage",
+   question:"Which of the following is a magnetic storage device?",
+   options:["CD-ROM","DVD","Hard Disk Drive (HDD)","Pen Drive"],
+   answer:"C",explanation:"HDD uses magnetic platters to store data. CD/DVD use optical technology; pen drives use flash."},
+  {id:108,level:"Basic",type:"Definition",topic:"Secondary Storage",
+   question:"HDD stands for:",
+   options:["Hard Disk Drive","High Definition Drive","Hard Data Drive","High Density Disk"],
+   answer:"A",explanation:"HDD = Hard Disk Drive; uses magnetic platters to store data."},
+  {id:109,level:"Basic",type:"Definition",topic:"Secondary Storage",
+   question:"SSD stands for:",
+   options:["Solid State Drive","Super Speed Drive","Solid Storage Device","Secondary Storage Disk"],
+   answer:"A",explanation:"SSD uses flash memory chips; it is faster, lighter, more durable but costlier than HDD."},
+  {id:110,level:"Basic",type:"Concept",topic:"Secondary Storage",
+   question:"Which is faster – HDD or SSD?",
+   options:["HDD","SSD","Both are equal","Depends on size"],
+   answer:"B",explanation:"SSDs have no moving parts and use flash memory; read/write speeds are 3–10× faster than HDDs."},
+  {id:111,level:"Basic",type:"Concept",topic:"Secondary Storage",
+   question:"The storage capacity of a CD-ROM is approximately:",
+   options:["1.44 MB","700 MB","4.7 GB","25 GB"],
+   answer:"B",explanation:"CD-ROM stores approximately 700 MB of data. Floppy disks hold 1.44 MB; DVD holds 4.7 GB."},
+  {id:112,level:"Basic",type:"Concept",topic:"Secondary Storage",
+   question:"The storage capacity of a standard single-layer DVD is:",
+   options:["700 MB","1.44 MB","4.7 GB","25 GB"],
+   answer:"C",explanation:"A single-layer DVD stores 4.7 GB. Dual-layer DVD stores 8.5 GB."},
+  {id:113,level:"Intermediate",type:"Concept",topic:"Secondary Storage",
+   question:"Blu-ray disc was developed by:",
+   options:["Sony and Panasonic led Blu-ray Disc Association","Microsoft","IBM","Apple"],
+   answer:"A",explanation:"Blu-ray (named for blue-violet laser used) was developed by the Blu-ray Disc Association led by Sony."},
+  {id:114,level:"Basic",type:"Concept",topic:"Secondary Storage",
+   question:"The storage capacity of a Blu-ray disc (single layer) is:",
+   options:["4.7 GB","8.5 GB","25 GB","100 GB"],
+   answer:"C",explanation:"Single-layer Blu-ray = 25 GB; dual-layer = 50 GB; BDXL = 100–128 GB."},
+  {id:115,level:"Basic",type:"Definition",topic:"Secondary Storage",
+   question:"CD-ROM stands for:",
+   options:["Compact Disc – Read Only Memory","Computer Disc – Read Only Memory","Compact Disc – Random Output Memory","Compact Disc – Readable Output Memory"],
+   answer:"A",explanation:"CD-ROM = Compact Disc Read Only Memory."},
+  {id:116,level:"Basic",type:"Definition",topic:"Secondary Storage",
+   question:"DVD stands for:",
+   options:["Digital Video Disc / Digital Versatile Disc","Digital Visual Display","Disk Video Drive","Dynamic Video Disc"],
+   answer:"A",explanation:"DVD was originally called 'Digital Video Disc' but was later also called 'Digital Versatile Disc'."},
+  {id:117,level:"Basic",type:"Application",topic:"Secondary Storage",
+   question:"Magnetic tape is primarily used for:",
+   options:["Fast random access storage","Backup and archival storage","Main memory","Cache storage"],
+   answer:"B",explanation:"Magnetic tape provides sequential access and is used for large-scale backup and archival."},
+  {id:118,level:"Basic",type:"Concept",topic:"Secondary Storage",
+   question:"A USB pen drive uses which type of memory?",
+   options:["DRAM","SRAM","Flash Memory","Magnetic"],
+   answer:"C",explanation:"USB pen drives (flash drives) use NAND flash memory."},
+  {id:119,level:"Intermediate",type:"Concept",topic:"Secondary Storage",
+   question:"The RPM (Revolutions Per Minute) of a hard disk refers to:",
+   options:["The speed of data transfer","The speed at which disk platters spin","The number of read/write heads","The storage capacity"],
+   answer:"B",explanation:"Typical HDD speeds: 5400 RPM (laptops) and 7200 RPM (desktops). Higher RPM = faster access."},
+  {id:120,level:"Basic",type:"Concept",topic:"Secondary Storage",
+   question:"Which optical disc uses a blue-violet laser?",
+   options:["CD","DVD","Blu-ray","HD-DVD"],
+   answer:"C",explanation:"Blu-ray uses 405 nm blue-violet laser (shorter wavelength → smaller pit → higher capacity)."},
+  {id:121,level:"Intermediate",type:"Definition",topic:"Secondary Storage",
+   question:"RAID stands for:",
+   options:["Redundant Array of Independent Disks","Random Array of Independent Drives","Redundant Access of Integrated Disks","Rapid Array of Integrated Drives"],
+   answer:"A",explanation:"RAID combines multiple physical disk drives for redundancy and/or performance improvement."},
+  {id:122,level:"Basic",type:"Concept",topic:"Secondary Storage",
+   question:"Which storage medium provides the slowest access time?",
+   options:["SSD","HDD","Magnetic Tape","RAM"],
+   answer:"C",explanation:"Magnetic tape has sequential access and is the slowest; used for archival backups."},
+  {id:123,level:"Basic",type:"Concept",topic:"Secondary Storage",
+   question:"A floppy disk typically stores:",
+   options:["700 MB","4.7 GB","1.44 MB","128 MB"],
+   answer:"C",explanation:"Standard 3.5-inch floppy disks store 1.44 MB. They are now obsolete."},
+  {id:124,level:"Intermediate",type:"Definition",topic:"Secondary Storage",
+   question:"NAS stands for:",
+   options:["Network Attached Storage","New Access Storage","Network Access System","Non-volatile Attached Storage"],
+   answer:"A",explanation:"NAS = Network Attached Storage; a file-level storage server connected to a network."},
+  {id:125,level:"Advanced",type:"Concept",topic:"Secondary Storage",
+   question:"Which is the most durable storage medium for long-term archival?",
+   options:["HDD","Magnetic Tape","SSD","CD/DVD"],
+   answer:"B",explanation:"High-quality magnetic tape can last 30+ years in proper storage conditions, making it ideal for archival."},
+
+  // SECTION 8: Scanners, Digitizers, Plotters
+  {id:126,level:"Basic",type:"Concept",topic:"Peripherals",
+   question:"A flatbed scanner produces output in which form?",
+   options:["Hard copy","Digital image file","Audio file","Video file"],
+   answer:"B",explanation:"A flatbed scanner digitizes documents into digital image files (JPEG, PNG, PDF, TIFF, etc.)."},
+  {id:127,level:"Basic",type:"Concept",topic:"Peripherals",
+   question:"Resolution of a scanner is measured in:",
+   options:["DPI (Dots Per Inch)","MHz","GB","Pixels only"],
+   answer:"A",explanation:"Higher DPI in scanners means finer detail is captured in the digital image."},
+  {id:128,level:"Advanced",type:"Concept",topic:"Peripherals",
+   question:"A drum scanner uses which scanning technology?",
+   options:["CCD (Charge-Coupled Device)","PMT (Photomultiplier Tube)","CMOS sensor","Infrared sensor"],
+   answer:"B",explanation:"Professional drum scanners use PMT technology; flatbed scanners use CCD or CIS sensors."},
+  {id:129,level:"Intermediate",type:"Concept",topic:"Peripherals",
+   question:"3D scanner is used to:",
+   options:["Print 3D objects","Capture 3D shape and geometry of physical objects","Scan 3D movies","Project 3D images"],
+   answer:"B",explanation:"3D scanners create digital 3D models from physical objects, used in CAD, medical imaging, and animation."},
+  {id:130,level:"Basic",type:"Concept",topic:"Peripherals",
+   question:"A digitizer converts:",
+   options:["Digital data to analog","Analog data (drawings/coordinates) to digital","Text to speech","Images to video"],
+   answer:"B",explanation:"Digitizers/graphics tablets convert physical position or drawings into digital coordinates."},
+  {id:131,level:"Basic",type:"Concept",topic:"Peripherals",
+   question:"A graphics tablet uses which device to draw/write?",
+   options:["Stylus/Pen","Mouse","Keyboard","Trackball"],
+   answer:"A",explanation:"A stylus (electronic pen) is used with a graphics tablet/digitizer for precise drawing."},
+  {id:132,level:"Basic",type:"Concept",topic:"Peripherals",
+   question:"Plotters are used to draw:",
+   options:["Text only","Vector graphics, engineering plans, maps","Raster images only","3D objects"],
+   answer:"B",explanation:"Plotters draw vector graphics including engineering drawings, maps, architectural plans with great precision."},
+  {id:133,level:"Intermediate",type:"Concept",topic:"Peripherals",
+   question:"Which type of plotter moves the paper while the pen is stationary in one axis?",
+   options:["Flatbed plotter","Drum plotter","Electrostatic plotter","Inkjet plotter"],
+   answer:"B",explanation:"In a drum plotter, the paper rolls on a drum while the pen moves horizontally."},
+  {id:134,level:"Intermediate",type:"Concept",topic:"Peripherals",
+   question:"In a flatbed plotter:",
+   options:["The paper moves","The pen moves in both X and Y axes over stationary paper","Both paper and pen move","Neither moves"],
+   answer:"B",explanation:"Flatbed plotters hold paper flat while the pen moves in both horizontal and vertical axes."},
+  {id:135,level:"Basic",type:"Concept",topic:"Peripherals",
+   question:"A webcam is an example of which type of input device?",
+   options:["Audio input","Video/image input","Biometric input","Both B and C"],
+   answer:"D",explanation:"Webcams capture video/images and can be used for facial recognition (biometric input)."},
+  {id:136,level:"Intermediate",type:"Concept",topic:"Peripherals",
+   question:"3D printers create objects using which technique?",
+   options:["Subtractive manufacturing","Additive manufacturing (layer-by-layer)","Injection moulding","Laser cutting"],
+   answer:"B",explanation:"3D printing = additive manufacturing; material is added layer by layer to create 3D objects."},
+  {id:137,level:"Basic",type:"Concept",topic:"Peripherals",
+   question:"An Interactive Whiteboard (Smart Board) functions as:",
+   options:["Only a display device","Both input and output device","Only an input device","A storage device"],
+   answer:"B",explanation:"Smart boards display content (output) and accept touch/stylus input (input device)."},
+  {id:138,level:"Basic",type:"Concept",topic:"Peripherals",
+   question:"A microphone converts:",
+   options:["Digital audio to analog sound","Sound (analog) to digital electrical signal","Text to speech","Video to audio"],
+   answer:"B",explanation:"Microphones are input devices that convert acoustic sound waves to electrical/digital signals."},
+  {id:139,level:"Basic",type:"Concept",topic:"Peripherals",
+   question:"Which of the following is a wireless input device?",
+   options:["Wired keyboard","Bluetooth mouse","PS/2 keyboard","USB scanner"],
+   answer:"B",explanation:"Bluetooth/wireless mice and keyboards communicate without physical cables."},
+  {id:140,level:"Intermediate",type:"Concept",topic:"Peripherals",
+   question:"VR headset is primarily which type of device?",
+   options:["Input only","Output only","Both input and output","Storage"],
+   answer:"C",explanation:"VR headsets display immersive 3D environments (output) and track head movement/controllers (input)."},
+
+  // SECTION 9: Hardware and Software
+  {id:141,level:"Basic",type:"Definition",topic:"Hardware and Software",
+   question:"Hardware refers to:",
+   options:["Programs and data used by a computer","Physical components of a computer that can be touched","The operating system","Applications installed on a computer"],
+   answer:"B",explanation:"Hardware = physical, tangible components (CPU, RAM, HDD, keyboard, monitor, etc.)."},
+  {id:142,level:"Basic",type:"Definition",topic:"Hardware and Software",
+   question:"Software refers to:",
+   options:["Physical components of a computer","Programs, data, and instructions that tell hardware what to do","The keyboard and mouse","The monitor and printer"],
+   answer:"B",explanation:"Software = intangible programs and data; it cannot be physically touched."},
+  {id:143,level:"Basic",type:"Concept",topic:"Hardware and Software",
+   question:"Which of the following is system software?",
+   options:["MS Word","Photoshop","Windows 11","VLC Media Player"],
+   answer:"C",explanation:"System software (OS like Windows, Linux, macOS) manages hardware and provides platform for applications."},
+  {id:144,level:"Basic",type:"Concept",topic:"Hardware and Software",
+   question:"Which of the following is application software?",
+   options:["Linux","BIOS","Device Driver","Microsoft Excel"],
+   answer:"D",explanation:"Application software performs specific user tasks (word processing, spreadsheets, games, etc.)."},
+  {id:145,level:"Basic",type:"Concept",topic:"Hardware and Software",
+   question:"Operating System (OS) is an example of:",
+   options:["Application Software","System Software","Utility Software","Programming Software"],
+   answer:"B",explanation:"The OS is the most important system software; it manages hardware resources and provides user interface."},
+  {id:146,level:"Basic",type:"Concept",topic:"Hardware and Software",
+   question:"Which of the following is NOT an operating system?",
+   options:["Windows 11","Ubuntu Linux","macOS Ventura","Microsoft Office"],
+   answer:"D",explanation:"Microsoft Office is application software (word processor, spreadsheet, etc.), not an OS."},
+  {id:147,level:"Intermediate",type:"Concept",topic:"Hardware and Software",
+   question:"A compiler is an example of which type of software?",
+   options:["Application software","System software","Language translator (system/utility software)","Operating system"],
+   answer:"C",explanation:"Compilers, interpreters, and assemblers are language translators that are part of system software."},
+  {id:148,level:"Intermediate",type:"Concept",topic:"Hardware and Software",
+   question:"The difference between a compiler and an interpreter is:",
+   options:["Compiler translates code line-by-line; interpreter translates the whole program at once","Compiler translates the whole program at once; interpreter translates line-by-line","Both work the same way","Compiler is for C; interpreter is for Java only"],
+   answer:"B",explanation:"Compiler: translates entire source code to machine code at once (C, C++). Interpreter: translates and executes line by line (Python, JavaScript)."},
+  {id:149,level:"Basic",type:"Definition",topic:"Hardware and Software",
+   question:"Firmware is:",
+   options:["Software stored permanently in ROM/Flash memory of hardware","The latest version of Windows","A type of application software","Malicious software"],
+   answer:"A",explanation:"Firmware is embedded software (like BIOS) stored in non-volatile memory, controlling hardware functions."},
+  {id:150,level:"Basic",type:"Concept",topic:"Hardware and Software",
+   question:"Open source software means:",
+   options:["Software that is free to use only","Software whose source code is publicly available and can be modified","Software developed by the government","Software without copy protection"],
+   answer:"B",explanation:"Open source software (Linux, Firefox, VLC) has publicly available source code that anyone can modify/distribute."},
+  {id:151,level:"Basic",type:"Definition",topic:"Hardware and Software",
+   question:"Freeware is:",
+   options:["Open source software","Software available at no cost but source code may not be available","Paid software","Software only for educational institutions"],
+   answer:"B",explanation:"Freeware = free to use but may be proprietary (e.g., Skype, Adobe Acrobat Reader – free but closed source)."},
+  {id:152,level:"Basic",type:"Definition",topic:"Hardware and Software",
+   question:"Shareware is:",
+   options:["Software shared among multiple users simultaneously","Trial software that can be used free for a limited period","Software developed by multiple companies","Free and open source software"],
+   answer:"B",explanation:"Shareware allows trial use; users pay for continued use after trial period."},
+  {id:153,level:"Basic",type:"Concept",topic:"Hardware and Software",
+   question:"Utility software is used for:",
+   options:["Business applications","System maintenance, optimization, and management tasks","Gaming","Web development"],
+   answer:"B",explanation:"Utility software includes antivirus, disk defragmenter, backup tools, file compression tools."},
+  {id:154,level:"Basic",type:"Concept",topic:"Hardware and Software",
+   question:"Antivirus software is an example of:",
+   options:["Application software","Operating system","Utility software","Firmware"],
+   answer:"C",explanation:"Antivirus software is a utility that protects systems from malware/viruses."},
+  {id:155,level:"Basic",type:"Concept",topic:"Hardware and Software",
+   question:"Device drivers are part of which software category?",
+   options:["Application software","System software","Entertainment software","Productivity software"],
+   answer:"B",explanation:"Device drivers are system software that allow the OS to communicate with hardware devices."},
+  {id:156,level:"Basic",type:"Concept",topic:"Hardware and Software",
+   question:"Which of the following is proprietary software?",
+   options:["Linux","Firefox","Microsoft Windows","LibreOffice"],
+   answer:"C",explanation:"Microsoft Windows is proprietary (closed source). Linux, Firefox, LibreOffice are open source."},
+  {id:157,level:"Basic",type:"Definition",topic:"Hardware and Software",
+   question:"GUI stands for:",
+   options:["Graphical User Interface","General User Interface","Graphical Unix Interface","Global User Interface"],
+   answer:"A",explanation:"GUI (like Windows, macOS) uses icons, menus, and windows; CLI (Command Line Interface) uses text commands."},
+  {id:158,level:"Basic",type:"Concept",topic:"Hardware and Software",
+   question:"Which company developed the Windows operating system?",
+   options:["Apple","IBM","Microsoft","Google"],
+   answer:"C",explanation:"Microsoft developed the Windows operating system, first released in 1985."},
+  {id:159,level:"Basic",type:"Concept",topic:"Hardware and Software",
+   question:"Linux is an example of which type of OS?",
+   options:["Proprietary","Open source","Closed source","Commercial"],
+   answer:"B",explanation:"Linux (created by Linus Torvalds in 1991) is a free, open-source OS kernel."},
+  {id:160,level:"Basic",type:"Concept",topic:"Hardware and Software",
+   question:"Which of the following is a mobile operating system?",
+   options:["Windows 11","macOS","Android","Ubuntu"],
+   answer:"C",explanation:"Android (Google) and iOS (Apple) are mobile operating systems for smartphones and tablets."},
+  // SECTION 10: Types of Computers
+  {id:161,level:"Basic",type:"Concept",topic:"Types of Computers",
+   question:"Which type of computer is designed for personal use?",
+   options:["Mainframe","Supercomputer","Microcomputer (Personal Computer)","Minicomputer"],
+   answer:"C",explanation:"Microcomputers (PCs) use a single microprocessor and are designed for individual/personal use."},
+  {id:162,level:"Basic",type:"Concept",topic:"Types of Computers",
+   question:"The term 'Personal Computer' (PC) refers to which type of computer?",
+   options:["Minicomputer","Mainframe","Microcomputer","Supercomputer"],
+   answer:"C",explanation:"Personal Computer (PC) = Microcomputer, designed for single-user personal use."},
+  {id:163,level:"Intermediate",type:"Concept",topic:"Types of Computers",
+   question:"The first personal computer was introduced by:",
+   options:["IBM in 1981","Apple in 1976","Microsoft in 1985","Intel in 1971"],
+   answer:"A",explanation:"IBM PC (1981) standardized the personal computer. Apple II (1977) was also very influential earlier."},
+  {id:164,level:"Basic",type:"Concept",topic:"Types of Computers",
+   question:"Minicomputers are also called:",
+   options:["Microcomputers","Mid-range computers","Mainframe computers","Supercomputers"],
+   answer:"B",explanation:"Minicomputers are mid-range systems, more powerful than PCs but less powerful than mainframes."},
+  {id:165,level:"Basic",type:"Application",topic:"Types of Computers",
+   question:"Which type of computer is used for large-scale data processing in banks and insurance companies?",
+   options:["Microcomputer","Minicomputer","Mainframe computer","Laptop"],
+   answer:"C",explanation:"Mainframe computers handle millions of transactions simultaneously; used in banking, railways, airlines."},
+  {id:166,level:"Basic",type:"Concept",topic:"Types of Computers",
+   question:"The world's fastest computers are called:",
+   options:["Mainframes","Minicomputers","Supercomputers","Workstations"],
+   answer:"C",explanation:"Supercomputers are the world's fastest computers used for complex scientific tasks."},
+  {id:167,level:"Basic",type:"Application",topic:"Types of Computers",
+   question:"Supercomputers are used for:",
+   options:["Personal use at home","Complex scientific calculations, weather forecasting, nuclear simulations","Office work","Gaming only"],
+   answer:"B",explanation:"Supercomputers are used for weather forecasting, climate research, drug discovery, nuclear simulations."},
+  {id:168,level:"Intermediate",type:"Concept",topic:"Types of Computers",
+   question:"India's first supercomputer was:",
+   options:["PARAM 8000","PARAM Siddhi","Pratyush","Mihir"],
+   answer:"A",explanation:"PARAM 8000 was developed by C-DAC (Centre for Development of Advanced Computing) in 1991."},
+  {id:169,level:"Intermediate",type:"Concept",topic:"Types of Computers",
+   question:"Which organization developed India's PARAM supercomputer series?",
+   options:["ISRO","DRDO","C-DAC","IIT Delhi"],
+   answer:"C",explanation:"C-DAC (Centre for Development of Advanced Computing), Pune developed the PARAM series."},
+  {id:170,level:"Intermediate",type:"Concept",topic:"Types of Computers",
+   question:"A workstation computer is:",
+   options:["A low-end personal computer","A high-performance microcomputer for technical/scientific use","A type of mainframe","A portable computer"],
+   answer:"B",explanation:"Workstations are high-end microcomputers used for CAD/CAM, scientific research, video editing."},
+  {id:171,level:"Basic",type:"Concept",topic:"Types of Computers",
+   question:"Laptops/Notebooks are which type of computer?",
+   options:["Minicomputer","Mainframe","Portable microcomputer","Supercomputer"],
+   answer:"C",explanation:"Laptops are portable versions of microcomputers with built-in display, keyboard, and battery."},
+  {id:172,level:"Basic",type:"Concept",topic:"Types of Computers",
+   question:"A tablet computer typically uses which input method primarily?",
+   options:["Physical keyboard","Mouse","Touchscreen","Joystick"],
+   answer:"C",explanation:"Tablets primarily use touchscreen for input, with optional external keyboards."},
+  {id:173,level:"Basic",type:"Concept",topic:"Types of Computers",
+   question:"Server computers are designed to:",
+   options:["Run video games","Provide services/resources to other computers on a network","Replace desktop PCs","Perform personal computing tasks"],
+   answer:"B",explanation:"Servers provide file storage, web hosting, email, database, and other services to client computers."},
+  {id:174,level:"Basic",type:"Concept",topic:"Types of Computers",
+   question:"Which type of computer has the LARGEST processing power?",
+   options:["Desktop PC","Laptop","Mainframe","Supercomputer"],
+   answer:"D",explanation:"Supercomputers have the largest processing power, measured in petaFLOPS."},
+  {id:175,level:"Intermediate",type:"Concept",topic:"Types of Computers",
+   question:"Embedded computers are:",
+   options:["Computers hidden inside buildings","Microprocessors/computers built into everyday devices (cars, microwaves, ATMs)","Computers used only in laboratories","Miniaturized desktop PCs"],
+   answer:"B",explanation:"Embedded systems are dedicated microcomputers built into devices for specific control functions."},
+  {id:176,level:"Basic",type:"Concept",topic:"Types of Computers",
+   question:"The ENIAC computer occupied approximately:",
+   options:["The size of a room (about 1800 sq. ft.)","The size of a briefcase","The size of a desktop PC","The size of a refrigerator"],
+   answer:"A",explanation:"ENIAC weighed 30 tons, occupied 1800 sq ft, and consumed 150 kW of power."},
+  {id:177,level:"Basic",type:"Concept",topic:"Types of Computers",
+   question:"Handheld computers / PDAs are:",
+   options:["Very small portable computers","Large servers","Types of mainframes","Input devices"],
+   answer:"A",explanation:"PDAs (Personal Digital Assistants) and smartphones are handheld computers."},
+  {id:178,level:"Basic",type:"Concept",topic:"Types of Computers",
+   question:"Which of the following is the correct order from least to most powerful?",
+   options:["Supercomputer < Mainframe < Minicomputer < Microcomputer","Microcomputer < Minicomputer < Mainframe < Supercomputer","Mainframe < Microcomputer < Minicomputer < Supercomputer","Minicomputer < Microcomputer < Supercomputer < Mainframe"],
+   answer:"B",explanation:"Ascending order of power/size: Micro < Mini < Mainframe < Supercomputer."},
+  {id:179,level:"Intermediate",type:"Concept",topic:"Types of Computers",
+   question:"The IBM System/360 is a famous example of which type of computer?",
+   options:["Microcomputer","Supercomputer","Mainframe","Minicomputer"],
+   answer:"C",explanation:"IBM System/360 (1964) was a landmark mainframe computer series."},
+  {id:180,level:"Intermediate",type:"Concept",topic:"Types of Computers",
+   question:"PDP-11 is a famous example of which type of computer?",
+   options:["Supercomputer","Mainframe","Minicomputer","Microcomputer"],
+   answer:"C",explanation:"PDP-11 (by Digital Equipment Corporation, 1970) was one of the most successful minicomputers."},
+
+  // SECTION 11: Assertion-Reason
+  {id:181,level:"Intermediate",type:"Assertion-Reason",topic:"Memory",
+   question:"Assertion (A): RAM is called volatile memory.\nReason (R): RAM loses its data when the power supply is switched off.\nChoose the correct option:",
+   options:["Both A and R are true, and R is the correct explanation of A","Both A and R are true, but R is NOT the correct explanation of A","A is true but R is false","A is false but R is true"],
+   answer:"A",explanation:"RAM is volatile because it loses all data when power is removed – the reason correctly explains the assertion."},
+  {id:182,level:"Intermediate",type:"Assertion-Reason",topic:"CPU",
+   question:"Assertion (A): The CPU is called the brain of a computer.\nReason (R): CPU processes all data and coordinates all operations.\nChoose the correct option:",
+   options:["Both A and R are true, and R is the correct explanation of A","Both A and R are true, but R is NOT the correct explanation","A is true but R is false","A is false but R is true"],
+   answer:"A",explanation:"CPU processes all data and coordinates all operations – this correctly explains why it is called the brain."},
+  {id:183,level:"Intermediate",type:"Assertion-Reason",topic:"Hardware and Software",
+   question:"Assertion (A): A compiler translates code line by line.\nReason (R): This allows faster execution than an interpreter.\nChoose the correct option:",
+   options:["Both A and R are true","A is false; R is true","A is false; R is false","A is true; R is false"],
+   answer:"B",explanation:"A compiler translates the ENTIRE program at once (not line by line – that's an interpreter). Also, compiled code generally runs faster."},
+  {id:184,level:"Intermediate",type:"Assertion-Reason",topic:"Secondary Storage",
+   question:"Assertion (A): Secondary storage is non-volatile.\nReason (R): Secondary storage retains data even when power is turned off.\nChoose the correct option:",
+   options:["Both A and R are true, and R correctly explains A","Both A and R are true but R does not explain A","A is true, R is false","A is false, R is true"],
+   answer:"A",explanation:"Secondary storage is non-volatile and retains data without power – R correctly explains A."},
+  {id:185,level:"Intermediate",type:"Assertion-Reason",topic:"Memory",
+   question:"Assertion (A): Cache memory is larger than RAM.\nReason (R): Cache is faster than RAM.\nChoose the correct option:",
+   options:["Both A and R are true","A is false; R is true","A is true; R is false","Both A and R are false"],
+   answer:"B",explanation:"Cache is MUCH SMALLER than RAM (KB to a few MB), but much FASTER. Larger cache would be prohibitively expensive."},
+  {id:186,level:"Intermediate",type:"Statement",topic:"Input Devices",
+   question:"Statement I: MICR is used in banking for cheque processing.\nStatement II: MICR characters are printed using magnetic ink.\nChoose the correct option:",
+   options:["Only Statement I is correct","Only Statement II is correct","Both statements are correct","Neither statement is correct"],
+   answer:"C",explanation:"Both statements about MICR are correct."},
+  {id:187,level:"Intermediate",type:"Statement",topic:"Types of Computers",
+   question:"Statement I: A supercomputer is slower than a mainframe.\nStatement II: Supercomputers are used for weather forecasting.\nChoose the correct option:",
+   options:["Only Statement I is correct","Only Statement II is correct","Both are correct","Neither is correct"],
+   answer:"B",explanation:"Statement I is WRONG – supercomputers are far faster than mainframes. Statement II is correct."},
+  {id:188,level:"Intermediate",type:"Statement",topic:"Output Devices",
+   question:"Statement I: A plotter is an output device.\nStatement II: A plotter is used to print high-quality large drawings.\nChoose the correct option:",
+   options:["Only I is correct","Only II is correct","Both are correct","Neither is correct"],
+   answer:"C",explanation:"Both statements about plotters are correct."},
+  {id:189,level:"Intermediate",type:"Statement",topic:"Input Devices",
+   question:"Statement I: All input devices are also output devices.\nStatement II: A touchscreen can function as both input and output.\nChoose the correct option:",
+   options:["Only I is correct","Only II is correct","Both are correct","Neither is correct"],
+   answer:"B",explanation:"Not all input devices are output devices (keyboard is only input). But a touchscreen is correctly both."},
+  {id:190,level:"Intermediate",type:"Statement",topic:"Secondary Storage",
+   question:"Statement I: SSD uses magnetic platters to store data.\nStatement II: SSD is faster than HDD.\nChoose the correct option:",
+   options:["Both are correct","Only II is correct","Only I is correct","Neither is correct"],
+   answer:"B",explanation:"Statement I is wrong – SSD uses flash memory chips (not magnetic platters). Statement II is correct."},
+
+  // SECTION 12: Match-the-Following
+  {id:191,level:"Basic",type:"Match",topic:"Input Devices",
+   question:"Match the device with its type:\n1-Keyboard  2-Monitor  3-Printer  4-Scanner\na-Output  b-Input  c-Input  d-Output",
+   options:["1-b, 2-a, 3-d, 4-c","1-a, 2-b, 3-c, 4-d","1-b, 2-a, 3-c, 4-d","1-c, 2-d, 3-a, 4-b"],
+   answer:"A",explanation:"Keyboard=Input(b), Monitor=Output(a), Printer=Output(d), Scanner=Input(c)."},
+  {id:192,level:"Basic",type:"Match",topic:"Memory",
+   question:"Match memory type with characteristic:\n1-RAM  2-ROM  3-Cache  4-HDD\na-Non-volatile, holds BIOS  b-Volatile, main working memory  c-Fastest, near CPU  d-Non-volatile, largest storage",
+   options:["1-b, 2-a, 3-c, 4-d","1-a, 2-b, 3-d, 4-c","1-c, 2-d, 3-a, 4-b","1-d, 2-c, 3-b, 4-a"],
+   answer:"A",explanation:"RAM=Volatile working memory(b), ROM=Non-volatile BIOS(a), Cache=Fastest near CPU(c), HDD=Largest storage(d)."},
+  {id:193,level:"Basic",type:"Match",topic:"Secondary Storage",
+   question:"Match storage medium with capacity:\n1-Floppy  2-CD-ROM  3-DVD  4-Blu-ray\na-25 GB  b-1.44 MB  c-700 MB  d-4.7 GB",
+   options:["1-b, 2-c, 3-d, 4-a","1-a, 2-b, 3-c, 4-d","1-c, 2-a, 3-b, 4-d","1-d, 2-c, 3-a, 4-b"],
+   answer:"A",explanation:"Floppy=1.44MB(b), CD=700MB(c), DVD=4.7GB(d), Blu-ray=25GB(a)."},
+  {id:194,level:"Basic",type:"Match",topic:"Hardware and Software",
+   question:"Match software with its category:\n1-Windows 11  2-MS Excel  3-Antivirus  4-Device Driver\na-Utility software  b-System software (OS)  c-Application software  d-System software",
+   options:["1-b, 2-c, 3-a, 4-d","1-a, 2-b, 3-d, 4-c","1-c, 2-a, 3-b, 4-d","1-d, 2-c, 3-a, 4-b"],
+   answer:"A",explanation:"Windows=OS/System(b), Excel=Application(c), Antivirus=Utility(a), Driver=System(d)."},
+  {id:195,level:"Basic",type:"Match",topic:"Computer Generations",
+   question:"Match computer generation with technology:\n1-First Gen  2-Second Gen  3-Third Gen  4-Fourth Gen\na-VLSI/Microprocessor  b-Vacuum Tubes  c-Transistors  d-ICs (SSI/MSI)",
+   options:["1-b, 2-c, 3-d, 4-a","1-a, 2-b, 3-c, 4-d","1-c, 2-d, 3-a, 4-b","1-d, 2-a, 3-b, 4-c"],
+   answer:"A",explanation:"1st=Vacuum tubes(b), 2nd=Transistors(c), 3rd=ICs(d), 4th=VLSI/Microprocessors(a)."},
+  {id:196,level:"Basic",type:"Match",topic:"Block Diagram of Computer",
+   question:"Match the abbreviation with full form:\n1-ALU  2-ROM  3-OCR  4-CPU\na-Read Only Memory  b-Arithmetic Logic Unit  c-Central Processing Unit  d-Optical Character Recognition",
+   options:["1-b, 2-a, 3-d, 4-c","1-a, 2-c, 3-b, 4-d","1-c, 2-d, 3-a, 4-b","1-d, 2-b, 3-c, 4-a"],
+   answer:"A",explanation:"ALU=Arithmetic Logic Unit(b), ROM=Read Only Memory(a), OCR=Optical Character Recognition(d), CPU=Central Processing Unit(c)."},
+  {id:197,level:"Basic",type:"Match",topic:"Types of Computers",
+   question:"Match computer type with its use:\n1-Supercomputer  2-Mainframe  3-Minicomputer  4-Microcomputer\na-Personal use  b-Weather forecasting  c-Bank transactions  d-Departmental tasks",
+   options:["1-b, 2-c, 3-d, 4-a","1-c, 2-b, 3-a, 4-d","1-a, 2-d, 3-c, 4-b","1-d, 2-a, 3-b, 4-c"],
+   answer:"A",explanation:"Supercomputer=Weather forecasting(b), Mainframe=Bank transactions(c), Minicomputer=Departmental(d), Micro=Personal(a)."},
+  {id:198,level:"Intermediate",type:"Match",topic:"Block Diagram of Computer",
+   question:"Match CPU register with its function:\n1-Program Counter  2-Accumulator  3-MAR  4-IR\na-Stores ALU result  b-Holds current instruction  c-Stores next instruction address  d-Stores memory address",
+   options:["1-c, 2-a, 3-d, 4-b","1-a, 2-c, 3-b, 4-d","1-b, 2-d, 3-c, 4-a","1-d, 2-b, 3-a, 4-c"],
+   answer:"A",explanation:"PC=next instruction address(c), Accumulator=ALU result(a), MAR=memory address(d), IR=current instruction(b)."},
+  {id:199,level:"Basic",type:"Match",topic:"Output Devices",
+   question:"Match printer type with mechanism:\n1-Laser  2-Inkjet  3-Dot Matrix  4-Thermal\na-Strikes ribbon onto paper  b-Uses laser + toner  c-Sprays ink droplets  d-Uses heat on special paper",
+   options:["1-b, 2-c, 3-a, 4-d","1-a, 2-b, 3-c, 4-d","1-c, 2-a, 3-d, 4-b","1-d, 2-c, 3-b, 4-a"],
+   answer:"A",explanation:"Laser=laser+toner(b), Inkjet=sprays ink(c), Dot Matrix=strikes ribbon(a), Thermal=heat on paper(d)."},
+  {id:200,level:"Basic",type:"Match",topic:"Memory",
+   question:"Match memory unit with correct value:\n1-1 Kilobyte  2-1 Megabyte  3-1 Gigabyte  4-1 Terabyte\na-1024 GB  b-1024 bytes  c-1024 MB  d-1024 KB",
+   options:["1-b, 2-d, 3-c, 4-a","1-a, 2-b, 3-d, 4-c","1-c, 2-a, 3-b, 4-d","1-d, 2-c, 3-a, 4-b"],
+   answer:"A",explanation:"1KB=1024 bytes(b), 1MB=1024KB(d), 1GB=1024MB(c), 1TB=1024GB(a)."},
+  // SECTION 13: Advanced & Higher-Order Thinking
+  {id:201,level:"Advanced",type:"Concept",topic:"Advanced Concepts",
+   question:"Which principle states that the number of transistors on a microchip doubles approximately every two years?",
+   options:["Shannon's Law","Moore's Law","Metcalfe's Law","Amdahl's Law"],
+   answer:"B",explanation:"Moore's Law (Gordon Moore, 1965) has held true for decades, driving the exponential growth of computing power."},
+  {id:202,level:"Advanced",type:"Concept",topic:"Advanced Concepts",
+   question:"Von Neumann architecture is characterized by:",
+   options:["Separate memory for instructions and data","A single memory storing both instructions and data, with a CPU","Parallel processing only","No use of RAM"],
+   answer:"B",explanation:"Von Neumann architecture has: CPU + Memory (storing both program and data) + I/O, connected by a bus."},
+  {id:203,level:"Advanced",type:"Concept",topic:"Advanced Concepts",
+   question:"Harvard Architecture differs from Von Neumann in that:",
+   options:["It has no ALU","It uses separate memory and pathways for instructions and data","It uses optical storage only","It has no control unit"],
+   answer:"B",explanation:"Harvard architecture separates instruction memory and data memory, allowing simultaneous access (used in DSPs, microcontrollers)."},
+  {id:204,level:"Advanced",type:"Concept",topic:"Advanced Concepts",
+   question:"The Von Neumann bottleneck refers to:",
+   options:["Slow input devices limiting CPU speed","The limited bandwidth between CPU and memory creating a performance bottleneck","Insufficient storage capacity","Slow network connections"],
+   answer:"B",explanation:"Since CPU and memory share one bus, data transfer becomes a bottleneck; cache memory helps alleviate this."},
+  {id:205,level:"Advanced",type:"Concept",topic:"Advanced Concepts",
+   question:"Quantum computers use which fundamental unit of computation?",
+   options:["Bit","Byte","Qubit","Nibble"],
+   answer:"C",explanation:"Quantum computers use qubits (quantum bits) that can exist in superposition (both 0 and 1 simultaneously)."},
+  {id:206,level:"Advanced",type:"Definition",topic:"Advanced Concepts",
+   question:"FLOPS stands for (in supercomputing context):",
+   options:["Floating Point Operations Per Second","Fast Linear Operations Per Second","Floating Line Output Processing Speed","File Loading Operations Per Second"],
+   answer:"A",explanation:"FLOPS measures computing performance, especially for scientific calculations. Modern supercomputers achieve petaFLOPS."},
+  {id:207,level:"Advanced",type:"Concept",topic:"Memory",
+   question:"Which of the following correctly describes the difference between SRAM and DRAM?",
+   options:["SRAM needs refresh; DRAM does not","DRAM uses capacitors and needs refresh; SRAM uses flip-flops and does not","SRAM is cheaper and slower than DRAM","DRAM is used for cache; SRAM is used for main memory"],
+   answer:"B",explanation:"DRAM: capacitors (need periodic refresh, cheaper, slower). SRAM: flip-flops (no refresh, faster, expensive). Cache uses SRAM; main memory uses DRAM."},
+  {id:208,level:"Intermediate",type:"Concept",topic:"Advanced Concepts",
+   question:"The process of loading an operating system into RAM when a computer starts is called:",
+   options:["Formatting","Booting","Compiling","Caching"],
+   answer:"B",explanation:"Booting (from 'bootstrapping') is the process of loading the OS from secondary storage to RAM at startup."},
+  {id:209,level:"Intermediate",type:"Concept",topic:"Advanced Concepts",
+   question:"Cold boot and warm boot differ in that:",
+   options:["Cold boot = restarting from running state; Warm boot = starting from powered-off state","Cold boot = starting from powered-off state; Warm boot = restarting from running state","Both are identical processes","Cold boot is faster than warm boot"],
+   answer:"B",explanation:"Cold boot (hard boot) = power on from off state. Warm boot (soft boot) = restart while power is on (Ctrl+Alt+Del)."},
+  {id:210,level:"Advanced",type:"Concept",topic:"Advanced Concepts",
+   question:"Thrashing in operating systems refers to:",
+   options:["CPU overheating","Excessive paging activity that reduces CPU efficiency drastically","Hard disk fragmentation","Cache overflow"],
+   answer:"B",explanation:"Thrashing occurs when a system spends more time swapping pages in/out of virtual memory than executing processes."},
+  {id:211,level:"Advanced",type:"Concept",topic:"Advanced Concepts",
+   question:"Which memory management technique divides memory into fixed-size blocks?",
+   options:["Segmentation","Paging","Swapping","Compaction"],
+   answer:"B",explanation:"Paging divides physical memory into fixed-size frames and logical memory into pages of the same size."},
+  {id:212,level:"Intermediate",type:"Concept",topic:"Secondary Storage",
+   question:"Defragmentation of a hard disk is done to:",
+   options:["Delete unused files","Rearrange fragmented files for faster access","Add more storage space","Repair bad sectors"],
+   answer:"B",explanation:"Defragmentation consolidates fragmented file pieces on HDD for more efficient access. (Not needed for SSDs.)"},
+  {id:213,level:"Basic",type:"Definition",topic:"Advanced Concepts",
+   question:"ASCII stands for:",
+   options:["American Standard Code for Information Interchange","American System Code for Information Interface","Automatic Standard Code for Information Interchange","Advanced Standard Code for Information Input"],
+   answer:"A",explanation:"ASCII uses 7 bits to represent 128 characters (letters, numbers, symbols). Extended ASCII uses 8 bits (256 characters)."},
+  {id:214,level:"Intermediate",type:"Concept",topic:"Advanced Concepts",
+   question:"Unicode was developed to:",
+   options:["Replace ASCII with a faster system","Support characters from all world languages (multilingual computing)","Compress text files","Encrypt data"],
+   answer:"B",explanation:"Unicode (UTF-8/16/32) can represent over 1 million characters from all world scripts, solving multilingual computing."},
+  {id:215,level:"Intermediate",type:"Concept",topic:"Number Systems",
+   question:"The hexadecimal number system uses base:",
+   options:["2","8","10","16"],
+   answer:"D",explanation:"Hexadecimal uses 16 symbols: 0-9 and A-F. Used in memory addresses, colour codes (#FF5733), etc."},
+  {id:216,level:"Intermediate",type:"Application",topic:"Number Systems",
+   question:"Binary number 1010 in decimal is:",
+   options:["8","10","12","14"],
+   answer:"B",explanation:"1010 = 1×8 + 0×4 + 1×2 + 0×1 = 8+2 = 10."},
+  {id:217,level:"Intermediate",type:"Application",topic:"Number Systems",
+   question:"Decimal 255 in binary is:",
+   options:["11111110","11111111","11110000","10101010"],
+   answer:"B",explanation:"255 = 128+64+32+16+8+4+2+1 = 11111111 in binary."},
+  {id:218,level:"Intermediate",type:"Application",topic:"Number Systems",
+   question:"What is the hexadecimal equivalent of decimal 255?",
+   options:["FE","FF","EF","F0"],
+   answer:"B",explanation:"255 = 15×16 + 15 = FF in hexadecimal."},
+  {id:219,level:"Basic",type:"Concept",topic:"Number Systems",
+   question:"Octal number system uses base:",
+   options:["2","8","16","10"],
+   answer:"B",explanation:"Octal uses digits 0-7 (base 8). Commonly used in Unix file permissions."},
+  {id:220,level:"Intermediate",type:"Concept",topic:"Advanced Concepts",
+   question:"Which logic gate produces output 1 only when all inputs are 1?",
+   options:["OR gate","AND gate","NOT gate","XOR gate"],
+   answer:"B",explanation:"AND gate: output = 1 only if ALL inputs are 1. OR: output=1 if at least one input is 1."},
+
+  // SECTION 14: Networking & Internet
+  {id:221,level:"Basic",type:"Definition",topic:"Networking",
+   question:"LAN stands for:",
+   options:["Local Area Network","Large Area Network","Linear Access Network","Linked Area Node"],
+   answer:"A",explanation:"LAN connects computers within a limited area (office, school, building)."},
+  {id:222,level:"Basic",type:"Definition",topic:"Networking",
+   question:"WAN stands for:",
+   options:["Wide Area Network","Wireless Area Network","World Area Node","Wired Access Network"],
+   answer:"A",explanation:"WAN covers a large geographic area; the Internet is the world's largest WAN."},
+  {id:223,level:"Basic",type:"Concept",topic:"Networking",
+   question:"The Internet is an example of which type of network?",
+   options:["LAN","MAN","WAN","PAN"],
+   answer:"C",explanation:"The Internet is a global WAN connecting millions of networks worldwide."},
+  {id:224,level:"Basic",type:"Definition",topic:"Networking",
+   question:"HTTP stands for:",
+   options:["HyperText Transfer Protocol","High Transfer Text Protocol","HyperText Transmission Program","High Tech Transfer Protocol"],
+   answer:"A",explanation:"HTTP = HyperText Transfer Protocol; used for transmitting web pages over the internet."},
+  {id:225,level:"Basic",type:"Definition",topic:"Networking",
+   question:"WWW stands for:",
+   options:["World Wide Web","World Wide Wire","World Web Wide","Worldwide Website"],
+   answer:"A",explanation:"WWW (World Wide Web) is a system of interlinked hypertext documents accessed via the Internet (invented by Tim Berners-Lee, 1989)."},
+  {id:226,level:"Basic",type:"Definition",topic:"Networking",
+   question:"IP address stands for:",
+   options:["Internet Protocol address","Internal Protocol address","Internet Processing address","Information Protocol address"],
+   answer:"A",explanation:"An IP address is a unique numerical identifier assigned to every device on a network."},
+  {id:227,level:"Basic",type:"Concept",topic:"Networking",
+   question:"WiFi is a technology for:",
+   options:["Wired local networking","Wireless local area networking","Wide area networking","Satellite internet"],
+   answer:"B",explanation:"WiFi (IEEE 802.11 standards) provides wireless LAN connectivity."},
+  {id:228,level:"Basic",type:"Definition",topic:"Networking",
+   question:"Email stands for:",
+   options:["Electronic Mail","Express Mail","Electronic Media","Enhanced Mail"],
+   answer:"A",explanation:"Email = Electronic Mail; a method of exchanging digital messages over a network."},
+  {id:229,level:"Intermediate",type:"Concept",topic:"Networking",
+   question:"A modem is a device that:",
+   options:["Amplifies network signals","Modulates and demodulates digital-to-analog signals for transmission","Connects two LANs","Assigns IP addresses"],
+   answer:"B",explanation:"Modem = MOdulator-DEModulator; converts digital signals to analog for telephone lines and vice versa."},
+  {id:230,level:"Intermediate",type:"Concept",topic:"Networking",
+   question:"Which device connects multiple computers in a network and intelligently routes data?",
+   options:["Hub","Switch","Router","Repeater"],
+   answer:"C",explanation:"Router routes data packets between networks. Switch connects devices in the same network. Hub broadcasts to all."},
+
+  // SECTION 15: Miscellaneous
+  {id:231,level:"Basic",type:"Concept",topic:"Miscellaneous",
+   question:"Which of the following is a programming language?",
+   options:["HTTP","HTML","Python","WiFi"],
+   answer:"C",explanation:"Python, C, Java, C++ are programming languages. HTML is a markup language; HTTP is a protocol."},
+  {id:232,level:"Basic",type:"Definition",topic:"Miscellaneous",
+   question:"The process of finding and removing errors in a program is called:",
+   options:["Compiling","Debugging","Booting","Formatting"],
+   answer:"B",explanation:"Debugging = identifying and fixing errors (bugs) in code."},
+  {id:233,level:"Basic",type:"Concept",topic:"Memory",
+   question:"Which of the following stores data temporarily while a computer is working?",
+   options:["ROM","Hard Disk","RAM","CD-ROM"],
+   answer:"C",explanation:"RAM is temporary (volatile) working memory; data is lost when power is removed."},
+  {id:234,level:"Basic",type:"Definition",topic:"Hardware and Software",
+   question:"The physical components of a computer that you can touch are collectively called:",
+   options:["Software","Hardware","Firmware","Liveware"],
+   answer:"B",explanation:"Hardware = physical, tangible components of a computer system."},
+  {id:235,level:"Basic",type:"Concept",topic:"Miscellaneous",
+   question:"A virus in computing is:",
+   options:["A type of hardware failure","A malicious self-replicating program that can damage files/systems","A type of network protocol","A programming language"],
+   answer:"B",explanation:"Computer virus = malicious code that replicates itself and can corrupt/delete files."},
+  {id:236,level:"Basic",type:"Definition",topic:"Miscellaneous",
+   question:"Malware is a term for:",
+   options:["Malfunctioning hardware","Malicious software (viruses, worms, trojans, spyware, ransomware)","Outdated software","Software that slows the computer"],
+   answer:"B",explanation:"Malware = MALicious softWARE; includes all types of harmful programs."},
+  {id:237,level:"Intermediate",type:"Concept",topic:"Miscellaneous",
+   question:"Which of the following is an example of a social engineering attack?",
+   options:["SQL injection","Buffer overflow","Phishing email","DDoS attack"],
+   answer:"C",explanation:"Phishing = social engineering attack where attackers impersonate legitimate entities to steal credentials."},
+  {id:238,level:"Basic",type:"Concept",topic:"Number Systems",
+   question:"The binary system uses only two digits:",
+   options:["0 and 1","1 and 2","0 and 2","A and B"],
+   answer:"A",explanation:"Binary (base-2) uses only 0 and 1. All computer data is stored and processed as binary."},
+  {id:239,level:"Basic",type:"Concept",topic:"Memory",
+   question:"Which among the following is the fastest memory?",
+   options:["Hard Disk","CD-ROM","RAM","CPU Registers"],
+   answer:"D",explanation:"CPU Registers are the fastest memory, built directly into the processor."},
+  {id:240,level:"Basic",type:"Definition",topic:"Miscellaneous",
+   question:"Full form of USB is:",
+   options:["Universal Serial Bus","Unified Serial Bus","Universal System Bus","United Storage Bus"],
+   answer:"A",explanation:"USB = Universal Serial Bus; a standard interface for connecting peripherals to computers."},
+  {id:241,level:"Basic",type:"Application",topic:"Miscellaneous",
+   question:"Which port is commonly used to connect a printer to a computer?",
+   options:["PS/2 port","VGA port","USB port","HDMI port"],
+   answer:"C",explanation:"Modern printers primarily connect via USB. Older printers used parallel (LPT) ports."},
+  {id:242,level:"Basic",type:"Definition",topic:"Miscellaneous",
+   question:"HDMI stands for:",
+   options:["High Definition Multimedia Interface","High Data Media Interface","High Definition Media Input","High Density Multimedia Interface"],
+   answer:"A",explanation:"HDMI carries high-definition audio and video signals; used to connect computers to HD TVs/monitors."},
+  {id:243,level:"Basic",type:"Application",topic:"Miscellaneous",
+   question:"Which key combination is used to take a screenshot in Windows?",
+   options:["Ctrl+C","Ctrl+V","Print Screen (PrtSc) or Win+PrtSc","Ctrl+Z"],
+   answer:"C",explanation:"PrtSc copies screen to clipboard; Win+PrtSc saves directly to Screenshots folder."},
+  {id:244,level:"Basic",type:"Application",topic:"Miscellaneous",
+   question:"What does 'Ctrl + Z' do in most applications?",
+   options:["Redo","Undo","Save","Cut"],
+   answer:"B",explanation:"Ctrl+Z = Undo (reverses last action). Ctrl+Y = Redo."},
+  {id:245,level:"Basic",type:"Concept",topic:"Miscellaneous",
+   question:"The 'Recycle Bin' in Windows stores:",
+   options:["Downloaded files","Deleted files temporarily before permanent deletion","System files","Temporary internet files"],
+   answer:"B",explanation:"Recycle Bin temporarily stores deleted files, allowing recovery before permanent deletion."},
+  {id:246,level:"Basic",type:"Concept",topic:"Miscellaneous",
+   question:"Which file extension is associated with executable programs in Windows?",
+   options:[".doc",".exe",".jpg",".txt"],
+   answer:"B",explanation:".exe = executable file (program). .doc=Word, .jpg=image, .txt=text file."},
+  {id:247,level:"Basic",type:"Concept",topic:"Memory",
+   question:"RAM is measured in which unit?",
+   options:["GHz","GB or MB","DPI","RPM"],
+   answer:"B",explanation:"RAM capacity is measured in MB (older systems) or GB (modern systems)."},
+  {id:248,level:"Basic",type:"Concept",topic:"CPU",
+   question:"CPU speed is measured in:",
+   options:["GB","MB","GHz","DPI"],
+   answer:"C",explanation:"CPU clock speed = GHz. Modern CPUs range from ~1 GHz to 5+ GHz."},
+  {id:249,level:"Intermediate",type:"Concept",topic:"Computer Generations",
+   question:"Which generation of computers uses artificial intelligence most prominently?",
+   options:["Third","Fourth","Fifth","Second"],
+   answer:"C",explanation:"Fifth-generation computers (in development) are based on AI, parallel processing, and natural language processing."},
+  {id:250,level:"Intermediate",type:"Concept",topic:"Miscellaneous",
+   question:"The term 'Booting' is derived from:",
+   options:["Boot camp","'Bootstrapping' – pulling oneself up by bootstraps","Boot disk","BIOS operations"],
+   answer:"B",explanation:"Booting = system loading itself into operational state without external assistance ('pull yourself up by your bootstraps')."}
+,
+  // MOCK TEST – 50 Questions (Mixed Topics)
+  {id:251,level:"Basic",type:"Concept",topic:"Block Diagram of Computer",
+   question:"[Mock] Which unit controls all operations in a CPU?",
+   options:["ALU","Memory Unit","Control Unit","Input Unit"],
+   answer:"C",explanation:"The Control Unit directs and coordinates all operations in the CPU by sending control signals."},
+  {id:252,level:"Basic",type:"Definition",topic:"Memory",
+   question:"[Mock] RAM stands for:",
+   options:["Read Access Memory","Random Access Memory","Rapid Access Memory","Real Access Memory"],
+   answer:"B",explanation:"RAM = Random Access Memory; it is volatile main memory used for temporary data storage."},
+  {id:253,level:"Basic",type:"Concept",topic:"Introduction to Computers",
+   question:"[Mock] The Father of Computer is:",
+   options:["Bill Gates","Alan Turing","Charles Babbage","John von Neumann"],
+   answer:"C",explanation:"Charles Babbage designed the Difference Engine and Analytical Engine, earning him the title 'Father of Computer'."},
+  {id:254,level:"Basic",type:"Concept",topic:"Memory",
+   question:"[Mock] 1 GB equals:",
+   options:["1024 MB","1000 MB","1024 KB","1024 TB"],
+   answer:"A",explanation:"1 GB = 1024 MB = 2^30 bytes in the binary system used in computing."},
+  {id:255,level:"Basic",type:"Concept",topic:"Memory",
+   question:"[Mock] Which is a non-volatile memory?",
+   options:["RAM","Cache","ROM","DRAM"],
+   answer:"C",explanation:"ROM (Read Only Memory) is non-volatile — it retains data even when power is turned off."},
+  {id:256,level:"Basic",type:"Concept",topic:"Computer Generations",
+   question:"[Mock] First generation computers used:",
+   options:["Transistors","ICs","Vacuum tubes","Microprocessors"],
+   answer:"C",explanation:"First-generation computers (1940–1956) used vacuum tubes as their primary electronic component."},
+  {id:257,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"[Mock] Keyboard is a/an:",
+   options:["Output device","Input device","Storage device","Processing device"],
+   answer:"B",explanation:"A keyboard is the primary input device for entering text and commands into a computer."},
+  {id:258,level:"Basic",type:"Concept",topic:"Output Devices",
+   question:"[Mock] Monitor is a/an:",
+   options:["Input device","Processing device","Output device","Storage device"],
+   answer:"C",explanation:"A monitor (VDU) is an output device that visually displays data and information."},
+  {id:259,level:"Basic",type:"Application",topic:"Output Devices",
+   question:"[Mock] Which printer can print carbon copies?",
+   options:["Laser","Inkjet","Dot Matrix","3D Printer"],
+   answer:"C",explanation:"Dot matrix printers are impact printers — they physically strike the ribbon, allowing carbon copies."},
+  {id:260,level:"Basic",type:"Concept",topic:"Secondary Storage",
+   question:"[Mock] CD-ROM capacity is approximately:",
+   options:["1.44 MB","4.7 GB","700 MB","25 GB"],
+   answer:"C",explanation:"A standard CD-ROM holds approximately 700 MB of data."},
+  {id:261,level:"Basic",type:"Application",topic:"Input Devices",
+   question:"[Mock] MICR is used in:",
+   options:["Supermarkets","Banks (cheque processing)","Libraries","Hospitals"],
+   answer:"B",explanation:"MICR (Magnetic Ink Character Recognition) is used in banking to process cheques automatically."},
+  {id:262,level:"Basic",type:"Definition",topic:"Block Diagram of Computer",
+   question:"[Mock] CPU stands for:",
+   options:["Central Program Unit","Core Processing Unit","Central Processing Unit","Computer Processing Unit"],
+   answer:"C",explanation:"CPU = Central Processing Unit, the brain of the computer comprising ALU and Control Unit."},
+  {id:263,level:"Basic",type:"Concept",topic:"Hardware and Software",
+   question:"[Mock] Which language does the computer understand directly?",
+   options:["C language","Python","Machine language (binary)","Assembly language"],
+   answer:"C",explanation:"Machine language (binary: 0s and 1s) is the only language directly understood by the CPU."},
+  {id:264,level:"Basic",type:"Concept",topic:"Hardware and Software",
+   question:"[Mock] Windows OS was developed by:",
+   options:["Apple","Microsoft","IBM","Google"],
+   answer:"B",explanation:"Microsoft Corporation developed the Windows operating system, first released in 1985."},
+  {id:265,level:"Basic",type:"Concept",topic:"Hardware and Software",
+   question:"[Mock] An example of system software is:",
+   options:["MS Word","Photoshop","Linux OS","VLC Player"],
+   answer:"C",explanation:"Linux OS is system software. MS Word, Photoshop, and VLC are application software."},
+  {id:266,level:"Basic",type:"Concept",topic:"Secondary Storage",
+   question:"[Mock] SSD is faster than HDD because:",
+   options:["It uses larger platters","It has no moving mechanical parts","It spins faster","It uses more power"],
+   answer:"B",explanation:"SSDs use flash memory chips with no moving parts, making them 3–10× faster than mechanical HDDs."},
+  {id:267,level:"Basic",type:"Concept",topic:"Memory",
+   question:"[Mock] The fastest component in the memory hierarchy is:",
+   options:["Cache","RAM","Registers","Hard Disk"],
+   answer:"C",explanation:"CPU Registers are the fastest memory — built directly into the processor with sub-nanosecond access."},
+  {id:268,level:"Basic",type:"Concept",topic:"Secondary Storage",
+   question:"[Mock] Blu-ray disc capacity (single layer) is:",
+   options:["4.7 GB","700 MB","25 GB","1.44 MB"],
+   answer:"C",explanation:"A single-layer Blu-ray disc stores 25 GB using a blue-violet laser."},
+  {id:269,level:"Basic",type:"Definition",topic:"Input Devices",
+   question:"[Mock] OCR stands for:",
+   options:["Output Character Reader","Optical Character Recognition","Optical Code Reader","Output Code Recognition"],
+   answer:"B",explanation:"OCR = Optical Character Recognition; converts printed/handwritten text to digital format."},
+  {id:270,level:"Basic",type:"Concept",topic:"Memory",
+   question:"[Mock] BIOS is stored in:",
+   options:["RAM","Hard Disk","ROM/Flash Memory","Cache"],
+   answer:"C",explanation:"BIOS (Basic Input/Output System) is firmware stored in ROM or Flash memory on the motherboard."},
+  {id:271,level:"Basic",type:"Application",topic:"Types of Computers",
+   question:"[Mock] Supercomputer is used for:",
+   options:["Office work","Personal use","Weather forecasting and complex simulations","Gaming only"],
+   answer:"C",explanation:"Supercomputers are used for weather forecasting, nuclear simulations, drug discovery, and climate modelling."},
+  {id:272,level:"Basic",type:"Concept",topic:"Hardware and Software",
+   question:"[Mock] Which is an open source OS?",
+   options:["Windows 11","macOS","Linux","iOS"],
+   answer:"C",explanation:"Linux is a free, open-source OS kernel created by Linus Torvalds in 1991."},
+  {id:273,level:"Basic",type:"Application",topic:"Input Devices",
+   question:"[Mock] A joystick is used primarily for:",
+   options:["Text input","Gaming","Scanning","Printing"],
+   answer:"B",explanation:"Joysticks are primarily used in gaming, flight simulators, and industrial control applications."},
+  {id:274,level:"Basic",type:"Definition",topic:"Miscellaneous",
+   question:"[Mock] USB stands for:",
+   options:["United System Bus","Universal Serial Bus","Unified Storage Bus","Universal Storage Board"],
+   answer:"B",explanation:"USB = Universal Serial Bus; the standard interface for connecting peripherals to computers."},
+  {id:275,level:"Basic",type:"Concept",topic:"Block Diagram of Computer",
+   question:"[Mock] The ALU performs:",
+   options:["Memory management","Arithmetic and logical operations","Input/output control","Booting the system"],
+   answer:"B",explanation:"ALU (Arithmetic Logic Unit) performs all arithmetic (+, −, ×, ÷) and logical (AND, OR, NOT) operations."},
+  {id:276,level:"Basic",type:"Application",topic:"Secondary Storage",
+   question:"[Mock] Magnetic tape is used for:",
+   options:["Fast random access","Main memory","Backup and archival storage","Cache storage"],
+   answer:"C",explanation:"Magnetic tape offers sequential access and is widely used for large-scale backup and long-term archival."},
+  {id:277,level:"Basic",type:"Application",topic:"Output Devices",
+   question:"[Mock] Which device is used to produce large engineering drawings?",
+   options:["Printer","Scanner","Plotter","Projector"],
+   answer:"C",explanation:"Plotters produce large-format, high-precision vector drawings used in engineering and architecture."},
+  {id:278,level:"Basic",type:"Concept",topic:"Memory",
+   question:"[Mock] EPROM can be erased by:",
+   options:["Electrical signals","Ultraviolet (UV) light","Magnetic field","Water"],
+   answer:"B",explanation:"EPROM (Erasable Programmable ROM) is erased by exposing it to ultraviolet (UV) light."},
+  {id:279,level:"Basic",type:"Concept",topic:"Memory",
+   question:"[Mock] The correct order from slowest to fastest memory is:",
+   options:["HDD → RAM → Cache → Registers","Registers → Cache → RAM → HDD","RAM → HDD → Cache → Registers","Cache → RAM → Registers → HDD"],
+   answer:"A",explanation:"From slowest to fastest: HDD (ms) → RAM (ns) → Cache (sub-ns) → Registers (fastest, inside CPU)."},
+  {id:280,level:"Basic",type:"Concept",topic:"Output Devices",
+   question:"[Mock] Which is an impact printer?",
+   options:["Laser","Inkjet","Thermal","Dot Matrix"],
+   answer:"D",explanation:"Dot matrix is an impact printer — metal pins physically strike an ink ribbon to form characters."},
+  {id:281,level:"Intermediate",type:"Concept",topic:"Hardware and Software",
+   question:"[Mock] A compiler:",
+   options:["Translates code line by line","Translates the entire program at once","Runs programs without translation","Stores programs in ROM"],
+   answer:"B",explanation:"A compiler translates the entire source program into machine/object code at once before execution."},
+  {id:282,level:"Basic",type:"Application",topic:"Input Devices",
+   question:"[Mock] OMR is used for:",
+   options:["Cheque processing","Reading printed bar codes","Reading pre-marked answer sheets","Converting text to digital"],
+   answer:"C",explanation:"OMR (Optical Mark Reader) detects pencil/pen marks in predefined positions on answer sheets."},
+  {id:283,level:"Basic",type:"Definition",topic:"Types of Computers",
+   question:"[Mock] PDA stands for:",
+   options:["Personal Desktop Application","Personal Digital Assistant","Portable Data Access","Personal Data Analyzer"],
+   answer:"B",explanation:"PDA = Personal Digital Assistant; a handheld computing device. Modern smartphones have replaced PDAs."},
+  {id:284,level:"Basic",type:"Application",topic:"Secondary Storage",
+   question:"[Mock] Defragmentation is performed on:",
+   options:["SSD","RAM","HDD","CPU"],
+   answer:"C",explanation:"Defragmentation reorganises fragmented files on an HDD for faster access. SSDs do not need defragmentation."},
+  {id:285,level:"Basic",type:"Concept",topic:"Secondary Storage",
+   question:"[Mock] Floppy disk storage capacity is:",
+   options:["700 MB","1.44 MB","4.7 GB","1 GB"],
+   answer:"B",explanation:"Standard 3.5-inch floppy disks hold 1.44 MB of data. They are now largely obsolete."},
+  {id:286,level:"Basic",type:"Concept",topic:"Memory",
+   question:"[Mock] DRAM needs periodic:",
+   options:["Cooling","Formatting","Refreshing","Defragmenting"],
+   answer:"C",explanation:"DRAM stores data in capacitors that leak charge, so it needs periodic electrical refresh cycles."},
+  {id:287,level:"Basic",type:"Concept",topic:"Block Diagram of Computer",
+   question:"[Mock] Which bus carries memory addresses?",
+   options:["Data bus","Control bus","Address bus","System bus"],
+   answer:"C",explanation:"The Address Bus carries memory addresses from CPU to RAM to specify which location to read/write."},
+  {id:288,level:"Basic",type:"Concept",topic:"Advanced Concepts",
+   question:"[Mock] ASCII uses how many bits?",
+   options:["4","6","7","8"],
+   answer:"C",explanation:"Standard ASCII uses 7 bits to represent 128 characters. Extended ASCII uses 8 bits for 256 characters."},
+  {id:289,level:"Intermediate",type:"Concept",topic:"Types of Computers",
+   question:"[Mock] India's first supercomputer was:",
+   options:["Mihir","PARAM 8000","Pratyush","Anupam"],
+   answer:"B",explanation:"PARAM 8000 was India's first supercomputer, developed by C-DAC, Pune in 1991."},
+  {id:290,level:"Intermediate",type:"Application",topic:"Number Systems",
+   question:"[Mock] Binary 1111 in decimal equals:",
+   options:["7","14","15","16"],
+   answer:"C",explanation:"1111 = 1×8 + 1×4 + 1×2 + 1×1 = 8+4+2+1 = 15."},
+  {id:291,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"[Mock] Which is both an input and output device?",
+   options:["Printer","Scanner","Touchscreen","Keyboard"],
+   answer:"C",explanation:"A touchscreen acts as an output device (display) and input device (touch/gesture input) simultaneously."},
+  {id:292,level:"Basic",type:"Concept",topic:"Secondary Storage",
+   question:"[Mock] Hard disk is a _______ storage device.",
+   options:["Primary","Secondary","Cache","Virtual"],
+   answer:"B",explanation:"Hard disk is secondary (auxiliary) storage — non-volatile and used for permanent data storage."},
+  {id:293,level:"Basic",type:"Application",topic:"Miscellaneous",
+   question:"[Mock] HDMI is used to connect:",
+   options:["Printers","High-definition monitors/TVs","Keyboards","Pen drives"],
+   answer:"B",explanation:"HDMI (High Definition Multimedia Interface) carries HD audio and video to monitors and TVs."},
+  {id:294,level:"Advanced",type:"Concept",topic:"CPU",
+   question:"[Mock] A 64-bit processor can address:",
+   options:["Only 4 GB RAM","Up to 2^64 bytes of memory theoretically","Exactly 64 GB","Only 32 GB"],
+   answer:"B",explanation:"A 64-bit CPU can theoretically address 2^64 bytes (~18.4 exabytes), far more than current practical limits."},
+  {id:295,level:"Intermediate",type:"Concept",topic:"Advanced Concepts",
+   question:"[Mock] Moore's Law states that transistors on a chip double approximately every:",
+   options:["6 months","1 year","2 years","5 years"],
+   answer:"C",explanation:"Moore's Law (Gordon Moore, 1965) states transistor count doubles roughly every 2 years."},
+  {id:296,level:"Basic",type:"Concept",topic:"Output Devices",
+   question:"[Mock] An inkjet printer works by:",
+   options:["Striking ribbons on paper","Spraying tiny ink droplets","Using laser and toner","Using heat on special paper"],
+   answer:"B",explanation:"Inkjet printers spray microscopic ink droplets through nozzles onto paper to form text and images."},
+  {id:297,level:"Intermediate",type:"Concept",topic:"Memory",
+   question:"[Mock] Virtual memory uses _______ to extend RAM.",
+   options:["Cache","Registers","Hard disk space","ROM"],
+   answer:"C",explanation:"Virtual memory uses a portion of the hard disk as an extension of RAM, managed by the OS via paging."},
+  {id:298,level:"Basic",type:"Concept",topic:"Input Devices",
+   question:"[Mock] Which device converts sound to digital signals?",
+   options:["Speaker","Microphone","Headphone","Projector"],
+   answer:"B",explanation:"A microphone is an input device that converts analog sound waves into digital electrical signals."},
+  {id:299,level:"Intermediate",type:"Definition",topic:"Secondary Storage",
+   question:"[Mock] RAID stands for:",
+   options:["Redundant Array of Independent Disks","Random Array of Independent Drives","Rapid Access of Integrated Disks","Redundant Access Independent Drives"],
+   answer:"A",explanation:"RAID = Redundant Array of Independent Disks; combines multiple drives for redundancy and/or performance."},
+  {id:300,level:"Intermediate",type:"Concept",topic:"Advanced Concepts",
+   question:"[Mock] The process of loading OS into RAM at startup is called:",
+   options:["Formatting","Compiling","Booting","Caching"],
+   answer:"C",explanation:"Booting loads the operating system from secondary storage into RAM so the computer becomes operational."}
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+</script>
+</body>
+</html>

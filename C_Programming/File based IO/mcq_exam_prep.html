@@ -1,0 +1,3499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "File Concept",
+    "question": "What is a file in computer terminology?",
+    "options": [
+      "A collection of related data stored on a secondary storage device",
+      "A temporary variable stored in RAM",
+      "A function used to allocate memory",
+      "A section of the CPU cache"
+    ],
+    "answer": "A",
+    "explanation": "A file is a named collection of related information stored permanently on a secondary storage device such as a disk."
+  },
+  {
+    "id": 2,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "File Concept",
+    "question": "Why is file storage used in programming?",
+    "options": [
+      "To increase the speed of the CPU",
+      "To store data permanently even after the program terminates",
+      "To reduce the size of the source code",
+      "To compile the program faster"
+    ],
+    "answer": "B",
+    "explanation": "Files provide permanent (non-volatile) storage, so data survives after the program ends, unlike variables in RAM."
+  },
+  {
+    "id": 3,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "File Concept",
+    "question": "Which of the following is a key characteristic of a file?",
+    "options": [
+      "It exists only while the program is running",
+      "It is stored only in registers",
+      "It provides persistent storage of data",
+      "It disappears when the program executes a loop"
+    ],
+    "answer": "C",
+    "explanation": "A defining characteristic of a file is persistence -- data remains stored even after the program stops running."
+  },
+  {
+    "id": 4,
+    "level": "Basic",
+    "type": "Types",
+    "topic": "File Concept",
+    "question": "As per the syllabus, which type of file is primarily studied?",
+    "options": [
+      "Binary files",
+      "Executable files",
+      "Compressed files",
+      "Text files"
+    ],
+    "answer": "D",
+    "explanation": "The syllabus restricts coverage to text files; binary files are outside its scope."
+  },
+  {
+    "id": 5,
+    "level": "Basic",
+    "type": "Advantages",
+    "topic": "File Concept",
+    "question": "What is one major advantage of storing data in files?",
+    "options": [
+      "Data can be reused without re-entering it every time the program runs",
+      "Files always execute faster than arrays",
+      "Files automatically debug the program",
+      "Files replace the need for variables"
+    ],
+    "answer": "A",
+    "explanation": "A key advantage of files is reusability -- stored data can be accessed again without retyping it."
+  },
+  {
+    "id": 6,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "File Concept",
+    "question": "Which of the following is a common application of files in C programs?",
+    "options": [
+      "Increasing the compiler speed",
+      "Storing student records for later retrieval",
+      "Allocating stack memory",
+      "Managing CPU registers"
+    ],
+    "answer": "B",
+    "explanation": "Files are commonly used to store structured data, such as records, that can be retrieved in future program runs."
+  },
+  {
+    "id": 7,
+    "level": "Intermediate",
+    "type": "Fill-in-the-Blank",
+    "topic": "File Concept",
+    "question": "A file must generally be associated with a ______ before it can be used in a C program.",
+    "options": [
+      "loop counter",
+      "array index",
+      "FILE pointer",
+      "register variable"
+    ],
+    "answer": "C",
+    "explanation": "Before performing operations, a file must be linked to a FILE pointer obtained through fopen()."
+  },
+  {
+    "id": 8,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "File Concept",
+    "question": "Which statement about files is TRUE?",
+    "options": [
+      "Files are erased automatically when the program ends",
+      "Files can only store integer values",
+      "Files are part of the CPU",
+      "Files allow data to persist beyond the lifetime of the program"
+    ],
+    "answer": "D",
+    "explanation": "Persistence of data beyond program execution is the fundamental purpose of files."
+  },
+  {
+    "id": 9,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "File Concept",
+    "question": "What basic operation is essential to using any file in C?",
+    "options": [
+      "Opening the file before reading or writing",
+      "Compiling the file separately",
+      "Declaring the file as an array",
+      "Registering the file with the operating system manually each time"
+    ],
+    "answer": "A",
+    "explanation": "A file must be opened with a function like fopen() before any read/write operation can be performed."
+  },
+  {
+    "id": 10,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "File Concept",
+    "question": "Which of these is NOT a characteristic of a file?",
+    "options": [
+      "It stores data on secondary storage",
+      "It is deleted automatically at the end of every function call",
+      "It has a name for identification",
+      "It can be opened, read, written and closed"
+    ],
+    "answer": "B",
+    "explanation": "Files persist independently of function calls; they are not automatically deleted when a function ends."
+  },
+  {
+    "id": 11,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "File Concept",
+    "question": "The primary purpose of file storage in a program is to:",
+    "options": [
+      "Speed up arithmetic operations",
+      "Increase variable scope",
+      "Preserve data permanently for future use",
+      "Reduce the number of functions"
+    ],
+    "answer": "C",
+    "explanation": "File storage exists mainly to make data available even after the program has finished executing."
+  },
+  {
+    "id": 12,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "File Concept",
+    "question": "Which of the following best defines 'file handling' in C?",
+    "options": [
+      "The process of debugging syntax errors",
+      "The process of compiling multiple files together",
+      "The process of allocating memory dynamically",
+      "The process of creating, reading, writing, and closing files using C functions"
+    ],
+    "answer": "D",
+    "explanation": "File handling refers to the set of operations (open, read, write, close) performed on files using C's standard library functions."
+  },
+  {
+    "id": 13,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "File Concept",
+    "question": "Data stored in a file remains available:",
+    "options": [
+      "Even after the program that created it has terminated",
+      "Only during program execution",
+      "Only inside a single function",
+      "Only until the next line of code executes"
+    ],
+    "answer": "A",
+    "explanation": "Unlike variables, file data is non-volatile and persists after program termination."
+  },
+  {
+    "id": 14,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "File Concept",
+    "question": "Which of the following is an application area where file concepts are essential?",
+    "options": [
+      "Improving loop iteration speed",
+      "Maintaining logs and records over multiple program runs",
+      "Reducing variable declarations",
+      "Managing arithmetic overflow"
+    ],
+    "answer": "B",
+    "explanation": "Logging and record-keeping across multiple executions are classic applications requiring file storage."
+  },
+  {
+    "id": 15,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "File Concept",
+    "question": "A file, unlike a variable, is stored on:",
+    "options": [
+      "The CPU register",
+      "Primary (volatile) memory only",
+      "Secondary (non-volatile) storage",
+      "Cache memory only"
+    ],
+    "answer": "C",
+    "explanation": "Files reside on secondary storage devices, making them non-volatile compared to variables in RAM."
+  },
+  {
+    "id": 16,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "File Concept",
+    "question": "Which is a basic requirement before writing data to a file?",
+    "options": [
+      "The file must be converted to binary first",
+      "The program must be run twice",
+      "The variable must be declared as global",
+      "The file must be opened in a mode that permits writing"
+    ],
+    "answer": "D",
+    "explanation": "Writing to a file requires opening it in an appropriate mode such as \"w\" or \"a\"."
+  },
+  {
+    "id": 17,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "File Concept",
+    "question": "What happens to unsaved data in a variable when the program terminates, compared to data in a file?",
+    "options": [
+      "Variable data is lost, but file data remains stored",
+      "Both are lost equally",
+      "Both remain stored permanently",
+      "Variable data is stored, file data is lost"
+    ],
+    "answer": "A",
+    "explanation": "Variables exist only during execution (volatile), while files retain data permanently (non-volatile)."
+  },
+  {
+    "id": 18,
+    "level": "Basic",
+    "type": "Advantages",
+    "topic": "File Concept",
+    "question": "Which of these is an advantage of using files over keeping data only in variables?",
+    "options": [
+      "Files execute arithmetic operations faster",
+      "Large volumes of data can be stored beyond the limits of RAM",
+      "Files remove the need for a compiler",
+      "Files reduce the number of keywords in C"
+    ],
+    "answer": "B",
+    "explanation": "Files can hold far larger amounts of data than can practically be kept in memory-resident variables."
+  },
+  {
+    "id": 19,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "File Concept",
+    "question": "The concept of a 'file' in C programming is most closely related to:",
+    "options": [
+      "A block of executable machine code only",
+      "A single integer variable",
+      "A stream of data linked to a named entity on storage",
+      "A CPU instruction cycle"
+    ],
+    "answer": "C",
+    "explanation": "In C, a file is treated as a stream of data associated with a named object on secondary storage."
+  },
+  {
+    "id": 20,
+    "level": "Intermediate",
+    "type": "Fill-in-the-Blank",
+    "topic": "File Concept",
+    "question": "A file provides a means of ______ data between a program and secondary storage.",
+    "options": [
+      "compiling",
+      "encrypting",
+      "registering",
+      "transferring"
+    ],
+    "answer": "D",
+    "explanation": "A file acts as a channel for transferring data between the program and the storage device."
+  },
+  {
+    "id": 21,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Text Files",
+    "question": "What is a text file?",
+    "options": [
+      "A file that stores data as a sequence of readable ASCII characters",
+      "A file that stores data only in binary machine code",
+      "A file that stores only images",
+      "A file that can only be opened by a compiler"
+    ],
+    "answer": "A",
+    "explanation": "Text files store human-readable characters (typically ASCII), organized into lines."
+  },
+  {
+    "id": 22,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "Text Files",
+    "question": "Which of the following best describes a characteristic of text files?",
+    "options": [
+      "Data is stored exactly as it appears in memory in binary form",
+      "Data is stored line by line as readable characters",
+      "Data cannot be edited using a text editor",
+      "Data occupies less space than any other file type in all cases"
+    ],
+    "answer": "B",
+    "explanation": "Text files organize data into lines of readable characters, which can be opened directly in a text editor."
+  },
+  {
+    "id": 23,
+    "level": "Basic",
+    "type": "Syntax-based",
+    "topic": "Text Files",
+    "question": "A text file in C is typically organized into lines using which special character?",
+    "options": [
+      "Null character ('\\0') only",
+      "Tab character ('\\t')",
+      "Newline character ('\\n')",
+      "Percent character ('%')"
+    ],
+    "answer": "C",
+    "explanation": "Lines in a text file are conventionally separated using the newline character \\n."
+  },
+  {
+    "id": 24,
+    "level": "Basic",
+    "type": "Syntax-based",
+    "topic": "Text Files",
+    "question": "Which mode is commonly used to create a new text file for writing in C?",
+    "options": [
+      "\"r\"",
+      "\"x\"",
+      "\"e\"",
+      "\"w\""
+    ],
+    "answer": "D",
+    "explanation": "The \"w\" mode creates a new text file for writing, or truncates it if it already exists."
+  },
+  {
+    "id": 25,
+    "level": "Basic",
+    "type": "Syntax-based",
+    "topic": "Text Files",
+    "question": "To read data from an existing text file, which mode should be used with fopen()?",
+    "options": [
+      "\"r\"",
+      "\"w\"",
+      "\"a\"",
+      "\"n\""
+    ],
+    "answer": "A",
+    "explanation": "The \"r\" mode opens an existing text file for reading only."
+  },
+  {
+    "id": 26,
+    "level": "Basic",
+    "type": "Advantages",
+    "topic": "Text Files",
+    "question": "Which of the following is an advantage of text files?",
+    "options": [
+      "They always occupy the least possible disk space",
+      "They are human-readable and easy to edit with standard text editors",
+      "They cannot be corrupted",
+      "They execute faster than all other data structures"
+    ],
+    "answer": "B",
+    "explanation": "A key advantage of text files is that their contents can be viewed and edited directly using ordinary text editors."
+  },
+  {
+    "id": 27,
+    "level": "Intermediate",
+    "type": "Limitations",
+    "topic": "Text Files",
+    "question": "Which of the following is a limitation of text files?",
+    "options": [
+      "They cannot store alphabetic characters",
+      "They cannot be opened by any editor",
+      "Storing numeric data as text can require more space than storing it in binary form",
+      "They must always be encrypted"
+    ],
+    "answer": "C",
+    "explanation": "Since numbers are stored as character sequences, text files can need more space than an equivalent binary representation."
+  },
+  {
+    "id": 28,
+    "level": "Intermediate",
+    "type": "Representation",
+    "topic": "Text Files",
+    "question": "A text file storing the number 12345 will store it as:",
+    "options": [
+      "A 4-byte binary integer",
+      "A single byte value",
+      "A floating-point binary value",
+      "The characters '1','2','3','4','5' in sequence"
+    ],
+    "answer": "D",
+    "explanation": "In a text file, numeric data is represented as a sequence of character digits, not as raw binary values."
+  },
+  {
+    "id": 29,
+    "level": "Basic",
+    "type": "Function-based",
+    "topic": "Text Files",
+    "question": "Which function is commonly used to create and write to a text file character by character?",
+    "options": [
+      "putc()",
+      "fread()",
+      "fseek()",
+      "remove()"
+    ],
+    "answer": "A",
+    "explanation": "putc() writes a single character to an open text file, useful for creating file content character by character."
+  },
+  {
+    "id": 30,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "Text Files",
+    "question": "What is a common application of text files?",
+    "options": [
+      "Storing raw executable machine instructions",
+      "Storing configuration settings or plain textual records",
+      "Managing CPU cache",
+      "Allocating heap memory"
+    ],
+    "answer": "B",
+    "explanation": "Text files are widely used to store human-readable data such as configuration values or simple records."
+  },
+  {
+    "id": 31,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "Text Files",
+    "question": "Which of the following correctly represents reading a text file line by line?",
+    "options": [
+      "Using fopen() repeatedly for every line",
+      "Using putc() to read data",
+      "Using fgets() in a loop until end-of-file is reached",
+      "Using fclose() before reading each line"
+    ],
+    "answer": "C",
+    "explanation": "fgets() reads one line at a time from a text file and is typically used inside a loop until EOF."
+  },
+  {
+    "id": 32,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Text Files",
+    "question": "A text file differs from a binary file mainly because:",
+    "options": [
+      "A text file cannot be opened by any program",
+      "A binary file always contains fewer bytes",
+      "A text file is stored only in RAM",
+      "A text file stores data as readable characters, while a binary file stores raw byte data"
+    ],
+    "answer": "D",
+    "explanation": "The essential difference lies in representation -- text files use readable characters, binary files store raw bytes."
+  },
+  {
+    "id": 33,
+    "level": "Intermediate",
+    "type": "Creation",
+    "topic": "Text Files",
+    "question": "Which of these best describes the creation of a text file in C?",
+    "options": [
+      "Opening a file in write mode using fopen() and writing character or string data to it",
+      "Declaring an array of integers",
+      "Compiling the C program twice",
+      "Allocating memory using malloc() only"
+    ],
+    "answer": "A",
+    "explanation": "Text file creation involves opening the file in a write mode and using write functions such as fputs() or putc()."
+  },
+  {
+    "id": 34,
+    "level": "Basic",
+    "type": "Syntax-based",
+    "topic": "Text Files",
+    "question": "Appending new data to the end of an existing text file requires opening it in mode:",
+    "options": [
+      "\"r\"",
+      "\"a\"",
+      "\"w\"",
+      "\"t\""
+    ],
+    "answer": "B",
+    "explanation": "The \"a\" (append) mode positions the file pointer at the end of the file so new data is added without erasing existing content."
+  },
+  {
+    "id": 35,
+    "level": "Intermediate",
+    "type": "Limitations",
+    "topic": "Text Files",
+    "question": "Which statement about text file limitations is correct?",
+    "options": [
+      "Text files cannot store any data",
+      "Text files can only be read once",
+      "Text files can be less efficient for storing large amounts of structured numeric data",
+      "Text files must always be smaller than binary files"
+    ],
+    "answer": "C",
+    "explanation": "Because numeric values are stored as characters, text files can be less space-efficient than binary files for numeric-heavy data."
+  },
+  {
+    "id": 36,
+    "level": "Basic",
+    "type": "Function-based",
+    "topic": "Text Files",
+    "question": "When writing strings to a text file, which function is most appropriate?",
+    "options": [
+      "getc()",
+      "feof()",
+      "fclose() alone",
+      "fputs()"
+    ],
+    "answer": "D",
+    "explanation": "fputs() is designed to write a string of characters to a text file."
+  },
+  {
+    "id": 37,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Text Files",
+    "question": "Which of the following is TRUE about reading and writing text files in C?",
+    "options": [
+      "Both operations require the file to first be opened with an appropriate mode",
+      "Reading requires opening the file, but writing does not",
+      "Neither reading nor writing requires opening the file",
+      "Only writing requires closing the file afterward"
+    ],
+    "answer": "A",
+    "explanation": "Both reading and writing operations on a text file require the file to be opened in a suitable mode beforehand."
+  },
+  {
+    "id": 38,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "Text Files",
+    "question": "A text file is best suited for which of the following applications?",
+    "options": [
+      "Storing compiled machine code for direct execution",
+      "Storing plain textual logs that a human can review directly",
+      "Managing hardware interrupts",
+      "Allocating stack frames"
+    ],
+    "answer": "B",
+    "explanation": "Text files are ideal for human-readable logs, notes, and simple records."
+  },
+  {
+    "id": 39,
+    "level": "Intermediate",
+    "type": "Representation",
+    "topic": "Text Files",
+    "question": "Which representation is used internally when a text file is processed on most systems?",
+    "options": [
+      "A sequence of raw memory addresses",
+      "A single continuous integer array",
+      "A sequence of characters, often with newline characters separating lines",
+      "A set of CPU instructions"
+    ],
+    "answer": "C",
+    "explanation": "Text files are represented as sequences of characters, organized into lines using newline characters."
+  },
+  {
+    "id": 40,
+    "level": "Advanced",
+    "type": "Application-oriented",
+    "topic": "Text Files",
+    "question": "What advantage does a text file have when debugging a C program's output?",
+    "options": [
+      "The output automatically fixes syntax errors",
+      "The output is compiled into an executable",
+      "The output increases program execution speed",
+      "The output can be directly viewed and understood without a special program"
+    ],
+    "answer": "D",
+    "explanation": "Because text files are human-readable, they make it easy to inspect a program's output while debugging."
+  },
+  {
+    "id": 41,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "FILE Pointer",
+    "question": "What is FILE in C?",
+    "options": [
+      "A predefined structure type used to store information about a file",
+      "A keyword used to declare integer variables",
+      "A built-in function to open files",
+      "A loop control statement"
+    ],
+    "answer": "A",
+    "explanation": "FILE is a structure type defined in stdio.h that holds information required to manage an open file."
+  },
+  {
+    "id": 42,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "FILE Pointer",
+    "question": "The purpose of the FILE pointer is to:",
+    "options": [
+      "Store the source code of the program",
+      "Keep track of the current position and status of an open file",
+      "Allocate memory for arrays",
+      "Control loop iterations"
+    ],
+    "answer": "B",
+    "explanation": "A FILE pointer references a FILE structure that tracks the current read/write position and status of the file."
+  },
+  {
+    "id": 43,
+    "level": "Basic",
+    "type": "Syntax-based",
+    "topic": "FILE Pointer",
+    "question": "Which of the following is the correct declaration syntax for a FILE pointer?",
+    "options": [
+      "file fp;",
+      "FILE fp[];",
+      "FILE *fp;",
+      "int *FILE;"
+    ],
+    "answer": "C",
+    "explanation": "A FILE pointer is declared using the syntax FILE *fp, where fp is the pointer variable name."
+  },
+  {
+    "id": 44,
+    "level": "Basic",
+    "type": "Function-based",
+    "topic": "FILE Pointer",
+    "question": "A FILE pointer is returned by which function when a file is successfully opened?",
+    "options": [
+      "getc()",
+      "feof()",
+      "putc()",
+      "fopen()"
+    ],
+    "answer": "D",
+    "explanation": "fopen() returns a pointer to a FILE structure representing the opened file, or NULL on failure."
+  },
+  {
+    "id": 45,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "FILE Pointer",
+    "question": "Which of the following is a standard predefined file pointer available in C without explicit opening?",
+    "options": [
+      "stdin",
+      "myfile",
+      "datafile",
+      "logfile"
+    ],
+    "answer": "A",
+    "explanation": "stdin, stdout, and stderr are standard file pointers automatically available for console input/output."
+  },
+  {
+    "id": 46,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "FILE Pointer",
+    "question": "What is the relationship between a FILE pointer and file handling functions like fgets() or fputs()?",
+    "options": [
+      "These functions never use a FILE pointer",
+      "These functions require a FILE pointer as an argument to identify which file to operate on",
+      "The FILE pointer is only used with fopen()",
+      "These functions replace the need for a FILE pointer"
+    ],
+    "answer": "B",
+    "explanation": "File handling functions use the FILE pointer to know which specific open file stream to read from or write to."
+  },
+  {
+    "id": 47,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "FILE Pointer",
+    "question": "If fopen() fails to open a file, what value does the FILE pointer typically hold?",
+    "options": [
+      "Zero-length string",
+      "-1",
+      "NULL",
+      "An uninitialized garbage integer"
+    ],
+    "answer": "C",
+    "explanation": "fopen() returns NULL if the file could not be opened, which should always be checked before use."
+  },
+  {
+    "id": 48,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "FILE Pointer",
+    "question": "Why is a FILE pointer necessary before using functions like getc() or putc()?",
+    "options": [
+      "Because these functions cannot execute without a loop",
+      "Because C requires all pointers to be of type FILE",
+      "Because it improves compilation speed",
+      "Because these functions need to know which specific file stream to read from or write to"
+    ],
+    "answer": "D",
+    "explanation": "The FILE pointer identifies the exact stream so getc()/putc() know which file to act upon."
+  },
+  {
+    "id": 49,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "FILE Pointer",
+    "question": "What does the FILE pointer essentially represent?",
+    "options": [
+      "A reference to the internal structure managing an open file's data and state",
+      "The actual data stored inside the file",
+      "The name of the file only",
+      "The size of the file in bytes"
+    ],
+    "answer": "A",
+    "explanation": "The FILE pointer references the internal FILE structure, not the raw file content itself."
+  },
+  {
+    "id": 50,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "FILE Pointer",
+    "question": "Before performing any read or write operation, a program must first:",
+    "options": [
+      "Declare the FILE pointer as static",
+      "Assign the return value of fopen() to a FILE pointer",
+      "Convert the FILE pointer to an integer",
+      "Call feof() first"
+    ],
+    "answer": "B",
+    "explanation": "A valid FILE pointer obtained from fopen() is required before any file I/O operation can proceed."
+  },
+  {
+    "id": 51,
+    "level": "Intermediate",
+    "type": "Code-snippet",
+    "topic": "FILE Pointer",
+    "question": "Which of these correctly uses a FILE pointer to open a file for reading?",
+    "options": [
+      "FILE fp = open(\"data.txt\");",
+      "int fp = fopen(\"data.txt\", \"r\");",
+      "FILE *fp = fopen(\"data.txt\", \"r\");",
+      "FILE *fp = read(\"data.txt\");"
+    ],
+    "answer": "C",
+    "explanation": "fopen() returns a FILE pointer, which should be assigned to a variable declared as FILE *."
+  },
+  {
+    "id": 52,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "FILE Pointer",
+    "question": "What is the primary use of a FILE pointer in file handling functions?",
+    "options": [
+      "To store the size of RAM available",
+      "To specify the CPU clock speed",
+      "To count loop iterations",
+      "To act as a handle that identifies the specific open file being accessed"
+    ],
+    "answer": "D",
+    "explanation": "The FILE pointer serves as a handle so functions know exactly which open file stream to operate on."
+  },
+  {
+    "id": 53,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "FILE Pointer",
+    "question": "Which statement about the FILE pointer is TRUE?",
+    "options": [
+      "It must be checked for NULL after calling fopen() to confirm the file opened successfully",
+      "It is guaranteed to never be NULL",
+      "It automatically closes the file when declared",
+      "It cannot be used with fclose()"
+    ],
+    "answer": "A",
+    "explanation": "Checking for NULL after fopen() ensures the file was opened successfully before further operations."
+  },
+  {
+    "id": 54,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "FILE Pointer",
+    "question": "A single C program can declare:",
+    "options": [
+      "Only one FILE pointer per program",
+      "Multiple FILE pointers to handle multiple files simultaneously",
+      "No more than two FILE pointers",
+      "FILE pointers only inside main()"
+    ],
+    "answer": "B",
+    "explanation": "A program can declare as many FILE pointers as needed to work with multiple files at once."
+  },
+  {
+    "id": 55,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "FILE Pointer",
+    "question": "What does 'predefined' mean in the context of the FILE pointer type?",
+    "options": [
+      "The FILE pointer's value is fixed and cannot change",
+      "The FILE pointer is defined only inside main()",
+      "The FILE type is already defined in the standard library and does not need to be defined by the programmer",
+      "The FILE pointer is predefined as NULL always"
+    ],
+    "answer": "C",
+    "explanation": "FILE is a type predefined in stdio.h, so programmers can use it directly without defining it themselves."
+  },
+  {
+    "id": 56,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "stdio.h",
+    "question": "In which header file is the FILE type defined?",
+    "options": [
+      "stdlib.h",
+      "string.h",
+      "conio.h",
+      "stdio.h"
+    ],
+    "answer": "D",
+    "explanation": "The FILE type, along with standard I/O functions, is defined in the stdio.h header file."
+  },
+  {
+    "id": 57,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "stdio.h",
+    "question": "What is the main purpose of including stdio.h in a C program that performs file operations?",
+    "options": [
+      "To gain access to the FILE type and standard input/output functions",
+      "To enable dynamic memory allocation",
+      "To perform mathematical calculations",
+      "To enable string comparison functions"
+    ],
+    "answer": "A",
+    "explanation": "stdio.h provides the declarations for FILE and functions such as fopen(), fclose(), fgets(), etc."
+  },
+  {
+    "id": 58,
+    "level": "Basic",
+    "type": "Function-based",
+    "topic": "stdio.h",
+    "question": "Which of the following functions is declared in stdio.h?",
+    "options": [
+      "malloc()",
+      "fopen()",
+      "strcpy()",
+      "sqrt()"
+    ],
+    "answer": "B",
+    "explanation": "fopen(), along with other file handling functions, is declared in the stdio.h header."
+  },
+  {
+    "id": 59,
+    "level": "Basic",
+    "type": "Importance",
+    "topic": "stdio.h",
+    "question": "Why is stdio.h considered important for file-based programs in C?",
+    "options": [
+      "It manages the CPU scheduler",
+      "It optimizes loop execution",
+      "It provides the standard functions and types required for file input/output operations",
+      "It provides graphics rendering support"
+    ],
+    "answer": "C",
+    "explanation": "stdio.h supplies the essential building blocks (FILE type, fopen, fclose, etc.) needed for file handling."
+  },
+  {
+    "id": 60,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "stdio.h",
+    "question": "FILE is best described as a:",
+    "options": [
+      "Keyword reserved only for arrays",
+      "Preprocessor macro for comments",
+      "Function that reads integers",
+      "Type defined via typedef in stdio.h representing file stream information"
+    ],
+    "answer": "D",
+    "explanation": "FILE is typically implemented as a typedef'd structure in stdio.h that stores stream information."
+  },
+  {
+    "id": 61,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "stdio.h",
+    "question": "Without including stdio.h, which of the following would generally fail to compile correctly?",
+    "options": [
+      "Declaring a variable of type FILE *",
+      "Declaring an integer variable",
+      "Declaring a for loop",
+      "Declaring a character array"
+    ],
+    "answer": "A",
+    "explanation": "Since FILE is defined in stdio.h, omitting this header would prevent the compiler from recognizing the FILE type."
+  },
+  {
+    "id": 62,
+    "level": "Basic",
+    "type": "Standard Library",
+    "topic": "stdio.h",
+    "question": "Which of these is a standard library support feature provided by stdio.h?",
+    "options": [
+      "Support for network socket programming",
+      "Functions for formatted and unformatted input/output on files and console",
+      "Support for graphical user interfaces",
+      "Support for multithreading"
+    ],
+    "answer": "B",
+    "explanation": "stdio.h focuses on standard input/output operations, including file and console I/O."
+  },
+  {
+    "id": 63,
+    "level": "Basic",
+    "type": "Importance",
+    "topic": "stdio.h",
+    "question": "The importance of stdio.h in file handling lies in its provision of:",
+    "options": [
+      "Only mathematical constants",
+      "Only error codes for the operating system",
+      "Both the FILE type and the function prototypes needed to manipulate files",
+      "Only screen color codes"
+    ],
+    "answer": "C",
+    "explanation": "stdio.h bundles together the FILE type definition and prototypes of file handling functions."
+  },
+  {
+    "id": 64,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "stdio.h",
+    "question": "Which of the following statements is TRUE about the FILE type in stdio.h?",
+    "options": [
+      "It requires the programmer to manage raw disk sectors manually",
+      "It is only used for binary files",
+      "It eliminates the need for fopen()",
+      "It abstracts the low-level details of file management from the programmer"
+    ],
+    "answer": "D",
+    "explanation": "The FILE type hides internal implementation details, letting programmers work with files through simple function calls."
+  },
+  {
+    "id": 65,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "stdio.h",
+    "question": "Standard file pointers like stdin and stdout are declared as being of type:",
+    "options": [
+      "FILE *",
+      "int",
+      "char *",
+      "void"
+    ],
+    "answer": "A",
+    "explanation": "stdin, stdout, and stderr are all predeclared pointers of type FILE * in stdio.h."
+  },
+  {
+    "id": 66,
+    "level": "Basic",
+    "type": "Uses",
+    "topic": "stdio.h",
+    "question": "What role does stdio.h play with respect to portability of file handling code?",
+    "options": [
+      "It makes the code run only on one specific operating system",
+      "It provides a standardized interface so file operations work consistently across different systems",
+      "It removes the need for a compiler",
+      "It converts C code into machine code directly"
+    ],
+    "answer": "B",
+    "explanation": "stdio.h offers a standard, portable interface for file operations across different platforms."
+  },
+  {
+    "id": 67,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "stdio.h",
+    "question": "Which is an example use of stdio.h beyond file handling?",
+    "options": [
+      "Managing dynamic memory allocation",
+      "Performing string manipulation like strcmp()",
+      "Performing console input and output using functions like printf() and scanf()",
+      "Handling mathematical operations like pow()"
+    ],
+    "answer": "C",
+    "explanation": "stdio.h also supports standard input/output on the console through functions such as printf() and scanf()."
+  },
+  {
+    "id": 68,
+    "level": "Basic",
+    "type": "Members",
+    "topic": "FILE Structure",
+    "question": "The FILE structure generally maintains information about:",
+    "options": [
+      "The color of the terminal window",
+      "The number of variables declared in the program",
+      "The CPU's clock speed",
+      "The current position, status, and buffering details of an open file"
+    ],
+    "answer": "D",
+    "explanation": "The FILE structure holds internal details such as current position and buffer/status information for the open file."
+  },
+  {
+    "id": 69,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "FILE Structure",
+    "question": "What is the general purpose of the members within the FILE structure?",
+    "options": [
+      "To help the library functions manage and track the state of the open file internally",
+      "To store the entire source code of the program",
+      "To act as a substitute for the file pointer itself",
+      "To increase the readability of the printed file content"
+    ],
+    "answer": "A",
+    "explanation": "FILE structure members support internal bookkeeping so that file handling functions can operate correctly."
+  },
+  {
+    "id": 70,
+    "level": "Intermediate",
+    "type": "Role",
+    "topic": "FILE Structure",
+    "question": "Which of the following is a conceptual role of the FILE structure's members?",
+    "options": [
+      "Compiling the program into an executable",
+      "Tracking whether the end of the file has been reached",
+      "Declaring global variables",
+      "Managing the operating system's process table"
+    ],
+    "answer": "B",
+    "explanation": "Among its roles, the FILE structure tracks status flags, including whether the end-of-file condition has occurred."
+  },
+  {
+    "id": 71,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "FILE Structure",
+    "question": "The FILE structure's members work together with which type of variable to manage a file?",
+    "options": [
+      "An integer array",
+      "A string constant",
+      "The FILE pointer that references the structure",
+      "A macro definition"
+    ],
+    "answer": "C",
+    "explanation": "The FILE pointer references the FILE structure whose members are used internally during file operations."
+  },
+  {
+    "id": 72,
+    "level": "Intermediate",
+    "type": "Practical Understanding",
+    "topic": "FILE Structure",
+    "question": "In practical use, a C programmer typically:",
+    "options": [
+      "Directly edits each member of the FILE structure manually",
+      "Redefines the FILE structure every time a file is opened",
+      "Removes members from the FILE structure before use",
+      "Does not access the FILE structure's members directly, but uses library functions instead"
+    ],
+    "answer": "D",
+    "explanation": "Programmers generally interact with files through standard functions rather than manipulating FILE structure members directly."
+  },
+  {
+    "id": 73,
+    "level": "Intermediate",
+    "type": "Working Concepts",
+    "topic": "FILE Structure",
+    "question": "Why is a basic understanding of FILE structure members useful, even though direct access is uncommon?",
+    "options": [
+      "It helps in understanding how functions like feof() and fclose() work internally",
+      "It is required to write any C program",
+      "It replaces the need to learn fopen()",
+      "It allows bypassing the compiler"
+    ],
+    "answer": "A",
+    "explanation": "Knowing the conceptual role of FILE structure members builds a clearer mental model of how file functions operate."
+  },
+  {
+    "id": 74,
+    "level": "Intermediate",
+    "type": "Working Concepts",
+    "topic": "FILE Structure",
+    "question": "Which of the following best matches the working concept of the FILE structure?",
+    "options": [
+      "It acts as the actual physical file on disk",
+      "It acts as a container that stores metadata the library uses to manage the file stream",
+      "It acts as a compiler directive",
+      "It acts as a printing device driver"
+    ],
+    "answer": "B",
+    "explanation": "The FILE structure is metadata used by the standard library to manage the stream, not the physical file itself."
+  },
+  {
+    "id": 75,
+    "level": "Intermediate",
+    "type": "Role",
+    "topic": "FILE Structure",
+    "question": "The FILE structure's members assist which of the following operations?",
+    "options": [
+      "Sorting arrays",
+      "Allocating heap memory for structures unrelated to files",
+      "Buffered reading and writing of file data",
+      "Managing recursive function calls"
+    ],
+    "answer": "C",
+    "explanation": "Members of the FILE structure support buffering, which underlies efficient reading and writing operations."
+  },
+  {
+    "id": 76,
+    "level": "Intermediate",
+    "type": "Meaning",
+    "topic": "FILE Structure",
+    "question": "According to the syllabus scope, which level of understanding of FILE structure members is expected?",
+    "options": [
+      "A detailed, compiler-specific memory layout of every member",
+      "Complete knowledge of assembly-level implementation",
+      "Ability to redesign the FILE structure",
+      "A basic, conceptual understanding of their purpose, not implementation-specific internal details"
+    ],
+    "answer": "D",
+    "explanation": "The syllabus restricts coverage to basic conceptual understanding, excluding compiler-dependent internal details."
+  },
+  {
+    "id": 77,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "FILE Structure",
+    "question": "The FILE structure plays a role in file handling primarily by:",
+    "options": [
+      "Providing the internal state that functions use to correctly perform read/write operations",
+      "Directly displaying file content on the screen",
+      "Replacing the need for a FILE pointer entirely",
+      "Formatting the source code"
+    ],
+    "answer": "A",
+    "explanation": "The FILE structure's internal state enables file functions to correctly track and perform operations on a stream."
+  },
+  {
+    "id": 78,
+    "level": "Intermediate",
+    "type": "Working Concepts",
+    "topic": "FILE Structure",
+    "question": "Which of the following is a working concept associated with the FILE structure?",
+    "options": [
+      "It stores unrelated user login credentials",
+      "It helps the system know the current read/write position within a file",
+      "It is used to compile other C programs",
+      "It manages RAM allocation for arrays"
+    ],
+    "answer": "B",
+    "explanation": "One key working concept is that the structure keeps track of the current position for the next read/write operation."
+  },
+  {
+    "id": 79,
+    "level": "Intermediate",
+    "type": "Practical Understanding",
+    "topic": "FILE Structure",
+    "question": "The practical understanding expected of the FILE structure, per the syllabus, focuses on:",
+    "options": [
+      "Memory addresses of each member on every system",
+      "Rewriting the structure for custom hardware",
+      "How its members support the overall functioning of file handling operations",
+      "Bypassing fopen() using the structure directly"
+    ],
+    "answer": "C",
+    "explanation": "The expected focus is a general grasp of how the structure's members support file handling, not deep technical internals."
+  },
+  {
+    "id": 80,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "fopen()",
+    "question": "What is the purpose of the fopen() function?",
+    "options": [
+      "To close an already open file",
+      "To delete a file from storage",
+      "To read a single character from a file",
+      "To open a file and associate it with a FILE pointer"
+    ],
+    "answer": "D",
+    "explanation": "fopen() opens a specified file and returns a FILE pointer used for further operations."
+  },
+  {
+    "id": 81,
+    "level": "Intermediate",
+    "type": "Syntax",
+    "topic": "fopen()",
+    "question": "What is the correct syntax for fopen()?",
+    "options": [
+      "FILE *fopen(const char *filename, const char *mode);",
+      "void fopen(char filename);",
+      "int fopen(FILE *fp);",
+      "FILE fopen(int mode);"
+    ],
+    "answer": "A",
+    "explanation": "fopen() takes a filename and a mode string, and returns a FILE pointer."
+  },
+  {
+    "id": 82,
+    "level": "Basic",
+    "type": "Parameters",
+    "topic": "fopen()",
+    "question": "How many parameters does fopen() require?",
+    "options": [
+      "One: only the filename",
+      "Two: the filename and the mode",
+      "Three: filename, mode, and size",
+      "Zero: it requires no parameters"
+    ],
+    "answer": "B",
+    "explanation": "fopen() requires two parameters -- the name of the file and the mode in which to open it."
+  },
+  {
+    "id": 83,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "fopen()",
+    "question": "What does fopen() return if the file cannot be opened?",
+    "options": [
+      "0",
+      "-1",
+      "NULL",
+      "EOF"
+    ],
+    "answer": "C",
+    "explanation": "fopen() returns NULL when the file cannot be opened, such as when it does not exist in read mode."
+  },
+  {
+    "id": 84,
+    "level": "Basic",
+    "type": "File Opening Modes",
+    "topic": "fopen()",
+    "question": "Which mode opens a text file for reading only?",
+    "options": [
+      "\"w\"",
+      "\"a\"",
+      "\"rw\"",
+      "\"r\""
+    ],
+    "answer": "D",
+    "explanation": "The \"r\" mode opens an existing file strictly for reading."
+  },
+  {
+    "id": 85,
+    "level": "Basic",
+    "type": "File Opening Modes",
+    "topic": "fopen()",
+    "question": "Which mode should be used to create a new file for writing, overwriting if it exists?",
+    "options": [
+      "\"w\"",
+      "\"r\"",
+      "\"a\"",
+      "\"x\""
+    ],
+    "answer": "A",
+    "explanation": "The \"w\" mode creates a new file or truncates an existing file for writing."
+  },
+  {
+    "id": 86,
+    "level": "Basic",
+    "type": "File Opening Modes",
+    "topic": "fopen()",
+    "question": "Which mode opens a file for appending data at the end without deleting existing content?",
+    "options": [
+      "\"r\"",
+      "\"a\"",
+      "\"w\"",
+      "\"n\""
+    ],
+    "answer": "B",
+    "explanation": "The \"a\" mode opens a file for writing, positioning the file pointer at the end so new data is appended."
+  },
+  {
+    "id": 87,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "fopen()",
+    "question": "What does fopen() typically return upon success?",
+    "options": [
+      "The number of bytes in the file",
+      "The integer 1",
+      "A valid FILE pointer to the opened file",
+      "A string containing the file's name"
+    ],
+    "answer": "C",
+    "explanation": "On success, fopen() returns a valid FILE pointer that can be used with other file functions."
+  },
+  {
+    "id": 88,
+    "level": "Intermediate",
+    "type": "Code-snippet",
+    "topic": "fopen()",
+    "question": "In FILE *fp = fopen(\"data.txt\", \"r\");, what does \"data.txt\" represent?",
+    "options": [
+      "The mode of the file",
+      "The FILE pointer variable",
+      "A comment in the code",
+      "The name of the file to be opened"
+    ],
+    "answer": "D",
+    "explanation": "\"data.txt\" is the filename parameter passed to fopen() specifying which file to open."
+  },
+  {
+    "id": 89,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "fopen()",
+    "question": "Which of the following is an application of fopen()?",
+    "options": [
+      "Initiating access to a file before any read or write operation",
+      "Terminating the program",
+      "Declaring a global variable",
+      "Sorting an array of integers"
+    ],
+    "answer": "A",
+    "explanation": "fopen() is used at the start of file operations to establish access to the desired file."
+  },
+  {
+    "id": 90,
+    "level": "Advanced",
+    "type": "Common Mistakes",
+    "topic": "fopen()",
+    "question": "What is a common mistake when using fopen()?",
+    "options": [
+      "Providing a filename as a string",
+      "Not checking whether the returned FILE pointer is NULL before using it",
+      "Assigning the return value to a FILE pointer",
+      "Passing a mode string as the second argument"
+    ],
+    "answer": "B",
+    "explanation": "Failing to check for a NULL return value can lead to undefined behavior if the file failed to open."
+  },
+  {
+    "id": 91,
+    "level": "Basic",
+    "type": "File Opening Modes",
+    "topic": "fopen()",
+    "question": "Which mode combination would open a text file for both reading and writing without deleting existing content?",
+    "options": [
+      "\"w\"",
+      "\"a\"",
+      "\"r+\"",
+      "\"r\""
+    ],
+    "answer": "C",
+    "explanation": "The \"r+\" mode opens an existing file for both reading and writing, preserving its existing content."
+  },
+  {
+    "id": 92,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "putc()",
+    "question": "What is the purpose of putc()?",
+    "options": [
+      "To read a single character from a file",
+      "To close a file",
+      "To open a file for writing",
+      "To write a single character to a file"
+    ],
+    "answer": "D",
+    "explanation": "putc() writes one character at a time to the specified output stream."
+  },
+  {
+    "id": 93,
+    "level": "Intermediate",
+    "type": "Syntax",
+    "topic": "putc()",
+    "question": "What is the correct syntax for putc()?",
+    "options": [
+      "int putc(int char, FILE *stream);",
+      "void putc(FILE *stream);",
+      "char putc(int char);",
+      "int putc(char *stream);"
+    ],
+    "answer": "A",
+    "explanation": "putc() takes a character (as an int) and a FILE pointer, writing that character to the stream."
+  },
+  {
+    "id": 94,
+    "level": "Basic",
+    "type": "Parameters",
+    "topic": "putc()",
+    "question": "How many parameters does putc() take?",
+    "options": [
+      "One: only the character",
+      "Two: the character to write and the file pointer",
+      "Three: character, filename, and mode",
+      "Zero"
+    ],
+    "answer": "B",
+    "explanation": "putc() requires the character to be written and the FILE pointer identifying the destination stream."
+  },
+  {
+    "id": 95,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "putc()",
+    "question": "What does putc() return on success?",
+    "options": [
+      "NULL",
+      "The size of the file",
+      "The character that was written",
+      "The number 0 always"
+    ],
+    "answer": "C",
+    "explanation": "On success, putc() returns the character written; on failure, it returns EOF."
+  },
+  {
+    "id": 96,
+    "level": "Intermediate",
+    "type": "Code-snippet",
+    "topic": "putc()",
+    "question": "Which of these correctly uses putc() to write the character 'A' to a file pointer fp?",
+    "options": [
+      "putc(fp, 'A');",
+      "putc(\"A\", fp);",
+      "putc(fp);",
+      "putc('A', fp);"
+    ],
+    "answer": "D",
+    "explanation": "The character comes first, followed by the FILE pointer, as in putc('A', fp)."
+  },
+  {
+    "id": 97,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "putc()",
+    "question": "What does putc() return if it fails to write the character?",
+    "options": [
+      "EOF",
+      "NULL",
+      "0",
+      "-2"
+    ],
+    "answer": "A",
+    "explanation": "putc() returns EOF if an error occurs during the write operation."
+  },
+  {
+    "id": 98,
+    "level": "Basic",
+    "type": "File Opening Modes",
+    "topic": "putc()",
+    "question": "Which mode must the file be opened in before putc() can be used successfully?",
+    "options": [
+      "Only \"r\" mode",
+      "A writable mode such as \"w\", \"a\", or \"r+\"",
+      "No mode is required",
+      "Only binary read mode"
+    ],
+    "answer": "B",
+    "explanation": "The file must be opened in a mode that permits writing for putc() to succeed."
+  },
+  {
+    "id": 99,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "putc()",
+    "question": "What is a common application of putc()?",
+    "options": [
+      "Reading a formatted string from a file",
+      "Closing multiple files simultaneously",
+      "Writing text to a file one character at a time inside a loop",
+      "Renaming a file"
+    ],
+    "answer": "C",
+    "explanation": "putc() is often used within a loop to write character data sequentially to a file."
+  },
+  {
+    "id": 100,
+    "level": "Advanced",
+    "type": "Common Mistakes",
+    "topic": "putc()",
+    "question": "Which of the following is a common mistake when using putc()?",
+    "options": [
+      "Passing the character as the first argument",
+      "Passing the FILE pointer as the second argument",
+      "Using putc() inside a for loop",
+      "Forgetting to open the file in a writable mode before calling putc()"
+    ],
+    "answer": "D",
+    "explanation": "Attempting to write with putc() to a file opened only for reading will fail."
+  },
+  {
+    "id": 101,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "putc()",
+    "question": "putc() is functionally similar to which other C function (though implemented as a macro in some libraries)?",
+    "options": [
+      "fputc()",
+      "fgets()",
+      "fscanf()",
+      "fclose()"
+    ],
+    "answer": "A",
+    "explanation": "putc() and fputc() perform the same task of writing a single character, though putc() may be implemented as a macro."
+  },
+  {
+    "id": 102,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "getc()",
+    "question": "What is the purpose of getc()?",
+    "options": [
+      "To write a single character to a file",
+      "To read a single character from a file",
+      "To open a file",
+      "To close a file"
+    ],
+    "answer": "B",
+    "explanation": "getc() reads and returns the next character from the specified input stream."
+  },
+  {
+    "id": 103,
+    "level": "Intermediate",
+    "type": "Syntax",
+    "topic": "getc()",
+    "question": "What is the correct syntax for getc()?",
+    "options": [
+      "char getc(int stream);",
+      "void getc(FILE *stream);",
+      "int getc(FILE *stream);",
+      "int getc(char *stream);"
+    ],
+    "answer": "C",
+    "explanation": "getc() takes a FILE pointer and returns the character read as an int."
+  },
+  {
+    "id": 104,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "getc()",
+    "question": "What does getc() return when the end of the file is reached?",
+    "options": [
+      "NULL",
+      "0",
+      "-2",
+      "EOF"
+    ],
+    "answer": "D",
+    "explanation": "getc() returns the special value EOF to indicate that the end of the file has been reached."
+  },
+  {
+    "id": 105,
+    "level": "Basic",
+    "type": "File Opening Modes",
+    "topic": "getc()",
+    "question": "Which mode must a file be opened in for getc() to work correctly?",
+    "options": [
+      "A readable mode such as \"r\" or \"r+\"",
+      "Only \"w\" mode",
+      "Only \"a\" mode",
+      "No mode is required"
+    ],
+    "answer": "A",
+    "explanation": "getc() requires the file to be opened in a mode that permits reading."
+  },
+  {
+    "id": 106,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "getc()",
+    "question": "What type of value does getc() return for a successfully read character?",
+    "options": [
+      "A string containing the character",
+      "An integer representing the character read",
+      "A pointer to the character",
+      "A boolean value"
+    ],
+    "answer": "B",
+    "explanation": "getc() returns the character as an int, even though it represents a single character."
+  },
+  {
+    "id": 107,
+    "level": "Intermediate",
+    "type": "Code-snippet",
+    "topic": "getc()",
+    "question": "Which of the following demonstrates correct usage of getc() to read a character into variable ch from fp?",
+    "options": [
+      "ch = getc(ch, fp);",
+      "getc(fp) = ch;",
+      "ch = getc(fp);",
+      "ch = getc();"
+    ],
+    "answer": "C",
+    "explanation": "getc() is called with the FILE pointer as its only argument, and its return value is assigned to a variable."
+  },
+  {
+    "id": 108,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "getc()",
+    "question": "What is a common application of getc()?",
+    "options": [
+      "Writing formatted output to the console",
+      "Renaming a file",
+      "Allocating dynamic memory",
+      "Reading a file character by character inside a loop until EOF is reached"
+    ],
+    "answer": "D",
+    "explanation": "getc() is typically used in a loop to process a file one character at a time until reaching EOF."
+  },
+  {
+    "id": 109,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "getc()",
+    "question": "Why is the return type of getc() declared as int rather than char?",
+    "options": [
+      "So it can represent all possible character values as well as the special EOF value",
+      "Because char cannot store ASCII values",
+      "Because getc() actually reads integers, not characters",
+      "Because int uses less memory than char"
+    ],
+    "answer": "A",
+    "explanation": "Using int allows getc() to return EOF, a value outside the normal range of char, in addition to all character values."
+  },
+  {
+    "id": 110,
+    "level": "Advanced",
+    "type": "Common Mistakes",
+    "topic": "getc()",
+    "question": "Which of the following is a common mistake when using getc()?",
+    "options": [
+      "Using getc() with a valid FILE pointer",
+      "Storing the return value of getc() in a variable of type char, which can cause EOF detection to fail on some systems",
+      "Using getc() inside a while loop",
+      "Comparing the return value of getc() to EOF"
+    ],
+    "answer": "B",
+    "explanation": "Storing the result in a char variable can cause issues detecting EOF correctly, so an int variable should be used."
+  },
+  {
+    "id": 111,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "getc()",
+    "question": "getc() is closely related to which other standard function that performs the same basic task?",
+    "options": [
+      "fputs()",
+      "fopen()",
+      "fgetc()",
+      "fclose()"
+    ],
+    "answer": "C",
+    "explanation": "getc() and fgetc() both read a single character, though getc() may be implemented as a macro."
+  },
+  {
+    "id": 112,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "fclose()",
+    "question": "What is the purpose of fclose()?",
+    "options": [
+      "To open a new file",
+      "To read data from a file",
+      "To rename a file",
+      "To close an open file and release its associated resources"
+    ],
+    "answer": "D",
+    "explanation": "fclose() closes a previously opened file, flushing any buffered data and freeing resources."
+  },
+  {
+    "id": 113,
+    "level": "Intermediate",
+    "type": "Syntax",
+    "topic": "fclose()",
+    "question": "What is the correct syntax for fclose()?",
+    "options": [
+      "int fclose(FILE *stream);",
+      "void fclose(char *stream);",
+      "FILE fclose(int stream);",
+      "int fclose(char *filename);"
+    ],
+    "answer": "A",
+    "explanation": "fclose() takes a FILE pointer as its parameter and returns an integer status code."
+  },
+  {
+    "id": 114,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "fclose()",
+    "question": "What does fclose() return on success?",
+    "options": [
+      "EOF",
+      "0",
+      "NULL",
+      "1"
+    ],
+    "answer": "B",
+    "explanation": "fclose() returns 0 if the file was closed successfully."
+  },
+  {
+    "id": 115,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "fclose()",
+    "question": "What does fclose() return if an error occurs while closing the file?",
+    "options": [
+      "0",
+      "NULL",
+      "EOF",
+      "-2"
+    ],
+    "answer": "C",
+    "explanation": "fclose() returns EOF to indicate that an error occurred during the closing process."
+  },
+  {
+    "id": 116,
+    "level": "Basic",
+    "type": "Importance",
+    "topic": "fclose()",
+    "question": "Why is it important to call fclose() after finishing file operations?",
+    "options": [
+      "To increase the speed of the CPU",
+      "To delete the file from the disk",
+      "To rename the file automatically",
+      "To ensure all buffered data is written to the file and system resources are freed"
+    ],
+    "answer": "D",
+    "explanation": "fclose() flushes any remaining buffered output and releases the file handle, preventing data loss or resource leaks."
+  },
+  {
+    "id": 117,
+    "level": "Basic",
+    "type": "Parameters",
+    "topic": "fclose()",
+    "question": "Which parameter does fclose() require?",
+    "options": [
+      "The FILE pointer of the file to be closed",
+      "The filename as a string",
+      "The mode used to open the file",
+      "No parameters are required"
+    ],
+    "answer": "A",
+    "explanation": "fclose() takes the FILE pointer that identifies which open file stream should be closed."
+  },
+  {
+    "id": 118,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "fclose()",
+    "question": "What could happen if a program does not call fclose() before terminating?",
+    "options": [
+      "The program will fail to compile",
+      "Buffered data might not be written to the file, potentially causing data loss",
+      "The file will be automatically deleted",
+      "The CPU will overheat"
+    ],
+    "answer": "B",
+    "explanation": "Without fclose(), buffered data may remain unwritten, risking incomplete or lost file content."
+  },
+  {
+    "id": 119,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "fclose()",
+    "question": "What is a common application of fclose()?",
+    "options": [
+      "Reading formatted data from the console",
+      "Declaring array variables",
+      "Releasing the file handle after all reading or writing operations are complete",
+      "Allocating heap memory for a structure"
+    ],
+    "answer": "C",
+    "explanation": "fclose() is used at the end of file processing to properly close the file and release resources."
+  },
+  {
+    "id": 120,
+    "level": "Advanced",
+    "type": "Common Mistakes",
+    "topic": "fclose()",
+    "question": "Which of the following is a common mistake regarding fclose()?",
+    "options": [
+      "Calling fclose() after finishing all file operations",
+      "Checking the return value of fclose()",
+      "Passing a valid FILE pointer to fclose()",
+      "Continuing to use a FILE pointer for read/write operations after it has already been closed"
+    ],
+    "answer": "D",
+    "explanation": "Using a FILE pointer after fclose() leads to undefined behavior since the associated resources have been released."
+  },
+  {
+    "id": 121,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "fclose()",
+    "question": "fclose() should typically be called:",
+    "options": [
+      "Once all necessary read or write operations on the file have been completed",
+      "Before the file is opened with fopen()",
+      "Immediately after declaring the FILE pointer, before any use",
+      "Only if the program encounters an error"
+    ],
+    "answer": "A",
+    "explanation": "fclose() is called after all file operations are done, ensuring proper closure and resource release."
+  },
+  {
+    "id": 122,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "fgets()",
+    "question": "What is the purpose of fgets()?",
+    "options": [
+      "To write a line of text to a file",
+      "To read a line of text (a string) from a file",
+      "To open a file for reading",
+      "To delete a line from a file"
+    ],
+    "answer": "B",
+    "explanation": "fgets() reads characters from a file into a string until a newline, EOF, or the specified limit is reached."
+  },
+  {
+    "id": 123,
+    "level": "Intermediate",
+    "type": "Syntax",
+    "topic": "fgets()",
+    "question": "What is the correct syntax for fgets()?",
+    "options": [
+      "int fgets(char *str, FILE *stream);",
+      "char *fgets(FILE *stream, char *str);",
+      "char *fgets(char *str, int n, FILE *stream);",
+      "void fgets(char *str, int n);"
+    ],
+    "answer": "C",
+    "explanation": "fgets() takes a character buffer, a maximum number of characters, and a FILE pointer."
+  },
+  {
+    "id": 124,
+    "level": "Basic",
+    "type": "Parameters",
+    "topic": "fgets()",
+    "question": "What does the second parameter (n) of fgets() represent?",
+    "options": [
+      "The number of lines to skip",
+      "The mode in which the file was opened",
+      "The size of the file in bytes",
+      "The maximum number of characters (including the null terminator) to read"
+    ],
+    "answer": "D",
+    "explanation": "The parameter n limits how many characters fgets() reads, ensuring the buffer is not overflowed."
+  },
+  {
+    "id": 125,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "fgets()",
+    "question": "What does fgets() return when it reaches the end of the file without reading any characters?",
+    "options": [
+      "NULL",
+      "EOF",
+      "0",
+      "An empty integer"
+    ],
+    "answer": "A",
+    "explanation": "fgets() returns NULL if it reaches EOF before reading any characters into the buffer."
+  },
+  {
+    "id": 126,
+    "level": "Intermediate",
+    "type": "Reading Strings",
+    "topic": "fgets()",
+    "question": "Does fgets() include the newline character in the string it reads, if present?",
+    "options": [
+      "No, the newline character is always removed automatically",
+      "Yes, the newline character is included in the resulting string if it fits within the buffer",
+      "fgets() never reads the newline character under any circumstance",
+      "fgets() replaces the newline with a null character before storing it"
+    ],
+    "answer": "B",
+    "explanation": "If a newline is encountered before the limit is reached, fgets() includes it in the string it stores."
+  },
+  {
+    "id": 127,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "fgets()",
+    "question": "What is a common application of fgets()?",
+    "options": [
+      "Writing formatted numeric data to a file",
+      "Closing multiple files at once",
+      "Reading a text file line by line for processing",
+      "Deleting specific lines from a file"
+    ],
+    "answer": "C",
+    "explanation": "fgets() is commonly used in loops to read a text file one line at a time."
+  },
+  {
+    "id": 128,
+    "level": "Basic",
+    "type": "File Opening Modes",
+    "topic": "fgets()",
+    "question": "Which mode must the file be opened in for fgets() to work correctly?",
+    "options": [
+      "Only \"w\" mode",
+      "Only \"a\" mode",
+      "No specific mode is required",
+      "A readable mode such as \"r\""
+    ],
+    "answer": "D",
+    "explanation": "fgets() requires the file to have been opened for reading."
+  },
+  {
+    "id": 129,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "fgets()",
+    "question": "What return value indicates that fgets() read the string successfully?",
+    "options": [
+      "A pointer to the string (same as the buffer passed in)",
+      "The integer 1",
+      "EOF",
+      "The number of characters read as an integer"
+    ],
+    "answer": "A",
+    "explanation": "On success, fgets() returns the same pointer passed as its first argument, pointing to the buffer."
+  },
+  {
+    "id": 130,
+    "level": "Advanced",
+    "type": "Common Mistakes",
+    "topic": "fgets()",
+    "question": "Which of the following is a common mistake when using fgets()?",
+    "options": [
+      "Providing the FILE pointer as the third argument",
+      "Providing a buffer size (n) that is too large for the actual character array, causing a buffer overflow",
+      "Checking the return value for NULL",
+      "Using fgets() inside a while loop"
+    ],
+    "answer": "B",
+    "explanation": "The size parameter must accurately reflect the buffer's actual capacity to avoid overflow."
+  },
+  {
+    "id": 131,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "fgets()",
+    "question": "fgets() is generally considered safer than which other input function because it limits the number of characters read?",
+    "options": [
+      "putc()",
+      "fclose()",
+      "gets()",
+      "fopen()"
+    ],
+    "answer": "C",
+    "explanation": "Unlike gets(), fgets() limits input length using its size parameter, helping prevent buffer overflows."
+  },
+  {
+    "id": 132,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "fputs()",
+    "question": "What is the purpose of fputs()?",
+    "options": [
+      "To read a string of characters from a file",
+      "To open a file for writing",
+      "To count characters in a file",
+      "To write a string of characters to a file"
+    ],
+    "answer": "D",
+    "explanation": "fputs() writes a null-terminated string to the specified output stream."
+  },
+  {
+    "id": 133,
+    "level": "Intermediate",
+    "type": "Syntax",
+    "topic": "fputs()",
+    "question": "What is the correct syntax for fputs()?",
+    "options": [
+      "int fputs(const char *str, FILE *stream);",
+      "char fputs(FILE *stream, char *str);",
+      "void fputs(char *str);",
+      "int fputs(FILE *stream);"
+    ],
+    "answer": "A",
+    "explanation": "fputs() takes a string and a FILE pointer, writing the string to that stream."
+  },
+  {
+    "id": 134,
+    "level": "Intermediate",
+    "type": "Writing Strings",
+    "topic": "fputs()",
+    "question": "Does fputs() automatically add a newline character at the end of the string it writes?",
+    "options": [
+      "Yes, it always appends a newline character",
+      "No, fputs() does not add a newline automatically",
+      "Yes, but only in append mode",
+      "No, but it removes any existing newline"
+    ],
+    "answer": "B",
+    "explanation": "Unlike puts(), fputs() writes exactly the string provided without adding an extra newline character."
+  },
+  {
+    "id": 135,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "fputs()",
+    "question": "What does fputs() return on success?",
+    "options": [
+      "NULL",
+      "The string itself",
+      "A non-negative value",
+      "The character count as a negative number"
+    ],
+    "answer": "C",
+    "explanation": "fputs() returns a non-negative value on success and EOF on failure."
+  },
+  {
+    "id": 136,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "fputs()",
+    "question": "What does fputs() return if an error occurs during writing?",
+    "options": [
+      "NULL",
+      "0",
+      "-2",
+      "EOF"
+    ],
+    "answer": "D",
+    "explanation": "fputs() returns EOF to signal that an error occurred while writing the string."
+  },
+  {
+    "id": 137,
+    "level": "Basic",
+    "type": "File Opening Modes",
+    "topic": "fputs()",
+    "question": "Which mode must the file be opened in before fputs() can be used?",
+    "options": [
+      "A writable mode such as \"w\", \"a\", or \"r+\"",
+      "Only \"r\" mode",
+      "No mode is required",
+      "Only binary read mode"
+    ],
+    "answer": "A",
+    "explanation": "The file must be opened for writing so fputs() can successfully store the string."
+  },
+  {
+    "id": 138,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "fputs()",
+    "question": "What is a common application of fputs()?",
+    "options": [
+      "Reading formatted numeric input from the keyboard",
+      "Writing lines of text to a file for storage or logging",
+      "Deleting a file from disk",
+      "Renaming an existing file"
+    ],
+    "answer": "B",
+    "explanation": "fputs() is commonly used to write string data, such as log entries, to text files."
+  },
+  {
+    "id": 139,
+    "level": "Intermediate",
+    "type": "Code-snippet",
+    "topic": "fputs()",
+    "question": "Which of the following correctly writes the string \"Hello\" to file pointer fp using fputs()?",
+    "options": [
+      "fputs(fp, \"Hello\");",
+      "fputs(\"Hello\");",
+      "fputs(\"Hello\", fp);",
+      "fputs(fp);"
+    ],
+    "answer": "C",
+    "explanation": "The string comes first, followed by the FILE pointer, as in fputs(\"Hello\", fp)."
+  },
+  {
+    "id": 140,
+    "level": "Advanced",
+    "type": "Common Mistakes",
+    "topic": "fputs()",
+    "question": "Which of the following is a common mistake when using fputs()?",
+    "options": [
+      "Passing a string as the first argument",
+      "Passing a FILE pointer as the second argument",
+      "Checking the return value for EOF",
+      "Assuming fputs() adds a newline automatically and omitting it when needed"
+    ],
+    "answer": "D",
+    "explanation": "Since fputs() does not add a newline, forgetting to include one manually can cause lines to run together."
+  },
+  {
+    "id": 141,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "fputs()",
+    "question": "fputs() is functionally similar to which console-output function, but operates on a file stream instead?",
+    "options": [
+      "puts()",
+      "getc()",
+      "fopen()",
+      "feof()"
+    ],
+    "answer": "A",
+    "explanation": "fputs() writes a string similarly to puts(), but targets a specified file stream rather than the console."
+  },
+  {
+    "id": 142,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "feof()",
+    "question": "What is the purpose of feof()?",
+    "options": [
+      "To open a file for reading",
+      "To check whether the end-of-file indicator has been set for a file stream",
+      "To close a file",
+      "To count the number of lines in a file"
+    ],
+    "answer": "B",
+    "explanation": "feof() tests whether the end-of-file indicator associated with a stream has been set."
+  },
+  {
+    "id": 143,
+    "level": "Intermediate",
+    "type": "Syntax",
+    "topic": "feof()",
+    "question": "What is the correct syntax for feof()?",
+    "options": [
+      "void feof(FILE *stream);",
+      "int feof(char *filename);",
+      "int feof(FILE *stream);",
+      "FILE feof(int stream);"
+    ],
+    "answer": "C",
+    "explanation": "feof() takes a FILE pointer and returns a non-zero value if the end-of-file indicator is set."
+  },
+  {
+    "id": 144,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "feof()",
+    "question": "What does feof() return if the end of the file has been reached?",
+    "options": [
+      "Zero (false)",
+      "NULL",
+      "EOF as a string",
+      "A non-zero value (true)"
+    ],
+    "answer": "D",
+    "explanation": "feof() returns a non-zero value once the end-of-file indicator for the stream has been set."
+  },
+  {
+    "id": 145,
+    "level": "Intermediate",
+    "type": "End-of-file Detection",
+    "topic": "feof()",
+    "question": "When exactly does the end-of-file indicator typically get set, in relation to feof()?",
+    "options": [
+      "After a read operation attempts to read past the last character in the file",
+      "As soon as the file is opened",
+      "Before the first read operation",
+      "Only when fclose() is called"
+    ],
+    "answer": "A",
+    "explanation": "The EOF indicator is set after a read operation fails to read further data, not simply upon opening the file."
+  },
+  {
+    "id": 146,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "feof()",
+    "question": "Which of the following is a common application of feof()?",
+    "options": [
+      "Writing formatted output to the console",
+      "Controlling a loop that reads a file until no more data is available",
+      "Declaring a new FILE pointer",
+      "Opening a file in append mode"
+    ],
+    "answer": "B",
+    "explanation": "feof() is commonly used as a loop condition to stop reading once the end of the file is reached."
+  },
+  {
+    "id": 147,
+    "level": "Advanced",
+    "type": "Common Mistakes",
+    "topic": "feof()",
+    "question": "What is a common mistake when using feof() as a loop condition immediately after fopen()?",
+    "options": [
+      "Using feof() after a successful read operation",
+      "Passing the FILE pointer to feof()",
+      "Using feof() to control a loop before any read attempt can cause the loop to process one extra iteration incorrectly",
+      "Checking feof() only after attempting to read"
+    ],
+    "answer": "C",
+    "explanation": "Because the EOF flag is set only after a failed read, using while(!feof(fp)) before reading can process invalid data one time too many."
+  },
+  {
+    "id": 148,
+    "level": "Intermediate",
+    "type": "Concept-based",
+    "topic": "feof()",
+    "question": "feof() is typically used together with which type of function inside a loop?",
+    "options": [
+      "A write function such as fputs() only",
+      "The fopen() function only",
+      "The fclose() function only",
+      "A read function such as fgets() or getc()"
+    ],
+    "answer": "D",
+    "explanation": "feof() is generally checked in combination with a read operation to determine when to stop reading."
+  },
+  {
+    "id": 149,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "feof()",
+    "question": "What does a return value of 0 from feof() indicate?",
+    "options": [
+      "The end-of-file indicator has not been set for the stream",
+      "The file has been successfully closed",
+      "The file does not exist",
+      "The file was opened in write mode"
+    ],
+    "answer": "A",
+    "explanation": "A return value of 0 means the end-of-file condition has not yet occurred on that stream."
+  },
+  {
+    "id": 150,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "feof()",
+    "question": "Which header must be included to use feof()?",
+    "options": [
+      "stdlib.h",
+      "stdio.h",
+      "string.h",
+      "math.h"
+    ],
+    "answer": "B",
+    "explanation": "feof(), like other standard file functions, is declared in stdio.h."
+  },
+  {
+    "id": 151,
+    "level": "Advanced",
+    "type": "Application-oriented",
+    "topic": "feof()",
+    "question": "What is the safest practice regarding feof() when reading a file?",
+    "options": [
+      "Rely solely on feof() before any read attempt has been made",
+      "Never use feof() in file-reading programs",
+      "Check the return value of the read function itself, using feof() to confirm why the read failed",
+      "Call feof() only after fclose()"
+    ],
+    "answer": "C",
+    "explanation": "A safer approach checks whether the read function itself succeeded, using feof() to distinguish EOF from a read error."
+  },
+  {
+    "id": 152,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "File Programs",
+    "question": "In a simple C program to write to a file, which sequence of steps is correct?",
+    "options": [
+      "Close the file, open the file, write data",
+      "Write data, open the file, close the file",
+      "Open the file, close the file, write data",
+      "Open the file, write data using fputs()/putc(), then close the file"
+    ],
+    "answer": "D",
+    "explanation": "The correct sequence is open, write, close -- ensuring proper file handling."
+  },
+  {
+    "id": 153,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "File Programs",
+    "question": "In a simple C program to read a file, which sequence of steps is correct?",
+    "options": [
+      "Open the file, read data using fgets()/getc() in a loop, then close the file",
+      "Close the file, read data, open the file",
+      "Read data, close the file, open the file",
+      "Open the file, close the file, read data"
+    ],
+    "answer": "A",
+    "explanation": "A file must be opened before reading and closed after all reading is complete."
+  },
+  {
+    "id": 154,
+    "level": "Basic",
+    "type": "Opening Files",
+    "topic": "File Programs",
+    "question": "What is typically checked right after calling fopen() in a simple file program?",
+    "options": [
+      "Whether the loop variable is zero",
+      "Whether the returned FILE pointer is NULL",
+      "Whether the CPU is idle",
+      "Whether the array is sorted"
+    ],
+    "answer": "B",
+    "explanation": "Checking for a NULL FILE pointer confirms whether the file was opened successfully before proceeding."
+  },
+  {
+    "id": 155,
+    "level": "Intermediate",
+    "type": "Character I/O",
+    "topic": "File Programs",
+    "question": "In a simple program that copies content from one text file to another, which pair of functions is commonly used together?",
+    "options": [
+      "fopen() and fclose() only, without any read/write functions",
+      "feof() and fopen() only",
+      "getc() to read and putc() to write, character by character",
+      "fputs() and fopen() only"
+    ],
+    "answer": "C",
+    "explanation": "A simple file-copy program commonly reads each character with getc() and writes it with putc() in a loop."
+  },
+  {
+    "id": 156,
+    "level": "Intermediate",
+    "type": "Code-snippet",
+    "topic": "File Programs",
+    "question": "Which loop condition is commonly used with getc() to read a file until its end?",
+    "options": [
+      "while (getc(fp) == 0)",
+      "for (fp = 0; fp < 10; fp++)",
+      "while (fclose(fp) != NULL)",
+      "while ((ch = getc(fp)) != EOF)"
+    ],
+    "answer": "D",
+    "explanation": "Comparing the character read by getc() to EOF is a standard way to detect the end of the file during reading."
+  },
+  {
+    "id": 157,
+    "level": "Basic",
+    "type": "Closing Files",
+    "topic": "File Programs",
+    "question": "What is the purpose of closing a file with fclose() at the end of a simple file-handling program?",
+    "options": [
+      "To ensure all data is properly saved and system resources are released",
+      "To permanently delete the file from disk",
+      "To rename the file automatically",
+      "To reopen the file in a different mode"
+    ],
+    "answer": "A",
+    "explanation": "fclose() flushes any pending output and frees the resources associated with the open file."
+  },
+  {
+    "id": 158,
+    "level": "Intermediate",
+    "type": "End-of-file Checking",
+    "topic": "File Programs",
+    "question": "In a simple program using fgets() to read lines from a file, what typically signals that all lines have been read?",
+    "options": [
+      "fgets() returns the string \"EOF\"",
+      "fgets() returns NULL",
+      "fgets() returns the integer 1",
+      "The program automatically terminates without any check"
+    ],
+    "answer": "B",
+    "explanation": "fgets() returns NULL when there is no more data to read, signaling the end of the file has been reached."
+  },
+  {
+    "id": 159,
+    "level": "Intermediate",
+    "type": "Character I/O",
+    "topic": "File Programs",
+    "question": "A simple program reading character-by-character from a file uses which structure most naturally?",
+    "options": [
+      "A single if statement executed once",
+      "A switch statement based on file size",
+      "A while loop that continues until getc() returns EOF",
+      "A recursive function with no base case"
+    ],
+    "answer": "C",
+    "explanation": "Since the number of characters is unknown in advance, a while loop checking for EOF is the natural structure."
+  },
+  {
+    "id": 160,
+    "level": "Advanced",
+    "type": "Working of FILE Structure",
+    "topic": "File Programs",
+    "question": "What does the FILE structure's internal position member allow a simple program to do while reading character by character?",
+    "options": [
+      "Manually recalculate the file's size after every read",
+      "Reopen the file automatically after each character",
+      "Skip closing the file at the end",
+      "Automatically advance to the next character after each successful read"
+    ],
+    "answer": "D",
+    "explanation": "The FILE structure's internal tracking allows sequential reads to automatically progress through the file."
+  },
+  {
+    "id": 161,
+    "level": "Intermediate",
+    "type": "String I/O",
+    "topic": "File Programs",
+    "question": "In a simple program demonstrating string I/O, which pair of functions is most appropriate for writing and later reading a line of text?",
+    "options": [
+      "fputs() to write the line and fgets() to read it back",
+      "putc() to write the line and fclose() to read it",
+      "fopen() to write the line and fopen() to read it",
+      "feof() to write the line and getc() to read it"
+    ],
+    "answer": "A",
+    "explanation": "fputs() writes string data, and fgets() is the corresponding function to read a line of text back from the file."
+  },
+  {
+    "id": 162,
+    "level": "Advanced",
+    "type": "Working of FILE Structure",
+    "topic": "File Programs",
+    "question": "Which of the following best demonstrates the 'working of the FILE structure' through a simple example?",
+    "options": [
+      "Declaring an array of file names",
+      "Opening a file, observing that read operations progress sequentially through its content, then closing it",
+      "Printing the source code of the compiler",
+      "Sorting integers using bubble sort"
+    ],
+    "answer": "B",
+    "explanation": "A simple example of the FILE structure's working is seen in how sequential reads/writes track position until the file is closed."
+  },
+  {
+    "id": 163,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "File Programs",
+    "question": "What happens if a simple program attempts to read from a file that was opened only in \"w\" mode?",
+    "options": [
+      "The read operation will succeed as normal",
+      "The file will automatically switch to read mode",
+      "The read operation will fail because the file was not opened for reading",
+      "The program will read random binary data successfully"
+    ],
+    "answer": "C",
+    "explanation": "A file opened in write-only mode (\"w\") does not permit read operations, so attempts to read will fail."
+  },
+  {
+    "id": 164,
+    "level": "Intermediate",
+    "type": "Character I/O",
+    "topic": "File Programs",
+    "question": "In a program that counts the number of characters in a text file, which function is most directly useful?",
+    "options": [
+      "fopen(), called repeatedly",
+      "fclose(), called repeatedly",
+      "putc(), called repeatedly",
+      "getc(), called repeatedly in a loop until EOF"
+    ],
+    "answer": "D",
+    "explanation": "Counting characters typically involves reading each character with getc() and incrementing a counter until EOF."
+  },
+  {
+    "id": 165,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "File Programs",
+    "question": "A simple program wants to append a new line to an existing log file without erasing previous entries. Which mode should be used?",
+    "options": [
+      "\"a\"",
+      "\"w\"",
+      "\"r\"",
+      "\"x\""
+    ],
+    "answer": "A",
+    "explanation": "The \"a\" mode ensures new data is added after existing content rather than overwriting the file."
+  },
+  {
+    "id": 166,
+    "level": "Basic",
+    "type": "Closing Files",
+    "topic": "File Programs",
+    "question": "What is a likely outcome if a program forgets to call fclose() after writing data with putc()?",
+    "options": [
+      "The data will always be saved instantly regardless of fclose()",
+      "Some buffered data may not be flushed to the file, resulting in incomplete file content",
+      "The program will fail to compile",
+      "The FILE pointer will automatically become stdin"
+    ],
+    "answer": "B",
+    "explanation": "Without fclose(), buffered output may remain unflushed, so the file might not contain all the written data."
+  },
+  {
+    "id": 167,
+    "level": "Basic",
+    "type": "Opening Files",
+    "topic": "File Programs",
+    "question": "In a simple file-reading program, why is it good practice to check the FILE pointer returned by fopen() before proceeding?",
+    "options": [
+      "To make the program compile faster",
+      "To automatically fix any syntax errors",
+      "To avoid using a NULL pointer, which would cause undefined behavior in later read operations",
+      "To reduce the number of lines in the code"
+    ],
+    "answer": "C",
+    "explanation": "Using a NULL FILE pointer for read/write operations leads to undefined behavior, so checking it first is essential."
+  },
+  {
+    "id": 168,
+    "level": "Advanced",
+    "type": "Match-the-Following",
+    "topic": "File Programs",
+    "question": "Which combination of functions best demonstrates a complete simple text-file program covering open, write, and close?",
+    "options": [
+      "fopen(), feof(), getc()",
+      "fclose(), fopen(), fputs()",
+      "getc(), putc(), feof()",
+      "fopen(), fputs(), fclose()"
+    ],
+    "answer": "D",
+    "explanation": "A minimal write program follows the sequence: open the file, write to it with fputs(), then close it."
+  },
+  {
+    "id": 169,
+    "level": "Advanced",
+    "type": "Match-the-Following",
+    "topic": "File Programs",
+    "question": "Which combination of functions best demonstrates a complete simple text-file program covering open, read, and close?",
+    "options": [
+      "fopen(), fgets(), fclose()",
+      "fopen(), fputs(), feof()",
+      "fclose(), fgets(), fopen()",
+      "putc(), fopen(), fclose()"
+    ],
+    "answer": "A",
+    "explanation": "A minimal read program follows the sequence: open the file, read from it with fgets(), then close it."
+  },
+  {
+    "id": 170,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "File Programs",
+    "question": "In a simple program, what does an unsuccessful feof() check right after opening (before any read) most likely indicate?",
+    "options": [
+      "That the file is definitely empty",
+      "That the end-of-file condition has simply not been evaluated yet, since no read attempt has occurred",
+      "That the file failed to open",
+      "That the program has a syntax error"
+    ],
+    "answer": "B",
+    "explanation": "feof() only reflects the EOF status after a read attempt; checking it before any read is not meaningful."
+  },
+  {
+    "id": 171,
+    "level": "Advanced",
+    "type": "Application-oriented",
+    "topic": "File Programs",
+    "question": "What is the educational value of writing simple file-based programs using fopen(), getc()/putc(), fgets()/fputs(), feof(), and fclose() together?",
+    "options": [
+      "They demonstrate how to build a compiler",
+      "They show how to manage CPU registers directly",
+      "They illustrate the complete life cycle of file handling: opening, processing data, and closing the file properly",
+      "They replace the need for understanding variables"
+    ],
+    "answer": "C",
+    "explanation": "Together, these functions demonstrate the full lifecycle of file handling from opening through processing to closing."
+  }
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

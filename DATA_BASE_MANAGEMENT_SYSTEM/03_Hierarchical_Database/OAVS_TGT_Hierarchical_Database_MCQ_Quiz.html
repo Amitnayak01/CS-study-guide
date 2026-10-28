@@ -1,0 +1,3184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Basic Concept",
+    "question": "A Hierarchical Database organizes data primarily in the form of a:",
+    "options": [
+      "Flat table",
+      "Network of nodes",
+      "Random list",
+      "Tree structure"
+    ],
+    "answer": "D",
+    "explanation": "Hierarchical databases arrange records in a tree-like structure with parent and child nodes."
+  },
+  {
+    "id": 2,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Basic Concept",
+    "question": "Which of the following best defines a Hierarchical Database?",
+    "options": [
+      "A database model that stores only unstructured text data",
+      "A database model that connects any two records directly",
+      "A database model that organizes data in a tree-like structure with parent-child relationships",
+      "A database model that stores data in unrelated rows and columns"
+    ],
+    "answer": "C",
+    "explanation": "A Hierarchical Database is defined by its tree-shaped organization where each record is linked to a single parent."
+  },
+  {
+    "id": 3,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Basic Concept",
+    "question": "In a Hierarchical Database, data is logically arranged as a collection of:",
+    "options": [
+      "Independent files with no links",
+      "Unordered document collections",
+      "Random key-value pairs",
+      "Records connected through parent-child links"
+    ],
+    "answer": "D",
+    "explanation": "The hierarchical model links records through parent-child associations, forming a structured tree."
+  },
+  {
+    "id": 4,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Basic Concept",
+    "question": "The Hierarchical Database model is considered one of the:",
+    "options": [
+      "Newest NoSQL database models",
+      "Cloud-native database models",
+      "Oldest database models used in DBMS",
+      "Graph-based database models"
+    ],
+    "answer": "C",
+    "explanation": "The hierarchical model was among the earliest database models developed before relational databases."
+  },
+  {
+    "id": 5,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Basic Concept",
+    "question": "Which feature distinguishes a Hierarchical Database from a simple file system?",
+    "options": [
+      "Storage in plain text files only",
+      "Absence of any relationship between records",
+      "Use of spreadsheets for storage",
+      "Defined parent-child relationships between records"
+    ],
+    "answer": "D",
+    "explanation": "Unlike plain file systems, hierarchical databases explicitly define parent-child relationships between records."
+  },
+  {
+    "id": 6,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Basic Concept",
+    "question": "A Hierarchical Database can best be visualized as resembling which real-world structure?",
+    "options": [
+      "A social media friend network",
+      "A spreadsheet grid",
+      "A road map with multiple intersections",
+      "A family tree / organizational chart"
+    ],
+    "answer": "D",
+    "explanation": "A family tree or organizational chart mirrors the parent-child, one-to-many nature of hierarchical data."
+  },
+  {
+    "id": 7,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Basic Concept",
+    "question": "Which statement about the Hierarchical Database is CORRECT?",
+    "options": [
+      "Records exist without any hierarchy",
+      "Every child record can have multiple parent records",
+      "Every child record is linked to exactly one parent record",
+      "All records are stored at the same level"
+    ],
+    "answer": "C",
+    "explanation": "A core rule of the hierarchical model is that each child has only one parent, unlike network databases."
+  },
+  {
+    "id": 8,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Basic Concept",
+    "question": "Assertion (A): Hierarchical Databases are efficient for representing one-to-many relationships.\nReason (R): Data in a hierarchical database is structured as a tree with parent-child links.\nChoose the correct option:",
+    "options": [
+      "Both A and R are true, but R does not explain A",
+      "A is false, R is true",
+      "Both A and R are true, and R correctly explains A",
+      "A is true, R is false"
+    ],
+    "answer": "C",
+    "explanation": "The tree structure with parent-child links is exactly why hierarchical databases suit one-to-many data."
+  },
+  {
+    "id": 9,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Basic Concept",
+    "question": "In DBMS terminology, the Hierarchical Database model is classified as a:",
+    "options": [
+      "Record-based logical database model",
+      "Physical storage model only",
+      "Object-based database model",
+      "Query language model"
+    ],
+    "answer": "A",
+    "explanation": "The hierarchical model is a record-based logical model describing how records relate, not a physical storage scheme."
+  },
+  {
+    "id": 10,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Definition",
+    "question": "A Hierarchical Database can be defined as a data model where each record has:",
+    "options": [
+      "No parent and no children",
+      "Many parents but only one child",
+      "One parent, but may have many children",
+      "Many parents and many children"
+    ],
+    "answer": "C",
+    "explanation": "By definition, hierarchical records follow a one-parent, many-children structure."
+  },
+  {
+    "id": 11,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Definition",
+    "question": "The term 'hierarchical' in Hierarchical Database refers to:",
+    "options": [
+      "Data arranged by file size",
+      "Data arranged alphabetically",
+      "Data arranged randomly across servers",
+      "Data arranged in ranked levels from general to specific"
+    ],
+    "answer": "D",
+    "explanation": "'Hierarchical' implies ranked levels, moving from broader (parent) to more specific (child) data."
+  },
+  {
+    "id": 12,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Definition",
+    "question": "Which of the following is the most accurate technical definition of the hierarchical model?",
+    "options": [
+      "A model representing data as key-value pairs without structure",
+      "A model representing data as graphs with many-to-many links",
+      "A model representing data as independent tables joined by foreign keys",
+      "A model representing data as a collection of records connected by one-to-many parent-child links, forming a tree"
+    ],
+    "answer": "D",
+    "explanation": "This definition captures the tree-based, one-to-many, parent-child nature unique to hierarchical databases."
+  },
+  {
+    "id": 13,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Definition",
+    "question": "In simple terms, a Hierarchical Database stores data:",
+    "options": [
+      "In a two-dimensional grid only",
+      "In multiple independent trees with no root",
+      "In an inverted tree with a single root at the top",
+      "In a circular chain of records"
+    ],
+    "answer": "C",
+    "explanation": "The hierarchical structure is often depicted as an inverted tree, starting from one root node."
+  },
+  {
+    "id": 14,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Definition",
+    "question": "Which of the following statements correctly completes the definition: 'A Hierarchical Database model organizes records...'?",
+    "options": [
+      "...in graphs where nodes can have multiple parents",
+      "...without any defined structure",
+      "...in tables joined using primary and foreign keys",
+      "...in a tree structure where each child has a single parent"
+    ],
+    "answer": "D",
+    "explanation": "This is the standard definition distinguishing the hierarchical model from relational and network models."
+  },
+  {
+    "id": 15,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Definition",
+    "question": "Which term is NOT part of the standard definition of a Hierarchical Database?",
+    "options": [
+      "Foreign key constraint",
+      "Parent-child relationship",
+      "Root node",
+      "Tree structure"
+    ],
+    "answer": "A",
+    "explanation": "Foreign keys are associated with the relational model, not the hierarchical model's definition."
+  },
+  {
+    "id": 16,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Definition",
+    "question": "The defining relationship type in a Hierarchical Database is:",
+    "options": [
+      "Zero-to-zero",
+      "One-to-many",
+      "One-to-one only",
+      "Many-to-many"
+    ],
+    "answer": "B",
+    "explanation": "Hierarchical databases are fundamentally defined by their one-to-many parent-child relationships."
+  },
+  {
+    "id": 17,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Definition",
+    "question": "How does the definition of a Hierarchical Database differ from that of a Network Database?",
+    "options": [
+      "A hierarchical record can have multiple parents, while a network record has only one",
+      "Both restrict records to zero parents",
+      "Both allow unlimited parents for each record",
+      "A hierarchical record has only one parent, while a network record can have multiple parents"
+    ],
+    "answer": "D",
+    "explanation": "The key definitional difference is that hierarchical models restrict each child to a single parent."
+  },
+  {
+    "id": 18,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Definition",
+    "question": "If a company wants to define departments and employees such that each employee reports to exactly one department, which model's definition fits best?",
+    "options": [
+      "Network Database model",
+      "Flat file with no relationships",
+      "Hierarchical Database model",
+      "Distributed file model"
+    ],
+    "answer": "C",
+    "explanation": "The one-parent-per-child restriction matches the defining property of the hierarchical model."
+  },
+  {
+    "id": 19,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "History",
+    "question": "The Hierarchical Database model became widely used starting in which decade?",
+    "options": [
+      "2000s",
+      "1990s",
+      "1980s",
+      "1960s"
+    ],
+    "answer": "D",
+    "explanation": "Hierarchical databases gained prominence in the 1960s, notably through IBM's IMS system."
+  },
+  {
+    "id": 20,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "History",
+    "question": "Which early IBM product is historically associated with the Hierarchical Database model?",
+    "options": [
+      "IMS (Information Management System)",
+      "DB2",
+      "Oracle RDBMS",
+      "MySQL"
+    ],
+    "answer": "A",
+    "explanation": "IBM's IMS, developed in the 1960s, is the classic example of a hierarchical database system."
+  },
+  {
+    "id": 21,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "History",
+    "question": "The Hierarchical Database model was developed primarily to manage data for which type of early project?",
+    "options": [
+      "Large-scale industrial and government record-keeping projects",
+      "Web-based social networks",
+      "Cloud gaming platforms",
+      "Personal mobile applications"
+    ],
+    "answer": "A",
+    "explanation": "Hierarchical databases originated to handle large structured records in industrial and government systems."
+  },
+  {
+    "id": 22,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "History",
+    "question": "Which statement about the origin of hierarchical databases is TRUE?",
+    "options": [
+      "The hierarchical model predates the relational database model",
+      "The hierarchical model was created for graph analytics",
+      "The hierarchical model originated from NoSQL databases",
+      "The hierarchical model was developed after the relational model"
+    ],
+    "answer": "A",
+    "explanation": "Hierarchical databases existed before Codd introduced the relational model in 1970."
+  },
+  {
+    "id": 23,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "History",
+    "question": "Which of these database models chronologically came FIRST?",
+    "options": [
+      "Relational Database model",
+      "NoSQL Document model",
+      "Object-Oriented Database model",
+      "Hierarchical Database model"
+    ],
+    "answer": "D",
+    "explanation": "The hierarchical model is one of the oldest, predating relational, object-oriented, and NoSQL models."
+  },
+  {
+    "id": 24,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "History",
+    "question": "Why did early hierarchical databases suit mainframe computers of the 1960s-70s?",
+    "options": [
+      "They automatically handled unstructured web data",
+      "They were designed for distributed cloud servers",
+      "They allowed fast, structured access to large volumes of predictable data",
+      "They required no storage hardware"
+    ],
+    "answer": "C",
+    "explanation": "Mainframes needed efficient structured access, which the tree-based hierarchical model provided."
+  },
+  {
+    "id": 25,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "History",
+    "question": "Compared to later models, the historical hierarchical model was primarily limited by:",
+    "options": [
+      "Its reliance on internet connectivity",
+      "Its rigid, single-parent tree structure",
+      "Its excessive flexibility in relationships",
+      "Its use of unstructured data only"
+    ],
+    "answer": "B",
+    "explanation": "Its rigid tree structure, while efficient, later proved limiting compared to relational flexibility."
+  },
+  {
+    "id": 26,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "History",
+    "question": "A historian studying early banking record systems finds tree-based record files from the 1960s. These most likely used:",
+    "options": [
+      "A cloud-based NoSQL model",
+      "An object-relational model",
+      "A Hierarchical Database model",
+      "A distributed blockchain model"
+    ],
+    "answer": "C",
+    "explanation": "Tree-based record files from that era are characteristic of the hierarchical database model."
+  },
+  {
+    "id": 27,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Characteristics",
+    "question": "Which of the following is a key characteristic of the Hierarchical Database model?",
+    "options": [
+      "All nodes are at the same level",
+      "Nodes exist without any connection",
+      "Each child node can have multiple parent nodes",
+      "Each child node has exactly one parent node"
+    ],
+    "answer": "D",
+    "explanation": "A defining characteristic is the strict one-parent rule for every child node."
+  },
+  {
+    "id": 28,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Characteristics",
+    "question": "Which characteristic makes navigation predictable in a Hierarchical Database?",
+    "options": [
+      "Random connections between unrelated nodes",
+      "Multiple roots without hierarchy",
+      "A fixed, well-defined tree path from root to any node",
+      "Absence of any starting point"
+    ],
+    "answer": "C",
+    "explanation": "Because paths follow a fixed tree structure from the root, navigation is predictable."
+  },
+  {
+    "id": 29,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Characteristics",
+    "question": "Which of the following is NOT a characteristic of a Hierarchical Database?",
+    "options": [
+      "Data follows a top-down structure",
+      "Records are organized as a tree",
+      "Records can have multiple parent records",
+      "Each record has one parent"
+    ],
+    "answer": "C",
+    "explanation": "Allowing multiple parents per record is a network database trait, not a hierarchical one."
+  },
+  {
+    "id": 30,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Characteristics",
+    "question": "The 'top-down' characteristic of a Hierarchical Database means data flows from:",
+    "options": [
+      "General/root-level information to specific/detailed child information",
+      "Specific child data to general root data",
+      "Random nodes to other random nodes",
+      "External files into unrelated tables"
+    ],
+    "answer": "A",
+    "explanation": "Hierarchical data is organized top-down, starting broad at the root and narrowing at child levels."
+  },
+  {
+    "id": 31,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Characteristics",
+    "question": "Assertion (A): Hierarchical Databases enforce strict structural rules.\nReason (R): Every child record must be linked to only one parent record.\nChoose the correct option:",
+    "options": [
+      "A is false, but R is true",
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are false",
+      "A is true, but R is false"
+    ],
+    "answer": "B",
+    "explanation": "The single-parent rule is precisely what enforces the strict structural discipline in the model."
+  },
+  {
+    "id": 32,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Characteristics",
+    "question": "Which characteristic helps ensure fast retrieval of related records in a Hierarchical Database?",
+    "options": [
+      "Predefined parent-child access paths",
+      "Storing data without relationships",
+      "Absence of any access path",
+      "Unstructured scattering of data"
+    ],
+    "answer": "A",
+    "explanation": "Predefined access paths along the tree allow quick traversal to related records."
+  },
+  {
+    "id": 33,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Characteristics",
+    "question": "Compared to a flat file, a key characteristic advantage of hierarchical organization is:",
+    "options": [
+      "Explicit relationships between records via parent-child links",
+      "Complete absence of any relationships",
+      "Storage of data in a single unstructured block",
+      "Random ordering of records"
+    ],
+    "answer": "A",
+    "explanation": "Flat files lack explicit relationships, while hierarchical databases define them clearly."
+  },
+  {
+    "id": 34,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Characteristics",
+    "question": "Which characteristic can become a drawback as data complexity increases?",
+    "options": [
+      "Flexible many-to-many linking",
+      "Unlimited parent connections",
+      "Rigid one-parent restriction limiting relationship types",
+      "Automatic schema-less storage"
+    ],
+    "answer": "C",
+    "explanation": "The strict one-parent rule, while simple, restricts modeling of more complex relationships."
+  },
+  {
+    "id": 35,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Characteristics",
+    "question": "A school database stores 'Class' as parent and 'Student' as child, where each student belongs to only one class. This scenario reflects which characteristic?",
+    "options": [
+      "Many-to-many relationship",
+      "No relationship between entities",
+      "Strict one-to-many parent-child relationship",
+      "Circular relationship"
+    ],
+    "answer": "C",
+    "explanation": "Each student linked to exactly one class is a textbook example of the one-to-many hierarchical trait."
+  },
+  {
+    "id": 36,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Characteristics",
+    "question": "A common characteristic of hierarchical databases regarding data redundancy is that they may show increased redundancy when:",
+    "options": [
+      "Data is organized strictly under one parent",
+      "No child records exist",
+      "Only the root node stores data",
+      "The same child data needs to relate to more than one parent"
+    ],
+    "answer": "D",
+    "explanation": "Since a child can have only one parent, representing shared data under multiple parents causes duplication."
+  },
+  {
+    "id": 37,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Tree Structure",
+    "question": "In the tree structure of a Hierarchical Database, the topmost node is called the:",
+    "options": [
+      "Leaf node",
+      "Root node",
+      "Child node",
+      "Sibling node"
+    ],
+    "answer": "B",
+    "explanation": "The root node sits at the top of the tree and has no parent of its own."
+  },
+  {
+    "id": 38,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Tree Structure",
+    "question": "In a hierarchical tree structure, nodes with no further children are called:",
+    "options": [
+      "Leaf nodes",
+      "Branch nodes",
+      "Root nodes",
+      "Index nodes"
+    ],
+    "answer": "A",
+    "explanation": "Leaf nodes are the terminal nodes at the bottom of the tree with no children beneath them."
+  },
+  {
+    "id": 39,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Tree Structure",
+    "question": "In the tree structure, connections between parent and child nodes are called:",
+    "options": [
+      "Keys",
+      "Edges or links",
+      "Indexes",
+      "Attributes"
+    ],
+    "answer": "B",
+    "explanation": "The lines connecting parent and child nodes in a tree diagram are referred to as edges or links."
+  },
+  {
+    "id": 40,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Tree Structure",
+    "question": "Which statement about the tree structure of a Hierarchical Database is TRUE?",
+    "options": [
+      "A tree structure allows cycles between nodes",
+      "A tree structure can have multiple root nodes",
+      "A tree structure has no leaf nodes",
+      "A tree structure has exactly one root node"
+    ],
+    "answer": "D",
+    "explanation": "A valid hierarchical tree has a single root node from which all other nodes descend."
+  },
+  {
+    "id": 41,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Tree Structure",
+    "question": "How does a hierarchical tree structure differ from a general graph structure?",
+    "options": [
+      "Both structures are identical",
+      "A graph structure has only one parent per node",
+      "A tree structure has no cycles and each node has only one parent",
+      "A tree structure allows multiple parents per node"
+    ],
+    "answer": "C",
+    "explanation": "Trees are acyclic with single parentage, while graphs can have cycles and multiple connections."
+  },
+  {
+    "id": 42,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Tree Structure",
+    "question": "Consider a tree: Company -> Department -> Employee. Which node is the leaf?",
+    "options": [
+      "Department",
+      "Company",
+      "Employee",
+      "None of these"
+    ],
+    "answer": "C",
+    "explanation": "Employee is at the bottom of the hierarchy with no further children, making it the leaf node."
+  },
+  {
+    "id": 43,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Tree Structure",
+    "question": "In a hierarchical tree, a node that is both a child of one node and a parent of another is called:",
+    "options": [
+      "An orphan node",
+      "A root node",
+      "A leaf node",
+      "An intermediate (or non-leaf, non-root) node"
+    ],
+    "answer": "D",
+    "explanation": "Such nodes exist between the root and leaves, acting as both child and parent simultaneously."
+  },
+  {
+    "id": 44,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Tree Structure",
+    "question": "A university database has Faculty -> Department -> Course. If 'Faculty' is the root, what is 'Department'?",
+    "options": [
+      "Unrelated to Faculty",
+      "A child of Faculty and parent of Course",
+      "A leaf node with no parent",
+      "The root node"
+    ],
+    "answer": "B",
+    "explanation": "Department sits between Faculty (parent) and Course (child), making it an intermediate node."
+  },
+  {
+    "id": 45,
+    "level": "Advanced",
+    "type": "Match-the-Following",
+    "topic": "Tree Structure",
+    "question": "Match the tree term with its description:\n1. Root  2. Leaf  3. Edge  4. Node\nA. Connection between records  B. Topmost record  C. Any record in the tree  D. Record with no children",
+    "options": [
+      "1-A, 2-B, 3-C, 4-D",
+      "1-B, 2-D, 3-A, 4-C",
+      "1-C, 2-A, 3-D, 4-B",
+      "1-D, 2-C, 3-B, 4-A"
+    ],
+    "answer": "B",
+    "explanation": "Root=topmost record, Leaf=record with no children, Edge=connection, Node=any record in the tree."
+  },
+  {
+    "id": 46,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Tree Structure",
+    "question": "The overall shape formed by parent and child nodes together in a Hierarchical Database is known as a(n):",
+    "options": [
+      "Ring",
+      "Tree (hierarchical structure)",
+      "Star topology",
+      "Matrix"
+    ],
+    "answer": "B",
+    "explanation": "The combined arrangement of root, intermediate, and leaf nodes forms the characteristic tree shape."
+  },
+  {
+    "id": 47,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Root Node",
+    "question": "The root node in a Hierarchical Database is defined as:",
+    "options": [
+      "A node with no children",
+      "Any node with multiple children",
+      "The last node in the hierarchy",
+      "The single node at the top of the hierarchy with no parent"
+    ],
+    "answer": "D",
+    "explanation": "The root is unique because it has no parent above it and starts the entire hierarchy."
+  },
+  {
+    "id": 48,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Root Node",
+    "question": "How many root nodes can exist in a single valid hierarchical tree?",
+    "options": [
+      "Two",
+      "As many as needed",
+      "Exactly one",
+      "Zero"
+    ],
+    "answer": "C",
+    "explanation": "A properly structured hierarchical tree must have exactly one root node."
+  },
+  {
+    "id": 49,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Root Node",
+    "question": "All access to data in a Hierarchical Database typically begins at the:",
+    "options": [
+      "Sibling node",
+      "Root node",
+      "Leaf node",
+      "Any random node"
+    ],
+    "answer": "B",
+    "explanation": "Traversal in hierarchical databases conventionally starts from the root and moves downward."
+  },
+  {
+    "id": 50,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Root Node",
+    "question": "Which of these statements about the root node is FALSE?",
+    "options": [
+      "The root node is the topmost node",
+      "The root node has no parent",
+      "The root node can have multiple children",
+      "The root node must have a parent node above it"
+    ],
+    "answer": "D",
+    "explanation": "By definition, the root has no parent; stating that it must have one is incorrect."
+  },
+  {
+    "id": 51,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Root Node",
+    "question": "In a hierarchy: Organization -> Branch -> Employee, which node is the root?",
+    "options": [
+      "None of these",
+      "Branch",
+      "Employee",
+      "Organization"
+    ],
+    "answer": "D",
+    "explanation": "Organization sits at the top with no parent above it, making it the root node."
+  },
+  {
+    "id": 52,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Root Node",
+    "question": "If a hierarchical structure appears to have two nodes with no parent, what does this indicate?",
+    "options": [
+      "It is a normal, valid hierarchical tree",
+      "It means all nodes are leaves",
+      "It means the database has no data",
+      "It represents two separate trees, not one valid single-root hierarchy"
+    ],
+    "answer": "D",
+    "explanation": "A true single hierarchical tree must have only one root; two parentless nodes suggest separate trees."
+  },
+  {
+    "id": 53,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Root Node",
+    "question": "In a hospital hierarchical database with Hospital -> Department -> Doctor -> Patient, the root node stores information about the:",
+    "options": [
+      "Hospital",
+      "Patient",
+      "Doctor",
+      "Department"
+    ],
+    "answer": "A",
+    "explanation": "Hospital is the topmost entity in this hierarchy, making it the root node."
+  },
+  {
+    "id": 54,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Parent Node",
+    "question": "A parent node in a Hierarchical Database is defined as a node that:",
+    "options": [
+      "Has one or more child nodes linked beneath it",
+      "Has multiple parent nodes above it",
+      "Exists independently with no links",
+      "Has no children at all"
+    ],
+    "answer": "A",
+    "explanation": "A parent node is characterized by having one or more child nodes connected below it."
+  },
+  {
+    "id": 55,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Parent Node",
+    "question": "Can a single parent node have more than one child node in a Hierarchical Database?",
+    "options": [
+      "Only the root can have children",
+      "Yes, a parent can have multiple children",
+      "No, parents cannot have children",
+      "No, a parent can have only one child"
+    ],
+    "answer": "B",
+    "explanation": "The one-to-many relationship allows any parent node to have multiple child nodes."
+  },
+  {
+    "id": 56,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Parent Node",
+    "question": "Which of the following best describes the role of a parent node?",
+    "options": [
+      "It represents a broader category that groups related child records",
+      "It only exists at the bottom of the tree",
+      "It stores unrelated random data",
+      "It always has zero children"
+    ],
+    "answer": "A",
+    "explanation": "Parent nodes represent broader categories under which more specific child data is grouped."
+  },
+  {
+    "id": 57,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Parent Node",
+    "question": "Which statement about parent nodes is TRUE in a Hierarchical Database?",
+    "options": [
+      "A parent node can also be a child of another node higher in the tree",
+      "A parent node can never be a child of another node",
+      "A parent node must always be the root",
+      "A parent node cannot have any children"
+    ],
+    "answer": "A",
+    "explanation": "Except for the root, every parent node in the tree can itself be a child of a higher-level node."
+  },
+  {
+    "id": 58,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Parent Node",
+    "question": "In hierarchy: Library -> Section -> Book, which node acts as a parent to 'Book'?",
+    "options": [
+      "Library",
+      "Book itself",
+      "None of these",
+      "Section"
+    ],
+    "answer": "D",
+    "explanation": "Section is directly above Book in the hierarchy, making it the immediate parent of Book."
+  },
+  {
+    "id": 59,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Parent Node",
+    "question": "Can a parent node in a Hierarchical Database exist without any child nodes at a given time?",
+    "options": [
+      "No, parent nodes are never allowed to be empty",
+      "Only leaf nodes can lack children",
+      "No, a parent node must always have children",
+      "Yes, it can exist without children until child records are added"
+    ],
+    "answer": "D",
+    "explanation": "A node is only classified as a parent when children exist; it can also temporarily hold zero children."
+  },
+  {
+    "id": 60,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Parent Node",
+    "question": "In an e-commerce hierarchical database with Category -> Sub-category -> Product, which node is the parent of 'Sub-category'?",
+    "options": [
+      "Customer",
+      "Category",
+      "Sub-category itself",
+      "Product"
+    ],
+    "answer": "B",
+    "explanation": "Category directly precedes Sub-category in the hierarchy, making it its parent node."
+  },
+  {
+    "id": 61,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Child Node",
+    "question": "A child node in a Hierarchical Database is defined as a node that:",
+    "options": [
+      "Is linked beneath multiple parent nodes",
+      "Has no parent at all",
+      "Always exists at the root level",
+      "Is linked beneath exactly one parent node"
+    ],
+    "answer": "D",
+    "explanation": "A child node's defining trait is its single connection to one parent node above it."
+  },
+  {
+    "id": 62,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Child Node",
+    "question": "Can a child node also serve as a parent node to other records?",
+    "options": [
+      "Yes, but only if it has two parents",
+      "No, only the root can be a parent",
+      "Yes, unless it is a leaf node",
+      "No, a child node can never be a parent"
+    ],
+    "answer": "C",
+    "explanation": "Non-leaf child nodes can have their own children, making them parents at their level too."
+  },
+  {
+    "id": 63,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Child Node",
+    "question": "Which of the following is TRUE regarding child nodes?",
+    "options": [
+      "Each child node can be connected to multiple parent nodes",
+      "Child nodes always appear at the top of the tree",
+      "Each child node is connected to only one parent node",
+      "Child nodes cannot have their own children"
+    ],
+    "answer": "C",
+    "explanation": "The single-parent restriction for child nodes is a core rule of the hierarchical model."
+  },
+  {
+    "id": 64,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Child Node",
+    "question": "In hierarchy: School -> Class -> Student, identify the child node of 'Class'.",
+    "options": [
+      "Student",
+      "School",
+      "Teacher",
+      "Class itself"
+    ],
+    "answer": "A",
+    "explanation": "Student is directly linked beneath Class, making it the child node of Class."
+  },
+  {
+    "id": 65,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Child Node",
+    "question": "What happens to a child node if its parent node is deleted, in a strict hierarchical structure?",
+    "options": [
+      "Nothing changes for the child node",
+      "The child node typically becomes inaccessible or is also removed",
+      "The child node gains multiple new parents",
+      "The child node automatically becomes the new root"
+    ],
+    "answer": "B",
+    "explanation": "Since access paths run through the parent, removing the parent affects the connected child node."
+  },
+  {
+    "id": 66,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Child Node",
+    "question": "If Node X has two parent nodes pointing to it, is X a valid child node in a Hierarchical Database?",
+    "options": [
+      "Yes, but only in the root level",
+      "Yes, this is a normal hierarchical child node",
+      "No, this violates the single-parent rule of the hierarchical model",
+      "It depends on the number of grandchildren"
+    ],
+    "answer": "C",
+    "explanation": "A node with two parents fits a network database, not the strict hierarchical single-parent model."
+  },
+  {
+    "id": 67,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Child Node",
+    "question": "In a hierarchical database: Country -> State -> City, the child node of 'State' is:",
+    "options": [
+      "Country",
+      "State itself",
+      "City",
+      "Continent"
+    ],
+    "answer": "C",
+    "explanation": "City is directly nested beneath State, making it the child node relative to State."
+  },
+  {
+    "id": 68,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Levels",
+    "question": "In a Hierarchical Database, a 'level' refers to:",
+    "options": [
+      "The color coding of nodes",
+      "The total storage size of a node",
+      "The number of columns in a table",
+      "The depth or rank of a node measured from the root"
+    ],
+    "answer": "D",
+    "explanation": "Levels indicate how far a node is positioned from the root along the tree's depth."
+  },
+  {
+    "id": 69,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Levels",
+    "question": "The root node is generally considered to be at which level?",
+    "options": [
+      "Level 0 (or Level 1, depending on convention)",
+      "Undefined level",
+      "The deepest level of the tree",
+      "A negative level"
+    ],
+    "answer": "A",
+    "explanation": "By convention, the root node occupies the topmost level, often labeled Level 0 or Level 1."
+  },
+  {
+    "id": 70,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Levels",
+    "question": "As you move down levels in a Hierarchical Database, the data generally becomes:",
+    "options": [
+      "More general and broad",
+      "More specific and detailed",
+      "Completely unrelated",
+      "Random and unordered"
+    ],
+    "answer": "B",
+    "explanation": "Each descending level typically represents more specific data than the level above it."
+  },
+  {
+    "id": 71,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Levels",
+    "question": "In hierarchy: Institute (Level 1) -> Department (Level 2) -> Teacher (Level 3), which level does 'Teacher' belong to?",
+    "options": [
+      "Level 2",
+      "Level 1",
+      "Level 0",
+      "Level 3"
+    ],
+    "answer": "D",
+    "explanation": "Teacher is the third tier down from the root Institute, placing it at Level 3."
+  },
+  {
+    "id": 72,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Levels",
+    "question": "Which statement about levels in a Hierarchical Database is TRUE?",
+    "options": [
+      "All nodes at the same level must share one parent",
+      "Only the root can occupy a level",
+      "Nodes at the same level can have different parents",
+      "Levels have no bearing on data organization"
+    ],
+    "answer": "C",
+    "explanation": "Sibling groups under different parents can still occupy the same overall level of the tree."
+  },
+  {
+    "id": 73,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Levels",
+    "question": "What determines the number of levels in a given Hierarchical Database?",
+    "options": [
+      "The physical size of the storage disk",
+      "The programming language used",
+      "The depth of the data hierarchy being modeled",
+      "The number of users accessing the database"
+    ],
+    "answer": "C",
+    "explanation": "The number of levels depends on how many layers of parent-child relationships the data requires."
+  },
+  {
+    "id": 74,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Levels",
+    "question": "Two nodes exist at the same level but under different parent nodes. Are they automatically related to each other?",
+    "options": [
+      "Yes, they automatically share the same parent",
+      "No, being at the same level does not imply a direct relationship",
+      "Yes, they merge into a single node",
+      "Yes, same-level nodes are always directly linked"
+    ],
+    "answer": "B",
+    "explanation": "Level equality only reflects depth in the tree, not any direct relationship between the nodes."
+  },
+  {
+    "id": 75,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Levels",
+    "question": "In an organization chart with CEO -> Manager -> Employee, how many levels does this hierarchy have?",
+    "options": [
+      "Five levels",
+      "Three levels",
+      "One level",
+      "Two levels"
+    ],
+    "answer": "B",
+    "explanation": "CEO, Manager, and Employee each occupy a distinct level, totaling three levels in this hierarchy."
+  },
+  {
+    "id": 76,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "Parent-Child Relationship",
+    "question": "The parent-child relationship in a Hierarchical Database refers to:",
+    "options": [
+      "A link only between two root nodes",
+      "A link that changes direction randomly",
+      "A link between two unrelated records at random levels",
+      "The direct link between a higher-level record and its dependent lower-level record"
+    ],
+    "answer": "D",
+    "explanation": "This relationship directly connects a parent record to its subordinate child record."
+  },
+  {
+    "id": 77,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Parent-Child Relationship",
+    "question": "In the parent-child relationship, which direction does the dependency generally flow?",
+    "options": [
+      "From child to parent (parent depends on child)",
+      "No dependency exists",
+      "Both directions equally",
+      "From parent to child (child depends on parent)"
+    ],
+    "answer": "D",
+    "explanation": "Child records depend on their parent record for context and existence within the hierarchy."
+  },
+  {
+    "id": 78,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Parent-Child Relationship",
+    "question": "Which of the following is TRUE about the parent-child relationship in this model?",
+    "options": [
+      "A parent can have only one child, and a child can have many parents",
+      "Both parent and child can have unlimited connections both ways",
+      "Neither parent nor child can have more than one connection",
+      "A parent can have multiple children, but a child has only one parent"
+    ],
+    "answer": "D",
+    "explanation": "This asymmetric one-to-many rule is the defining feature of hierarchical parent-child links."
+  },
+  {
+    "id": 79,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Parent-Child Relationship",
+    "question": "A 'Department' record links to five 'Employee' records. What kind of relationship is this?",
+    "options": [
+      "One-to-many parent-child relationship",
+      "One-to-one relationship",
+      "Many-to-many relationship",
+      "No relationship"
+    ],
+    "answer": "A",
+    "explanation": "One Department (parent) connecting to multiple Employees (children) is a classic one-to-many link."
+  },
+  {
+    "id": 80,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Parent-Child Relationship",
+    "question": "Why is the parent-child relationship considered fundamental to the hierarchical model?",
+    "options": [
+      "It only applies to the root node",
+      "It forms the basic building block that creates the entire tree structure",
+      "It is used only for backup purposes",
+      "It has no real impact on the database structure"
+    ],
+    "answer": "B",
+    "explanation": "Every branch of the hierarchical tree is built from repeated parent-child relationships."
+  },
+  {
+    "id": 81,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Parent-Child Relationship",
+    "question": "Assertion (A): A child record cannot exist independently of its parent record in a strict hierarchical database.\nReason (R): Access to child records is made through their parent record's path.\nChoose the correct option:",
+    "options": [
+      "A is false, R is true",
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are false",
+      "A is true, R is false"
+    ],
+    "answer": "B",
+    "explanation": "Since traversal paths run through the parent, a child's accessibility is tied to its parent record."
+  },
+  {
+    "id": 82,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Parent-Child Relationship",
+    "question": "If a child record needs to relate meaningfully to two different parent records, what problem arises in a Hierarchical Database?",
+    "options": [
+      "It cannot be represented directly, since each child allows only one parent",
+      "The database automatically merges both parents",
+      "It is represented easily with two direct links",
+      "No issue arises at all"
+    ],
+    "answer": "A",
+    "explanation": "Representing two parents for one child is not possible under the strict single-parent hierarchical rule."
+  },
+  {
+    "id": 83,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Parent-Child Relationship",
+    "question": "How does the parent-child relationship in hierarchical databases compare to relationships in relational databases?",
+    "options": [
+      "Hierarchical relationships are physically embedded in the tree, while relational relationships are defined via keys",
+      "Neither model defines any relationships",
+      "Both use identical foreign key mechanisms",
+      "Relational databases use tree links, not keys"
+    ],
+    "answer": "A",
+    "explanation": "Relational databases use foreign keys to link tables, whereas hierarchical databases embed the link structurally."
+  },
+  {
+    "id": 84,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Parent-Child Relationship",
+    "question": "In a library system, 'Author' is parent and 'Book' is child. If one author wrote many books, this reflects:",
+    "options": [
+      "A many-to-many relationship",
+      "A relationship with no parent",
+      "A valid one-to-many parent-child relationship",
+      "An invalid relationship in this model"
+    ],
+    "answer": "C",
+    "explanation": "One Author linking to many Books directly matches the one-to-many parent-child pattern."
+  },
+  {
+    "id": 85,
+    "level": "Basic",
+    "type": "Definition-based",
+    "topic": "One-to-Many Relationship",
+    "question": "A one-to-many relationship in a Hierarchical Database means:",
+    "options": [
+      "No parent-child association exists",
+      "Many parent records relate to one child record",
+      "One parent record can be associated with several child records",
+      "One parent record can relate to only one child record"
+    ],
+    "answer": "C",
+    "explanation": "This relationship type allows a single parent to be linked with multiple dependent children."
+  },
+  {
+    "id": 86,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "One-to-Many Relationship",
+    "question": "Which relationship type is exclusively supported between parent and child in the pure hierarchical model?",
+    "options": [
+      "Many-to-many only",
+      "Zero-to-many only",
+      "One-to-many only",
+      "One-to-one only"
+    ],
+    "answer": "C",
+    "explanation": "The pure hierarchical model restricts parent-child links strictly to the one-to-many pattern."
+  },
+  {
+    "id": 87,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "One-to-Many Relationship",
+    "question": "Which of these examples correctly represents a one-to-many relationship?",
+    "options": [
+      "One Student linked to many Schools simultaneously",
+      "One Class linked to many Students",
+      "Many Teachers linked to many Subjects freely",
+      "One Book linked to no author records"
+    ],
+    "answer": "B",
+    "explanation": "One Class connecting to many Students is a direct, valid one-to-many example."
+  },
+  {
+    "id": 88,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "One-to-Many Relationship",
+    "question": "A 'Warehouse' record relates to hundreds of 'Item' records, but each Item belongs to only one Warehouse. This is:",
+    "options": [
+      "A many-to-many relationship",
+      "An undefined relationship",
+      "A one-to-one relationship",
+      "A one-to-many relationship"
+    ],
+    "answer": "D",
+    "explanation": "Multiple Items tied to a single Warehouse, with each Item having only one Warehouse, is one-to-many."
+  },
+  {
+    "id": 89,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "One-to-Many Relationship",
+    "question": "Why can't a Hierarchical Database natively support many-to-many relationships?",
+    "options": [
+      "Because it lacks any storage capacity",
+      "Because it only stores one record per table",
+      "Because each child is restricted to only one parent by design",
+      "Because it does not allow any relationships"
+    ],
+    "answer": "C",
+    "explanation": "Many-to-many needs multiple parents per child, which conflicts with the model's single-parent rule."
+  },
+  {
+    "id": 90,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "One-to-Many Relationship",
+    "question": "To simulate a many-to-many relationship in a Hierarchical Database, what is typically required?",
+    "options": [
+      "Converting all child nodes into root nodes",
+      "Duplicating child records under each relevant parent",
+      "Removing the parent-child link entirely",
+      "Nothing extra is required"
+    ],
+    "answer": "B",
+    "explanation": "Since true many-to-many isn't supported, data is often duplicated under multiple parents as a workaround."
+  },
+  {
+    "id": 91,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "One-to-Many Relationship",
+    "question": "In a hospital database, one 'Doctor' record links to many 'Appointment' records. This models:",
+    "options": [
+      "An unrelated pair of records",
+      "A one-to-many relationship between Doctor and Appointment",
+      "A one-to-one relationship",
+      "A many-to-one relationship from Appointment's side only, with no hierarchy"
+    ],
+    "answer": "B",
+    "explanation": "One Doctor associated with multiple Appointments is a standard one-to-many hierarchical example."
+  },
+  {
+    "id": 92,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "One-to-Many Relationship",
+    "question": "How does a one-to-many relationship in Hierarchical Databases compare with relationships allowed in Network Databases?",
+    "options": [
+      "Neither model supports one-to-many relationships",
+      "Hierarchical databases allow many-to-many but network databases do not",
+      "Both allow only one-to-one relationships",
+      "Network databases allow many-to-many, while hierarchical databases allow only one-to-many"
+    ],
+    "answer": "D",
+    "explanation": "Network databases relax the single-parent restriction, enabling many-to-many links unlike hierarchical databases."
+  },
+  {
+    "id": 93,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Data Organization",
+    "question": "In a Hierarchical Database, data organization follows which principle?",
+    "options": [
+      "Alphabetical grouping only",
+      "Bottom-up grouping with no parent structure",
+      "Top-down grouping of related records into parent-child sets",
+      "Random distribution across unrelated files"
+    ],
+    "answer": "C",
+    "explanation": "Data is systematically grouped top-down, from general parent categories to specific child records."
+  },
+  {
+    "id": 94,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Data Organization",
+    "question": "How is related data physically linked together in early hierarchical database implementations?",
+    "options": [
+      "Using pointers connecting parent records to their child records",
+      "Using unrelated random file names",
+      "Using no linking mechanism at all",
+      "Using foreign keys between separate tables"
+    ],
+    "answer": "A",
+    "explanation": "Physical pointers were commonly used to connect parent records directly to child records."
+  },
+  {
+    "id": 95,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Data Organization",
+    "question": "Which statement about the storage structure of Hierarchical Databases is TRUE?",
+    "options": [
+      "Child records are often stored physically close to or linked with their parent record",
+      "All records are stored in a single unstructured blob",
+      "Storage structure has no relation to the hierarchy",
+      "Child records are always stored completely separately with no link"
+    ],
+    "answer": "A",
+    "explanation": "Physical storage in hierarchical databases commonly mirrors the logical parent-child structure."
+  },
+  {
+    "id": 96,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Data Organization",
+    "question": "The overall storage approach in a Hierarchical Database is best described as:",
+    "options": [
+      "Based purely on random access memory addresses",
+      "Structured and hierarchy-driven",
+      "Completely unstructured",
+      "Dependent only on cloud storage"
+    ],
+    "answer": "B",
+    "explanation": "Storage in hierarchical databases is organized to reflect the underlying tree hierarchy of data."
+  },
+  {
+    "id": 97,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Data Organization",
+    "question": "A company organizes its data as Company -> Branch -> Employee -> Salary Record. This demonstrates:",
+    "options": [
+      "Unrelated data scattered without structure",
+      "A purely numeric storage scheme",
+      "Flat, single-level data organization",
+      "Hierarchical data organization with multiple nested levels"
+    ],
+    "answer": "D",
+    "explanation": "Multiple nested parent-child levels reflect the structured, hierarchical organization of data."
+  },
+  {
+    "id": 98,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Data Organization",
+    "question": "What role does the 'segment' play in traditional hierarchical database storage structure?",
+    "options": [
+      "It represents an index used only for backups",
+      "It has no defined role",
+      "It represents a network connection",
+      "It represents a record type or node at a given level of the hierarchy"
+    ],
+    "answer": "D",
+    "explanation": "A segment refers to a record type occupying a specific position within the hierarchical structure."
+  },
+  {
+    "id": 99,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Data Organization",
+    "question": "If child data needs to be retrieved without knowing its parent, what challenge exists in Hierarchical Databases?",
+    "options": [
+      "The child data becomes the new root automatically",
+      "Retrieval is always instant regardless of parent",
+      "Direct retrieval is difficult since access typically requires traversing from the parent",
+      "No challenge exists at all"
+    ],
+    "answer": "C",
+    "explanation": "Hierarchical access paths generally require moving from root/parent downward, complicating independent child lookups."
+  },
+  {
+    "id": 100,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Data Organization",
+    "question": "An HR system stores Employee data nested under Department, nested under Company. This nested storage exemplifies:",
+    "options": [
+      "Distributed ledger storage",
+      "Relational normalization",
+      "Object serialization only",
+      "Hierarchical data organization"
+    ],
+    "answer": "D",
+    "explanation": "Nested storage from Company down to Employee is a direct example of hierarchical organization."
+  },
+  {
+    "id": 101,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Data Organization",
+    "question": "How does hierarchical data organization differ from relational table-based organization?",
+    "options": [
+      "Neither model organizes data logically",
+      "Both are identical in structure and storage",
+      "Hierarchical organizes data as nested tree records; relational organizes data as independent linked tables",
+      "Relational organizes data as a tree; hierarchical uses independent tables"
+    ],
+    "answer": "C",
+    "explanation": "Hierarchical nests records in a tree, whereas relational databases store data as separate linked tables."
+  },
+  {
+    "id": 102,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Hierarchical Database Model",
+    "question": "The Hierarchical Database Model is best classified as a:",
+    "options": [
+      "Physical hardware model",
+      "Logical data model based on tree structures",
+      "User interface design model",
+      "Networking protocol model"
+    ],
+    "answer": "B",
+    "explanation": "It is a logical model describing how data records relate, structured specifically as trees."
+  },
+  {
+    "id": 103,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Hierarchical Database Model",
+    "question": "Which of the following models is considered a direct predecessor influencing later database models?",
+    "options": [
+      "Cloud Database Model",
+      "Hierarchical Database Model",
+      "In-memory Database Model",
+      "Graph Database Model"
+    ],
+    "answer": "B",
+    "explanation": "The hierarchical model's concepts influenced the development of later models like the network and relational models."
+  },
+  {
+    "id": 104,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Hierarchical Database Model",
+    "question": "Which statement about the Hierarchical Database Model is TRUE?",
+    "options": [
+      "It has no defined relationship rules",
+      "It represents relationships using a strict tree hierarchy of records",
+      "It stores data without any parent-child linkage",
+      "It represents relationships using flexible many-to-many graphs"
+    ],
+    "answer": "B",
+    "explanation": "The model's core identity comes from its strict, tree-based representation of relationships."
+  },
+  {
+    "id": 105,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Hierarchical Database Model",
+    "question": "Which of these models is structurally most similar to the Hierarchical Database Model?",
+    "options": [
+      "A fully connected mesh network diagram",
+      "A two-dimensional spreadsheet",
+      "A random unordered list",
+      "A single-rooted organizational tree diagram"
+    ],
+    "answer": "D",
+    "explanation": "The single-rooted tree diagram closely mirrors the hierarchical database's parent-child tree structure."
+  },
+  {
+    "id": 106,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Hierarchical Database Model",
+    "question": "Why is the Hierarchical Database Model sometimes described as 'less flexible' compared to later models?",
+    "options": [
+      "Because it does not use records",
+      "Because relationships are restricted to a single parent per child",
+      "Because it supports unlimited relationship types",
+      "Because it has no structure at all"
+    ],
+    "answer": "B",
+    "explanation": "Flexibility is limited since only one-to-many, single-parent relationships can be modeled directly."
+  },
+  {
+    "id": 107,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Hierarchical Database Model",
+    "question": "A software team chooses a database model where each file directory contains sub-directories and files, but no sub-directory belongs to two parent directories. This matches the:",
+    "options": [
+      "Relational Database Model",
+      "Network Database Model",
+      "Hierarchical Database Model",
+      "Object-Oriented Database Model"
+    ],
+    "answer": "C",
+    "explanation": "Restricting each sub-directory to a single parent directory reflects the hierarchical model's structure."
+  },
+  {
+    "id": 108,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Hierarchical Database Model",
+    "question": "The Hierarchical Database Model primarily addresses which type of data relationship efficiently?",
+    "options": [
+      "Zero relationships",
+      "One-to-many relationships",
+      "Many-to-many relationships",
+      "Circular relationships"
+    ],
+    "answer": "B",
+    "explanation": "This model is specifically well-suited to represent efficient one-to-many data relationships."
+  },
+  {
+    "id": 109,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Navigation",
+    "question": "Navigation in a Hierarchical Database typically proceeds:",
+    "options": [
+      "Directly between unrelated nodes without paths",
+      "From any random node in any direction",
+      "From leaf nodes upward only, ignoring the root",
+      "From the root node downward through parent-child links"
+    ],
+    "answer": "D",
+    "explanation": "Traversal conventionally starts at the root and follows defined parent-child paths downward."
+  },
+  {
+    "id": 110,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Navigation",
+    "question": "Which term describes the specific route followed to access a child record from the root?",
+    "options": [
+      "Foreign key path",
+      "Random walk path",
+      "Access path (or traversal path)",
+      "Index scan path"
+    ],
+    "answer": "C",
+    "explanation": "The access path defines the exact route through parent-child links used to reach a target record."
+  },
+  {
+    "id": 111,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Navigation",
+    "question": "Which statement about navigation in a Hierarchical Database is TRUE?",
+    "options": [
+      "Only leaf nodes can be navigated to directly",
+      "Any child record can be reached instantly without traversing its ancestors",
+      "To reach a deeply nested child, all its ancestor nodes must generally be traversed",
+      "Navigation is impossible in hierarchical databases"
+    ],
+    "answer": "C",
+    "explanation": "Because access follows the tree structure, reaching deep child nodes requires passing through ancestors."
+  },
+  {
+    "id": 112,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Navigation",
+    "question": "To find a specific 'Student' record under Department -> Class -> Student, the system must first access:",
+    "options": [
+      "Department, then Class, then Student in sequence",
+      "Any record in random order",
+      "Class first, ignoring Department entirely",
+      "Only the Student record directly"
+    ],
+    "answer": "A",
+    "explanation": "Sequential traversal through Department and Class is required before reaching the Student record."
+  },
+  {
+    "id": 113,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Navigation",
+    "question": "What navigation challenge arises when trying to move from a child node directly to a 'sibling' child node?",
+    "options": [
+      "Siblings are always directly linked with no need for the parent",
+      "There is often no direct sibling link; navigation must go back through the shared parent",
+      "Sibling navigation is impossible under all circumstances",
+      "Siblings automatically merge into one record"
+    ],
+    "answer": "B",
+    "explanation": "Since siblings share a parent but aren't directly linked, navigation typically routes back through that parent."
+  },
+  {
+    "id": 114,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Navigation",
+    "question": "In a hierarchical library database, to find all books by 'Author A', the system navigates:",
+    "options": [
+      "From an unrelated Publisher node with no connection",
+      "Directly to a random Book node",
+      "From the Book node upward to multiple unrelated authors",
+      "From the Author node down to its linked Book child nodes"
+    ],
+    "answer": "D",
+    "explanation": "Finding an author's books means traversing from the Author (parent) down to its child Book records."
+  },
+  {
+    "id": 115,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Navigation",
+    "question": "How does navigation in a Hierarchical Database compare to navigation in a Relational Database?",
+    "options": [
+      "Relational databases only use tree paths, not queries",
+      "Neither model supports structured navigation",
+      "Both navigate using identical SQL joins",
+      "Hierarchical navigation follows fixed tree paths, while relational navigation uses flexible queries via keys"
+    ],
+    "answer": "D",
+    "explanation": "Hierarchical databases rely on fixed paths, whereas relational databases use flexible key-based queries."
+  },
+  {
+    "id": 116,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Advantages",
+    "question": "Which of the following is a major advantage of the Hierarchical Database model?",
+    "options": [
+      "Ability to represent many-to-many relationships natively",
+      "Complete independence from any structure",
+      "Simplicity in representing one-to-many relationships",
+      "Automatic support for unrelated data types"
+    ],
+    "answer": "C",
+    "explanation": "The model's simplicity in handling one-to-many links is one of its most cited advantages."
+  },
+  {
+    "id": 117,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Advantages",
+    "question": "Why is data retrieval often fast in a well-designed Hierarchical Database?",
+    "options": [
+      "Because there is no need to define any paths",
+      "Because predefined parent-child access paths reduce search time",
+      "Because all data is stored without any structure",
+      "Because retrieval always scans the entire database"
+    ],
+    "answer": "B",
+    "explanation": "Predefined paths let the system move directly along known links, speeding up retrieval."
+  },
+  {
+    "id": 118,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Advantages",
+    "question": "Which of these is TRUE regarding the advantages of Hierarchical Databases?",
+    "options": [
+      "They perform poorly for any one-to-many data pattern",
+      "They are only useful for many-to-many data",
+      "They offer high performance for applications with clear one-to-many data patterns",
+      "They offer no performance benefits over flat files"
+    ],
+    "answer": "C",
+    "explanation": "Hierarchical databases excel specifically where data naturally fits a one-to-many pattern."
+  },
+  {
+    "id": 119,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Advantages",
+    "question": "Compared to unstructured file storage, what advantage does a Hierarchical Database provide?",
+    "options": [
+      "Random data placement for security",
+      "Slower access due to added complexity",
+      "Complete removal of any organizational structure",
+      "Clear, defined relationships that improve data integrity and organization"
+    ],
+    "answer": "D",
+    "explanation": "Defined parent-child relationships bring more organization and integrity than plain unstructured files."
+  },
+  {
+    "id": 120,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Advantages",
+    "question": "An organization with a strict single-manager reporting structure for employees would benefit from a Hierarchical Database because:",
+    "options": [
+      "It only works for flat organizations",
+      "It cannot represent reporting structures at all",
+      "The one-parent-per-child rule naturally matches the single-manager structure",
+      "It requires multiple managers per employee"
+    ],
+    "answer": "C",
+    "explanation": "A single-manager hierarchy aligns perfectly with the model's one-parent-per-child restriction."
+  },
+  {
+    "id": 121,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Advantages",
+    "question": "Which application would benefit most from the Hierarchical Database's advantage of simple, fast one-to-many access?",
+    "options": [
+      "A recommendation engine linking many products to many users",
+      "A file directory system with folders and files",
+      "A collaborative document with multiple co-owners",
+      "A social media app requiring many-to-many friend connections"
+    ],
+    "answer": "B",
+    "explanation": "Directory systems fit the one-to-many, single-parent pattern that hierarchical databases handle efficiently."
+  },
+  {
+    "id": 122,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Advantages",
+    "question": "Which advantage of the Hierarchical Database model becomes less useful as relationships grow more complex?",
+    "options": [
+      "Its simple one-to-many structure, since complex relationships need more flexibility",
+      "Its lack of any structure",
+      "Its support for unlimited parent connections",
+      "Its ability to represent complex many-to-many links"
+    ],
+    "answer": "A",
+    "explanation": "The very simplicity that is an advantage for simple data becomes a limitation for complex relationships."
+  },
+  {
+    "id": 123,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Advantages",
+    "question": "One advantage of the Hierarchical Database model related to data integrity is:",
+    "options": [
+      "It allows any data to be linked to any other data freely",
+      "It enforces structural consistency through defined parent-child links",
+      "It removes the need for any data validation",
+      "It stores duplicate data with no restrictions"
+    ],
+    "answer": "B",
+    "explanation": "Enforced parent-child structure helps maintain consistent, predictable data relationships."
+  },
+  {
+    "id": 124,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Advantages",
+    "question": "Why might a Hierarchical Database be considered efficient for read-heavy applications with stable structures?",
+    "options": [
+      "Because it constantly restructures data on every read",
+      "Because it stores no actual data",
+      "Because fixed access paths allow quick, predictable data retrieval",
+      "Because it ignores all read requests"
+    ],
+    "answer": "C",
+    "explanation": "Stable, fixed paths mean read operations can follow known routes quickly without recalculating structure."
+  },
+  {
+    "id": 125,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Limitations",
+    "question": "Which of the following is a significant limitation of the Hierarchical Database model?",
+    "options": [
+      "Inability to store any data at all",
+      "Excessive flexibility in relationship types",
+      "Difficulty representing many-to-many relationships",
+      "Complete lack of parent-child structure"
+    ],
+    "answer": "C",
+    "explanation": "The strict one-parent rule makes representing many-to-many relationships difficult."
+  },
+  {
+    "id": 126,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Limitations",
+    "question": "Why can modifying the structure of a Hierarchical Database be complex?",
+    "options": [
+      "Because modifications are always instant with no impact",
+      "Because only leaf nodes exist",
+      "Because changing the hierarchy can affect all dependent child records",
+      "Because the database has no structure to modify"
+    ],
+    "answer": "C",
+    "explanation": "Since child records depend on their parent's position, structural changes can ripple through the hierarchy."
+  },
+  {
+    "id": 127,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Limitations",
+    "question": "Which statement correctly identifies a limitation of the Hierarchical Database model?",
+    "options": [
+      "It only works with unstructured data",
+      "It lacks native support for complex relationships beyond one-to-many",
+      "It supports every possible relationship type natively",
+      "It has no limitations compared to other models"
+    ],
+    "answer": "B",
+    "explanation": "A key documented limitation is its inability to natively model relationships beyond one-to-many."
+  },
+  {
+    "id": 128,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Limitations",
+    "question": "Compared to relational databases, a notable limitation of hierarchical databases is:",
+    "options": [
+      "Complete absence of any query capability",
+      "Better support for many-to-many joins",
+      "Reduced flexibility in querying data that doesn't follow the predefined hierarchy",
+      "Superior flexibility for arbitrary ad-hoc queries"
+    ],
+    "answer": "C",
+    "explanation": "Relational databases allow flexible ad-hoc queries, while hierarchical databases are tied to fixed structures."
+  },
+  {
+    "id": 129,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Limitations",
+    "question": "A student needs to be linked to two different departments simultaneously in a Hierarchical Database. What limitation does this expose?",
+    "options": [
+      "The single-parent restriction makes this relationship difficult to represent directly",
+      "This scenario is impossible to imagine",
+      "This is easily represented with no issues",
+      "The database automatically creates a new root for this case"
+    ],
+    "answer": "A",
+    "explanation": "Needing two parents for one child directly conflicts with the model's core single-parent limitation."
+  },
+  {
+    "id": 130,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Limitations",
+    "question": "Why is data redundancy sometimes unavoidable in Hierarchical Databases?",
+    "options": [
+      "Because redundancy is impossible in tree structures",
+      "Because only one record can ever exist in the database",
+      "Because the model forbids storing any duplicate data",
+      "Because shared child data must be duplicated under each relevant parent"
+    ],
+    "answer": "D",
+    "explanation": "To associate the same data with multiple parents, duplication becomes necessary due to the single-parent rule."
+  },
+  {
+    "id": 131,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Limitations",
+    "question": "A hierarchical database models Employee -> Project, but an employee can work on multiple projects and vice versa. What limitation results?",
+    "options": [
+      "The many-to-many relationship cannot be modeled directly without redundancy or workarounds",
+      "The relationship is modeled perfectly with no issues",
+      "Employees are automatically restricted to one project only",
+      "Projects disappear from the database"
+    ],
+    "answer": "A",
+    "explanation": "This many-to-many scenario clashes with the hierarchical model's native one-to-many limitation."
+  },
+  {
+    "id": 132,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Limitations",
+    "question": "Which of these is generally considered a limitation regarding scalability in Hierarchical Databases?",
+    "options": [
+      "Scalability is never affected by hierarchy depth",
+      "The model becomes simpler as data grows infinitely",
+      "The model removes all levels automatically over time",
+      "Complex hierarchies can become rigid and harder to maintain as data grows"
+    ],
+    "answer": "D",
+    "explanation": "As hierarchies deepen and grow, maintaining and modifying them can become increasingly complex."
+  },
+  {
+    "id": 133,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Limitations",
+    "question": "Assertion (A): Hierarchical Databases struggle with representing complex, interconnected data.\nReason (R): Each child record is restricted to a single parent record.\nChoose the correct option:",
+    "options": [
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are false",
+      "A is false, R is true",
+      "A is true, R is false"
+    ],
+    "answer": "A",
+    "explanation": "The single-parent restriction is exactly why complex, multi-linked data is hard to represent."
+  },
+  {
+    "id": 134,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Applications",
+    "question": "Which of the following real-world systems is a classic example suited to the Hierarchical Database model?",
+    "options": [
+      "A ride-sharing matching system",
+      "A social media friend-tagging system",
+      "A peer-to-peer file sharing network",
+      "A file system with folders and sub-folders"
+    ],
+    "answer": "D",
+    "explanation": "File systems naturally follow a single-parent folder structure, matching the hierarchical model well."
+  },
+  {
+    "id": 135,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Applications",
+    "question": "An organization chart showing CEO, Managers, and Employees with strict single-reporting lines is best modeled using:",
+    "options": [
+      "A Hierarchical Database",
+      "A Network Database",
+      "An unstructured flat file",
+      "A Graph Database with cycles"
+    ],
+    "answer": "A",
+    "explanation": "Strict single-reporting lines map directly to the one-parent, one-to-many hierarchical structure."
+  },
+  {
+    "id": 136,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Applications",
+    "question": "Which of these is historically an important application domain for hierarchical databases?",
+    "options": [
+      "Real-time multiplayer gaming graphics",
+      "Banking and airline reservation record-keeping systems",
+      "Social media image filters",
+      "Web browser rendering engines"
+    ],
+    "answer": "B",
+    "explanation": "Early banking and airline systems used hierarchical databases like IBM IMS for structured record-keeping."
+  },
+  {
+    "id": 137,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Applications",
+    "question": "An XML document with nested tags (book > chapter > section) conceptually resembles which database model?",
+    "options": [
+      "Purely relational model",
+      "Hierarchical Database model",
+      "Purely network model",
+      "Purely object-relational model"
+    ],
+    "answer": "B",
+    "explanation": "Nested XML tags reflect the same tree, single-parent structure found in hierarchical databases."
+  },
+  {
+    "id": 138,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Applications",
+    "question": "Why is a Hierarchical Database more suitable than a flat file for representing an organization's departmental structure?",
+    "options": [
+      "Neither model can represent departmental structures",
+      "Flat files are always faster for nested data",
+      "It naturally captures nested parent-child relationships between departments and sub-units",
+      "Flat files naturally represent hierarchy better"
+    ],
+    "answer": "C",
+    "explanation": "Departmental nesting matches the hierarchical model's parent-child design far better than flat files."
+  },
+  {
+    "id": 139,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Applications",
+    "question": "Why might a Hierarchical Database be a poor choice for a modern social media friend-network application?",
+    "options": [
+      "Because social media has no data to store",
+      "Because friend networks always fit a strict tree structure",
+      "Because hierarchical databases cannot store any user data",
+      "Because friend connections are many-to-many, which the model doesn't support natively"
+    ],
+    "answer": "D",
+    "explanation": "Friend networks require many-to-many relationships, which conflict with the hierarchical model's limitations."
+  },
+  {
+    "id": 140,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Applications",
+    "question": "Which statement about applications of Hierarchical Databases is TRUE?",
+    "options": [
+      "They are exclusively used for image processing",
+      "They are well suited to data with a clear, stable nested structure",
+      "They are best suited for highly interconnected, non-hierarchical data",
+      "They cannot be applied to any real-world system"
+    ],
+    "answer": "B",
+    "explanation": "Clear, stable nested data structures are the ideal use case for hierarchical databases."
+  },
+  {
+    "id": 141,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Applications",
+    "question": "A university's course catalog organized as Faculty -> Department -> Program -> Course is an example of applying the:",
+    "options": [
+      "Hierarchical Database model",
+      "Purely distributed ledger model",
+      "Purely in-memory caching model",
+      "Purely event-driven model"
+    ],
+    "answer": "A",
+    "explanation": "This nested academic structure is a textbook application of the hierarchical database model."
+  },
+  {
+    "id": 142,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Applications",
+    "question": "A telecom company stores Region -> City -> Exchange -> Customer records. Which model fits this scenario best?",
+    "options": [
+      "A key-value cache only",
+      "Flat file with no relationships",
+      "A purely graph-based social model",
+      "Hierarchical Database model"
+    ],
+    "answer": "D",
+    "explanation": "The nested Region-to-Customer structure is a natural fit for the hierarchical database model."
+  },
+  {
+    "id": 143,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Comparison with File Organization",
+    "question": "How does a Hierarchical Database improve upon traditional flat file organization?",
+    "options": [
+      "It introduces explicit parent-child relationships instead of isolated records",
+      "It removes all relationships found in flat files",
+      "It requires no records at all, unlike flat files",
+      "It stores data with less structure than flat files"
+    ],
+    "answer": "A",
+    "explanation": "Flat files lack relationships between records, while hierarchical databases explicitly define them."
+  },
+  {
+    "id": 144,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Comparison with File Organization",
+    "question": "Which of the following is TRUE when comparing Hierarchical Databases to traditional file systems?",
+    "options": [
+      "Hierarchical databases reduce data redundancy compared to fully duplicated flat files",
+      "Hierarchical databases always require more physical storage regardless of design",
+      "Flat files always have less redundancy than hierarchical databases",
+      "Both systems are functionally identical"
+    ],
+    "answer": "A",
+    "explanation": "By linking related data through parent-child structures, hierarchical databases can reduce certain redundancies found in flat files."
+  },
+  {
+    "id": 145,
+    "level": "Basic",
+    "type": "Concept-based",
+    "topic": "Comparison with File Organization",
+    "question": "In traditional file organization, why is retrieving related data across files often harder than in a Hierarchical Database?",
+    "options": [
+      "Because hierarchical databases have no links at all",
+      "Because file systems never store related data",
+      "Because flat files typically lack built-in links between related records",
+      "Because flat files always link every record automatically"
+    ],
+    "answer": "C",
+    "explanation": "Flat files generally require manual matching, whereas hierarchical databases provide direct parent-child links."
+  },
+  {
+    "id": 146,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Comparison with File Organization",
+    "question": "A company previously stored employee and department data in separate unrelated files, causing duplicate entries. Moving to a Hierarchical Database would primarily help by:",
+    "options": [
+      "Increasing the number of unrelated files further",
+      "Establishing clear parent-child links between departments and employees",
+      "Removing the need for any data storage",
+      "Making department and employee data completely identical"
+    ],
+    "answer": "B",
+    "explanation": "Hierarchical structuring links departments (parent) and employees (child), reducing disconnected duplication."
+  },
+  {
+    "id": 147,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Comparison with File Organization",
+    "question": "Despite improvements over flat files, why do Hierarchical Databases still share one limitation with traditional file systems?",
+    "options": [
+      "Both eliminate the need for any records",
+      "Both can struggle to efficiently represent complex many-to-many relationships",
+      "Both automatically support unlimited many-to-many relationships",
+      "Neither can store any structured data"
+    ],
+    "answer": "B",
+    "explanation": "Just like flat files, the hierarchical model isn't naturally suited for complex many-to-many data."
+  },
+  {
+    "id": 148,
+    "level": "Basic",
+    "type": "Basic",
+    "topic": "Comparison with File Organization",
+    "question": "Compared to traditional file organization, Hierarchical Databases provide better:",
+    "options": [
+      "Independence from any parent-child logic",
+      "Structural organization through defined relationships",
+      "Randomness in data placement",
+      "Complete removal of structure"
+    ],
+    "answer": "B",
+    "explanation": "Defined parent-child relationships give hierarchical databases an organizational edge over flat files."
+  },
+  {
+    "id": 149,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Comparison with File Organization",
+    "question": "An old payroll system using separate flat files for 'Employee' and 'Salary' data is redesigned using a Hierarchical Database. What is the main introductory-level benefit?",
+    "options": [
+      "Salary records can now be directly linked as children of their respective Employee parent records",
+      "Salary and Employee data become completely unrelated",
+      "The system loses the ability to store salary data",
+      "All employees are merged into a single record"
+    ],
+    "answer": "A",
+    "explanation": "Direct parent-child linkage between Employee and Salary improves organization over separate flat files."
+  },
+  {
+    "id": 150,
+    "level": "Intermediate",
+    "type": "Feature-based",
+    "topic": "Comparison with File Organization",
+    "question": "Which introductory-level feature makes Hierarchical Databases generally preferable to plain sequential flat files for nested data?",
+    "options": [
+      "Built-in support for representing nested one-to-many relationships",
+      "Removal of the need to store any child data",
+      "Complete lack of any file-like structure",
+      "Requirement that all data be stored as a single string"
+    ],
+    "answer": "A",
+    "explanation": "Flat sequential files don't inherently support nested relationships the way hierarchical databases do."
+  }
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

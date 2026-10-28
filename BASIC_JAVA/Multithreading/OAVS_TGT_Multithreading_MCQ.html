@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {"id": 1, "level": "Basic", "type": "Definition", "topic": "Multithreading Concept", "question": "Multithreading is best defined as:", "options": ["Execution of two or more separate programs in different processes only", "Sequential execution of every instruction through a single flow of control", "Concurrent execution of two or more threads within a single process", "Compilation of source code by several compilers at the same time"], "answer": "C", "explanation": "Multithreading lets multiple threads (independent paths of execution) run concurrently inside one process."},
+  {"id": 2, "level": "Basic", "type": "Concept", "topic": "Multithreading Concept", "question": "A thread is commonly described as:", "options": ["A heavyweight program that owns a separate address space", "A file that stores compiled bytecode of a class", "A lightweight unit of execution within a process", "A hardware component that fetches and decodes instructions"], "answer": "C", "explanation": "A thread is the smallest unit of execution; it is called lightweight because it lives inside a process and shares its resources."},
+  {"id": 3, "level": "Basic", "type": "Characteristic", "topic": "Multithreading Concept", "question": "Which of the following is shared by all threads of the same process?", "options": ["The register values saved for each thread", "The heap memory and code of the process", "The private call stack owned by each thread", "The program counter maintained by each thread"], "answer": "B", "explanation": "Each thread has its own stack, program counter and registers; code and heap data belong to the process and are shared."},
+  {"id": 4, "level": "Basic", "type": "Terminology", "topic": "Multithreading Concept", "question": "Multithreading is an example of:", "options": ["Process-based multitasking", "Batch processing", "Spooling of print jobs", "Thread-based multitasking"], "answer": "D", "explanation": "Thread-based multitasking runs parts of the same program concurrently; process-based multitasking runs separate programs."},
+  {"id": 5, "level": "Basic", "type": "Characteristic", "topic": "Multithreading Concept", "question": "Compared with processes, threads are generally:", "options": ["Cheaper to create and cheaper to switch between", "Unable to share any data with each other", "Completely independent of the process that holds them", "Costlier to create because each thread needs its own address space"], "answer": "A", "explanation": "Threads share the process's address space, so creation and context switching involve less overhead."},
+  {"id": 6, "level": "Basic", "type": "Purpose", "topic": "Multithreading Concept", "question": "The primary purpose of multithreading is to:", "options": ["Guarantee faster execution of every program on a single-core CPU", "Remove the need for an operating system to manage running tasks", "Reduce the size of the compiled program file on disk", "Perform several tasks concurrently for better CPU utilization and responsiveness"], "answer": "D", "explanation": "Multithreading keeps the CPU busy and the application responsive by overlapping tasks (e.g., computation and waiting)."},
+  {"id": 7, "level": "Basic", "type": "Advantage", "topic": "Multithreading Concept", "question": "Which of the following is <b>NOT</b> an advantage of multithreading?", "options": ["Economical sharing of resources among related tasks", "Program design becomes simpler and its behaviour fully predictable", "Better utilization of idle CPU time during waiting", "Improved responsiveness of interactive applications"], "answer": "B", "explanation": "Multithreading actually makes design, testing and debugging more complex, so simplicity is not an advantage."},
+  {"id": 8, "level": "Basic", "type": "Terminology", "topic": "Multithreading Concept", "question": "Tasks that are executing at the very same instant on different CPU cores are said to run in:", "options": ["Parallel", "Time-sliced mode", "Serialized mode", "Context-switched mode"], "answer": "A", "explanation": "Parallelism needs multiple cores; time slicing only interleaves tasks on a core to give an illusion of simultaneity."},
+  {"id": 9, "level": "Basic", "type": "Terminology", "topic": "Multithreading Concept", "question": "In multithreading, a <i>context switch</i> refers to:", "options": ["Terminating a thread and immediately starting a fresh one in its place", "Saving the state of one thread and loading the state of another so the CPU can change over", "Permanently moving all of a thread's data from RAM to disk storage", "Converting a running thread into a completely separate process"], "answer": "B", "explanation": "The CPU stores the current thread's state (registers, program counter) and restores another's; this switching has a cost."},
+  {"id": 10, "level": "Basic", "type": "Concept", "topic": "Multithreading Concept", "question": "On a single-core CPU, several threads appear to run simultaneously because:", "options": ["Threads are always executed on the graphics card instead of the CPU", "The compiler merges all threads into one single instruction stream", "The CPU switches rapidly among the threads giving each a short time slice", "Each thread is automatically given its own physical core by the OS"], "answer": "C", "explanation": "Rapid switching (time slicing) creates concurrency without true parallelism on one core."},
+  {"id": 11, "level": "Intermediate", "type": "Scenario", "topic": "Multithreading Concept", "question": "A word processor lets you keep typing while it checks spelling and auto-saves the document in the background. Which programming concept makes this possible?", "options": ["Multithreading", "Recursion", "Type casting", "Method overloading"], "answer": "A", "explanation": "Separate threads handle typing, spell-check and auto-save concurrently."},
+  {"id": 12, "level": "Intermediate", "type": "Statement-based", "topic": "Multithreading Concept", "question": "Consider the statements:\nI. Threads of a process share the same memory space.\nII. Context switching among threads is generally cheaper than among processes.\nIII. Every thread has a completely independent address space.\nWhich statements are correct?", "options": ["I, II and III", "I and III only", "II and III only", "I and II only"], "answer": "D", "explanation": "Threads share the process address space, so III is false."},
+  {"id": 13, "level": "Advanced", "type": "Assertion–Reason", "topic": "Multithreading Concept", "question": "<b>Assertion (A):</b> Multithreading improves the responsiveness of GUI applications.\n<b>Reason (R):</b> A long-running task can execute in a background thread while the user-interface thread stays active.", "options": ["A is true, but R is false", "A is false, but R is true", "Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A"], "answer": "C", "explanation": "The background thread keeps the interface from freezing, which directly explains the improved responsiveness."},
+  {"id": 14, "level": "Advanced", "type": "Assertion–Reason", "topic": "Multithreading Concept", "question": "<b>Assertion (A):</b> Using multithreading always makes every program run faster.\n<b>Reason (R):</b> Context switching and managing multiple threads add overhead.", "options": ["A is true, but R is false", "Both A and R are true, and R is the correct explanation of A", "A is false, but R is true", "Both A and R are true, but R is not the correct explanation of A"], "answer": "C", "explanation": "Overhead can cancel the benefit (e.g., CPU-bound work on a single core), so A is false while R is true."},
+  {"id": 15, "level": "Intermediate", "type": "Match", "topic": "Multithreading Concept", "question": "Match List I with List II:\n<b>List I:</b> 1. Thread &nbsp; 2. Multitasking &nbsp; 3. Context switch &nbsp; 4. Concurrency\n<b>List II:</b> a. Several tasks/programs managed by the OS at the same time &nbsp; b. Lightweight unit of execution inside a process &nbsp; c. Saving one thread's state and loading another's &nbsp; d. Multiple tasks making progress in overlapping time periods", "options": ["1-b, 2-a, 3-c, 4-d", "1-a, 2-b, 3-c, 4-d", "1-b, 2-a, 3-d, 4-c", "1-c, 2-b, 3-a, 4-d"], "answer": "A", "explanation": "Thread = lightweight unit (b); multitasking = many tasks by OS (a); context switch = save/load state (c); concurrency = overlapping progress (d)."},
+  {"id": 16, "level": "Basic", "type": "Concept", "topic": "Multithreading Concept", "question": "Which of the following is a recognised <b>disadvantage</b> of multithreading?", "options": ["It always reduces the responsiveness of the application", "Threads cannot share any data with one another at all", "Context-switching overhead and increased program complexity", "Every thread requires a separate copy of the program code"], "answer": "C", "explanation": "Extra overhead and harder design/debugging are the usual drawbacks."},
+  {"id": 17, "level": "Basic", "type": "Life Cycle", "topic": "Thread Life Cycle", "question": "The life cycle of a thread refers to:", "options": ["The number of processors that are allotted to a thread", "The different states a thread passes through from its creation to its termination", "The order in which the threads are written in the source code of a program", "The amount of memory a thread occupies while it is running"], "answer": "B", "explanation": "A thread moves through states such as New, Runnable, Waiting and Terminated during its lifetime."},
+  {"id": 18, "level": "Basic", "type": "Terminology", "topic": "Thread Life Cycle", "question": "How many states are defined in Java's <i>Thread.State</i> enumeration?", "options": ["Six", "Seven", "Four", "Five"], "answer": "A", "explanation": "NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING and TERMINATED."},
+  {"id": 19, "level": "Basic", "type": "State", "topic": "Thread Life Cycle", "question": "A thread object has been created but start() has not yet been invoked. The thread is in the:", "options": ["Runnable state", "Blocked state", "Terminated state", "New state"], "answer": "D", "explanation": "A thread stays in the New state until start() is called; it is not yet alive."},
+  {"id": 20, "level": "Intermediate", "type": "Transition", "topic": "Thread Life Cycle", "question": "Which call moves a thread from the New state to the Runnable state?", "options": ["resume()", "run()", "init()", "start()"], "answer": "D", "explanation": "start() makes the thread eligible for scheduling; the thread then executes its run() method."},
+  {"id": 21, "level": "Basic", "type": "State", "topic": "Thread Life Cycle", "question": "Which is the last state in the life cycle of a thread?", "options": ["Runnable", "Blocked/Waiting", "Terminated (Dead)", "Timed Waiting"], "answer": "C", "explanation": "After run() completes, the thread is Terminated and its life cycle ends."},
+  {"id": 22, "level": "Basic", "type": "State", "topic": "Thread Life Cycle", "question": "A thread in the <b>Runnable</b> state is one that is:", "options": ["Waiting for a specified period of time to elapse", "Created but not yet started by the program", "Ready to run, waiting for CPU time or already executing", "Finished with its run() method completely"], "answer": "C", "explanation": "Runnable covers a thread eligible for the CPU, whether or not it currently holds it."},
+  {"id": 23, "level": "Basic", "type": "State", "topic": "Thread Life Cycle", "question": "A thread executes sleep(2000). During these two seconds it is in the:", "options": ["Waiting state with no time limit", "Timed Waiting state", "New state", "Terminated state"], "answer": "B", "explanation": "sleep() gives a fixed time limit, so the thread is in TIMED_WAITING, not plain WAITING."},
+  {"id": 24, "level": "Basic", "type": "State", "topic": "Thread Life Cycle", "question": "A thread in the Blocked/Waiting (non-runnable) state is:", "options": ["Executing on the CPU at its maximum possible speed", "Not yet started by the program at all", "Dead and unable to be used again by the program", "Alive but temporarily inactive and not eligible for the CPU"], "answer": "D", "explanation": "It will return to Runnable once the awaited condition occurs."},
+  {"id": 25, "level": "Intermediate", "type": "Transition", "topic": "Thread Life Cycle", "question": "A thread enters the Terminated state when:", "options": ["It is selected by the thread scheduler for execution", "Its run() method completes or an uncaught exception ends it", "start() is invoked on it for the first time", "It enters the sleeping condition for some time"], "answer": "B", "explanation": "Normal completion of run() or an uncaught exception ends the thread."},
+  {"id": 26, "level": "Intermediate", "type": "Transition", "topic": "Thread Life Cycle", "question": "Which of the following transitions is <b>NOT</b> possible in the thread life cycle?", "options": ["Running → Blocked/Waiting", "Terminated → Runnable", "New → Runnable", "Blocked/Waiting → Runnable"], "answer": "B", "explanation": "A terminated thread can never be revived."},
+  {"id": 27, "level": "Intermediate", "type": "Transition", "topic": "Thread Life Cycle", "question": "When the thread scheduler picks a ready thread and gives it the CPU, the thread moves from:", "options": ["Running to Terminated", "Blocked to Running", "Runnable to Running", "New to Runnable"], "answer": "C", "explanation": "Dispatching by the scheduler is the Runnable → Running transition."},
+  {"id": 28, "level": "Intermediate", "type": "Transition", "topic": "Thread Life Cycle", "question": "From the Running state, a thread can move directly to:", "options": ["New, Runnable or Terminated", "Runnable, Blocked/Waiting or Terminated", "New, Blocked/Waiting or Runnable", "Only Blocked/Waiting or New"], "answer": "B", "explanation": "It may be pre-empted (Runnable), wait for I/O or sleep (Blocked/Waiting), or finish (Terminated). It can never return to New."},
+  {"id": 29, "level": "Basic", "type": "State", "topic": "Thread Life Cycle", "question": "Waiting and Timed Waiting states differ in that:", "options": ["Timed Waiting has a specified maximum waiting time, whereas Waiting has none", "A Waiting thread is dead while a Timed Waiting thread is alive", "A Timed Waiting thread uses the CPU while a Waiting thread does not", "Waiting can be entered only from the New state"], "answer": "A", "explanation": "Both are non-runnable; Timed Waiting ends automatically when its time expires."},
+  {"id": 30, "level": "Basic", "type": "State", "topic": "Thread Life Cycle", "question": "Which group contains only states in which a started, live thread <b>cannot</b> be given the CPU?", "options": ["Blocked, Waiting, Timed Waiting", "Waiting, Runnable, New", "New, Runnable, Terminated", "Runnable, Blocked, Terminated"], "answer": "A", "explanation": "Runnable threads are eligible for the CPU; Blocked/Waiting/Timed Waiting threads are not."},
+  {"id": 31, "level": "Intermediate", "type": "Match", "topic": "Thread Life Cycle", "question": "Match the event with the resulting transition:\n<b>Event:</b> 1. Running thread requests I/O &nbsp; 2. Time slice expires &nbsp; 3. run() ends &nbsp; 4. Sleep time elapses\n<b>Transition:</b> a. Running → Runnable &nbsp; b. Running → Blocked/Waiting &nbsp; c. Running → Terminated &nbsp; d. Timed Waiting → Runnable", "options": ["1-a, 2-b, 3-c, 4-d", "1-c, 2-a, 3-b, 4-d", "1-b, 2-a, 3-c, 4-d", "1-b, 2-a, 3-d, 4-c"], "answer": "C", "explanation": "I/O makes the thread wait; time slice expiry returns it to Runnable; run() completion terminates it; end of sleep makes it Runnable."},
+  {"id": 32, "level": "Intermediate", "type": "Statement-based", "topic": "Thread Life Cycle", "question": "Consider the statements:\nI. After its sleep time ends, a thread immediately resumes execution on the CPU.\nII. A Running thread returns to Runnable when its time slice expires.\nIII. A Runnable thread becomes Running when the scheduler allocates the CPU.\nWhich statements are correct?", "options": ["II and III only", "I and II only", "I and III only", "I, II and III"], "answer": "A", "explanation": "After sleep ends the thread goes to Runnable and must wait to be scheduled again, so I is false."},
+  {"id": 33, "level": "Intermediate", "type": "Transition", "topic": "Thread Life Cycle", "question": "A thread is waiting for an I/O operation. When the operation completes, the thread moves:", "options": ["From Blocked/Waiting to Terminated", "From Blocked/Waiting directly to Running", "From Blocked/Waiting to Runnable", "From Blocked/Waiting back to New"], "answer": "C", "explanation": "It rejoins the ready pool and must be scheduled before it runs again."},
+  {"id": 34, "level": "Intermediate", "type": "Diagram", "topic": "Thread Life Cycle", "question": "In the life-cycle diagram given below, arrow <b>1</b> (New → Runnable) is triggered by:<br><svg viewBox=\"0 0 480 190\" style=\"width:100%;max-width:480px;height:auto;display:block;margin:12px auto 0;background:var(--bg2);border:1px solid var(--border);border-radius:10px\" role=\"img\" aria-label=\"Thread life-cycle diagram with arrows numbered 1 to 6\"><defs><marker id=\"ah\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" style=\"fill:var(--text)\"/></marker></defs><rect x=\"12\" y=\"40\" width=\"76\" height=\"40\" rx=\"7\" style=\"fill:var(--acl);stroke:var(--ac);stroke-width:1.4\"/><text x=\"50.0\" y=\"64.0\" text-anchor=\"middle\" style=\"fill:var(--ac);font:700 11px DM Sans,sans-serif\">New</text><rect x=\"150\" y=\"40\" width=\"86\" height=\"40\" rx=\"7\" style=\"fill:var(--acl);stroke:var(--ac);stroke-width:1.4\"/><text x=\"193.0\" y=\"64.0\" text-anchor=\"middle\" style=\"fill:var(--ac);font:700 11px DM Sans,sans-serif\">Runnable</text><rect x=\"300\" y=\"40\" width=\"76\" height=\"40\" rx=\"7\" style=\"fill:var(--ac);stroke:var(--ac);stroke-width:1.4\"/><text x=\"338.0\" y=\"64.0\" text-anchor=\"middle\" style=\"fill:#fff;font:700 11px DM Sans,sans-serif\">Running</text><rect x=\"396\" y=\"40\" width=\"74\" height=\"40\" rx=\"7\" style=\"fill:var(--ac2);stroke:var(--ac);stroke-width:1.4\"/><text x=\"433.0\" y=\"64.0\" text-anchor=\"middle\" style=\"fill:#fff;font:700 11px DM Sans,sans-serif\">Terminated</text><rect x=\"165\" y=\"125\" width=\"190\" height=\"46\" rx=\"7\" style=\"fill:var(--acl);stroke:var(--ac);stroke-width:1.4\"/><text x=\"260.0\" y=\"152.0\" text-anchor=\"middle\" style=\"fill:var(--ac);font:700 11px DM Sans,sans-serif\">Blocked / Waiting / Timed Waiting</text><path d=\"M88,52 L148,52\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"118\" cy=\"34\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"118\" y=\"37.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">1</text><path d=\"M236,50 L298,50\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"267\" cy=\"32\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"267\" y=\"35.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">2</text><path d=\"M298,70 L238,70\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"267\" cy=\"90\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"267\" y=\"93.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">3</text><path d=\"M376,60 L394,60\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"385\" cy=\"34\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"385\" y=\"37.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">6</text><path d=\"M338,80 L338,123\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"352\" cy=\"102\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"352\" y=\"105.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">4</text><path d=\"M200,125 L190,82\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"175\" cy=\"104\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"175\" y=\"107.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">5</text></svg>", "options": ["Invoking start() on the thread", "Completion of an I/O request", "Completion of the run() method", "Expiry of the time slice"], "answer": "A", "explanation": "start() makes a New thread Runnable."},
+  {"id": 35, "level": "Intermediate", "type": "Diagram", "topic": "Thread Life Cycle", "question": "Arrow <b>3</b> (Running → Runnable) typically occurs when:<br><svg viewBox=\"0 0 480 190\" style=\"width:100%;max-width:480px;height:auto;display:block;margin:12px auto 0;background:var(--bg2);border:1px solid var(--border);border-radius:10px\" role=\"img\" aria-label=\"Thread life-cycle diagram with arrows numbered 1 to 6\"><defs><marker id=\"ah\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" style=\"fill:var(--text)\"/></marker></defs><rect x=\"12\" y=\"40\" width=\"76\" height=\"40\" rx=\"7\" style=\"fill:var(--acl);stroke:var(--ac);stroke-width:1.4\"/><text x=\"50.0\" y=\"64.0\" text-anchor=\"middle\" style=\"fill:var(--ac);font:700 11px DM Sans,sans-serif\">New</text><rect x=\"150\" y=\"40\" width=\"86\" height=\"40\" rx=\"7\" style=\"fill:var(--acl);stroke:var(--ac);stroke-width:1.4\"/><text x=\"193.0\" y=\"64.0\" text-anchor=\"middle\" style=\"fill:var(--ac);font:700 11px DM Sans,sans-serif\">Runnable</text><rect x=\"300\" y=\"40\" width=\"76\" height=\"40\" rx=\"7\" style=\"fill:var(--ac);stroke:var(--ac);stroke-width:1.4\"/><text x=\"338.0\" y=\"64.0\" text-anchor=\"middle\" style=\"fill:#fff;font:700 11px DM Sans,sans-serif\">Running</text><rect x=\"396\" y=\"40\" width=\"74\" height=\"40\" rx=\"7\" style=\"fill:var(--ac2);stroke:var(--ac);stroke-width:1.4\"/><text x=\"433.0\" y=\"64.0\" text-anchor=\"middle\" style=\"fill:#fff;font:700 11px DM Sans,sans-serif\">Terminated</text><rect x=\"165\" y=\"125\" width=\"190\" height=\"46\" rx=\"7\" style=\"fill:var(--acl);stroke:var(--ac);stroke-width:1.4\"/><text x=\"260.0\" y=\"152.0\" text-anchor=\"middle\" style=\"fill:var(--ac);font:700 11px DM Sans,sans-serif\">Blocked / Waiting / Timed Waiting</text><path d=\"M88,52 L148,52\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"118\" cy=\"34\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"118\" y=\"37.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">1</text><path d=\"M236,50 L298,50\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"267\" cy=\"32\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"267\" y=\"35.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">2</text><path d=\"M298,70 L238,70\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"267\" cy=\"90\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"267\" y=\"93.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">3</text><path d=\"M376,60 L394,60\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"385\" cy=\"34\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"385\" y=\"37.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">6</text><path d=\"M338,80 L338,123\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"352\" cy=\"102\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"352\" y=\"105.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">4</text><path d=\"M200,125 L190,82\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"175\" cy=\"104\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"175\" y=\"107.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">5</text></svg>", "options": ["start() is invoked on the thread", "The run() method finishes execution", "The running thread's time slice expires", "The thread requests an I/O operation"], "answer": "C", "explanation": "On time-slice expiry the thread returns to the ready pool and waits for the CPU again."},
+  {"id": 36, "level": "Intermediate", "type": "Diagram", "topic": "Thread Life Cycle", "question": "Which transition is deliberately <b>absent</b> from the diagram because it is not allowed?<br><svg viewBox=\"0 0 480 190\" style=\"width:100%;max-width:480px;height:auto;display:block;margin:12px auto 0;background:var(--bg2);border:1px solid var(--border);border-radius:10px\" role=\"img\" aria-label=\"Thread life-cycle diagram with arrows numbered 1 to 6\"><defs><marker id=\"ah\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" style=\"fill:var(--text)\"/></marker></defs><rect x=\"12\" y=\"40\" width=\"76\" height=\"40\" rx=\"7\" style=\"fill:var(--acl);stroke:var(--ac);stroke-width:1.4\"/><text x=\"50.0\" y=\"64.0\" text-anchor=\"middle\" style=\"fill:var(--ac);font:700 11px DM Sans,sans-serif\">New</text><rect x=\"150\" y=\"40\" width=\"86\" height=\"40\" rx=\"7\" style=\"fill:var(--acl);stroke:var(--ac);stroke-width:1.4\"/><text x=\"193.0\" y=\"64.0\" text-anchor=\"middle\" style=\"fill:var(--ac);font:700 11px DM Sans,sans-serif\">Runnable</text><rect x=\"300\" y=\"40\" width=\"76\" height=\"40\" rx=\"7\" style=\"fill:var(--ac);stroke:var(--ac);stroke-width:1.4\"/><text x=\"338.0\" y=\"64.0\" text-anchor=\"middle\" style=\"fill:#fff;font:700 11px DM Sans,sans-serif\">Running</text><rect x=\"396\" y=\"40\" width=\"74\" height=\"40\" rx=\"7\" style=\"fill:var(--ac2);stroke:var(--ac);stroke-width:1.4\"/><text x=\"433.0\" y=\"64.0\" text-anchor=\"middle\" style=\"fill:#fff;font:700 11px DM Sans,sans-serif\">Terminated</text><rect x=\"165\" y=\"125\" width=\"190\" height=\"46\" rx=\"7\" style=\"fill:var(--acl);stroke:var(--ac);stroke-width:1.4\"/><text x=\"260.0\" y=\"152.0\" text-anchor=\"middle\" style=\"fill:var(--ac);font:700 11px DM Sans,sans-serif\">Blocked / Waiting / Timed Waiting</text><path d=\"M88,52 L148,52\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"118\" cy=\"34\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"118\" y=\"37.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">1</text><path d=\"M236,50 L298,50\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"267\" cy=\"32\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"267\" y=\"35.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">2</text><path d=\"M298,70 L238,70\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"267\" cy=\"90\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"267\" y=\"93.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">3</text><path d=\"M376,60 L394,60\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"385\" cy=\"34\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"385\" y=\"37.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">6</text><path d=\"M338,80 L338,123\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"352\" cy=\"102\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"352\" y=\"105.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">4</text><path d=\"M200,125 L190,82\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"175\" cy=\"104\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"175\" y=\"107.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">5</text></svg>", "options": ["New → Runnable via start()", "Running → Terminated normally", "Blocked/Waiting → Running directly", "Runnable → Running by scheduler"], "answer": "C", "explanation": "A waiting thread must first become Runnable (arrow 5) before it can be dispatched."},
+  {"id": 37, "level": "Intermediate", "type": "Diagram", "topic": "Thread Life Cycle", "question": "How many arrows in the diagram lead <b>into</b> the Runnable state?<br><svg viewBox=\"0 0 480 190\" style=\"width:100%;max-width:480px;height:auto;display:block;margin:12px auto 0;background:var(--bg2);border:1px solid var(--border);border-radius:10px\" role=\"img\" aria-label=\"Thread life-cycle diagram with arrows numbered 1 to 6\"><defs><marker id=\"ah\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0,0 L10,5 L0,10 z\" style=\"fill:var(--text)\"/></marker></defs><rect x=\"12\" y=\"40\" width=\"76\" height=\"40\" rx=\"7\" style=\"fill:var(--acl);stroke:var(--ac);stroke-width:1.4\"/><text x=\"50.0\" y=\"64.0\" text-anchor=\"middle\" style=\"fill:var(--ac);font:700 11px DM Sans,sans-serif\">New</text><rect x=\"150\" y=\"40\" width=\"86\" height=\"40\" rx=\"7\" style=\"fill:var(--acl);stroke:var(--ac);stroke-width:1.4\"/><text x=\"193.0\" y=\"64.0\" text-anchor=\"middle\" style=\"fill:var(--ac);font:700 11px DM Sans,sans-serif\">Runnable</text><rect x=\"300\" y=\"40\" width=\"76\" height=\"40\" rx=\"7\" style=\"fill:var(--ac);stroke:var(--ac);stroke-width:1.4\"/><text x=\"338.0\" y=\"64.0\" text-anchor=\"middle\" style=\"fill:#fff;font:700 11px DM Sans,sans-serif\">Running</text><rect x=\"396\" y=\"40\" width=\"74\" height=\"40\" rx=\"7\" style=\"fill:var(--ac2);stroke:var(--ac);stroke-width:1.4\"/><text x=\"433.0\" y=\"64.0\" text-anchor=\"middle\" style=\"fill:#fff;font:700 11px DM Sans,sans-serif\">Terminated</text><rect x=\"165\" y=\"125\" width=\"190\" height=\"46\" rx=\"7\" style=\"fill:var(--acl);stroke:var(--ac);stroke-width:1.4\"/><text x=\"260.0\" y=\"152.0\" text-anchor=\"middle\" style=\"fill:var(--ac);font:700 11px DM Sans,sans-serif\">Blocked / Waiting / Timed Waiting</text><path d=\"M88,52 L148,52\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"118\" cy=\"34\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"118\" y=\"37.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">1</text><path d=\"M236,50 L298,50\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"267\" cy=\"32\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"267\" y=\"35.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">2</text><path d=\"M298,70 L238,70\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"267\" cy=\"90\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"267\" y=\"93.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">3</text><path d=\"M376,60 L394,60\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"385\" cy=\"34\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"385\" y=\"37.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">6</text><path d=\"M338,80 L338,123\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"352\" cy=\"102\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"352\" y=\"105.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">4</text><path d=\"M200,125 L190,82\" style=\"fill:none;stroke:var(--text);stroke-width:1.5\" marker-end=\"url(#ah)\"/><circle cx=\"175\" cy=\"104\" r=\"8\" style=\"fill:var(--amber);stroke:var(--text);stroke-width:.7\"/><text x=\"175\" y=\"107.5\" text-anchor=\"middle\" style=\"fill:#1C1B18;font:700 10px DM Sans,sans-serif\">5</text></svg>", "options": ["One", "Four", "Two", "Three"], "answer": "D", "explanation": "Arrows 1 (from New), 3 (from Running) and 5 (from Blocked/Waiting)."},
+  {"id": 38, "level": "Intermediate", "type": "Scenario", "topic": "Thread Life Cycle", "question": "On a single-core CPU, four started threads exist. At any one instant, how many can be in the Running state?", "options": ["Exactly one", "Four", "None, unless they are in the New state", "Two"], "answer": "A", "explanation": "A single core executes one thread at a time; the others wait as Runnable or non-runnable."},
+  {"id": 39, "level": "Intermediate", "type": "Scenario", "topic": "Thread Life Cycle", "question": "Which sequence is a <b>valid</b> path through the life cycle of a thread?", "options": ["Runnable → New → Running → Blocked → Runnable → Terminated", "New → Blocked → Runnable → Running → Terminated → New", "New → Runnable → Running → Blocked → Runnable → Running → Terminated", "New → Running → Runnable → Blocked → Terminated → Runnable"], "answer": "C", "explanation": "Every thread starts in New, passes through Runnable before Running, and ends in Terminated."},
+  {"id": 40, "level": "Intermediate", "type": "Scenario", "topic": "Thread Life Cycle", "question": "A program has three thread objects t1, t2 and t3. start() is invoked on t1 and t2 only. How many threads are still in the New state?", "options": ["Zero", "Two", "Three", "One"], "answer": "D", "explanation": "t1 and t2 move to Runnable; only t3 remains New."},
+  {"id": 41, "level": "Intermediate", "type": "Scenario", "topic": "Thread Life Cycle", "question": "At some instant, thread t1 is in Timed Waiting and thread t2 is Runnable. Which thread can the scheduler allocate the CPU to?", "options": ["Only t1", "Only t2", "Neither t1 nor t2", "Both t1 and t2"], "answer": "B", "explanation": "Only Runnable threads are eligible for the CPU; a Timed Waiting thread must first become Runnable."},
+  {"id": 42, "level": "Advanced", "type": "Tricky", "topic": "Thread Life Cycle", "question": "A thread has completed its run() method. What happens if start() is invoked on it again?", "options": ["An IllegalThreadStateException is thrown", "The thread resumes in the Runnable state", "The thread restarts from the New state", "The call is silently ignored with no effect"], "answer": "A", "explanation": "A Terminated thread can never be restarted; a fresh thread object is required."},
+  {"id": 43, "level": "Advanced", "type": "Tricky", "topic": "Thread Life Cycle", "question": "In Java's <i>Thread.State</i> enum, the classic “Running” state is represented by:", "options": ["ACTIVE", "RUNNING", "EXECUTING", "RUNNABLE"], "answer": "D", "explanation": "Java has no separate RUNNING constant; RUNNABLE covers both ready and running threads."},
+  {"id": 44, "level": "Advanced", "type": "Tricky", "topic": "Thread Life Cycle", "question": "run() is called directly on a thread object instead of start(). What is the state of that thread object?", "options": ["It stays New; run() simply executes as an ordinary method call", "It moves to Timed Waiting for a while", "It becomes Terminated immediately after the call", "It becomes Runnable and runs in a new thread"], "answer": "A", "explanation": "Only start() moves a thread out of the New state."},
+  {"id": 45, "level": "Intermediate", "type": "Statement-based", "topic": "Thread Life Cycle", "question": "Consider the statements:\nI. A thread in the New state is not alive.\nII. A thread in the Terminated state is not alive.\nIII. A thread in the Runnable state is alive.\nIV. A thread in the Timed Waiting state is dead.\nWhich statements are correct?", "options": ["I, II and III only", "I, III and IV only", "II, III and IV only", "I, II, III and IV"], "answer": "A", "explanation": "A thread is alive from start() until termination; Timed Waiting threads are alive."},
+  {"id": 46, "level": "Advanced", "type": "Assertion–Reason", "topic": "Thread Life Cycle", "question": "<b>Assertion (A):</b> A Runnable thread is always executing instructions on the CPU.\n<b>Reason (R):</b> In Java, the RUNNABLE state covers both threads that are running and threads that are ready to run.", "options": ["Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "Both A and R are true, and R is the correct explanation of A", "A is false, but R is true"], "answer": "D", "explanation": "A Runnable thread may be waiting in the ready pool, so A is false; R is true."},
+  {"id": 47, "level": "Advanced", "type": "Assertion–Reason", "topic": "Thread Life Cycle", "question": "<b>Assertion (A):</b> A thread moves from New to Runnable when start() is invoked.\n<b>Reason (R):</b> A newly created thread moves directly to the Running state.", "options": ["A is true, but R is false", "Both A and R are true, but R is not the correct explanation of A", "Both A and R are true, and R is the correct explanation of A", "A is false, but R is true"], "answer": "A", "explanation": "A is true, but a new thread enters Runnable first, never Running directly, so R is false."},
+  {"id": 48, "level": "Advanced", "type": "Assertion–Reason", "topic": "Thread Life Cycle", "question": "<b>Assertion (A):</b> A terminated thread cannot be restarted.\n<b>Reason (R):</b> The Terminated state means the thread has completed its execution and its life cycle has ended.", "options": ["A is false, but R is true", "Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false"], "answer": "B", "explanation": "Because the life cycle is over, the thread cannot be revived; R explains A."},
+  {"id": 49, "level": "Intermediate", "type": "Match", "topic": "Thread Life Cycle", "question": "Match the state with its meaning:\n<b>State:</b> 1. New &nbsp; 2. Runnable &nbsp; 3. Timed Waiting &nbsp; 4. Terminated\n<b>Meaning:</b> a. run() has completed &nbsp; b. Ready for the CPU or running &nbsp; c. start() not yet invoked &nbsp; d. Waiting for a fixed period", "options": ["1-b, 2-c, 3-d, 4-a", "1-c, 2-b, 3-d, 4-a", "1-a, 2-b, 3-d, 4-c", "1-c, 2-b, 3-a, 4-d"], "answer": "B", "explanation": "New = not started (c); Runnable = ready/running (b); Timed Waiting = fixed wait (d); Terminated = finished (a)."},
+  {"id": 50, "level": "Intermediate", "type": "Mixed", "topic": "Thread Life Cycle", "question": "Which of the following is <b>NOT</b> a state in Java's <i>Thread.State</i> enum?", "options": ["Suspended", "Terminated", "Runnable", "New"], "answer": "A", "explanation": "Java defines NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING and TERMINATED; there is no SUSPENDED."},
+  {"id": 51, "level": "Intermediate", "type": "Scenario", "topic": "Multithreading Concept", "question": "A web server must serve many clients at the same time. Which approach suits this requirement best?", "options": ["Rejecting a new request until the previous one has finished", "Processing requests strictly one after another in a single thread", "Handling each client request in a separate thread", "Compiling the server code again for every client"], "answer": "C", "explanation": "Multithreading lets many requests make progress concurrently and keeps the server responsive."},
+  {"id": 52, "level": "Advanced", "type": "Tricky", "topic": "Thread Life Cycle", "question": "Which two states are visited at most once during the life of a thread?", "options": ["Waiting and Timed Waiting", "Runnable and Blocked", "Runnable and Terminated", "New and Terminated"], "answer": "D", "explanation": "A thread is New only at creation and Terminated only at the end; Runnable and waiting states may repeat."},
+  {"id": 53, "level": "Intermediate", "type": "Statement-based", "topic": "Thread Life Cycle", "question": "Which statement about a thread in the Blocked/Waiting state is correct?", "options": ["It does not consume CPU time until it becomes Runnable again", "It moves back to New when its wait ends", "It is automatically Terminated after one second of waiting", "It uses complete time slices continuously while waiting"], "answer": "A", "explanation": "Non-runnable threads are not scheduled, so they use no CPU time."},
+  {"id": 54, "level": "Intermediate", "type": "Mixed", "topic": "Thread Life Cycle", "question": "Which pair of state and meaning is correctly matched?", "options": ["Runnable – run() has already completed", "Terminated – waiting for an I/O operation to finish", "Timed Waiting – sleeping for a fixed duration", "New – start() has already been invoked on it"], "answer": "C", "explanation": "New means not yet started; Terminated means finished; Runnable means ready or running."},
+  {"id": 55, "level": "Advanced", "type": "Assertion–Reason", "topic": "Thread Life Cycle", "question": "<b>Assertion (A):</b> A Terminated thread cannot be started again.\n<b>Reason (R):</b> A Runnable thread may be waiting for the CPU to be allocated to it.", "options": ["A is false, but R is true", "A is true, but R is false", "Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A"], "answer": "D", "explanation": "Both statements are true, but the second does not explain why a terminated thread cannot restart."},
+  {"id": 56, "level": "Advanced", "type": "Tricky", "topic": "Thread Life Cycle", "question": "When the first statement of main() begins executing, the main thread is in which state?", "options": ["Terminated", "Runnable", "Timed Waiting", "New"], "answer": "B", "explanation": "The main thread is already started and executing; in Java this is the RUNNABLE state."},
+  {"id": 57, "level": "Advanced", "type": "Tricky", "topic": "Thread Life Cycle", "question": "What is the minimum number of distinct <i>Thread.State</i> values a thread must pass through if it is started and runs to completion?", "options": ["Five", "Three", "Two", "Four"], "answer": "B", "explanation": "At least NEW, RUNNABLE and TERMINATED."},
+  {"id": 58, "level": "Basic", "type": "Concept", "topic": "Thread Life Cycle", "question": "A Runnable thread that is not currently on the CPU is waiting for:", "options": ["Arrival of input from the user at the keyboard", "Expiry of a sleep period of fixed length", "Completion of its own run() method", "Allocation of the CPU by the thread scheduler"], "answer": "D", "explanation": "Ready threads queue up until the scheduler dispatches them."},
+  {"id": 59, "level": "Basic", "type": "Concept", "topic": "Multithreading Concept", "question": "Which statement is TRUE?", "options": ["Multithreading lets a program do useful work while one of its threads waits for I/O", "Terminated threads return to the Runnable state after clean-up is done", "Every thread in a process owns its own separate heap memory area", "A thread in the New state is already eligible for CPU allocation"], "answer": "A", "explanation": "While one thread waits, others keep the CPU busy; this is a key advantage of multithreading."},
+  {"id": 60, "level": "Basic", "type": "Concept", "topic": "Multithreading Concept", "question": "Which is a correct difference between a process and a thread?", "options": ["Switching between processes is lighter than switching between threads", "A process has its own address space, whereas the threads of a process share one", "A process is always created inside a thread of another process", "A thread has its own address space, whereas processes share a common one"], "answer": "B", "explanation": "Process = separate address space and heavier; thread = lightweight and shares the process's memory."},
+  {"id": 61, "level": "Basic", "type": "Concept", "topic": "Multithreading Concept", "question": "Which statement correctly distinguishes multithreading from multiprocessing?", "options": ["Multithreading runs many threads inside one process; multiprocessing uses several processes or CPUs", "Multithreading can run only on separate machines connected by a network", "Multithreading needs several processes, while multiprocessing needs only a single thread", "Multiprocessing shares heap memory among all its processes by default"], "answer": "A", "explanation": "Multithreading is within a single process; multiprocessing involves multiple processes and/or processors."},
+  {"id": 62, "level": "Intermediate", "type": "Scenario", "topic": "Multithreading Concept", "question": "Which application is a typical use of multithreading?", "options": ["A program that adds two numbers once and exits", "A game that handles graphics, sound and user input together", "A program with no input, no output and nothing to wait for", "A one-line script that prints a single message"], "answer": "B", "explanation": "Games have several activities that must progress at the same time, which suits threads."},
+  {"id": 63, "level": "Basic", "type": "Terminology", "topic": "Multithreading Concept", "question": "<i>Throughput</i> in the context of multithreading means:", "options": ["The time taken by a single thread to start", "The number of tasks completed in a given period of time", "The number of states a thread can pass through", "The amount of memory consumed by each thread"], "answer": "B", "explanation": "Multithreading can raise throughput by keeping the CPU busy with ready tasks."},
+  {"id": 64, "level": "Basic", "type": "Terminology", "topic": "Multithreading Concept", "question": "In a Java program, the thread that begins executing the main() method is called the:", "options": ["Child thread", "Scheduler thread", "Main thread", "Parent process"], "answer": "C", "explanation": "The JVM starts the main thread, which runs main(); other threads can be started from it."},
+  {"id": 65, "level": "Basic", "type": "Advantage", "topic": "Multithreading Concept", "question": "While one thread waits for a slow input/output operation, multithreading allows the CPU to:", "options": ["Terminate the waiting thread at once", "Shut down permanently to save power", "Stay idle until the I/O operation is finished", "Execute another ready thread in the meantime"], "answer": "D", "explanation": "Overlapping waiting with useful work improves CPU utilization."},
+  {"id": 66, "level": "Basic", "type": "Terminology", "topic": "Multithreading Concept", "question": "A <i>time slice</i> is:", "options": ["The delay between creating a thread object and starting it", "The total time a thread needs to complete its whole run() method", "The gap between the terminations of two different threads", "A short, fixed amount of CPU time given to a thread before it may be switched out"], "answer": "D", "explanation": "Time slicing lets many threads share one CPU in turns."},
+  {"id": 67, "level": "Advanced", "type": "Assertion–Reason", "topic": "Multithreading Concept", "question": "<b>Assertion (A):</b> Threads are often called lightweight processes.\n<b>Reason (R):</b> Threads of a process share its resources, so they need less overhead to create and manage.", "options": ["A is false, but R is true", "A is true, but R is false", "Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A"], "answer": "C", "explanation": "Shared resources make threads cheaper than processes, which explains the 'lightweight' label."},
+  {"id": 68, "level": "Advanced", "type": "Assertion–Reason", "topic": "Multithreading Concept", "question": "<b>Assertion (A):</b> Concurrency always means that tasks run at exactly the same instant.\n<b>Reason (R):</b> Concurrent tasks may simply be interleaved on a single core through time slicing.", "options": ["A is true, but R is false", "A is false, but R is true", "Both A and R are true, and R is the correct explanation of A", "Both A and R are true, but R is not the correct explanation of A"], "answer": "B", "explanation": "Concurrency is about overlapping progress, not necessarily simultaneous execution, so A is false."},
+  {"id": 69, "level": "Intermediate", "type": "Match", "topic": "Multithreading Concept", "question": "Match List I with List II:\n<b>List I:</b> 1. Time slice &nbsp; 2. Throughput &nbsp; 3. Main thread &nbsp; 4. Process\n<b>List II:</b> a. CPU time given to a thread in one turn &nbsp; b. Tasks completed per unit time &nbsp; c. Thread that executes main() &nbsp; d. Program in execution with its own address space", "options": ["1-b, 2-a, 3-c, 4-d", "1-c, 2-b, 3-a, 4-d", "1-a, 2-b, 3-d, 4-c", "1-a, 2-b, 3-c, 4-d"], "answer": "D", "explanation": "Each term matches its meaning directly."},
+  {"id": 70, "level": "Basic", "type": "Life Cycle", "topic": "Thread Life Cycle", "question": "The classic five-state model of the thread life cycle consists of:", "options": ["New, Ready, Running, Blocked/Waiting and Dead", "Created, Running, Sleeping, Joined and Closed", "New, Start, Stop, Pause and Dead", "Init, Ready, Active, Suspended and Exit"], "answer": "A", "explanation": "In Java's enum, Ready and Running are combined as RUNNABLE, and Blocked/Waiting is split further."},
+  {"id": 71, "level": "Basic", "type": "State", "topic": "Thread Life Cycle", "question": "A thread in the BLOCKED state, unlike a RUNNABLE thread, is:", "options": ["Already terminated and removed from memory by the JVM", "Not yet started by the program using start()", "Always executing on one of the available CPU cores", "Not eligible for the CPU until the resource it needs becomes available"], "answer": "D", "explanation": "BLOCKED is a non-runnable state; the thread returns to Runnable once it can proceed."},
+  {"id": 72, "level": "Basic", "type": "Terminology", "topic": "Thread Life Cycle", "question": "Which method of the Thread class returns the current state of a thread?", "options": ["currentState()", "getState()", "isState()", "getStatus()"], "answer": "B", "explanation": "getState() returns a value of the Thread.State enumeration."},
+  {"id": 73, "level": "Basic", "type": "State", "topic": "Thread Life Cycle", "question": "What does getState() return for a thread whose run() method has finished?", "options": ["RUNNABLE", "TERMINATED", "WAITING", "NEW"], "answer": "B", "explanation": "After completion, the state is TERMINATED."},
+  {"id": 74, "level": "Intermediate", "type": "Diagram", "topic": "Thread Life Cycle", "question": "Arrange the states of a normally completing thread in the correct order:\n(i) Terminated &nbsp; (ii) Runnable &nbsp; (iii) New &nbsp; (iv) Running", "options": ["(iii), (ii), (iv), (i)", "(ii), (iii), (iv), (i)", "(iii), (iv), (ii), (i)", "(iii), (ii), (i), (iv)"], "answer": "A", "explanation": "New → Runnable → Running → Terminated."},
+  {"id": 75, "level": "Intermediate", "type": "Scenario", "topic": "Thread Life Cycle", "question": "A thread object exists but start() has not been called. What does its isAlive() method return?", "options": ["true", "It throws an exception", "It depends on the thread scheduler", "false"], "answer": "D", "explanation": "A thread is alive only from start() until it terminates."},
+  {"id": 76, "level": "Basic", "type": "State", "topic": "Thread Life Cycle", "question": "Which statement about the Dead (Terminated) state is correct?", "options": ["The thread keeps consuming CPU time quietly in the background", "The thread object is erased from memory immediately after it ends", "The thread's execution is over, although its object may still exist in memory", "The thread returns to the Ready state after some clean-up work"], "answer": "C", "explanation": "The object may remain referenced, but the thread can never run again."},
+  {"id": 77, "level": "Intermediate", "type": "Transition", "topic": "Thread Life Cycle", "question": "Thread A is Runnable while Thread B is running. For A to start executing, which transitions occur?", "options": ["A moves New → Running directly, skipping the ready pool", "B moves Running → Runnable and A moves Runnable → Running", "B moves to Terminated and A moves to Timed Waiting at once", "A moves Blocked → Running directly without becoming Runnable"], "answer": "B", "explanation": "At the end of B's time slice, the scheduler dispatches A."},
+  {"id": 78, "level": "Intermediate", "type": "Diagram", "topic": "Thread Life Cycle", "question": "In a life-cycle diagram, the arrow from Running to Blocked/Waiting is labelled with:", "options": ["Expiry of the time slice of the thread", "Completion of the run() method", "An I/O request or a sleep call", "A start() call on the thread object"], "answer": "C", "explanation": "These events make a running thread give up the CPU and wait."},
+  {"id": 79, "level": "Advanced", "type": "Tricky", "topic": "Thread Life Cycle", "question": "Which statement about the Runnable state is <b>FALSE</b>?", "options": ["It is entered again after a sleep period of the thread ends", "It is entered from New when start() is invoked on the thread", "It may be waiting in the ready pool for the CPU to be allocated", "A Runnable thread is guaranteed to be executing on the CPU at this instant"], "answer": "D", "explanation": "Runnable means eligible to run, not necessarily running."},
+  {"id": 80, "level": "Intermediate", "type": "Statement-based", "topic": "Multithreading Concept", "question": "Consider the statements:\nI. Concurrency does not require multiple CPU cores.\nII. Parallelism requires multiple CPU cores.\nIII. Each thread of a process has its own independent heap.\nWhich statements are correct?", "options": ["II and III only", "I and III only", "I, II and III", "I and II only"], "answer": "D", "explanation": "Time slicing gives concurrency on one core; true parallelism needs several cores; threads share the heap, so III is false."}
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

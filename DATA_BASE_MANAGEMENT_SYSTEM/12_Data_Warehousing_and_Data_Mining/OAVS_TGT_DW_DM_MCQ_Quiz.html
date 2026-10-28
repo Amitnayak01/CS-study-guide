@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {"id": 1, "level": "Basic", "type": "Concept", "topic": "Data Warehousing", "question": "Which of the following best defines a Data Warehouse?", "options": ["A database designed exclusively for real-time transaction processing", "A subject-oriented, integrated, time-variant, and non-volatile collection of data used for decision support", "A single table that stores only the most recent transaction records", "A temporary staging area that is cleared every 24 hours"], "answer": "B", "explanation": "This is Bill Inmon's classic definition, describing the four defining properties of a data warehouse."},
+  {"id": 2, "level": "Basic", "type": "Concept", "topic": "Subject-Oriented", "question": "The term \"subject-oriented\" in the context of a data warehouse means that data is organized around:", "options": ["major business subjects such as sales, customers, and products rather than around applications", "the specific application that originally created it", "the programming language used to store it", "the physical location of the database server"], "answer": "A", "explanation": "Data warehouses group data by business subject to support analysis, unlike operational systems organised by application."},
+  {"id": 3, "level": "Basic", "type": "Concept", "topic": "Non-Volatile", "question": "\"Non-volatile\" as a property of a data warehouse means:", "options": ["data is deleted automatically after every query", "once data is loaded into the warehouse it is only read, not updated or deleted", "data is stored only in volatile RAM memory", "data changes continuously in real time"], "answer": "B", "explanation": "Warehouses store stable, historical data; source-system updates create new records rather than overwriting old ones."},
+  {"id": 4, "level": "Basic", "type": "Concept", "topic": "Time-Variant", "question": "The \"time-variant\" property of a data warehouse means:", "options": ["data has no relationship with time at all", "only the current day's data is retained", "data is associated with a specific time period, enabling historical trend analysis", "data is stored for only 24 hours before deletion"], "answer": "C", "explanation": "A warehouse retains historical snapshots so trends can be analysed across months or years, unlike OLTP systems."},
+  {"id": 5, "level": "Basic", "type": "Concept", "topic": "Purpose of DW", "question": "A Data Warehouse primarily supports which of the following?", "options": ["Network routing between servers", "Decision support and analytical (OLAP-style) processing", "Day-to-day order entry and transaction processing", "Real-time password authentication"], "answer": "B", "explanation": "Warehouses are built for management decision-making and analysis, unlike OLTP systems that handle routine transactions."},
+  {"id": 6, "level": "Basic", "type": "Concept", "topic": "Data Mart", "question": "Which term describes a smaller, department-specific subset of a data warehouse?", "options": ["Data Mesh", "Data Cube", "Data Lake", "Data Mart"], "answer": "D", "explanation": "A data mart is a scaled-down, subject-specific version of a warehouse built for a single department such as Sales or HR."},
+  {"id": 7, "level": "Basic", "type": "Concept", "topic": "Inmon's Characteristics", "question": "Which of these is NOT a defining characteristic of a data warehouse according to Inmon's definition?", "options": ["Subject-oriented", "Integrated", "Time-variant", "Volatile (frequently updated in place)"], "answer": "D", "explanation": "Inmon defined a warehouse as non-volatile, not volatile — data is loaded and read, not repeatedly overwritten."},
+  {"id": 8, "level": "Basic", "type": "Concept", "topic": "Integration", "question": "The process of combining data from multiple heterogeneous source systems into a consistent format for a data warehouse is called:", "options": ["Fragmentation", "Normalization only", "Integration", "Replication"], "answer": "C", "explanation": "Integration ensures naming conventions, units, and formats are made consistent across all sources feeding the warehouse."},
+  {"id": 9, "level": "Basic", "type": "Concept", "topic": "DW vs Data Mart", "question": "Which statement correctly distinguishes a Data Warehouse from a Data Mart?", "options": ["A data warehouse can serve only one department, while a data mart serves the whole enterprise", "Data marts and data warehouses are simply two names for the exact same thing", "A data warehouse is enterprise-wide in scope, while a data mart is a smaller, subject/department-specific subset", "A data mart always contains more data than the data warehouse it is derived from"], "answer": "C", "explanation": "The warehouse integrates data across the whole organisation; a data mart is a focused, smaller-scope subset for one department."},
+  {"id": 10, "level": "Basic", "type": "Concept", "topic": "Benefits of DW", "question": "Which of the following is NOT typically considered a benefit of implementing a data warehouse?", "options": ["It consolidates data from multiple sources into a single consistent view", "It eliminates the need for any historical data retention", "It enables historical trend analysis over time", "It supports better, data-driven management decision-making"], "answer": "B", "explanation": "A warehouse is valued precisely because it retains historical data for analysis — not because it removes it."},
+  {"id": 11, "level": "Intermediate", "type": "Architecture", "topic": "Bottom Tier", "question": "In a typical three-tier data warehouse architecture, the bottom tier consists of:", "options": ["the reporting and query front end", "the OLAP client tools used by analysts", "the data warehouse server and back-end (ETL) tools that extract and load data from operational sources", "the end-user dashboard applications"], "answer": "C", "explanation": "The bottom (data) tier hosts the relational warehouse database along with the back-end ETL tools."},
+  {"id": 12, "level": "Intermediate", "type": "Architecture", "topic": "Middle Tier", "question": "In the three-tier data warehouse architecture, the middle tier is typically:", "options": ["the operational source database", "an OLAP server that provides a multidimensional view of the data", "the end-user reporting screen", "the physical storage disk array"], "answer": "B", "explanation": "The middle tier hosts the OLAP server (ROLAP/MOLAP/HOLAP), presenting data in cube/multidimensional form."},
+  {"id": 13, "level": "Intermediate", "type": "Architecture", "topic": "Top Tier", "question": "The top tier of a three-tier data warehouse architecture is the:", "options": ["data mart layer only", "front-end client layer containing query, reporting, and analysis/mining tools", "staging area", "ETL engine"], "answer": "B", "explanation": "The top tier is where end users interact with the warehouse via query, reporting, and analysis tools."},
+  {"id": 14, "level": "Intermediate", "type": "Architecture", "topic": "ETL", "question": "The process of extracting data from sources, cleaning/transforming it, and loading it into a warehouse is known as:", "options": ["OLTP", "SQL Injection", "ETL (Extract, Transform, Load)", "Data Replication only"], "answer": "C", "explanation": "ETL is the standard pipeline process used to populate a data warehouse from heterogeneous operational sources."},
+  {"id": 15, "level": "Intermediate", "type": "Architecture", "topic": "Staging Area", "question": "In data warehouse architecture, the \"staging area\" is primarily used to:", "options": ["permanently archive historical warehouse data", "store OLAP cube definitions", "serve live reports directly to end users", "temporarily hold and cleanse raw extracted data before it is loaded into the warehouse"], "answer": "D", "explanation": "The staging area is an intermediate location where data is cleaned and transformed before final loading."},
+  {"id": 16, "level": "Intermediate", "type": "Architecture", "topic": "Metadata", "question": "Metadata in a data warehouse architecture refers to:", "options": ["duplicate copies of transactional data", "the physical hard-disk configuration", "data about data — describing the structure, source, and meaning of warehouse data", "encrypted backup files"], "answer": "C", "explanation": "Metadata acts as a directory that helps users and administrators understand what data exists and where it came from."},
+  {"id": 17, "level": "Intermediate", "type": "Architecture", "topic": "ROLAP", "question": "Which architecture stores data in relational tables and uses SQL-based engines at the middle tier to simulate multidimensional analysis?", "options": ["HOLAP exclusively", "Flat-file architecture", "ROLAP (Relational OLAP)", "MOLAP only"], "answer": "C", "explanation": "ROLAP performs multidimensional analysis using relational tables and SQL rather than pre-built cubes."},
+  {"id": 18, "level": "Intermediate", "type": "Architecture", "topic": "Data Marts", "question": "In data warehouse architecture, Data Marts are typically positioned:", "options": ["as a replacement for the ETL layer", "upstream of the source operational systems", "downstream of the central warehouse, serving specific departments", "completely outside the warehouse architecture"], "answer": "C", "explanation": "Data marts draw a subset of data from the central warehouse (or sources) for a specific business unit."},
+  {"id": 19, "level": "Intermediate", "type": "Architecture", "topic": "OLAP Engine", "question": "Which architectural component allows drill-down and roll-up analysis in a warehouse?", "options": ["Firewall", "Load balancer", "OLAP engine / server", "DNS server"], "answer": "C", "explanation": "The OLAP engine provides multidimensional operations such as drill-down, roll-up, slice, and dice."},
+  {"id": 20, "level": "Intermediate", "type": "Architecture", "topic": "Warehouse Manager", "question": "Which component of data warehouse architecture schedules and automates the periodic refresh of warehouse data?", "options": ["The warehouse manager / ETL scheduler", "The data mining classifier module", "The end-user reporting dashboard", "The query optimizer of the source OLTP database"], "answer": "A", "explanation": "The warehouse manager component schedules extraction, transformation, and loading jobs to keep the warehouse current."},
+  {"id": 21, "level": "Intermediate", "type": "Architecture", "topic": "MOLAP", "question": "Which OLAP architecture pre-computes and stores data in a multidimensional cube format for very fast query response?", "options": ["DOLAP (Desktop OLAP) as the primary server tier", "HOLAP (Hybrid OLAP)", "ROLAP (Relational OLAP)", "MOLAP (Multidimensional OLAP)"], "answer": "D", "explanation": "MOLAP stores data in proprietary multidimensional cubes, giving fast performance but higher storage overhead than ROLAP."},
+  {"id": 22, "level": "Intermediate", "type": "Architecture", "topic": "HOLAP", "question": "Which OLAP architecture combines relational storage for detailed data with cube storage for summarized/aggregated data?", "options": ["HOLAP (Hybrid OLAP)", "ROLAP only", "Flat-file storage", "MOLAP only"], "answer": "A", "explanation": "HOLAP blends ROLAP's relational detail storage with MOLAP's fast cube-based aggregation, balancing speed and storage."},
+  {"id": 23, "level": "Intermediate", "type": "Architecture", "topic": "Two-Tier vs Three-Tier", "question": "Compared with a three-tier data warehouse architecture, a two-tier architecture typically:", "options": ["adds an extra staging layer not present in the three-tier design", "removes the source/data layer entirely", "merges the OLAP/analysis layer with the client layer, removing the separate middle OLAP-server tier", "is used only for real-time transaction processing, never for analysis"], "answer": "C", "explanation": "A two-tier design has the warehouse database and the client/analysis tools directly interacting, without a dedicated middle OLAP-server tier."},
+  {"id": 24, "level": "Intermediate", "type": "Architecture", "topic": "Operational Data Store", "question": "An Operational Data Store (ODS) in a data warehouse environment is best described as:", "options": ["the front-end reporting tool used by analysts", "a type of OLAP cube used only for drill-down", "an integrated, near-real-time staging-like store of current operational data, used before data is loaded into the warehouse", "a permanent archive of decades-old historical data"], "answer": "C", "explanation": "An ODS holds current, lightly-integrated operational data for short-term reporting and as a source feeding the warehouse."},
+  {"id": 25, "level": "Intermediate", "type": "Architecture", "topic": "Design Approach", "question": "Bill Inmon's top-down approach and Ralph Kimball's bottom-up approach to data warehouse design differ mainly in that:", "options": ["Inmon builds a single enterprise-wide warehouse first and derives data marts from it, while Kimball builds data marts first and integrates them into a warehouse", "Kimball's approach does not allow any OLAP analysis", "Inmon's approach applies only to data mining, not warehousing", "Inmon's approach uses no ETL process at all, while Kimball's approach requires ETL"], "answer": "A", "explanation": "Inmon = top-down (enterprise warehouse → marts); Kimball = bottom-up (conformed marts → integrated warehouse)."},
+  {"id": 26, "level": "Intermediate", "type": "Architecture", "topic": "Virtual Data Warehouse", "question": "A Virtual Data Warehouse is best described as one that:", "options": ["provides a logical/virtual view over operational data without physically storing a separate consolidated copy", "is a synonym for a physical three-tier warehouse with an OLAP cube", "always requires the largest possible physical storage infrastructure", "can only be built using MOLAP cube technology"], "answer": "A", "explanation": "A virtual warehouse gives users a consolidated view via queries across source systems in real time, rather than physically storing the data."},
+  {"id": 27, "level": "Intermediate", "type": "Architecture", "topic": "OLAP Operations", "question": "Drill-down, roll-up, slice, dice, and pivot are all examples of:", "options": ["Data mining classification algorithms", "Network security protocols", "ETL steps used to load data into the warehouse", "OLAP operations used to navigate and analyse multidimensional data"], "answer": "D", "explanation": "These are the standard OLAP operations that let analysts navigate a data cube at different levels of detail and dimension."},
+  {"id": 28, "level": "Basic", "type": "DW Tool", "topic": "ETL Tool", "question": "Which of the following is a widely used ETL (Extract-Transform-Load) tool associated with data warehousing?", "options": ["Informatica PowerCenter", "Adobe Photoshop", "Wireshark", "WEKA"], "answer": "A", "explanation": "Informatica PowerCenter is a popular commercial ETL tool used to extract, transform, and load data into warehouses."},
+  {"id": 29, "level": "Basic", "type": "DW Tool", "topic": "Microsoft Cloud DW", "question": "Microsoft's cloud-based data warehousing service (formerly SQL Data Warehouse) is called:", "options": ["Azure DevOps", "Microsoft Access", "Azure Synapse Analytics", "Windows Server"], "answer": "C", "explanation": "Azure Synapse Analytics is Microsoft's cloud data warehousing and big-data analytics platform."},
+  {"id": 30, "level": "Basic", "type": "DW Tool", "topic": "Open-Source ETL", "question": "Which of these is a well-known open-source ETL/data-integration tool used in data warehousing?", "options": ["AutoCAD", "Tally ERP", "VLC Media Player", "Talend"], "answer": "D", "explanation": "Talend is a popular open-source data integration/ETL tool used to build data warehouse pipelines."},
+  {"id": 31, "level": "Basic", "type": "DW Tool", "topic": "AWS Warehouse", "question": "Which cloud-based data warehouse service is offered by Amazon Web Services?", "options": ["Amazon Route 53", "Amazon Alexa", "Amazon EC2 Auto Scaling", "Amazon Redshift"], "answer": "D", "explanation": "Amazon Redshift is AWS's fully managed, petabyte-scale cloud data warehouse service."},
+  {"id": 32, "level": "Basic", "type": "DW Tool", "topic": "Google Warehouse", "question": "Which tool developed by Google is used as a fully managed, serverless data warehouse?", "options": ["Google Chrome", "Google Docs", "Google BigQuery", "Google Analytics dashboard only"], "answer": "C", "explanation": "BigQuery is Google Cloud's serverless data warehouse designed for fast SQL analytics on large datasets."},
+  {"id": 33, "level": "Basic", "type": "DW Tool", "topic": "Oracle Warehouse", "question": "Oracle's data warehousing product line, built on its relational database engine, is called:", "options": ["Oracle VirtualBox", "Oracle Financial Suite", "Oracle Exadata / Oracle Autonomous Data Warehouse", "Oracle Java Runtime"], "answer": "C", "explanation": "Oracle offers Exadata and the Autonomous Data Warehouse as dedicated platforms for warehousing workloads."},
+  {"id": 34, "level": "Basic", "type": "DW Tool", "topic": "BI/Reporting Tool", "question": "Which tool is primarily used for business-intelligence reporting and visualization on top of a data warehouse?", "options": ["Git", "XAMPP", "Tableau", "Apache Kafka"], "answer": "C", "explanation": "Tableau is a leading BI/visualization tool used to create dashboards and reports from warehouse data."},
+  {"id": 35, "level": "Basic", "type": "DW Tool", "topic": "SAP Warehouse", "question": "SAP's data-warehousing solution built for in-memory analytics is called:", "options": ["SAP GUI Scripting", "SAP Fiori Launchpad", "SAP SuccessFactors", "SAP BW/4HANA"], "answer": "D", "explanation": "SAP BW/4HANA is SAP's next-generation data warehouse solution optimised for the in-memory HANA platform."},
+  {"id": 36, "level": "Basic", "type": "DW Tool", "topic": "Open-Source BI/ETL", "question": "Which open-source tool offers both ETL (Pentaho Data Integration) and BI/reporting capabilities for data warehousing?", "options": ["FileZilla", "Blender", "Pentaho", "Postman"], "answer": "C", "explanation": "Pentaho provides an open-source suite covering data integration (ETL), OLAP analysis, and reporting for warehouses."},
+  {"id": 37, "level": "Basic", "type": "DW Tool", "topic": "Microsoft ETL", "question": "Which Microsoft tool is used to build ETL packages that extract, transform, and load data into a SQL Server-based data warehouse?", "options": ["Microsoft Teams", "Microsoft Excel Power Query only", "SQL Server Integration Services (SSIS)", "SQL Server Reporting Services (SSRS)"], "answer": "C", "explanation": "SSIS is Microsoft's ETL platform, used to build and automate data integration and transformation workflows for a warehouse."},
+  {"id": 38, "level": "Basic", "type": "DW Tool", "topic": "Visualization Tools", "question": "Power BI and QlikView are best classified as tools used to:", "options": ["replace the need for an OLAP server entirely", "visualize and build dashboards/reports from data warehouse data", "physically store petabytes of warehouse data", "perform the ETL extraction step from source systems"], "answer": "B", "explanation": "Power BI and QlikView are front-end BI/visualization tools that consume warehouse data; they are not storage or ETL platforms."},
+  {"id": 39, "level": "Basic", "type": "DM Tool", "topic": "WEKA", "question": "Which of the following is a popular open-source data mining tool developed at the University of Waikato?", "options": ["Informatica", "SAP BW", "Redshift", "WEKA"], "answer": "D", "explanation": "WEKA (Waikato Environment for Knowledge Analysis) is a widely used open-source suite of data mining algorithms."},
+  {"id": 40, "level": "Basic", "type": "DM Tool", "topic": "IBM SPSS", "question": "Which commercial software from IBM is widely used for advanced data mining and predictive analytics?", "options": ["IBM Lotus Notes", "IBM SPSS Modeler", "IBM DB2 Connect", "IBM Cloudant"], "answer": "B", "explanation": "SPSS Modeler is IBM's data mining and predictive-analytics workbench used for building models from data."},
+  {"id": 41, "level": "Basic", "type": "DM Tool", "topic": "RapidMiner", "question": "RapidMiner is primarily used as a tool for:", "options": ["data mining, machine learning, and predictive-analytics workflows", "website hosting", "video editing", "network firewall configuration"], "answer": "A", "explanation": "RapidMiner provides a visual workflow environment for data preparation, mining, and model building."},
+  {"id": 42, "level": "Basic", "type": "DM Tool", "topic": "Orange", "question": "Orange is an open-source tool best known for:", "options": ["spreadsheet accounting", "domain name registration", "visual, component-based data mining and machine learning", "PDF editing"], "answer": "C", "explanation": "Orange offers a drag-and-drop visual programming interface for data mining tasks such as classification and clustering."},
+  {"id": 43, "level": "Basic", "type": "DM Tool", "topic": "KNIME", "question": "KNIME is a data mining tool best described as a:", "options": ["relational database management system", "operating system kernel", "antivirus program", "open-source platform for visual, workflow-based data analytics"], "answer": "D", "explanation": "KNIME (Konstanz Information Miner) lets users build data-mining pipelines using a drag-and-drop node interface."},
+  {"id": 44, "level": "Basic", "type": "DM Tool", "topic": "Python Library", "question": "Which Python library is commonly used to implement data mining algorithms such as classification and clustering?", "options": ["Flask", "Django", "plain NumPy (without ML routines)", "scikit-learn"], "answer": "D", "explanation": "scikit-learn is a widely used Python library providing ready-made data mining and machine learning algorithms."},
+  {"id": 45, "level": "Basic", "type": "DM Tool", "topic": "Tool Category", "question": "Which of the following tools is specifically associated with data mining rather than data warehousing?", "options": ["Google BigQuery", "RapidMiner", "Azure Synapse Analytics", "Amazon Redshift"], "answer": "B", "explanation": "RapidMiner is a data mining/analytics tool, whereas Redshift, Synapse, and BigQuery are warehousing platforms."},
+  {"id": 46, "level": "Basic", "type": "DM Tool", "topic": "Common Purpose", "question": "Orange, WEKA, RapidMiner, and KNIME are all examples of tools primarily used for:", "options": ["storing petabytes of relational transaction data", "extracting patterns and knowledge from data (data mining)", "managing network security", "editing spreadsheets only"], "answer": "B", "explanation": "All four are established data-mining/analytics platforms used to discover patterns, not storage systems."},
+  {"id": 47, "level": "Basic", "type": "DM Tool", "topic": "SAS", "question": "Which commercial data mining tool, part of the SAS analytics suite, is widely used for predictive modelling and pattern discovery?", "options": ["SAS Print Manager", "SAS Base Installer", "SAS Visual Analytics Login Portal", "SAS Enterprise Miner"], "answer": "D", "explanation": "SAS Enterprise Miner is SAS's dedicated data mining workbench for building predictive and descriptive models."},
+  {"id": 48, "level": "Intermediate", "type": "Comparison", "topic": "Normal Query", "question": "A normal (SQL) database query typically retrieves:", "options": ["specific, already-known facts that exactly match the given conditions", "clusters of similar records without predefined criteria", "previously unknown patterns and hidden relationships in data", "predictive models of future behaviour"], "answer": "A", "explanation": "A normal query answers a precise question the user already has in mind, e.g. \"list all customers from Odisha.\""},
+  {"id": 49, "level": "Intermediate", "type": "Comparison", "topic": "Data Mining", "question": "Data mining differs from a normal database query mainly because data mining:", "options": ["requires no data processing at all", "only retrieves rows matching an exact WHERE condition", "discovers previously unknown patterns, trends, and relationships in large datasets", "can only be performed on a single table"], "answer": "C", "explanation": "Data mining goes beyond simple retrieval to uncover hidden knowledge such as patterns and correlations."},
+  {"id": 50, "level": "Intermediate", "type": "Comparison", "topic": "Identify: Query", "question": "Which of the following is an example of a normal query rather than a data-mining task?", "options": ["\"Segment customers into behavioural groups without predefined labels\"", "\"Discover which products are frequently bought together\"", "\"Predict which customers are likely to leave the company\"", "\"List all employees whose salary is above Rs. 50,000\""], "answer": "D", "explanation": "This is a direct, condition-based retrieval — exactly what SQL queries are designed for."},
+  {"id": 51, "level": "Intermediate", "type": "Comparison", "topic": "Identify: Mining", "question": "Which of the following is an example of a data-mining task rather than a normal query?", "options": ["\"Count the total number of orders placed today\"", "\"List products with price greater than Rs. 500\"", "\"Identify hidden purchasing patterns among customers who buy diapers and beer together\"", "\"Retrieve the address of customer ID 1023\""], "answer": "C", "explanation": "Discovering an unexpected association (market-basket analysis) is a classic data mining example, not a lookup."},
+  {"id": 52, "level": "Intermediate", "type": "Comparison", "topic": "Prior Knowledge", "question": "A normal query requires the user to know:", "options": ["the underlying machine-learning algorithm used", "nothing about the data at all", "only the physical storage location of the server", "exactly what information they are looking for, in advance"], "answer": "D", "explanation": "Queries are precise requests, so the user must already know what specific fact or condition to search for."},
+  {"id": 53, "level": "Intermediate", "type": "Comparison", "topic": "Exploratory Nature", "question": "Data mining is considered a(n) __________ process compared to a normal query, which is __________.", "options": ["exploratory process / a direct lookup", "outdated process / modern process", "fully manual process / fully automatic process with no algorithms", "destructive process / non-destructive process"], "answer": "A", "explanation": "Data mining explores data to find unknown insights, while a query directly looks up known, specific information."},
+  {"id": 54, "level": "Intermediate", "type": "Comparison", "topic": "Key Distinction", "question": "Which statement correctly distinguishes data mining from a normal query?", "options": ["Data mining cannot use a database as its data source", "A normal query always processes more data than data mining", "Data mining uses statistical/analytical algorithms to find patterns, while a normal query uses exact-match conditions", "A normal query can predict future trends, but data mining cannot"], "answer": "C", "explanation": "Data mining applies algorithms (association, clustering, prediction) whereas queries fetch records via conditions like WHERE."},
+  {"id": 55, "level": "Intermediate", "type": "Comparison", "topic": "Prediction Example", "question": "Predicting a customer's likelihood to default on a loan, based on historical patterns, is an example of:", "options": ["a data mining task", "a simple SELECT query", "a normal database JOIN operation", "a database backup operation"], "answer": "A", "explanation": "Prediction from patterns in historical data is a core data-mining application, not a straightforward query."},
+  {"id": 56, "level": "Intermediate", "type": "Comparison", "topic": "Nature of Output", "question": "In terms of output, how does the result of a normal query differ from the result of a data mining process?", "options": ["A query returns exact, factual rows matching stated conditions, while data mining returns probabilistic patterns, trends, or predictive insights", "A query always returns a graph, while data mining always returns a single number", "Both always produce identical types of output for the same dataset", "A query's output cannot be stored, while data mining output cannot be viewed"], "answer": "A", "explanation": "Queries give deterministic, exact-match results; data mining gives inferred, often probabilistic knowledge not explicitly stored in the data."},
+  {"id": 57, "level": "Advanced", "type": "Assertion-Reason", "topic": "Non-Volatility", "question": "Assertion (A): A data warehouse is non-volatile.\nReason (R): Data in a warehouse is updated in real time as transactions occur.", "options": ["Both A and R are true, but R is not the correct explanation of A", "A is true, but R is false", "Both A and R are false", "Both A and R are true, and R is the correct explanation of A"], "answer": "B", "explanation": "A warehouse IS non-volatile, but this is because data is loaded periodically, not updated in real time — so R is false."},
+  {"id": 58, "level": "Advanced", "type": "Assertion-Reason", "topic": "OLAP Middle Tier", "question": "Assertion (A): OLAP servers form the middle tier of a typical three-tier data warehouse architecture.\nReason (R): OLAP servers provide a multidimensional view of data for analysis.", "options": ["A is true, but R is false", "Both A and R are false", "A is false, but R is true", "Both A and R are true, and R is the correct explanation of A"], "answer": "D", "explanation": "The OLAP server sits in the middle tier precisely because it presents data multidimensionally for analysis."},
+  {"id": 59, "level": "Advanced", "type": "Assertion-Reason", "topic": "Automation in Mining", "question": "Assertion (A): Data mining always requires the end user to manually write exact-match queries.\nReason (R): Data mining algorithms automatically search for hidden patterns in data.", "options": ["Both A and R are true, and R explains A", "Both A and R are false", "A is false, but R is true", "Both A and R are true, but R does not explain A"], "answer": "C", "explanation": "Data mining is largely automated by algorithms discovering patterns; it does not need manual exact-match queries."},
+  {"id": 60, "level": "Advanced", "type": "Match-the-Following", "topic": "Tools & Concepts", "question": "Match Column A with Column B:\nColumn A: 1. Redshift  2. WEKA  3. Data Mart  4. ETL\nColumn B: (i) Data mining tool  (ii) Department-specific warehouse subset  (iii) AWS data warehouse service  (iv) Extract-Transform-Load process", "options": ["1-ii, 2-iv, 3-i, 4-iii", "1-iii, 2-i, 3-ii, 4-iv", "1-i, 2-iii, 3-iv, 4-ii", "1-iv, 2-ii, 3-iii, 4-i"], "answer": "B", "explanation": "Redshift → AWS warehouse; WEKA → data mining tool; Data Mart → departmental subset; ETL → data pipeline process."},
+  {"id": 61, "level": "Advanced", "type": "Match-the-Following", "topic": "Tools & Properties", "question": "Match Column A with Column B:\nColumn A: 1. BigQuery  2. RapidMiner  3. Subject-oriented  4. Non-volatile\nColumn B: (i) Data organised around business subjects  (ii) Data is loaded, not updated  (iii) Google's serverless warehouse  (iv) Data mining/predictive analytics tool", "options": ["1-i, 2-ii, 3-iii, 4-iv", "1-iv, 2-iii, 3-ii, 4-i", "1-iii, 2-iv, 3-i, 4-ii", "1-ii, 2-i, 3-iv, 4-iii"], "answer": "C", "explanation": "BigQuery → Google warehouse; RapidMiner → mining tool; Subject-oriented → business-subject grouping; Non-volatile → read-only after load."},
+  {"id": 62, "level": "Advanced", "type": "Statement-Based", "topic": "Integration vs Transactions", "question": "Statement I: A data warehouse integrates data from multiple heterogeneous sources.\nStatement II: A data warehouse is optimized primarily for fast, high-volume transaction inserts.", "options": ["Statement I is true, Statement II is false", "Both statements are false", "Both statements are true", "Statement I is false, Statement II is true"], "answer": "A", "explanation": "Warehouses integrate diverse sources but are optimised for analytical reads (OLAP), not transactional inserts (OLTP's role)."},
+  {"id": 63, "level": "Advanced", "type": "Statement-Based", "topic": "Staging Area Role", "question": "Statement I: The staging area cleans and temporarily holds data before loading into the warehouse.\nStatement II: The staging area is the final destination for permanent historical storage.", "options": ["Both statements are true", "Both statements are false", "Statement I is true, Statement II is false", "Statement I is false, Statement II is true"], "answer": "C", "explanation": "The staging area is a temporary intermediate step; the warehouse itself is the permanent historical store."},
+  {"id": 64, "level": "Advanced", "type": "Statement-Based", "topic": "Query vs Mining (Tricky)", "question": "Statement I: Every SQL query performed on a warehouse is considered data mining.\nStatement II: Data mining specifically involves discovering non-obvious patterns using statistical/algorithmic techniques.", "options": ["Statement I is true, Statement II is false", "Statement I is false, Statement II is true", "Both statements are true", "Both statements are false"], "answer": "B", "explanation": "Not all queries are data mining — only analyses that uncover hidden, non-obvious patterns qualify as data mining."},
+  {"id": 65, "level": "Intermediate", "type": "Scenario", "topic": "Serverless Warehouse", "question": "Which of the following tools would you use to build a fully managed, serverless cloud data warehouse without provisioning servers?", "options": ["Orange", "Google BigQuery", "KNIME", "WEKA"], "answer": "B", "explanation": "BigQuery is serverless — users run queries without managing infrastructure, unlike the listed mining tools."},
+  {"id": 66, "level": "Intermediate", "type": "Architecture", "topic": "Analyst's Layer", "question": "Which layer of the data warehouse architecture would a business analyst directly interact with to generate a sales report?", "options": ["Top tier (front-end query/reporting tools)", "ETL scheduler", "Bottom tier (source databases)", "Staging area"], "answer": "A", "explanation": "Analysts use front-end tools in the top tier — reporting, query, and analysis applications — to generate reports."},
+  {"id": 67, "level": "Intermediate", "type": "Scenario", "topic": "Association Analysis", "question": "A retail company wants to find out \"which items are commonly bought together\" without knowing this in advance. This scenario is best solved using:", "options": ["A simple SELECT query with a WHERE clause", "A database index rebuild", "A firewall configuration change", "Data mining (association analysis)"], "answer": "D", "explanation": "Discovering unknown item associations from transactions is a classic data mining (market-basket) application."},
+  {"id": 68, "level": "Intermediate", "type": "DW/DM Tool", "topic": "Category Check", "question": "Which of the following would NOT typically be classified as a data warehousing tool?", "options": ["Google BigQuery", "Azure Synapse Analytics", "Amazon Redshift", "WEKA"], "answer": "D", "explanation": "WEKA is a data mining tool, while Redshift, Synapse, and BigQuery are data warehousing platforms."},
+  {"id": 69, "level": "Intermediate", "type": "Concept", "topic": "Why Time-Stamped Data", "question": "Which of the following best explains why data warehouses store historical, time-stamped data?", "options": ["To reduce the total storage space required", "To eliminate the need for backups", "To allow trend analysis and comparison across different time periods", "To speed up single-row transaction updates"], "answer": "C", "explanation": "Time-variant storage lets analysts compare performance across months, quarters, or years."},
+  {"id": 70, "level": "Intermediate", "type": "Concept", "topic": "DW vs Operational DB", "question": "Which of these best distinguishes a data warehouse from an operational database?", "options": ["A data warehouse is designed for analysis and decision support; an operational database is designed for daily transaction processing", "An operational database always stores more data than a warehouse", "Both serve exactly the same purpose", "A data warehouse cannot store any historical data"], "answer": "A", "explanation": "This is the fundamental OLAP (analysis) vs OLTP (transaction) distinction tested frequently in exams."},
+  {"id": 71, "level": "Intermediate", "type": "Scenario", "topic": "Predictive Pattern", "question": "A school wants to identify students at risk of failing, based on patterns in past attendance and marks, without a specific student in mind. This is an example of:", "options": ["A simple attendance query for one student", "A network configuration task", "A backup operation", "Data mining (predictive pattern discovery)"], "answer": "D", "explanation": "Identifying an unknown at-risk pattern across many students is a data mining/predictive analytics task."},
+  {"id": 72, "level": "Intermediate", "type": "Concept", "topic": "Data Marts (True Statement)", "question": "Which of these is TRUE regarding Data Marts?", "options": ["They replace the need for ETL processes entirely", "They always contain more data than the central warehouse", "They are identical in scope to the entire data warehouse", "They contain a subset of warehouse data focused on a specific department or subject"], "answer": "D", "explanation": "Data marts are smaller, targeted extracts of the warehouse built for specific departments like HR or Sales."},
+  {"id": 73, "level": "Intermediate", "type": "DW/DM Tool", "topic": "Correct Pairing", "question": "Which tool combination correctly matches a cloud data warehouse WITH a data mining platform?", "options": ["Orange (warehouse) + BigQuery (mining)", "KNIME (warehouse) + Synapse (mining)", "Amazon Redshift (warehouse) + RapidMiner (mining)", "WEKA (warehouse) + Redshift (mining)"], "answer": "C", "explanation": "Redshift is a warehousing service; RapidMiner is a mining tool — correctly matching category to function."},
+  {"id": 74, "level": "Intermediate", "type": "Comparison", "topic": "One-Line Distinction", "question": "Which of the following best captures the key difference between a normal query and data mining, in one line?", "options": ["A query answers a known question; data mining discovers unknown patterns", "Data mining never uses a database as a source", "A query can predict the future while data mining cannot", "A query is always slower than data mining"], "answer": "A", "explanation": "This concise contrast is the most exam-relevant way to remember the distinction between the two."},
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

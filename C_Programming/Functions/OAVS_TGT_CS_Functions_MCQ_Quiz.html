@@ -1,0 +1,3409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Concept of a Subprogram (Function)",
+    "question": "What is a subprogram in C also commonly called?",
+    "options": [
+      "A macro",
+      "A statement",
+      "A header file",
+      "A function"
+    ],
+    "answer": "D",
+    "explanation": "A subprogram is a self-contained block of code designed to perform a specific task; in C it is called a function."
+  },
+  {
+    "id": 2,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "Concept of a Subprogram (Function)",
+    "question": "What is the primary purpose of using functions in a program?",
+    "options": [
+      "To remove the need for variables",
+      "To slow down program execution",
+      "To break a large program into smaller, manageable, reusable tasks",
+      "To increase the size of the source file"
+    ],
+    "answer": "C",
+    "explanation": "Functions divide a program into logical, reusable units, making code easier to write, understand, and maintain."
+  },
+  {
+    "id": 3,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "Concept of a Subprogram (Function)",
+    "question": "Which of the following is a key characteristic of a well-designed function?",
+    "options": [
+      "It must always return a value",
+      "It must be written before main()",
+      "It cannot accept parameters",
+      "It performs a single, well-defined task"
+    ],
+    "answer": "D",
+    "explanation": "A good function is designed around a single, clearly defined task, which improves readability and reusability."
+  },
+  {
+    "id": 4,
+    "level": "Intermediate",
+    "type": "Advantages",
+    "topic": "Concept of a Subprogram (Function)",
+    "question": "Which of these is an advantage of modular programming using functions?",
+    "options": [
+      "Increased code duplication",
+      "Reduced program readability",
+      "Easier debugging and code reuse",
+      "Mandatory global variables"
+    ],
+    "answer": "C",
+    "explanation": "Modular programming allows code to be reused and tested independently, which simplifies debugging."
+  },
+  {
+    "id": 5,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "Concept of a Subprogram (Function)",
+    "question": "Functions are most useful when a particular task needs to be performed:",
+    "options": [
+      "Only once at the very end of the program",
+      "Only inside the main() function",
+      "Only when no arguments are needed",
+      "Repeatedly at multiple points in a program"
+    ],
+    "answer": "D",
+    "explanation": "When the same task is needed multiple times, writing it as a function avoids rewriting the same code repeatedly."
+  },
+  {
+    "id": 6,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Concept of a Subprogram (Function)",
+    "question": "A subprogram that performs a specific, isolated task and can be invoked from other parts of a program is called a:",
+    "options": [
+      "Loop",
+      "Comment block",
+      "Preprocessor directive",
+      "Function"
+    ],
+    "answer": "D",
+    "explanation": "This is the standard definition of a function/subprogram in structured programming."
+  },
+  {
+    "id": 7,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "Concept of a Subprogram (Function)",
+    "question": "Which characteristic allows a function to be used in different programs without modification?",
+    "options": [
+      "Fixed hard-coded values",
+      "Global variable dependency",
+      "Modularity and independence",
+      "Direct hardware access"
+    ],
+    "answer": "C",
+    "explanation": "A modular, self-contained function with no unnecessary dependencies can be reused across programs."
+  },
+  {
+    "id": 8,
+    "level": "Intermediate",
+    "type": "Advantages",
+    "topic": "Concept of a Subprogram (Function)",
+    "question": "Modular programming primarily improves which quality of a program?",
+    "options": [
+      "File size on disk",
+      "Screen resolution",
+      "Maintainability",
+      "Number of compiler warnings"
+    ],
+    "answer": "C",
+    "explanation": "Breaking a program into modules (functions) makes it easier to maintain, update, and debug."
+  },
+  {
+    "id": 9,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "Concept of a Subprogram (Function)",
+    "question": "Why do large programs benefit most from being divided into functions?",
+    "options": [
+      "It reduces complexity and improves clarity",
+      "It increases compilation time only",
+      "It automatically removes all bugs",
+      "It prevents any function calls"
+    ],
+    "answer": "A",
+    "explanation": "Dividing a large program into functions reduces overall complexity and makes the logic easier to follow."
+  },
+  {
+    "id": 10,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "Concept of a Subprogram (Function)",
+    "question": "Which of the following is a typical real-world application of using functions?",
+    "options": [
+      "Avoiding the use of the main() function",
+      "Writing the entire program in a single line",
+      "Calculating the same formula for multiple inputs",
+      "Declaring only one variable in the whole program"
+    ],
+    "answer": "C",
+    "explanation": "Functions are ideal when the same computation needs to be applied to different inputs across a program."
+  },
+  {
+    "id": 11,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "Concept of a Subprogram (Function)",
+    "question": "A function in C must have:",
+    "options": [
+      "At least one global variable",
+      "Only a return statement",
+      "A mandatory loop inside it",
+      "A name and a body enclosed in braces"
+    ],
+    "answer": "D",
+    "explanation": "Every C function has a name and a body (defined within braces) containing the statements to execute."
+  },
+  {
+    "id": 12,
+    "level": "Intermediate",
+    "type": "Purpose",
+    "topic": "Concept of a Subprogram (Function)",
+    "question": "Which statement best explains the concept of a subprogram?",
+    "options": [
+      "It is a comment used for documentation",
+      "It is a type of variable declaration",
+      "It is a separate executable file that runs independently of the main program",
+      "It is a smaller program within a program that solves part of a larger problem"
+    ],
+    "answer": "D",
+    "explanation": "A subprogram is conceptually a smaller unit of code that helps solve part of a larger problem within the same program."
+  },
+  {
+    "id": 13,
+    "level": "Basic",
+    "type": "Meaning",
+    "topic": "Interface of a Subprogram",
+    "question": "What does the term 'function interface' refer to?",
+    "options": [
+      "The number of lines in the function",
+      "The physical location of the function in memory",
+      "The way a function communicates with the rest of the program",
+      "The color scheme of the code editor"
+    ],
+    "answer": "C",
+    "explanation": "The function interface defines how a function interacts with the caller, i.e., how data is passed in and results are passed out."
+  },
+  {
+    "id": 14,
+    "level": "Basic",
+    "type": "Components",
+    "topic": "Interface of a Subprogram",
+    "question": "Which of the following is NOT a component of a function interface?",
+    "options": [
+      "Parameter list",
+      "Return type",
+      "Function name",
+      "The compiler version used"
+    ],
+    "answer": "D",
+    "explanation": "The function interface consists of the function name, parameters, and return type — not the compiler version."
+  },
+  {
+    "id": 15,
+    "level": "Basic",
+    "type": "Components",
+    "topic": "Interface of a Subprogram",
+    "question": "The part of a function interface that specifies what kind of value a function sends back is called the:",
+    "options": [
+      "Return type",
+      "Function body",
+      "Loop counter",
+      "Local variable"
+    ],
+    "answer": "A",
+    "explanation": "The return type in the function interface tells the caller what type of value to expect from the function."
+  },
+  {
+    "id": 16,
+    "level": "Intermediate",
+    "type": "Function name",
+    "topic": "Interface of a Subprogram",
+    "question": "In a function interface, the function name serves to:",
+    "options": [
+      "Replace the need for parameters",
+      "Uniquely identify the function when it is called",
+      "Store the return value permanently",
+      "Define the number of loops inside the function"
+    ],
+    "answer": "B",
+    "explanation": "The function name is used by the caller to identify and invoke the correct function."
+  },
+  {
+    "id": 17,
+    "level": "Basic",
+    "type": "Parameters",
+    "topic": "Interface of a Subprogram",
+    "question": "Parameters in a function interface are used to:",
+    "options": [
+      "Store the function's compiled machine code",
+      "Automatically print output",
+      "Define the operating system used",
+      "Pass data into the function from the caller"
+    ],
+    "answer": "D",
+    "explanation": "Parameters allow the caller to send input data into the function for processing."
+  },
+  {
+    "id": 18,
+    "level": "Basic",
+    "type": "Interaction",
+    "topic": "Interface of a Subprogram",
+    "question": "The function interface primarily governs interaction between:",
+    "options": [
+      "Two unrelated programs on the same computer",
+      "The keyboard and the monitor",
+      "The calling function and the called function",
+      "The compiler and the linker only"
+    ],
+    "answer": "C",
+    "explanation": "The interface defines exactly how the caller and the called function exchange information."
+  },
+  {
+    "id": 19,
+    "level": "Basic",
+    "type": "Meaning",
+    "topic": "Interface of a Subprogram",
+    "question": "Which of the following best describes the 'interface' of a function?",
+    "options": [
+      "The number of times the function is called",
+      "The comments written inside the function",
+      "The complete internal implementation of the function",
+      "Its name, parameter list, and return type, without including its internal logic"
+    ],
+    "answer": "D",
+    "explanation": "The interface is the external view of a function — what it is called, what it takes in, and what it returns — hiding internal logic."
+  },
+  {
+    "id": 20,
+    "level": "Intermediate",
+    "type": "Return type",
+    "topic": "Interface of a Subprogram",
+    "question": "If a function's interface specifies a return type of int, the function is expected to:",
+    "options": [
+      "Return an integer value to the caller",
+      "Never return any value",
+      "Return a character string",
+      "Accept only integer parameters"
+    ],
+    "answer": "A",
+    "explanation": "The return type in the interface tells the caller the data type of the value the function sends back."
+  },
+  {
+    "id": 21,
+    "level": "Basic",
+    "type": "Interaction",
+    "topic": "Interface of a Subprogram",
+    "question": "Why is a clearly defined function interface important in programming?",
+    "options": [
+      "It ensures the caller and called function agree on data types and communication rules",
+      "It forces every function to use the same variable names",
+      "It eliminates the need to compile the program",
+      "It reduces the number of functions a program can have"
+    ],
+    "answer": "A",
+    "explanation": "A well-defined interface avoids confusion by clearly specifying how data will be exchanged between caller and function."
+  },
+  {
+    "id": 22,
+    "level": "Basic",
+    "type": "Components",
+    "topic": "Interface of a Subprogram",
+    "question": "Which three elements together typically form a function's interface in C?",
+    "options": [
+      "Function name, parameter list, and return type",
+      "File name, line number, and column number",
+      "Loop variables, arrays, and pointers",
+      "Function name, comments, and indentation"
+    ],
+    "answer": "A",
+    "explanation": "Together, the function name, parameters, and return type define the interface of the function."
+  },
+  {
+    "id": 23,
+    "level": "Intermediate",
+    "type": "Purpose",
+    "topic": "Role of an Interface",
+    "question": "What is the main role of an interface in a function?",
+    "options": [
+      "To increase the execution time of the program",
+      "To prevent the function from being called more than once",
+      "To hide the function name from the user",
+      "To define a clear contract for communication between caller and function"
+    ],
+    "answer": "D",
+    "explanation": "The interface establishes a contract describing what inputs are needed and what output will be produced."
+  },
+  {
+    "id": 24,
+    "level": "Advanced",
+    "type": "Communication",
+    "topic": "Role of an Interface",
+    "question": "The interface of a subprogram enables communication by specifying:",
+    "options": [
+      "How many times the program has been compiled",
+      "The physical size of the computer's memory",
+      "What data goes in and what result comes out",
+      "Which programmer wrote the function"
+    ],
+    "answer": "C",
+    "explanation": "The interface specifies the inputs (parameters) and outputs (return value), enabling communication between functions."
+  },
+  {
+    "id": 25,
+    "level": "Intermediate",
+    "type": "Encapsulation",
+    "topic": "Role of an Interface",
+    "question": "How does a function interface support encapsulation?",
+    "options": [
+      "By making all variables global",
+      "By hiding the internal implementation details from the caller",
+      "By exposing all local variables to other functions",
+      "By printing the function's source code automatically"
+    ],
+    "answer": "B",
+    "explanation": "Encapsulation is supported because the caller only needs to know the interface, not how the function works internally."
+  },
+  {
+    "id": 26,
+    "level": "Intermediate",
+    "type": "Modularity",
+    "topic": "Role of an Interface",
+    "question": "The role of an interface in supporting modularity is to:",
+    "options": [
+      "Force all functions to be written in a single file",
+      "Prevent functions from having return values",
+      "Allow functions to be developed and modified independently",
+      "Require every function to call every other function"
+    ],
+    "answer": "C",
+    "explanation": "A clear interface allows a function's internal code to change without affecting other parts of the program, supporting modularity."
+  },
+  {
+    "id": 27,
+    "level": "Intermediate",
+    "type": "Data exchange",
+    "topic": "Role of an Interface",
+    "question": "Interfaces facilitate data exchange between functions mainly through:",
+    "options": [
+      "The compiler's error messages",
+      "The program's file name",
+      "Comments and blank lines",
+      "Parameters and return values"
+    ],
+    "answer": "D",
+    "explanation": "Data flows between functions via parameters (input) and the return statement (output), both defined in the interface."
+  },
+  {
+    "id": 28,
+    "level": "Advanced",
+    "type": "Purpose",
+    "topic": "Role of an Interface",
+    "question": "Which of the following best explains why interfaces are important for large software projects?",
+    "options": [
+      "They eliminate the need for testing",
+      "They remove the need for a main() function",
+      "They allow different programmers to work on different functions independently, as long as the interface is respected",
+      "They allow only one function to exist in the entire project"
+    ],
+    "answer": "C",
+    "explanation": "In large projects, as long as the agreed interface is followed, functions can be developed independently by different team members."
+  },
+  {
+    "id": 29,
+    "level": "Intermediate",
+    "type": "Encapsulation",
+    "topic": "Role of an Interface",
+    "question": "A function whose internal working is hidden from the caller, exposing only its interface, is an example of:",
+    "options": [
+      "Type casting",
+      "Recursion",
+      "Encapsulation",
+      "Global scoping"
+    ],
+    "answer": "C",
+    "explanation": "Encapsulation means the internal details are hidden, and only the interface (name, parameters, return type) is visible to the user."
+  },
+  {
+    "id": 30,
+    "level": "Intermediate",
+    "type": "Communication",
+    "topic": "Role of an Interface",
+    "question": "If two functions need to exchange data, the safest and most structured way to do this is through:",
+    "options": [
+      "The function interface (parameters and return values)",
+      "Direct memory manipulation without any structure",
+      "Randomly naming variables the same in both functions",
+      "Printing values to the screen and re-typing them"
+    ],
+    "answer": "A",
+    "explanation": "The function interface provides a structured, safe mechanism for exchanging data between functions."
+  },
+  {
+    "id": 31,
+    "level": "Intermediate",
+    "type": "Actual arguments",
+    "topic": "Arguments of a Subprogram",
+    "question": "Actual arguments are the values that are:",
+    "options": [
+      "Never used during a function call",
+      "Passed to a function at the time it is called",
+      "Always equal to zero",
+      "Declared inside the function definition only"
+    ],
+    "answer": "B",
+    "explanation": "Actual arguments are the real values supplied by the caller when the function is invoked."
+  },
+  {
+    "id": 32,
+    "level": "Advanced",
+    "type": "Formal arguments",
+    "topic": "Arguments of a Subprogram",
+    "question": "Formal arguments are:",
+    "options": [
+      "Variables declared in the function definition that receive the actual arguments",
+      "Only used in recursive functions",
+      "Constants defined outside all functions",
+      "Values printed on the screen after the function executes"
+    ],
+    "answer": "A",
+    "explanation": "Formal parameters are the variables listed in the function header/definition that receive the values passed by the caller."
+  },
+  {
+    "id": 33,
+    "level": "Intermediate",
+    "type": "Parameter passing",
+    "topic": "Arguments of a Subprogram",
+    "question": "During a function call, the process by which actual arguments are transferred to formal arguments is called:",
+    "options": [
+      "Parameter passing",
+      "Type casting",
+      "Recursion",
+      "Compilation"
+    ],
+    "answer": "A",
+    "explanation": "Parameter passing is the mechanism used to transfer values from actual arguments to formal parameters."
+  },
+  {
+    "id": 34,
+    "level": "Intermediate",
+    "type": "Argument matching",
+    "topic": "Arguments of a Subprogram",
+    "question": "In C, actual arguments must match formal arguments in:",
+    "options": [
+      "Variable name only",
+      "Font style used in the code editor",
+      "Number and, generally, compatible data type",
+      "Memory address only"
+    ],
+    "answer": "C",
+    "explanation": "The number of arguments and their types must correspond between the actual and formal arguments (with allowed conversions)."
+  },
+  {
+    "id": 35,
+    "level": "Intermediate",
+    "type": "Characteristics",
+    "topic": "Arguments of a Subprogram",
+    "question": "Which statement about formal arguments is TRUE?",
+    "options": [
+      "They exist for the entire duration of the program",
+      "They can be accessed from any function without restriction",
+      "They exist only within the scope of the function in which they are declared",
+      "They must always be declared as global variables"
+    ],
+    "answer": "C",
+    "explanation": "Formal arguments are local to the function; their scope is limited to the function body."
+  },
+  {
+    "id": 36,
+    "level": "Advanced",
+    "type": "Uses",
+    "topic": "Arguments of a Subprogram",
+    "question": "Arguments are primarily used in functions to:",
+    "options": [
+      "Increase the number of lines in a program",
+      "Replace the return statement",
+      "Automatically generate comments",
+      "Supply input data required for the function to perform its task"
+    ],
+    "answer": "D",
+    "explanation": "Arguments allow a function to receive the specific input data it needs to carry out its task."
+  },
+  {
+    "id": 37,
+    "level": "Intermediate",
+    "type": "Actual arguments",
+    "topic": "Arguments of a Subprogram",
+    "question": "In the call add(5, 10);, the values 5 and 10 are known as:",
+    "options": [
+      "Formal arguments",
+      "Actual arguments",
+      "Local variables",
+      "Return values"
+    ],
+    "answer": "B",
+    "explanation": "The values supplied directly in the function call, here 5 and 10, are called actual arguments."
+  },
+  {
+    "id": 38,
+    "level": "Intermediate",
+    "type": "Argument matching",
+    "topic": "Arguments of a Subprogram",
+    "question": "What happens if the number of actual arguments does not match the number of formal parameters in a C function (with no default values)?",
+    "options": [
+      "It results in a compilation error",
+      "The extra formal parameters are automatically set to 100",
+      "The program ignores the mismatch and runs normally",
+      "The function is automatically converted to void"
+    ],
+    "answer": "A",
+    "explanation": "C requires the number of actual and formal arguments to match; mismatches typically cause a compile-time error."
+  },
+  {
+    "id": 39,
+    "level": "Intermediate",
+    "type": "Parameter passing",
+    "topic": "Arguments of a Subprogram",
+    "question": "Which of the following is a valid method of parameter passing supported in C?",
+    "options": [
+      "Call by object",
+      "Call by value",
+      "Call by interface",
+      "Call by name only"
+    ],
+    "answer": "B",
+    "explanation": "C primarily supports call by value directly; call by reference is simulated using pointers."
+  },
+  {
+    "id": 40,
+    "level": "Advanced",
+    "type": "Formal arguments",
+    "topic": "Arguments of a Subprogram",
+    "question": "Formal parameters are created in memory:",
+    "options": [
+      "Only if the function is recursive",
+      "Before the program starts and never destroyed",
+      "Only when the program ends",
+      "When the function is called and destroyed when it returns"
+    ],
+    "answer": "D",
+    "explanation": "Formal parameters are local variables allocated when the function is invoked and deallocated once the function returns."
+  },
+  {
+    "id": 41,
+    "level": "Intermediate",
+    "type": "Uses",
+    "topic": "Arguments of a Subprogram",
+    "question": "Why might a function require multiple arguments?",
+    "options": [
+      "To avoid using a return statement",
+      "To make the function harder to call",
+      "To provide all the different pieces of input data the function needs to complete its task",
+      "Because C does not allow single-argument functions"
+    ],
+    "answer": "C",
+    "explanation": "Multiple arguments let a function receive several pieces of related input data at once."
+  },
+  {
+    "id": 42,
+    "level": "Intermediate",
+    "type": "Characteristics",
+    "topic": "Arguments of a Subprogram",
+    "question": "Changing the value of a formal parameter inside a function, when using call by value, affects:",
+    "options": [
+      "Every variable in the program",
+      "The original actual argument in the calling function",
+      "Only the local copy inside the function",
+      "The return type of the function"
+    ],
+    "answer": "C",
+    "explanation": "In call by value, formal parameters are independent local copies, so changes do not affect the caller's original variables."
+  },
+  {
+    "id": 43,
+    "level": "Basic",
+    "type": "Library functions",
+    "topic": "Kinds of Subprograms Supported by C",
+    "question": "Functions such as printf() and scanf() that are pre-written and provided with the C compiler are called:",
+    "options": [
+      "Void functions",
+      "User-defined functions",
+      "Recursive functions",
+      "Library functions"
+    ],
+    "answer": "D",
+    "explanation": "Library functions are pre-built functions supplied as part of the standard C library, ready to use via header files."
+  },
+  {
+    "id": 44,
+    "level": "Intermediate",
+    "type": "User-defined",
+    "topic": "Kinds of Subprograms Supported by C",
+    "question": "A function that is written by the programmer to perform a task specific to their program is called a:",
+    "options": [
+      "Macro",
+      "User-defined function",
+      "System call",
+      "Library function"
+    ],
+    "answer": "B",
+    "explanation": "User-defined functions are created by the programmer to handle tasks specific to the application being written."
+  },
+  {
+    "id": 45,
+    "level": "Basic",
+    "type": "With arguments",
+    "topic": "Kinds of Subprograms Supported by C",
+    "question": "A function that receives data from the caller through its parameter list is classified as a function:",
+    "options": [
+      "Without arguments",
+      "With arguments",
+      "That cannot be called",
+      "Without a return type"
+    ],
+    "answer": "B",
+    "explanation": "Functions with arguments accept input values through their parameter list when called."
+  },
+  {
+    "id": 46,
+    "level": "Basic",
+    "type": "Without arguments",
+    "topic": "Kinds of Subprograms Supported by C",
+    "question": "A function defined as void display(void) is an example of a function:",
+    "options": [
+      "That must be recursive",
+      "Without arguments and without a return value",
+      "That is part of the C standard library only",
+      "With arguments and with a return value"
+    ],
+    "answer": "B",
+    "explanation": "The empty parentheses (or void) and void return type indicate this function takes no arguments and returns nothing."
+  },
+  {
+    "id": 47,
+    "level": "Basic",
+    "type": "With return value",
+    "topic": "Kinds of Subprograms Supported by C",
+    "question": "A function that sends a computed result back to the calling function using the return statement is a function:",
+    "options": [
+      "That is always recursive",
+      "Without a return value",
+      "Without arguments only",
+      "With a return value"
+    ],
+    "answer": "D",
+    "explanation": "Such functions use 'return' to send a value back to the point where they were called."
+  },
+  {
+    "id": 48,
+    "level": "Intermediate",
+    "type": "Without return value",
+    "topic": "Kinds of Subprograms Supported by C",
+    "question": "Functions declared with a void return type are classified as functions:",
+    "options": [
+      "With a mandatory return value",
+      "That cannot accept arguments",
+      "Without a return value",
+      "That are automatically recursive"
+    ],
+    "answer": "C",
+    "explanation": "A void return type means the function does not send any value back to the caller."
+  },
+  {
+    "id": 49,
+    "level": "Basic",
+    "type": "Library functions",
+    "topic": "Kinds of Subprograms Supported by C",
+    "question": "Which header file must typically be included to use the standard library function sqrt()?",
+    "options": [
+      "conio.h",
+      "math.h",
+      "stdio.h",
+      "string.h"
+    ],
+    "answer": "B",
+    "explanation": "The sqrt() function is declared in the math.h header file of the C standard library."
+  },
+  {
+    "id": 50,
+    "level": "Basic",
+    "type": "User-defined",
+    "topic": "Kinds of Subprograms Supported by C",
+    "question": "One key benefit of writing user-defined functions is that they:",
+    "options": [
+      "Always execute faster than library functions",
+      "Cannot accept any parameters",
+      "Must be written only in recursive form",
+      "Can be tailored exactly to the specific needs of the program"
+    ],
+    "answer": "D",
+    "explanation": "Since the programmer writes them, user-defined functions can be designed precisely for the program's requirements."
+  },
+  {
+    "id": 51,
+    "level": "Basic",
+    "type": "With arguments",
+    "topic": "Kinds of Subprograms Supported by C",
+    "question": "Which of the following function prototypes represents a function with arguments?",
+    "options": [
+      "void greet();",
+      "void show(void);",
+      "int getValue();  // no parameters used",
+      "int add(int a, int b);"
+    ],
+    "answer": "D",
+    "explanation": "int add(int a, int b); clearly declares two parameters, making it a function with arguments."
+  },
+  {
+    "id": 52,
+    "level": "Intermediate",
+    "type": "With return value",
+    "topic": "Kinds of Subprograms Supported by C",
+    "question": "Which of the following function declarations indicates a function that returns a value?",
+    "options": [
+      "void print(int x);",
+      "void show(char c);",
+      "void display(void);",
+      "float area(float r);"
+    ],
+    "answer": "D",
+    "explanation": "The return type float (instead of void) indicates that this function returns a value."
+  },
+  {
+    "id": 53,
+    "level": "Intermediate",
+    "type": "Purpose",
+    "topic": "Return Statement as an Interface",
+    "question": "The main purpose of the return statement in a function is to:",
+    "options": [
+      "Send a value back to the caller and/or terminate the function",
+      "Start the execution of main()",
+      "Import a header file",
+      "Declare a new function"
+    ],
+    "answer": "A",
+    "explanation": "The return statement both ends the function's execution and optionally sends a value back to the calling code."
+  },
+  {
+    "id": 54,
+    "level": "Intermediate",
+    "type": "Syntax",
+    "topic": "Return Statement as an Interface",
+    "question": "Which of the following is the correct syntax to return the value of variable 'sum' from a function?",
+    "options": [
+      "return sum;",
+      "returning sum;",
+      "return sum();",
+      "return: sum;"
+    ],
+    "answer": "A",
+    "explanation": "The correct C syntax is 'return' followed by the expression or variable, ending with a semicolon."
+  },
+  {
+    "id": 55,
+    "level": "Intermediate",
+    "type": "Returning values",
+    "topic": "Return Statement as an Interface",
+    "question": "If a function is declared with return type int, the expression in its return statement should evaluate to:",
+    "options": [
+      "A function name",
+      "An integer (or a value convertible to int)",
+      "Nothing at all",
+      "A string literal only"
+    ],
+    "answer": "B",
+    "explanation": "The value in the return statement should match, or be convertible to, the function's declared return type."
+  },
+  {
+    "id": 56,
+    "level": "Advanced",
+    "type": "Returning control",
+    "topic": "Return Statement as an Interface",
+    "question": "Besides sending a value, the return statement also:",
+    "options": [
+      "Transfers control back to the point where the function was called",
+      "Pauses the program indefinitely",
+      "Deletes the function from memory permanently",
+      "Restarts the entire program"
+    ],
+    "answer": "A",
+    "explanation": "Execution control returns to the calling function immediately after a return statement executes."
+  },
+  {
+    "id": 57,
+    "level": "Intermediate",
+    "type": "Multiple return scenarios",
+    "topic": "Return Statement as an Interface",
+    "question": "Can a function contain more than one return statement?",
+    "options": [
+      "Yes, but only one of them will execute during a particular function call",
+      "No, C allows only a single return statement in the entire function",
+      "Yes, and all of them always execute in one call",
+      "No, this causes a syntax error even if reachable"
+    ],
+    "answer": "A",
+    "explanation": "A function can have multiple return statements (e.g., inside if-else branches), but only one executes per call, based on the flow of control."
+  },
+  {
+    "id": 58,
+    "level": "Intermediate",
+    "type": "Function termination",
+    "topic": "Return Statement as an Interface",
+    "question": "What happens to the execution of a function as soon as a return statement is executed?",
+    "options": [
+      "The function restarts from the beginning",
+      "The function pauses and waits for user input",
+      "The rest of the function continues to execute normally",
+      "The function terminates immediately, skipping remaining statements"
+    ],
+    "answer": "D",
+    "explanation": "Once 'return' executes, the function exits immediately; any statements after it in that execution path are skipped."
+  },
+  {
+    "id": 59,
+    "level": "Intermediate",
+    "type": "Purpose",
+    "topic": "Return Statement as an Interface",
+    "question": "In a void function, the return statement (without any value) is used to:",
+    "options": [
+      "Cause a compilation error",
+      "Convert the function into a non-void function",
+      "Send back the value zero automatically",
+      "Exit the function early, without sending any value back"
+    ],
+    "answer": "D",
+    "explanation": "A bare 'return;' in a void function simply exits the function early; it does not send a value."
+  },
+  {
+    "id": 60,
+    "level": "Advanced",
+    "type": "Returning values",
+    "topic": "Return Statement as an Interface",
+    "question": "What is a likely consequence of not including a return statement in a function declared to return int?",
+    "options": [
+      "The function is automatically treated as void",
+      "The function's returned value is undefined/unreliable behavior may occur",
+      "The program will not compile under any circumstances",
+      "The compiler automatically returns 100"
+    ],
+    "answer": "B",
+    "explanation": "Omitting 'return' in a non-void function leads to undefined behavior since no valid value is guaranteed to be sent back."
+  },
+  {
+    "id": 61,
+    "level": "Intermediate",
+    "type": "Function termination",
+    "topic": "Return Statement as an Interface",
+    "question": "Which of the following best completes: 'The return statement acts as the -----.'",
+    "options": [
+      "starting point of the entire program",
+      "declaration of a new variable",
+      "definition of a new data type",
+      "exit point of a function that also carries data back to the caller"
+    ],
+    "answer": "D",
+    "explanation": "The return statement is both the exit point of the function and the mechanism for sending data back to the caller."
+  },
+  {
+    "id": 62,
+    "level": "Intermediate",
+    "type": "Syntax",
+    "topic": "Return Statement as an Interface",
+    "question": "Which return statement is syntactically valid inside a function with return type void?",
+    "options": [
+      "void return;",
+      "return 0 void;",
+      "return;",
+      "return void;"
+    ],
+    "answer": "C",
+    "explanation": "In a void function, 'return;' with no value is valid; a value cannot be returned from a void function."
+  },
+  {
+    "id": 63,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Local Variables",
+    "question": "A local variable in C is a variable that is:",
+    "options": [
+      "Declared outside all functions and accessible everywhere",
+      "Declared using the keyword global",
+      "Declared inside a function or block and accessible only within it",
+      "Automatically shared between all functions"
+    ],
+    "answer": "C",
+    "explanation": "Local variables are declared within a function/block and can only be accessed within that function/block."
+  },
+  {
+    "id": 64,
+    "level": "Intermediate",
+    "type": "Scope",
+    "topic": "Local Variables",
+    "question": "The scope of a local variable is limited to:",
+    "options": [
+      "The function or block in which it is declared",
+      "The entire program, including all files",
+      "Every function that is called after it",
+      "Only the main() function, regardless of where it is declared"
+    ],
+    "answer": "A",
+    "explanation": "A local variable's scope is restricted to the function or block where it was declared."
+  },
+  {
+    "id": 65,
+    "level": "Basic",
+    "type": "Lifetime",
+    "topic": "Local Variables",
+    "question": "The lifetime of an ordinary local variable (not static) lasts:",
+    "options": [
+      "Until another function is called anywhere in the program",
+      "Only while the function in which it is declared is executing",
+      "Until the computer is restarted",
+      "For the entire duration of the program"
+    ],
+    "answer": "B",
+    "explanation": "Local variables are created when the function starts executing and destroyed when the function returns, unless declared static."
+  },
+  {
+    "id": 66,
+    "level": "Basic",
+    "type": "Visibility",
+    "topic": "Local Variables",
+    "question": "A local variable declared inside function A is:",
+    "options": [
+      "Visible only inside main()",
+      "Automatically visible inside every other function",
+      "Not visible or accessible inside function B",
+      "Visible only if declared with the keyword extern"
+    ],
+    "answer": "C",
+    "explanation": "Since local variables are scoped to their own function, they cannot be directly accessed by other functions."
+  },
+  {
+    "id": 67,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "Local Variables",
+    "question": "Which of the following is a characteristic of local variables?",
+    "options": [
+      "They must always be initialized to zero automatically",
+      "They are shared across all functions by default",
+      "They are typically stored in a function's own stack frame",
+      "They exist even before the program starts running"
+    ],
+    "answer": "C",
+    "explanation": "Local variables are typically allocated on the stack, within the function's own stack frame, when the function is called."
+  },
+  {
+    "id": 68,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "Local Variables",
+    "question": "Local variables are most appropriate for storing:",
+    "options": [
+      "The name of the source code file",
+      "Values that must be shared across the entire program",
+      "Data that should persist after the program ends",
+      "Temporary values needed only during the execution of a specific function"
+    ],
+    "answer": "D",
+    "explanation": "Local variables are ideal for temporary computations that are only relevant within a single function call."
+  },
+  {
+    "id": 69,
+    "level": "Basic",
+    "type": "Scope",
+    "topic": "Local Variables",
+    "question": "If two different functions each declare a local variable with the same name, what happens?",
+    "options": [
+      "Each variable is treated independently with no conflict, as their scopes do not overlap",
+      "The program automatically renames one variable",
+      "A compilation error always occurs due to duplicate names",
+      "Both variables share the exact same memory location"
+    ],
+    "answer": "A",
+    "explanation": "Because each variable's scope is limited to its own function, using the same name in different functions causes no conflict."
+  },
+  {
+    "id": 70,
+    "level": "Basic",
+    "type": "Lifetime",
+    "topic": "Local Variables",
+    "question": "What happens to the memory of a local variable once its function finishes executing?",
+    "options": [
+      "It is permanently saved to disk",
+      "It is typically deallocated/released",
+      "It becomes a global variable",
+      "It is copied automatically into main()"
+    ],
+    "answer": "B",
+    "explanation": "Once the function returns, the memory used by its local (automatic) variables is generally released."
+  },
+  {
+    "id": 71,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Local Variables",
+    "question": "Local variables are also sometimes referred to as:",
+    "options": [
+      "External variables",
+      "Static variables",
+      "Register-only variables",
+      "Automatic variables"
+    ],
+    "answer": "D",
+    "explanation": "In C, ordinary local variables are also called automatic variables because storage is automatically created and released."
+  },
+  {
+    "id": 72,
+    "level": "Intermediate",
+    "type": "Visibility",
+    "topic": "Local Variables",
+    "question": "To make a value calculated inside a function available to another function, a programmer typically should:",
+    "options": [
+      "Declare the variable local to a third, unrelated function",
+      "Simply reference it by name in the other function without any mechanism",
+      "Return the value or pass it as an argument, since local variables are not directly visible elsewhere",
+      "Rename the variable to match the other function's name"
+    ],
+    "answer": "C",
+    "explanation": "Since local variables aren't visible outside their function, data must be shared explicitly via return values or parameters."
+  },
+  {
+    "id": 73,
+    "level": "Basic",
+    "type": "Default return type",
+    "topic": "Default Return Type and void",
+    "question": "In older C standards, if no return type is specified for a function, what is assumed by default?",
+    "options": [
+      "void",
+      "char",
+      "int",
+      "float"
+    ],
+    "answer": "C",
+    "explanation": "Traditionally in C, if a function's return type is omitted, the compiler assumes it to be int by default."
+  },
+  {
+    "id": 74,
+    "level": "Basic",
+    "type": "Meaning of void",
+    "topic": "Default Return Type and void",
+    "question": "The keyword void, when used as a function's return type, indicates that the function:",
+    "options": [
+      "Can only be called once",
+      "Does not return any value",
+      "Must contain a loop",
+      "Always returns zero"
+    ],
+    "answer": "B",
+    "explanation": "void as a return type means the function performs its task without sending any value back to the caller."
+  },
+  {
+    "id": 75,
+    "level": "Basic",
+    "type": "Functions returning void",
+    "topic": "Default Return Type and void",
+    "question": "Which of the following function headers correctly declares a function that returns nothing?",
+    "options": [
+      "printMessage(void) void;",
+      "void printMessage(int x);",
+      "int printMessage(void);",
+      "void printMessage() return 0;"
+    ],
+    "answer": "B",
+    "explanation": "void printMessage(int x); correctly shows a void return type with a parameter, meaning it returns nothing."
+  },
+  {
+    "id": 76,
+    "level": "Intermediate",
+    "type": "Void parameters",
+    "topic": "Default Return Type and void",
+    "question": "Writing void inside a function's parentheses, as in int getValue(void), specifies that the function:",
+    "options": [
+      "Must be called recursively",
+      "Is a library function",
+      "Returns no value",
+      "Takes no arguments"
+    ],
+    "answer": "D",
+    "explanation": "void inside the parentheses of a function declaration explicitly states that the function accepts no parameters."
+  },
+  {
+    "id": 77,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "Default Return Type and void",
+    "question": "Which statement about void functions is TRUE?",
+    "options": [
+      "They can never accept any parameters",
+      "They cannot be called from main()",
+      "They are automatically treated as recursive functions",
+      "They can still accept parameters even though they don't return a value"
+    ],
+    "answer": "D",
+    "explanation": "A void function can accept parameters for input, even though it does not return any value as output."
+  },
+  {
+    "id": 78,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "Default Return Type and void",
+    "question": "A function used only to display output on the screen, without producing any value to be used elsewhere, is typically declared with return type:",
+    "options": [
+      "int",
+      "float",
+      "double",
+      "void"
+    ],
+    "answer": "D",
+    "explanation": "Since such a function only performs an action (like printing) and returns nothing, void is the appropriate return type."
+  },
+  {
+    "id": 79,
+    "level": "Basic",
+    "type": "Meaning of void",
+    "topic": "Default Return Type and void",
+    "question": "Attempting to use the value of a call to a void function, e.g., x = display();, where display() is void, will:",
+    "options": [
+      "Cause a compilation error",
+      "Work normally and store garbage safely",
+      "Always store zero in x",
+      "Convert display() into a non-void function automatically"
+    ],
+    "answer": "A",
+    "explanation": "Since a void function returns nothing, assigning its result to a variable is invalid and causes a compile-time error."
+  },
+  {
+    "id": 80,
+    "level": "Intermediate",
+    "type": "Default return type",
+    "topic": "Default Return Type and void",
+    "question": "Modern C standards (such as C99 and later) generally require that:",
+    "options": [
+      "No function may specify a return type",
+      "Every function explicitly specify its return type",
+      "Only main() can have a declared return type",
+      "Every function must return type void"
+    ],
+    "answer": "B",
+    "explanation": "Later C standards require an explicit return type for every function rather than relying on an implicit int default."
+  },
+  {
+    "id": 81,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "Default Return Type and void",
+    "question": "Which is a typical real-world use of a void function?",
+    "options": [
+      "Returning the maximum of two numbers",
+      "Printing a formatted report to the console without returning any data",
+      "Converting Celsius to Fahrenheit and returning the result",
+      "Calculating the square root of a number for later use"
+    ],
+    "answer": "B",
+    "explanation": "Since printing does not need to send a value back, a void function is the natural choice for such output-only tasks."
+  },
+  {
+    "id": 82,
+    "level": "Basic",
+    "type": "Functions returning void",
+    "topic": "Default Return Type and void",
+    "question": "If a function has return type void, which of the following statements can still legally appear inside it?",
+    "options": [
+      "return; (with no value)",
+      "return \"done\";",
+      "return 25;",
+      "return 3.14;"
+    ],
+    "answer": "A",
+    "explanation": "A void function may use 'return;' without a value to exit early, but cannot return any actual value."
+  },
+  {
+    "id": 83,
+    "level": "Intermediate",
+    "type": "Parameter passing",
+    "topic": "Passing Values Between Functions Through Interfaces",
+    "question": "The mechanism by which one function sends data to another function it calls is known as:",
+    "options": [
+      "Parameter passing",
+      "Compilation",
+      "Type declaration",
+      "Header inclusion"
+    ],
+    "answer": "A",
+    "explanation": "Parameter passing is the process of supplying input data (arguments) from a calling function to the called function."
+  },
+  {
+    "id": 84,
+    "level": "Advanced",
+    "type": "Data communication",
+    "topic": "Passing Values Between Functions Through Interfaces",
+    "question": "Which two mechanisms together allow full two-way data communication between a calling and called function?",
+    "options": [
+      "Global variables only",
+      "The file name and the line number",
+      "Parameters (input) and the return statement (output)",
+      "Comments and blank lines"
+    ],
+    "answer": "C",
+    "explanation": "Parameters send data into the function, and the return statement sends a result back, enabling two-way communication."
+  },
+  {
+    "id": 85,
+    "level": "Intermediate",
+    "type": "Input/output",
+    "topic": "Passing Values Between Functions Through Interfaces",
+    "question": "When a function needs to both take input and give back a computed output, it should:",
+    "options": [
+      "Print all values directly without using a return",
+      "Avoid using return statements",
+      "Accept parameters and use a return statement",
+      "Use only global variables and no parameters"
+    ],
+    "answer": "C",
+    "explanation": "This combination — parameters for input, return statement for output — is the standard approach in function design."
+  },
+  {
+    "id": 86,
+    "level": "Intermediate",
+    "type": "Function interaction",
+    "topic": "Passing Values Between Functions Through Interfaces",
+    "question": "If function A calls function B and passes it a value, and B computes a result and sends it back, this describes:",
+    "options": [
+      "A syntax error in C",
+      "A situation only possible with void functions",
+      "A complete interface-based interaction between two functions",
+      "An example of recursion only"
+    ],
+    "answer": "C",
+    "explanation": "This is a normal example of functions interacting through their defined interface — passing values in and receiving a result."
+  },
+  {
+    "id": 87,
+    "level": "Intermediate",
+    "type": "Value transfer",
+    "topic": "Passing Values Between Functions Through Interfaces",
+    "question": "In C, when an argument is passed by value, what exactly is transferred to the function?",
+    "options": [
+      "The memory address of the argument",
+      "A copy of the argument's value",
+      "The variable's name as a string",
+      "Nothing is transferred; only the function name is passed"
+    ],
+    "answer": "B",
+    "explanation": "In call by value, only a copy of the value is passed, not the original variable or its memory address."
+  },
+  {
+    "id": 88,
+    "level": "Advanced",
+    "type": "Data communication",
+    "topic": "Passing Values Between Functions Through Interfaces",
+    "question": "Passing multiple values into a function is achieved by:",
+    "options": [
+      "Calling the function multiple times in a row",
+      "Declaring the function as recursive",
+      "Using a single argument that combines all values as text",
+      "Listing multiple arguments, separated by commas, in the function call"
+    ],
+    "answer": "D",
+    "explanation": "Multiple values are passed simply by separating them with commas in both the function call and its parameter list."
+  },
+  {
+    "id": 89,
+    "level": "Intermediate",
+    "type": "Function interaction",
+    "topic": "Passing Values Between Functions Through Interfaces",
+    "question": "Which of the following correctly reflects value transfer through an interface?",
+    "options": [
+      "calculate() modifies a and b directly with no parameters used",
+      "int result; calculate(); — values are transferred without any arguments or return",
+      "int result = calculate(a, b); — values of a and b are passed in, and a value is returned into result",
+      "calculate(a, b); is used but the function has no parameters at all"
+    ],
+    "answer": "C",
+    "explanation": "This is a standard example: arguments a and b are passed in, and the returned value is captured in result."
+  },
+  {
+    "id": 90,
+    "level": "Intermediate",
+    "type": "Declaration",
+    "topic": "Declaration of Function Type",
+    "question": "A function declaration (function prototype) in C primarily tells the compiler:",
+    "options": [
+      "The name of the programmer who wrote the function",
+      "The function's name, return type, and parameter types before it is used",
+      "The date the program was compiled",
+      "The exact machine code the function will generate"
+    ],
+    "answer": "B",
+    "explanation": "A function prototype informs the compiler about the function's signature so it can check calls for correctness before the actual definition appears."
+  },
+  {
+    "id": 91,
+    "level": "Intermediate",
+    "type": "Prototype",
+    "topic": "Declaration of Function Type",
+    "question": "Which of the following is a valid function prototype for a function that takes two integers and returns a float?",
+    "options": [
+      "void compute(int a, int b) return float;",
+      "float compute(int a, int b);",
+      "float compute;",
+      "compute(int a, int b) { }"
+    ],
+    "answer": "B",
+    "explanation": "float compute(int a, int b); correctly declares the return type and parameter types, ending with a semicolon, making it a valid prototype."
+  },
+  {
+    "id": 92,
+    "level": "Advanced",
+    "type": "Syntax",
+    "topic": "Declaration of Function Type",
+    "question": "A function prototype in C must end with a:",
+    "options": [
+      "Question mark",
+      "Curly brace",
+      "Colon",
+      "Semicolon"
+    ],
+    "answer": "D",
+    "explanation": "Unlike a function definition, a function prototype (declaration) is a statement and must end with a semicolon."
+  },
+  {
+    "id": 93,
+    "level": "Intermediate",
+    "type": "Purpose",
+    "topic": "Declaration of Function Type",
+    "question": "The main purpose of declaring a function before using it (if defined later in the file) is to:",
+    "options": [
+      "Reduce the size of the compiled executable",
+      "Make the program run faster at runtime",
+      "Allow the compiler to perform type checking on function calls",
+      "Automatically generate documentation"
+    ],
+    "answer": "C",
+    "explanation": "Declaring the function early lets the compiler verify that calls to the function use the correct number and types of arguments."
+  },
+  {
+    "id": 94,
+    "level": "Intermediate",
+    "type": "Declaration rules",
+    "topic": "Declaration of Function Type",
+    "question": "If a function is used before it is defined in a C program, without a prior prototype, what could happen (in older/non-strict compilers)?",
+    "options": [
+      "The compiler may assume a default return type and not catch parameter mismatches, causing potential errors",
+      "The function is automatically declared as void",
+      "The compiler renames the function automatically",
+      "The program always fails to compile in every C standard"
+    ],
+    "answer": "A",
+    "explanation": "Without a prototype, the compiler cannot correctly check the function call, which can lead to incorrect assumptions and runtime issues."
+  },
+  {
+    "id": 95,
+    "level": "Intermediate",
+    "type": "Prototype",
+    "topic": "Declaration of Function Type",
+    "question": "Which part of a function prototype can be omitted, though it is still good practice to include for readability?",
+    "options": [
+      "The parameter names (types must still be specified)",
+      "The semicolon at the end",
+      "The function name",
+      "The return type"
+    ],
+    "answer": "A",
+    "explanation": "In a prototype, parameter names are optional (only the types are required by the compiler), though including them aids readability."
+  },
+  {
+    "id": 96,
+    "level": "Advanced",
+    "type": "Purpose",
+    "topic": "Declaration of Function Type",
+    "question": "Function declarations are typically placed:",
+    "options": [
+      "Inside another unrelated function",
+      "Before main(), or in a header file, so they are visible before the function is called",
+      "Only after the function has already been called",
+      "At the very end of the source file, after all code"
+    ],
+    "answer": "B",
+    "explanation": "Prototypes are generally placed before main() or in header files so the compiler knows about them before any calls occur."
+  },
+  {
+    "id": 97,
+    "level": "Intermediate",
+    "type": "Syntax",
+    "topic": "Declaration of Function Type",
+    "question": "Which of these correctly matches a function prototype to its corresponding definition header?",
+    "options": [
+      "int add(int, int); matches void add(int a) { ... }",
+      "int add(int, int); matches int add(char a, char b) { ... }",
+      "int add(int, int); matches float add(int a, int b) { ... }",
+      "int add(int, int); matches int add(int a, int b) { ... }"
+    ],
+    "answer": "D",
+    "explanation": "The prototype's return type and parameter types must match the actual function definition exactly (with allowed compatible types)."
+  },
+  {
+    "id": 98,
+    "level": "Intermediate",
+    "type": "Declaration rules",
+    "topic": "Declaration of Function Type",
+    "question": "What is a 'function signature' in the context of a declaration?",
+    "options": [
+      "Only the function's return type",
+      "The total number of lines inside the function body",
+      "The programmer's digital signature embedded in the file",
+      "The combination of the function's name and its parameter types"
+    ],
+    "answer": "D",
+    "explanation": "A function's signature typically refers to its name together with the types (and order) of its parameters."
+  },
+  {
+    "id": 99,
+    "level": "Intermediate",
+    "type": "Declaration",
+    "topic": "Declaration of Function Type",
+    "question": "Declaring a function without ever defining it in the program will result in:",
+    "options": [
+      "The program running but skipping all function calls silently",
+      "No error at all, since declarations are optional",
+      "A linker error when the function is called",
+      "An automatic empty definition being created"
+    ],
+    "answer": "C",
+    "explanation": "If a function is declared and called but never actually defined, the linker cannot find its implementation, causing a linker error."
+  },
+  {
+    "id": 100,
+    "level": "Advanced",
+    "type": "Iterative",
+    "topic": "Iterative and Recursive Subprograms",
+    "question": "An iterative function solves a problem primarily by using:",
+    "options": [
+      "Global variables only",
+      "Repeated calls to itself",
+      "The void keyword",
+      "Loops such as for, while, or do-while"
+    ],
+    "answer": "D",
+    "explanation": "Iteration uses looping constructs to repeat a set of steps until a condition is met."
+  },
+  {
+    "id": 101,
+    "level": "Intermediate",
+    "type": "Recursive",
+    "topic": "Iterative and Recursive Subprograms",
+    "question": "A recursive function is one that:",
+    "options": [
+      "Is automatically faster than an iterative version",
+      "Never terminates under any circumstance",
+      "Calls itself, directly or indirectly, to solve a smaller instance of the same problem",
+      "Cannot accept any parameters"
+    ],
+    "answer": "C",
+    "explanation": "Recursion involves a function invoking itself to break a problem down into smaller sub-problems of the same type."
+  },
+  {
+    "id": 102,
+    "level": "Intermediate",
+    "type": "Characteristics",
+    "topic": "Iterative and Recursive Subprograms",
+    "question": "Which of these is a defining requirement for a correctly written recursive function?",
+    "options": [
+      "It must not use any parameters",
+      "It must include a base case to stop the recursion",
+      "It must call a different function, never itself",
+      "It must be declared with return type void"
+    ],
+    "answer": "B",
+    "explanation": "Without a base case, a recursive function would call itself indefinitely, leading to infinite recursion and a stack overflow."
+  },
+  {
+    "id": 103,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "Iterative and Recursive Subprograms",
+    "question": "Recursive functions are particularly well-suited to problems that are naturally defined in terms of:",
+    "options": [
+      "Only string formatting tasks",
+      "Smaller sub-problems of the same type",
+      "File compression only",
+      "Hardware-level operations exclusively"
+    ],
+    "answer": "B",
+    "explanation": "Problems like factorial or Fibonacci are naturally recursive because they can be expressed using smaller versions of themselves."
+  },
+  {
+    "id": 104,
+    "level": "Advanced",
+    "type": "Advantages",
+    "topic": "Iterative and Recursive Subprograms",
+    "question": "One advantage of using recursion over iteration for certain problems is:",
+    "options": [
+      "It never requires a base case",
+      "The code can be simpler and closer to the mathematical definition of the problem",
+      "It eliminates the need for a return statement",
+      "It always uses less memory than iteration"
+    ],
+    "answer": "B",
+    "explanation": "For problems with a naturally recursive structure, recursive code can be more elegant and easier to understand than iterative code."
+  },
+  {
+    "id": 105,
+    "level": "Intermediate",
+    "type": "Limitations",
+    "topic": "Iterative and Recursive Subprograms",
+    "question": "A key limitation of recursion compared to iteration is:",
+    "options": [
+      "It cannot be used to solve any mathematical problem",
+      "It cannot be written in the C language",
+      "It never produces correct results",
+      "It can consume more memory due to repeated function calls on the call stack"
+    ],
+    "answer": "D",
+    "explanation": "Each recursive call adds a new frame to the call stack, which can lead to higher memory usage than an equivalent loop."
+  },
+  {
+    "id": 106,
+    "level": "Intermediate",
+    "type": "Comparisons",
+    "topic": "Iterative and Recursive Subprograms",
+    "question": "Which of the following is generally true when comparing iteration and recursion for the same problem?",
+    "options": [
+      "There is no practical difference between the two in C",
+      "Iteration is often more memory-efficient, while recursion can be more readable for naturally recursive problems",
+      "Recursion always executes faster than iteration",
+      "Iteration cannot be used to solve any problem recursion can"
+    ],
+    "answer": "B",
+    "explanation": "This is a standard comparison: iterative solutions usually use less memory, while recursive solutions can better express certain problems."
+  },
+  {
+    "id": 107,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "Iterative and Recursive Subprograms",
+    "question": "Which type of subprogram repeatedly executes a block of code using a loop construct until a condition becomes false?",
+    "options": [
+      "A library subprogram",
+      "A recursive subprogram",
+      "An iterative subprogram",
+      "A void subprogram"
+    ],
+    "answer": "C",
+    "explanation": "Iterative subprograms use loop constructs (for, while, do-while) to repeat execution based on a condition."
+  },
+  {
+    "id": 108,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Recursion",
+    "question": "Recursion in programming refers to a technique where:",
+    "options": [
+      "A variable refers to itself in a declaration",
+      "A function calls itself to solve a problem",
+      "A loop calls another loop",
+      "A program calls another separate program"
+    ],
+    "answer": "B",
+    "explanation": "Recursion is defined as a function invoking itself, directly or indirectly, during its own execution."
+  },
+  {
+    "id": 109,
+    "level": "Advanced",
+    "type": "Base case",
+    "topic": "Recursion",
+    "question": "The base case in a recursive function is important because it:",
+    "options": [
+      "Is optional and can always be omitted safely",
+      "Increases the number of recursive calls indefinitely",
+      "Declares all local variables as global",
+      "Provides the condition under which recursion stops"
+    ],
+    "answer": "D",
+    "explanation": "The base case is the terminating condition that prevents infinite recursive calls."
+  },
+  {
+    "id": 110,
+    "level": "Advanced",
+    "type": "Recursive call",
+    "topic": "Recursion",
+    "question": "The statement inside a function where the function invokes itself is referred to as the:",
+    "options": [
+      "Return statement",
+      "Local declaration",
+      "Recursive call",
+      "Function prototype"
+    ],
+    "answer": "C",
+    "explanation": "The recursive call is the specific line where the function calls itself, typically with a modified/smaller argument."
+  },
+  {
+    "id": 111,
+    "level": "Advanced",
+    "type": "Execution flow",
+    "topic": "Recursion",
+    "question": "During recursion, when the base case is finally reached, what happens next?",
+    "options": [
+      "The recursion restarts from the very first call",
+      "The entire program terminates immediately",
+      "The function starts returning values back through each previous call on the stack",
+      "All previous calls are deleted without returning any value"
+    ],
+    "answer": "C",
+    "explanation": "Once the base case is met, each recursive call returns its result back up the chain of calls, unwinding the stack."
+  },
+  {
+    "id": 112,
+    "level": "Advanced",
+    "type": "Advantages",
+    "topic": "Recursion",
+    "question": "A key advantage of recursion is that it can express certain algorithms:",
+    "options": [
+      "More naturally and concisely than an equivalent iterative solution",
+      "Only when no parameters are used",
+      "Without ever needing a stopping condition",
+      "With guaranteed lower memory usage than loops"
+    ],
+    "answer": "A",
+    "explanation": "For problems like tree traversal or factorial computation, recursive code can closely mirror the problem's mathematical definition."
+  },
+  {
+    "id": 113,
+    "level": "Advanced",
+    "type": "Limitations",
+    "topic": "Recursion",
+    "question": "What risk is associated with a recursive function that lacks a proper base case?",
+    "options": [
+      "The function will automatically convert to an iterative one",
+      "Infinite recursion, leading to a stack overflow",
+      "The compiler will refuse to compile the program",
+      "The function will return 0 by default and stop safely"
+    ],
+    "answer": "B",
+    "explanation": "Without a base case (or an incorrect one), the function keeps calling itself indefinitely, eventually exhausting the call stack."
+  },
+  {
+    "id": 114,
+    "level": "Advanced",
+    "type": "Applications",
+    "topic": "Recursion",
+    "question": "Which of the following problems is classically solved using recursion?",
+    "options": [
+      "Reading a single character from the keyboard",
+      "Declaring a global constant",
+      "Including a header file",
+      "Calculating the factorial of a number"
+    ],
+    "answer": "D",
+    "explanation": "Factorial computation is a classic textbook example of a naturally recursive problem: n! = n * (n-1)!."
+  },
+  {
+    "id": 115,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Recursion",
+    "question": "In the recursive definition of factorial, fact(n) = n * fact(n-1), what serves as the base case?",
+    "options": [
+      "fact(n) = 0 for all n",
+      "There is no base case needed for factorial",
+      "fact(n) = n * fact(n-1) for all n",
+      "fact(0) = 1 (or fact(1) = 1)"
+    ],
+    "answer": "D",
+    "explanation": "The base case fact(0) = 1 (or fact(1) = 1) stops the recursive calls from continuing indefinitely."
+  },
+  {
+    "id": 116,
+    "level": "Advanced",
+    "type": "Execution flow",
+    "topic": "Recursion",
+    "question": "Each recursive call in C typically creates a new:",
+    "options": [
+      "Global variable shared by all calls",
+      "Separate source code file",
+      "Stack frame (activation record) for its own local variables and parameters",
+      "New copy of the entire program in memory"
+    ],
+    "answer": "C",
+    "explanation": "Every function call, including recursive calls, creates its own stack frame containing local variables and parameters."
+  },
+  {
+    "id": 117,
+    "level": "Advanced",
+    "type": "Limitations",
+    "topic": "Recursion",
+    "question": "Excessive recursion depth without proper termination can lead to which runtime problem?",
+    "options": [
+      "Automatic conversion to a library function",
+      "Stack overflow",
+      "Compilation failure",
+      "Infinite loop detection by the compiler"
+    ],
+    "answer": "B",
+    "explanation": "Too many nested recursive calls without reaching a base case exhausts the call stack, causing a stack overflow error."
+  },
+  {
+    "id": 118,
+    "level": "Advanced",
+    "type": "Advantages",
+    "topic": "Recursion",
+    "question": "Recursive solutions are often preferred for problems involving:",
+    "options": [
+      "Simple sequential input/output only",
+      "Only single-line arithmetic operations",
+      "Hierarchical or self-similar structures, such as trees",
+      "Programs that never require any function calls"
+    ],
+    "answer": "C",
+    "explanation": "Recursion naturally fits problems with hierarchical or repetitive self-similar structures."
+  },
+  {
+    "id": 119,
+    "level": "Intermediate",
+    "type": "Definition",
+    "topic": "Call by Value",
+    "question": "In call by value, what is passed to the function?",
+    "options": [
+      "Nothing; only the function name is transferred",
+      "The variable name as text",
+      "The memory address of the actual argument",
+      "A copy of the actual argument's value"
+    ],
+    "answer": "D",
+    "explanation": "Call by value passes a duplicate of the value stored in the actual argument, not the variable itself."
+  },
+  {
+    "id": 120,
+    "level": "Advanced",
+    "type": "Working",
+    "topic": "Call by Value",
+    "question": "In call by value, if the formal parameter is modified inside the function, what happens to the original variable in the caller?",
+    "options": [
+      "It becomes a global variable",
+      "It is deleted from memory",
+      "It remains unchanged",
+      "It is also changed to match the new value"
+    ],
+    "answer": "C",
+    "explanation": "Since only a copy is passed, changes to the formal parameter do not affect the original actual argument."
+  },
+  {
+    "id": 121,
+    "level": "Intermediate",
+    "type": "Parameter passing",
+    "topic": "Call by Value",
+    "question": "Call by value is the default and most basic method of parameter passing in:",
+    "options": [
+      "Only object-oriented languages",
+      "C",
+      "Machine code directly",
+      "Assembly language exclusively"
+    ],
+    "answer": "B",
+    "explanation": "C uses call by value as its standard parameter-passing mechanism for ordinary variables."
+  },
+  {
+    "id": 122,
+    "level": "Intermediate",
+    "type": "Memory behavior",
+    "topic": "Call by Value",
+    "question": "In call by value, the formal parameter is stored in:",
+    "options": [
+      "A separate memory location from the actual argument",
+      "The operating system's kernel memory",
+      "A read-only section of memory shared by all functions",
+      "The exact same memory location as the actual argument"
+    ],
+    "answer": "A",
+    "explanation": "The formal parameter gets its own memory location (typically on the stack), separate from the caller's variable."
+  },
+  {
+    "id": 123,
+    "level": "Intermediate",
+    "type": "Advantages",
+    "topic": "Call by Value",
+    "question": "One advantage of call by value is that it:",
+    "options": [
+      "Allows direct modification of the caller's variables",
+      "Protects the original data in the caller from being accidentally modified",
+      "Requires the use of pointers at all times",
+      "Always uses less memory than call by reference"
+    ],
+    "answer": "B",
+    "explanation": "Since only a copy is used, the original variable's value is safe from unintended changes inside the function."
+  },
+  {
+    "id": 124,
+    "level": "Advanced",
+    "type": "Limitations",
+    "topic": "Call by Value",
+    "question": "A limitation of call by value is that it:",
+    "options": [
+      "Always causes a compilation error",
+      "Requires the function to be recursive",
+      "Cannot be used to directly modify the caller's original variable",
+      "Cannot be used with more than one parameter"
+    ],
+    "answer": "C",
+    "explanation": "Because a copy is passed, call by value alone cannot be used to change the original variable in the calling function."
+  },
+  {
+    "id": 125,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "Call by Value",
+    "question": "Call by value is most appropriate when a function needs to:",
+    "options": [
+      "Return multiple values through the parameter list itself",
+      "Change the caller's variable directly",
+      "Use the value of a variable without altering the original",
+      "Access hardware memory addresses directly"
+    ],
+    "answer": "C",
+    "explanation": "When a function should only read/use a value without side effects on the caller, call by value is the appropriate choice."
+  },
+  {
+    "id": 126,
+    "level": "Intermediate",
+    "type": "Working",
+    "topic": "Call by Value",
+    "question": "Consider void update(int x) { x = x + 10; } called as update(a);. After the call, the value of 'a' in the caller is:",
+    "options": [
+      "Set to 10",
+      "Undefined and unpredictable",
+      "Unchanged, since only a copy of a was modified",
+      "Increased by 10"
+    ],
+    "answer": "C",
+    "explanation": "Since call by value passes a copy, modifying x inside update() does not affect the original variable a."
+  },
+  {
+    "id": 127,
+    "level": "Intermediate",
+    "type": "Memory behavior",
+    "topic": "Call by Value",
+    "question": "In call by value, how many independent copies of the data typically exist during the function call?",
+    "options": [
+      "Zero copies, since no memory is allocated",
+      "Two: one in the caller and one (the formal parameter) inside the function",
+      "Only one shared copy",
+      "Three copies at minimum"
+    ],
+    "answer": "B",
+    "explanation": "The actual argument in the caller and the formal parameter in the function are two separate copies of the value."
+  },
+  {
+    "id": 128,
+    "level": "Advanced",
+    "type": "Definition",
+    "topic": "Call by Value",
+    "question": "Which of these best distinguishes call by value from call by reference?",
+    "options": [
+      "Call by value can only be used with arrays",
+      "Both methods are functionally identical in C",
+      "Call by value passes copies of data; call by reference passes access to the original data",
+      "Call by value passes memory addresses; call by reference passes copies"
+    ],
+    "answer": "C",
+    "explanation": "This is the fundamental distinction: value passes a copy, reference gives access to the original variable's memory."
+  },
+  {
+    "id": 129,
+    "level": "Intermediate",
+    "type": "Advantages",
+    "topic": "Call by Value",
+    "question": "Call by value is generally considered safer for simple data because it:",
+    "options": [
+      "Prevents unintended side effects on the caller's variables",
+      "Always executes more slowly than call by reference",
+      "Requires more complex pointer syntax",
+      "Cannot be used with int or float types"
+    ],
+    "answer": "A",
+    "explanation": "Because the function only works with a copy, there is no risk of accidentally altering the caller's original data."
+  },
+  {
+    "id": 130,
+    "level": "Intermediate",
+    "type": "Limitations",
+    "topic": "Call by Value",
+    "question": "If a function needs to modify multiple variables in the calling function and reflect those changes back, call by value alone is:",
+    "options": [
+      "Faster than any alternative in every case",
+      "The only possible solution in C",
+      "Perfectly sufficient with no issues at all",
+      "Insufficient, since it cannot alter the caller's originals"
+    ],
+    "answer": "D",
+    "explanation": "Since call by value only works on copies, it cannot be used alone to change and return multiple values back to the caller."
+  },
+  {
+    "id": 131,
+    "level": "Intermediate",
+    "type": "Definition",
+    "topic": "Call by Reference",
+    "question": "Call by reference works by passing:",
+    "options": [
+      "The memory address (reference) of the actual argument to the function",
+      "Only a copy of the value, never the address",
+      "The variable's name as a text string",
+      "A duplicate of the entire program"
+    ],
+    "answer": "A",
+    "explanation": "In call by reference, the address of the variable is passed, giving the function direct access to the original data."
+  },
+  {
+    "id": 132,
+    "level": "Advanced",
+    "type": "Working concept",
+    "topic": "Call by Reference",
+    "question": "In C, call by reference is typically simulated using:",
+    "options": [
+      "The void keyword",
+      "Arrays only, never pointers",
+      "Recursive function calls",
+      "Pointers"
+    ],
+    "answer": "D",
+    "explanation": "Since C does not have true reference parameters like some other languages, pointers are used to achieve call-by-reference behavior."
+  },
+  {
+    "id": 133,
+    "level": "Intermediate",
+    "type": "Parameter passing",
+    "topic": "Call by Reference",
+    "question": "To pass a variable's address to a function in C, the caller typically uses which operator before the variable name?",
+    "options": [
+      "The address-of operator (&)",
+      "The logical NOT operator (!)",
+      "The modulus operator (%)",
+      "The multiplication operator (*)"
+    ],
+    "answer": "A",
+    "explanation": "The & operator retrieves the address of a variable, which is then passed to the function to simulate call by reference."
+  },
+  {
+    "id": 134,
+    "level": "Intermediate",
+    "type": "Memory behavior",
+    "topic": "Call by Reference",
+    "question": "When call by reference is used, modifying the parameter inside the function will:",
+    "options": [
+      "Cause the program to crash immediately",
+      "Only affect a local copy, leaving the original unchanged",
+      "Have no effect until the program restarts",
+      "Change the original variable's value in the calling function"
+    ],
+    "answer": "D",
+    "explanation": "Because the function operates directly on the original variable's memory address, changes persist after the function returns."
+  },
+  {
+    "id": 135,
+    "level": "Intermediate",
+    "type": "Advantages",
+    "topic": "Call by Reference",
+    "question": "A key advantage of call by reference is that it allows a function to:",
+    "options": [
+      "Modify the caller's original variables directly, including returning multiple results",
+      "Avoid using any parameters at all",
+      "Prevent any changes to variables",
+      "Guarantee that no pointers are used anywhere"
+    ],
+    "answer": "A",
+    "explanation": "Since the function can access and change the original data, it can effectively return multiple modified results to the caller."
+  },
+  {
+    "id": 136,
+    "level": "Advanced",
+    "type": "Limitations",
+    "topic": "Call by Reference",
+    "question": "A potential limitation or risk of call by reference is that it:",
+    "options": [
+      "Always makes programs run slower than call by value",
+      "Can lead to unintended modification of the caller's data if not handled carefully",
+      "Cannot be implemented in the C language at all",
+      "Prevents the function from being called more than once"
+    ],
+    "answer": "B",
+    "explanation": "Because the function has direct access to the original variable, careless code can unintentionally alter data the caller did not expect to change."
+  },
+  {
+    "id": 137,
+    "level": "Intermediate",
+    "type": "Applications",
+    "topic": "Call by Reference",
+    "question": "Call by reference is particularly useful when a function needs to:",
+    "options": [
+      "Only display a message on the screen",
+      "Return more than one modified value to the calling function",
+      "Avoid using any return statement or parameters entirely",
+      "Guarantee that the original variable is never touched"
+    ],
+    "answer": "B",
+    "explanation": "Since a normal return statement can only send back one value, call by reference (via pointers) allows multiple values to be updated and returned."
+  },
+  {
+    "id": 138,
+    "level": "Intermediate",
+    "type": "Working concept",
+    "topic": "Call by Reference",
+    "question": "In the function definition void update(int *p) { *p = *p + 1; }, the *p refers to:",
+    "options": [
+      "The function's return type",
+      "The address of the pointer variable p itself",
+      "The value stored at the address pointed to by p",
+      "A completely unrelated variable"
+    ],
+    "answer": "C",
+    "explanation": "The dereference operator (*) accesses the value stored at the memory address held by pointer p."
+  },
+  {
+    "id": 139,
+    "level": "Intermediate",
+    "type": "Parameter passing",
+    "topic": "Call by Reference",
+    "question": "To call the function void update(int *p) with a variable named 'count', the correct call is:",
+    "options": [
+      "update(count);",
+      "update(count*);",
+      "update(*count);",
+      "update(&count);"
+    ],
+    "answer": "D",
+    "explanation": "Since update() expects an address (pointer), the caller must pass the address of count using the & operator."
+  },
+  {
+    "id": 140,
+    "level": "Advanced",
+    "type": "Comparisons",
+    "topic": "Call by Reference",
+    "question": "Compared to call by value, call by reference generally avoids:",
+    "options": [
+      "All forms of function calls",
+      "The overhead of copying large amounts of data, since only an address is passed",
+      "The need to ever use a return statement",
+      "The possibility of a function having any parameters"
+    ],
+    "answer": "B",
+    "explanation": "Passing an address instead of the full value can be more efficient, especially for larger data such as arrays or structures."
+  },
+  {
+    "id": 141,
+    "level": "Intermediate",
+    "type": "Memory behavior",
+    "topic": "Call by Reference",
+    "question": "In call by reference, how many copies of the actual data (not the address) typically exist?",
+    "options": [
+      "Only one, since the function accesses the original data directly",
+      "Always exactly two independent copies",
+      "No memory is used at all",
+      "Three or more copies"
+    ],
+    "answer": "A",
+    "explanation": "Unlike call by value, call by reference does not duplicate the data itself; only the address is passed, so one copy of the data exists."
+  },
+  {
+    "id": 142,
+    "level": "Intermediate",
+    "type": "Limitations",
+    "topic": "Call by Reference",
+    "question": "Which of the following is a common source of errors when using call by reference with pointers?",
+    "options": [
+      "Declaring the function with a return type",
+      "Passing too many integer values by mistake",
+      "Using the function more than once in the program",
+      "Dereferencing an uninitialized or invalid pointer"
+    ],
+    "answer": "D",
+    "explanation": "A common bug with pointer-based call by reference is dereferencing a pointer that does not point to valid memory, causing undefined behavior."
+  },
+  {
+    "id": 143,
+    "level": "Advanced",
+    "type": "Return mechanism",
+    "topic": "Return and Their Underlying Implementation",
+    "question": "At the implementation level, the return statement typically works by:",
+    "options": [
+      "Placing the return value in a designated location (such as a register) and transferring control back to the caller",
+      "Deleting the calling function from memory",
+      "Writing the value directly to a file on disk",
+      "Restarting the program from main()"
+    ],
+    "answer": "A",
+    "explanation": "Internally, the return value is often placed in a CPU register, and control is handed back to the point right after the function call."
+  },
+  {
+    "id": 144,
+    "level": "Advanced",
+    "type": "Control transfer",
+    "topic": "Return and Their Underlying Implementation",
+    "question": "When a function returns, control is transferred back to:",
+    "options": [
+      "The point immediately after the function call in the calling code",
+      "The operating system, ending the program",
+      "The very beginning of the program",
+      "A randomly chosen function in the program"
+    ],
+    "answer": "A",
+    "explanation": "Execution resumes exactly where the function was called from, right after the call statement."
+  },
+  {
+    "id": 145,
+    "level": "Advanced",
+    "type": "Returning values",
+    "topic": "Return and Their Underlying Implementation",
+    "question": "In many implementations, where is a function's integer return value commonly placed before control returns to the caller?",
+    "options": [
+      "On the hard disk",
+      "In the function's own parameter list",
+      "In a specific CPU register reserved for return values",
+      "In a newly created global array"
+    ],
+    "answer": "C",
+    "explanation": "Compilers commonly use a designated CPU register to hold the return value so the caller can retrieve it after the call."
+  },
+  {
+    "id": 146,
+    "level": "Advanced",
+    "type": "Program flow",
+    "topic": "Return and Their Underlying Implementation",
+    "question": "The return statement affects program flow by:",
+    "options": [
+      "Creating a new independent thread of execution",
+      "Ending the current function's execution and resuming the caller's flow",
+      "Preventing the program from ever ending",
+      "Looping back to the start of the same function automatically"
+    ],
+    "answer": "B",
+    "explanation": "The return statement is the mechanism that ends a function's flow of execution and resumes the caller's flow."
+  },
+  {
+    "id": 147,
+    "level": "Advanced",
+    "type": "Implementation concepts",
+    "topic": "Return and Their Underlying Implementation",
+    "question": "The call stack plays a role in return statement implementation by:",
+    "options": [
+      "Replacing the need for a return type",
+      "Storing the return address so control can go back to the correct place after the function ends",
+      "Storing only comments from the source code",
+      "Permanently storing all variables from every function ever called"
+    ],
+    "answer": "B",
+    "explanation": "The call stack keeps track of the return address (and local data), enabling the program to resume correctly after a function call."
+  },
+  {
+    "id": 148,
+    "level": "Advanced",
+    "type": "Return mechanism",
+    "topic": "Return and Their Underlying Implementation",
+    "question": "When a function with a non-void return type finishes without an explicit return statement, its underlying behavior is:",
+    "options": [
+      "Guaranteed to cause an infinite loop",
+      "Undefined, since no valid return value has been set",
+      "Guaranteed to return the value 1",
+      "Guaranteed to convert the function into void automatically"
+    ],
+    "answer": "B",
+    "explanation": "If a non-void function does not execute a return with a value, the value received by the caller is undefined."
+  },
+  {
+    "id": 149,
+    "level": "Advanced",
+    "type": "Control transfer",
+    "topic": "Return and Their Underlying Implementation",
+    "question": "Underlying the return mechanism, which address is used to determine exactly where execution should resume in the caller?",
+    "options": [
+      "The return address stored when the function was called",
+      "The address of the first variable declared in main()",
+      "The address of the operating system kernel",
+      "The address of the last printed output"
+    ],
+    "answer": "A",
+    "explanation": "The return address, saved on the call stack at the time of the call, tells the program precisely where to resume in the caller."
+  },
+  {
+    "id": 150,
+    "level": "Advanced",
+    "type": "Iteration vs Recursion",
+    "topic": "Similarities and Comparisons",
+    "question": "Which statement correctly compares iteration and recursion?",
+    "options": [
+      "Both can solve repetitive problems, but recursion uses function calls while iteration uses loop constructs",
+      "Recursion never uses the call stack, unlike iteration",
+      "Iteration always requires a base case, just like recursion",
+      "Iteration cannot repeat any task more than once"
+    ],
+    "answer": "A",
+    "explanation": "Both techniques repeat work, but they differ in mechanism: recursion via repeated function calls, iteration via loops."
+  },
+  {
+    "id": 151,
+    "level": "Advanced",
+    "type": "Call by Value vs Call by Reference",
+    "topic": "Similarities and Comparisons",
+    "question": "What is a similarity between call by value and call by reference?",
+    "options": [
+      "Both are techniques used to pass arguments to a function",
+      "Both are exclusive to recursive functions",
+      "Both require the use of the void keyword",
+      "Both always modify the caller's original variable"
+    ],
+    "answer": "A",
+    "explanation": "Despite their differences in behavior, both are fundamentally mechanisms for passing arguments into a function."
+  },
+  {
+    "id": 152,
+    "level": "Advanced",
+    "type": "Library vs User-defined Functions",
+    "topic": "Similarities and Comparisons",
+    "question": "Which of the following is true for both library functions and user-defined functions?",
+    "options": [
+      "Both can only be used inside the main() function",
+      "Both are invoked using a function call with an appropriate interface",
+      "Both are automatically included without any header file or declaration",
+      "Both must always return an integer value"
+    ],
+    "answer": "B",
+    "explanation": "Whether a function is from the standard library or written by the programmer, it is invoked through a function call and interface."
+  },
+  {
+    "id": 153,
+    "level": "Advanced",
+    "type": "Formal vs Actual Arguments",
+    "topic": "Similarities and Comparisons",
+    "question": "Which of the following correctly compares formal and actual arguments?",
+    "options": [
+      "Actual arguments are supplied at the call site, while formal arguments receive them in the function definition",
+      "Formal and actual arguments always have different data types",
+      "Formal arguments are supplied by the caller directly",
+      "Actual arguments exist only inside the function body"
+    ],
+    "answer": "A",
+    "explanation": "Actual arguments are the values given by the caller; formal arguments are the corresponding parameters that receive them inside the function."
+  },
+  {
+    "id": 154,
+    "level": "Advanced",
+    "type": "Return Value vs void",
+    "topic": "Similarities and Comparisons",
+    "question": "How do return-value functions and void functions differ in their interface?",
+    "options": [
+      "Return-value functions cannot accept any parameters",
+      "Void functions always accept more parameters than return-value functions",
+      "There is no meaningful difference between them",
+      "Return-value functions send a result back via return; void functions do not send back any value"
+    ],
+    "answer": "D",
+    "explanation": "The key difference lies in the return type: one produces an output value, and the other does not."
+  },
+  {
+    "id": 155,
+    "level": "Advanced",
+    "type": "Local Variables vs Function Parameters",
+    "topic": "Similarities and Comparisons",
+    "question": "What do local variables and function parameters have in common?",
+    "options": [
+      "Both exist for the entire duration of the program by default",
+      "Both must be declared using the keyword void",
+      "Both are typically scoped to, and exist only within, the function in which they are declared",
+      "Both are always initialized to the same default value"
+    ],
+    "answer": "C",
+    "explanation": "Function parameters behave much like local variables — both are limited in scope and lifetime to the function itself."
+  },
+  {
+    "id": 156,
+    "level": "Advanced",
+    "type": "Function Declaration vs Function Definition",
+    "topic": "Similarities and Comparisons",
+    "question": "How does a function declaration differ from a function definition?",
+    "options": [
+      "A declaration includes the function body, while a definition does not",
+      "They are exactly the same and interchangeable in every context",
+      "A definition can never include a return type",
+      "A declaration specifies only the interface (prototype), while a definition provides the full body of the function"
+    ],
+    "answer": "D",
+    "explanation": "A declaration (prototype) tells the compiler about the interface; the definition provides the actual implementation/body."
+  },
+  {
+    "id": 157,
+    "level": "Advanced",
+    "type": "Iteration vs Recursion",
+    "topic": "Similarities and Comparisons",
+    "question": "In terms of memory usage, how do iterative and recursive solutions typically compare for the same problem?",
+    "options": [
+      "Recursive solutions always use less memory than iterative ones",
+      "Iterative solutions generally use less memory since they avoid repeated function call overhead",
+      "Both use exactly the same amount of memory in all cases",
+      "Neither approach uses any memory at all"
+    ],
+    "answer": "B",
+    "explanation": "Because recursion adds a new stack frame per call, it commonly uses more memory than an equivalent loop-based solution."
+  },
+  {
+    "id": 158,
+    "level": "Advanced",
+    "type": "Call by Value vs Call by Reference",
+    "topic": "Similarities and Comparisons",
+    "question": "Which comparison between call by value and call by reference is accurate?",
+    "options": [
+      "Call by value is implemented using the & operator in C",
+      "Call by value protects the original data; call by reference allows direct modification of the original data",
+      "Call by reference always uses more memory to store full data copies",
+      "Both methods behave identically in every situation"
+    ],
+    "answer": "B",
+    "explanation": "This is the core practical distinction between the two parameter-passing methods."
+  },
+  {
+    "id": 159,
+    "level": "Advanced",
+    "type": "Library vs User-defined Functions",
+    "topic": "Similarities and Comparisons",
+    "question": "Which is a key difference between library functions and user-defined functions?",
+    "options": [
+      "Library functions are pre-written and provided by the compiler/standard library, while user-defined functions are written by the programmer",
+      "Library functions must always be recursive",
+      "User-defined functions cannot accept parameters",
+      "There is no difference; they are the same in C"
+    ],
+    "answer": "A",
+    "explanation": "Library functions come ready-made with the compiler (e.g., in stdio.h), whereas user-defined functions are created by the programmer for specific tasks."
+  },
+  {
+    "id": 160,
+    "level": "Advanced",
+    "type": "Formal vs Actual Arguments",
+    "topic": "Similarities and Comparisons",
+    "question": "Formal parameters and actual arguments must generally agree in which aspect during a function call?",
+    "options": [
+      "The number of return statements in the function",
+      "The order in which functions are defined in the file",
+      "Number of arguments and compatible data types",
+      "Variable names used in each function"
+    ],
+    "answer": "C",
+    "explanation": "For a function call to work correctly, the actual arguments must correspond in count and type to the formal parameters."
+  },
+  {
+    "id": 161,
+    "level": "Advanced",
+    "type": "Return Value vs void",
+    "topic": "Similarities and Comparisons",
+    "question": "Which scenario would call for a void function rather than one with a return value?",
+    "options": [
+      "When the caller needs to store the function's result in a variable",
+      "When the function is being used purely for a mathematical calculation",
+      "When the function must send back a calculated total",
+      "When the function only needs to perform an action, such as displaying output, without producing a usable result"
+    ],
+    "answer": "D",
+    "explanation": "Void functions are appropriate for action-only tasks where no value needs to be communicated back to the caller."
+  },
+  {
+    "id": 162,
+    "level": "Advanced",
+    "type": "Iteration vs Recursion",
+    "topic": "Similarities and Comparisons",
+    "question": "Which of these problems is typically easier to express using recursion rather than plain iteration?",
+    "options": [
+      "Traversing a hierarchical, tree-like structure",
+      "Reading a single value from the keyboard",
+      "Adding two integers together",
+      "Printing numbers from 1 to 10 in sequence"
+    ],
+    "answer": "A",
+    "explanation": "Hierarchical/self-similar structures, like trees, are naturally suited to a recursive approach compared to simple iteration."
+  },
+  {
+    "id": 163,
+    "level": "Advanced",
+    "type": "Local Variables vs Function Parameters",
+    "topic": "Similarities and Comparisons",
+    "question": "Which statement correctly distinguishes function parameters from ordinary local variables?",
+    "options": [
+      "Parameters can never be modified inside the function",
+      "Parameters do not occupy any memory, unlike local variables",
+      "Local variables are always visible to other functions, unlike parameters",
+      "Parameters receive their initial values from the caller, while ordinary local variables are typically initialized within the function body"
+    ],
+    "answer": "D",
+    "explanation": "The key distinction is how each gets its initial value: parameters come from the caller, while local variables are set within the function."
+  },
+  {
+    "id": 164,
+    "level": "Advanced",
+    "type": "Call by Value vs Call by Reference",
+    "topic": "Similarities and Comparisons",
+    "question": "Assertion (A): Call by reference is implemented in C using pointers. Reason (R): C does not support true reference parameters like some other languages. Choose the correct option.",
+    "options": [
+      "A is false, but R is true",
+      "Both A and R are false",
+      "A is true, but R is false",
+      "Both A and R are true, and R correctly explains A"
+    ],
+    "answer": "D",
+    "explanation": "Since C lacks native reference parameters, pointers are used to simulate call by reference — R correctly explains why A is true."
+  },
+  {
+    "id": 165,
+    "level": "Advanced",
+    "type": "Function Declaration vs Function Definition",
+    "topic": "Similarities and Comparisons",
+    "question": "Assertion (A): A function can be declared multiple times but defined only once in a program. Reason (R): Multiple declarations simply repeat the same interface information for the compiler, while multiple definitions would create conflicting implementations. Choose the correct option.",
+    "options": [
+      "Both A and R are true, and R correctly explains A",
+      "A is true, but R is false",
+      "A is false, but R is true",
+      "Both A and R are false"
+    ],
+    "answer": "A",
+    "explanation": "A function's prototype can appear multiple times without conflict, but having more than one definition (body) causes a redefinition error — which R explains correctly."
+  }
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

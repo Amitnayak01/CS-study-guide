@@ -1,0 +1,3574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Scope Rules",
+    "question": "What does 'scope' of a variable refer to in Java?",
+    "options": [
+      "The data type the variable can hold",
+      "The memory address assigned to the variable",
+      "The number of times a variable can be used",
+      "The region of the program within which the variable can be accessed"
+    ],
+    "answer": "D",
+    "explanation": "Scope defines the block or region of code in which a declared variable is visible and accessible."
+  },
+  {
+    "id": 2,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Scope Rules",
+    "question": "A variable declared inside a method body is called a:",
+    "options": [
+      "Instance variable",
+      "Class variable",
+      "Local variable",
+      "Global variable"
+    ],
+    "answer": "C",
+    "explanation": "Variables declared inside a method, constructor, or block are local variables, scoped to that block only."
+  },
+  {
+    "id": 3,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Scope Rules",
+    "question": "Local variables in Java are stored in:",
+    "options": [
+      "Heap memory, for the life of the object",
+      "Static memory, for the life of the program",
+      "Stack memory, for the duration of the method call",
+      "Constant pool, permanently"
+    ],
+    "answer": "C",
+    "explanation": "Local variables exist only while their enclosing method/block executes and are held on the stack."
+  },
+  {
+    "id": 4,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Scope Rules",
+    "question": "A variable declared inside a class but outside any method is known as:",
+    "options": [
+      "An instance (member) variable",
+      "A local variable",
+      "A parameter variable",
+      "A block variable"
+    ],
+    "answer": "A",
+    "explanation": "Variables declared directly in the class body are member/instance variables, scoped to the whole class."
+  },
+  {
+    "id": 5,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Scope Rules",
+    "question": "What happens if a local variable is used before it is initialized?",
+    "options": [
+      "It is automatically initialized to zero",
+      "It is initialized to null",
+      "A compile-time error occurs",
+      "The program runs but prints garbage value"
+    ],
+    "answer": "C",
+    "explanation": "Unlike instance variables, local variables are not given default values, so using them uninitialized causes a compiler error."
+  },
+  {
+    "id": 6,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Scope Rules",
+    "question": "Consider:\nif (true) {\n    int x = 5;\n}\nSystem.out.println(x);\nWhat is the result?",
+    "options": [
+      "Prints 5",
+      "Compilation error, x is out of scope",
+      "Prints 0",
+      "Runtime exception"
+    ],
+    "answer": "B",
+    "explanation": "x is declared inside the if-block, so its scope ends with that block; it cannot be accessed outside it."
+  },
+  {
+    "id": 7,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Scope Rules",
+    "question": "Can a local variable declared in an outer block be accessed inside an inner nested block?",
+    "options": [
+      "No, never",
+      "Only if declared static",
+      "Only if declared public",
+      "Yes, as long as it is declared before the inner block begins"
+    ],
+    "answer": "D",
+    "explanation": "Inner blocks can see variables of the enclosing block declared earlier in the same method."
+  },
+  {
+    "id": 8,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Scope Rules",
+    "question": "Which of the following is illegal in Java regarding scope?",
+    "options": [
+      "Declaring a local variable with the same name as another local variable in the same or an enclosing active block",
+      "Declaring a local variable with the same name as a class-level instance variable",
+      "Declaring two local variables with the same name in two separate, non-nested methods",
+      "Declaring a parameter with the same name as a class-level instance variable"
+    ],
+    "answer": "A",
+    "explanation": "Java does not allow re-declaring an identifier that is already in scope within the same or an enclosing block; however, shadowing an instance variable by a local one is permitted."
+  },
+  {
+    "id": 9,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Scope Rules",
+    "question": "When a local variable has the same name as an instance variable, this is called:",
+    "options": [
+      "Overloading",
+      "Overriding",
+      "Casting",
+      "Shadowing"
+    ],
+    "answer": "D",
+    "explanation": "The local variable temporarily hides (shadows) the instance variable of the same name within its scope."
+  },
+  {
+    "id": 10,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Scope Rules",
+    "question": "The scope of a method parameter is limited to:",
+    "options": [
+      "The body of the method in which it is declared",
+      "The entire class",
+      "The entire package",
+      "Only the first statement of the method"
+    ],
+    "answer": "A",
+    "explanation": "Method parameters behave like local variables and exist only within that method's body."
+  },
+  {
+    "id": 11,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Scope Rules",
+    "question": "In `for(int i=0;i<5;i++){ }`, after the loop ends, can `i` be used outside the loop?",
+    "options": [
+      "No, i is scoped only to the for-loop",
+      "Yes, i retains its last value",
+      "Yes, but only as a static variable",
+      "Yes, if declared final"
+    ],
+    "answer": "A",
+    "explanation": "A variable declared in the for-loop's initialization is scoped to the loop itself and is not visible after it ends."
+  },
+  {
+    "id": 12,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Scope Rules",
+    "question": "class Demo {\n  int x = 10;\n  void show(){\n    int x = 20;\n    System.out.println(x);\n  }\n}\nWhat will `show()` print?",
+    "options": [
+      "10",
+      "20",
+      "Compilation error",
+      "0"
+    ],
+    "answer": "B",
+    "explanation": "The local variable x shadows the instance variable x, so the local value 20 is printed within the method."
+  },
+  {
+    "id": 13,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Data",
+    "question": "A static data member in a class is:",
+    "options": [
+      "Created separately for every object",
+      "Accessible only inside constructors",
+      "Automatically final",
+      "Shared by all objects of the class"
+    ],
+    "answer": "D",
+    "explanation": "Static data members belong to the class itself, so a single copy is shared among all instances."
+  },
+  {
+    "id": 14,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Data",
+    "question": "How is a static variable associated with a class?",
+    "options": [
+      "It is created only when the first object is created",
+      "It is created once per object",
+      "It is loaded once when the class is loaded, independent of object creation",
+      "It is never loaded into memory"
+    ],
+    "answer": "C",
+    "explanation": "Static members are allocated memory at class-loading time, not at object-creation time."
+  },
+  {
+    "id": 15,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Data",
+    "question": "If one object changes the value of a static variable, what happens to other objects?",
+    "options": [
+      "Other objects retain the old value",
+      "All objects see the updated value since it is shared",
+      "A new copy is created for each object",
+      "It causes a runtime exception"
+    ],
+    "answer": "B",
+    "explanation": "Since only one copy of a static variable exists, a change through any object is visible to all objects."
+  },
+  {
+    "id": 16,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Data",
+    "question": "A static variable can be accessed using:",
+    "options": [
+      "Both the class name and an object reference",
+      "Only the class name",
+      "Only an object reference",
+      "Neither, only within static methods"
+    ],
+    "answer": "A",
+    "explanation": "Although recommended access is via the class name, Java also permits access through an object reference."
+  },
+  {
+    "id": 17,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Data",
+    "question": "Which statement correctly distinguishes static and instance data?",
+    "options": [
+      "Static data has one copy per object; instance data has one copy per class",
+      "Both have one copy per object",
+      "Static data has one copy per class; instance data has one copy per object",
+      "Both have one copy per class"
+    ],
+    "answer": "C",
+    "explanation": "This is the fundamental distinction: static = per class, instance = per object."
+  },
+  {
+    "id": 18,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Data",
+    "question": "Which keyword is used to declare a static data member?",
+    "options": [
+      "final",
+      "static",
+      "const",
+      "shared"
+    ],
+    "answer": "B",
+    "explanation": "The `static` keyword marks a data member as belonging to the class rather than instances."
+  },
+  {
+    "id": 19,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Data",
+    "question": "class Counter {\n  static int count = 0;\n  Counter(){ count++; }\n}\nIf 3 objects of Counter are created, what is the value of count?",
+    "options": [
+      "1",
+      "3",
+      "0",
+      "Compilation error"
+    ],
+    "answer": "B",
+    "explanation": "Each constructor call increments the single shared static variable count, resulting in 3 after three objects."
+  },
+  {
+    "id": 20,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Data",
+    "question": "What is the default value of a static int field if not explicitly initialized?",
+    "options": [
+      "null",
+      "Garbage value",
+      "0",
+      "Compilation error"
+    ],
+    "answer": "C",
+    "explanation": "Static fields, like instance fields, receive default values automatically; for int this default is 0."
+  },
+  {
+    "id": 21,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Data",
+    "question": "A variable declared as `static final` typically represents:",
+    "options": [
+      "A variable that changes per object",
+      "A constant shared by the entire class",
+      "A variable that cannot be accessed",
+      "A local variable"
+    ],
+    "answer": "B",
+    "explanation": "Combining static with final creates a single, unchangeable, class-wide constant."
+  },
+  {
+    "id": 22,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Data",
+    "question": "Can a static variable be accessed from a non-static (instance) method?",
+    "options": [
+      "Yes, without any restriction",
+      "No, never",
+      "Only using reflection",
+      "Only if declared public"
+    ],
+    "answer": "A",
+    "explanation": "Instance methods can freely access static members because they exist independent of any particular object."
+  },
+  {
+    "id": 23,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Methods",
+    "question": "A static method belongs to:",
+    "options": [
+      "A specific object instance only",
+      "The class, not to any particular object",
+      "The package only",
+      "The interface only"
+    ],
+    "answer": "B",
+    "explanation": "Static methods are associated with the class and can be invoked without creating an object."
+  },
+  {
+    "id": 24,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Methods",
+    "question": "How is a static method typically invoked?",
+    "options": [
+      "ClassName.methodName()",
+      "object.new methodName()",
+      "this.methodName() only",
+      "super.methodName() only"
+    ],
+    "answer": "A",
+    "explanation": "Static methods are conventionally called using the class name, though calling via an object reference also compiles."
+  },
+  {
+    "id": 25,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Methods",
+    "question": "Can a static method directly access static data members of its class?",
+    "options": [
+      "No, it must create an object first",
+      "Only through reflection",
+      "Yes, directly",
+      "Only if the data is final"
+    ],
+    "answer": "C",
+    "explanation": "Static methods can freely access static data because both belong to the class, not to any instance."
+  },
+  {
+    "id": 26,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Methods",
+    "question": "Which of the following CANNOT be used directly inside a static method?",
+    "options": [
+      "Static variables of the class",
+      "Local variables declared within the method",
+      "Static methods of the class",
+      "Non-static (instance) variables of the class"
+    ],
+    "answer": "D",
+    "explanation": "Instance members require an object to exist, but a static method may run without any object, so direct access is disallowed."
+  },
+  {
+    "id": 27,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Methods",
+    "question": "Why can't the `this` keyword be used inside a static method?",
+    "options": [
+      "Because `this` is a reserved keyword only for constructors",
+      "Because static methods cannot have parameters",
+      "Because `this` refers to the current object, and a static method may be called without any object existing",
+      "Because `this` is only valid in interfaces"
+    ],
+    "answer": "C",
+    "explanation": "Static methods are class-level and do not operate in the context of an instance, so `this` has no valid meaning there."
+  },
+  {
+    "id": 28,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Methods",
+    "question": "Which of these correctly differentiates static and instance methods?",
+    "options": [
+      "An instance method can be called without creating an object; a static method requires an object",
+      "A static method can be called without creating an object; an instance method requires an object",
+      "Both require creating an object",
+      "Neither requires an object"
+    ],
+    "answer": "B",
+    "explanation": "This is the core operational difference between the two kinds of methods."
+  },
+  {
+    "id": 29,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Methods",
+    "question": "Can static methods be overloaded?",
+    "options": [
+      "No, static methods cannot be overloaded",
+      "Yes, based on differing parameter lists",
+      "Only if they return different types",
+      "Only in abstract classes"
+    ],
+    "answer": "B",
+    "explanation": "Overloading depends on method signature (name and parameters), not on the static modifier, so static methods can be overloaded."
+  },
+  {
+    "id": 30,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Methods",
+    "question": "class MathOps {\n  static int square(int n){ return n*n; }\n}\nWhat does `MathOps.square(5)` return?",
+    "options": [
+      "25",
+      "10",
+      "5",
+      "Compilation error"
+    ],
+    "answer": "A",
+    "explanation": "The static method simply computes and returns n*n, i.e., 5*5 = 25."
+  },
+  {
+    "id": 31,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Methods",
+    "question": "Why is the `main` method declared static in Java?",
+    "options": [
+      "Because main cannot take arguments otherwise",
+      "So the JVM can call it without creating an object of the class first",
+      "Because static methods run faster",
+      "Because main must return an int"
+    ],
+    "answer": "B",
+    "explanation": "The JVM invokes main() before any object of the class exists, which requires main to be static."
+  },
+  {
+    "id": 32,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Methods",
+    "question": "Can a static method be truly overridden (polymorphically) in Java?",
+    "options": [
+      "No, static methods are hidden, not overridden, in a subclass",
+      "Yes, exactly like instance methods",
+      "Yes, but only with the same return type",
+      "Yes, if declared final"
+    ],
+    "answer": "A",
+    "explanation": "Redeclaring a static method in a subclass results in method hiding, resolved at compile time, not runtime polymorphism."
+  },
+  {
+    "id": 33,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Blocks",
+    "question": "A static block in a class is used to:",
+    "options": [
+      "Initialize static data members when the class is loaded",
+      "Initialize instance variables when an object is created",
+      "Define the main method",
+      "Declare abstract methods"
+    ],
+    "answer": "A",
+    "explanation": "Static blocks run once, at class-loading time, mainly to perform static initialization."
+  },
+  {
+    "id": 34,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Blocks",
+    "question": "Which is the correct syntax for a static block?",
+    "options": [
+      "block static { // code }",
+      "static void { // code }",
+      "final static() { // code }",
+      "static { // code }"
+    ],
+    "answer": "D",
+    "explanation": "A static block is written using the keyword `static` followed by a block of code in braces."
+  },
+  {
+    "id": 35,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Blocks",
+    "question": "When does a static block execute?",
+    "options": [
+      "Once, when the class is first loaded into memory",
+      "Every time an object is created",
+      "Every time a method is called",
+      "Only when main() explicitly calls it"
+    ],
+    "answer": "A",
+    "explanation": "Static blocks execute a single time during class loading, before any object is created."
+  },
+  {
+    "id": 36,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Blocks",
+    "question": "If a class has a static block and a static variable declared before it, in what order are they executed?",
+    "options": [
+      "Static blocks always run before static variable initializations regardless of position",
+      "Static variables always run after all static blocks",
+      "In the order they appear in the source code",
+      "The order is undefined"
+    ],
+    "answer": "C",
+    "explanation": "Static initializers (variables and blocks) execute in the textual order in which they appear in the class."
+  },
+  {
+    "id": 37,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Blocks",
+    "question": "If a class has multiple static blocks, how are they executed?",
+    "options": [
+      "In reverse order",
+      "In the order they are written, top to bottom",
+      "Only the last one executes",
+      "Only the first one executes"
+    ],
+    "answer": "B",
+    "explanation": "Java allows multiple static blocks, and they all execute sequentially in their source-code order."
+  },
+  {
+    "id": 38,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Blocks",
+    "question": "Static blocks are primarily related to which stage of class lifecycle?",
+    "options": [
+      "Object destruction",
+      "Garbage collection",
+      "Class loading/initialization",
+      "Method invocation"
+    ],
+    "answer": "C",
+    "explanation": "Static initialization, including static blocks, is performed as part of the class-loading process by the JVM."
+  },
+  {
+    "id": 39,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Blocks",
+    "question": "class Test {\n  static int x;\n  static { x = 10; System.out.println(\"Block1\"); }\n  static { System.out.println(\"Block2: \"+x); }\n  public static void main(String[] a){ System.out.println(\"Main\"); }\n}\nWhat is printed?",
+    "options": [
+      "Main, Block1, Block2: 10",
+      "Block1, Block2: 10, Main",
+      "Block2: 10, Block1, Main",
+      "Block1, Block2: 0, Main"
+    ],
+    "answer": "B",
+    "explanation": "Static blocks run in order before main() begins, so Block1 sets x and prints, then Block2 prints x=10, then Main runs."
+  },
+  {
+    "id": 40,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Blocks",
+    "question": "A common purpose of a static block is to:",
+    "options": [
+      "Initialize instance variables for each object separately",
+      "Create objects of the class automatically",
+      "Perform complex initialization of static variables that cannot be done in a single expression",
+      "Override methods of the superclass"
+    ],
+    "answer": "C",
+    "explanation": "Static blocks allow multi-statement or conditional logic to initialize static state, unlike a simple assignment."
+  },
+  {
+    "id": 41,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Blocks",
+    "question": "A static block differs from a static method mainly because:",
+    "options": [
+      "A static block can be called explicitly like a method",
+      "A static method executes automatically at class loading",
+      "A static block can accept parameters and return values",
+      "A static block executes automatically at class loading, while a static method must be explicitly called"
+    ],
+    "answer": "D",
+    "explanation": "Static blocks have no name and cannot be invoked directly; they run once automatically, unlike static methods."
+  },
+  {
+    "id": 42,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Static Blocks",
+    "question": "Can a static block directly access an instance (non-static) variable of the class?",
+    "options": [
+      "Yes, always",
+      "Yes, but only using `this`",
+      "Yes, but only in the last static block",
+      "No, it cannot, since no object exists yet at class-loading time"
+    ],
+    "answer": "D",
+    "explanation": "Static blocks execute before any object exists, so instance variables (tied to objects) are not accessible directly."
+  },
+  {
+    "id": 43,
+    "level": "Intermediate",
+    "type": "Modifier",
+    "topic": "Class, Method, Data Member and Variable Modifiers",
+    "question": "Which modifier can be applied to a top-level class to prevent it from being extended?",
+    "options": [
+      "private",
+      "protected",
+      "final",
+      "static"
+    ],
+    "answer": "C",
+    "explanation": "A `final` class cannot be subclassed; this restricts inheritance of that class."
+  },
+  {
+    "id": 44,
+    "level": "Intermediate",
+    "type": "Modifier",
+    "topic": "Class, Method, Data Member and Variable Modifiers",
+    "question": "Which access modifier(s) can be applied to a top-level (outer) class?",
+    "options": [
+      "private or protected only",
+      "public, private, and protected",
+      "static only",
+      "public or default (no modifier) only"
+    ],
+    "answer": "D",
+    "explanation": "Top-level classes can only be public or have default (package-private) access; private and protected are not allowed for top-level classes."
+  },
+  {
+    "id": 45,
+    "level": "Intermediate",
+    "type": "Modifier",
+    "topic": "Class, Method, Data Member and Variable Modifiers",
+    "question": "Which modifier, when applied to a class, means it cannot be instantiated directly?",
+    "options": [
+      "abstract",
+      "final",
+      "static",
+      "public"
+    ],
+    "answer": "A",
+    "explanation": "An `abstract` class cannot have objects created directly from it; it must be subclassed."
+  },
+  {
+    "id": 46,
+    "level": "Intermediate",
+    "type": "Modifier",
+    "topic": "Class, Method, Data Member and Variable Modifiers",
+    "question": "Which of the following class modifier combinations is invalid?",
+    "options": [
+      "public abstract class",
+      "public final class",
+      "abstract final class",
+      "abstract class (no other modifier)"
+    ],
+    "answer": "C",
+    "explanation": "A class cannot be both abstract (must be subclassed) and final (cannot be subclassed) at the same time."
+  },
+  {
+    "id": 47,
+    "level": "Intermediate",
+    "type": "Modifier",
+    "topic": "Class, Method, Data Member and Variable Modifiers",
+    "question": "Which modifier prevents a method from being overridden in a subclass?",
+    "options": [
+      "static",
+      "abstract",
+      "public",
+      "final"
+    ],
+    "answer": "D",
+    "explanation": "Declaring a method `final` locks its implementation, disallowing subclasses from overriding it."
+  },
+  {
+    "id": 48,
+    "level": "Intermediate",
+    "type": "Modifier",
+    "topic": "Class, Method, Data Member and Variable Modifiers",
+    "question": "An abstract method must be declared in which type of class?",
+    "options": [
+      "An abstract class or an interface",
+      "A final class",
+      "A static nested class only",
+      "Any concrete class"
+    ],
+    "answer": "A",
+    "explanation": "Abstract methods have no body and can only appear in abstract classes or interfaces, which need not provide implementation."
+  },
+  {
+    "id": 49,
+    "level": "Intermediate",
+    "type": "Modifier",
+    "topic": "Class, Method, Data Member and Variable Modifiers",
+    "question": "Which method declaration is invalid?",
+    "options": [
+      "public abstract void show();",
+      "public static void show(){}",
+      "abstract final void show();",
+      "protected final void show(){}"
+    ],
+    "answer": "C",
+    "explanation": "abstract and final are contradictory on a method: abstract requires overriding, final forbids it."
+  },
+  {
+    "id": 50,
+    "level": "Intermediate",
+    "type": "Modifier",
+    "topic": "Class, Method, Data Member and Variable Modifiers",
+    "question": "Which modifier makes a data member accessible only within its own class?",
+    "options": [
+      "private",
+      "public",
+      "protected",
+      "default (no modifier)"
+    ],
+    "answer": "A",
+    "explanation": "A `private` member can be accessed only from within the same class in which it is declared."
+  },
+  {
+    "id": 51,
+    "level": "Intermediate",
+    "type": "Modifier",
+    "topic": "Class, Method, Data Member and Variable Modifiers",
+    "question": "Which modifier allows a data member to be accessed by subclasses in other packages, but not by unrelated classes?",
+    "options": [
+      "private",
+      "default (no modifier)",
+      "protected",
+      "static"
+    ],
+    "answer": "C",
+    "explanation": "`protected` grants access to the same package and to subclasses even in different packages."
+  },
+  {
+    "id": 52,
+    "level": "Intermediate",
+    "type": "Modifier",
+    "topic": "Class, Method, Data Member and Variable Modifiers",
+    "question": "Which modifier makes a variable's value unchangeable once assigned?",
+    "options": [
+      "static",
+      "private",
+      "final",
+      "abstract"
+    ],
+    "answer": "C",
+    "explanation": "A `final` variable can be assigned only once; any further reassignment causes a compile-time error."
+  },
+  {
+    "id": 53,
+    "level": "Intermediate",
+    "type": "Modifier",
+    "topic": "Class, Method, Data Member and Variable Modifiers",
+    "question": "When no access modifier is specified for a class member, what is its access level called?",
+    "options": [
+      "Default (package-private) access",
+      "Public access",
+      "Private access",
+      "Protected access"
+    ],
+    "answer": "A",
+    "explanation": "Absence of an explicit modifier gives package-private (default) access, visible only within the same package."
+  },
+  {
+    "id": 54,
+    "level": "Intermediate",
+    "type": "Modifier",
+    "topic": "Class, Method, Data Member and Variable Modifiers",
+    "question": "Which modifier can be legally applied to a local variable?",
+    "options": [
+      "public",
+      "protected",
+      "final",
+      "private"
+    ],
+    "answer": "C",
+    "explanation": "Local variables can only be declared `final` among access-related modifiers; public/private/protected are not permitted for locals."
+  },
+  {
+    "id": 55,
+    "level": "Intermediate",
+    "type": "Modifier",
+    "topic": "Class, Method, Data Member and Variable Modifiers",
+    "question": "A field declared `public static final` is typically used to represent:",
+    "options": [
+      "A variable unique to each object",
+      "A method that cannot be overridden",
+      "A globally accessible constant",
+      "A private helper field"
+    ],
+    "answer": "C",
+    "explanation": "This combination gives class-wide, unchangeable, and universally accessible values — the common way constants are declared."
+  },
+  {
+    "id": 56,
+    "level": "Intermediate",
+    "type": "Modifier",
+    "topic": "Class, Method, Data Member and Variable Modifiers",
+    "question": "What effect does the `static` modifier have on a method?",
+    "options": [
+      "It prevents the method from being called at all",
+      "It makes the method belong to the class, callable without an object",
+      "It makes the method abstract",
+      "It restricts the method to the same package only"
+    ],
+    "answer": "B",
+    "explanation": "Adding `static` associates the method with the class rather than any instance, allowing calls like ClassName.method()."
+  },
+  {
+    "id": 57,
+    "level": "Intermediate",
+    "type": "Modifier",
+    "topic": "Class, Method, Data Member and Variable Modifiers",
+    "question": "Which modifier is applicable to a method to indicate it has no body and must be implemented by subclasses?",
+    "options": [
+      "final",
+      "static",
+      "abstract",
+      "private"
+    ],
+    "answer": "C",
+    "explanation": "The `abstract` modifier on a method signals it must be overridden with an implementation in a concrete subclass."
+  },
+  {
+    "id": 58,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Abstract Classes",
+    "question": "An abstract class in Java is a class that:",
+    "options": [
+      "Contains only abstract methods and no implementation at all",
+      "May contain both abstract and concrete methods and cannot be instantiated directly",
+      "Can always be instantiated using `new`",
+      "Cannot have constructors"
+    ],
+    "answer": "B",
+    "explanation": "Abstract classes can mix declared-only (abstract) methods with fully implemented (concrete) ones, but objects cannot be created from them directly."
+  },
+  {
+    "id": 59,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Abstract Classes",
+    "question": "What is the main purpose of an abstract class?",
+    "options": [
+      "To prevent any class from ever extending it",
+      "To allow multiple inheritance of implementation",
+      "To store only static data",
+      "To provide a common base with partial implementation that subclasses must complete"
+    ],
+    "answer": "D",
+    "explanation": "Abstract classes let related subclasses share common code while forcing them to implement specific abstract behavior."
+  },
+  {
+    "id": 60,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Abstract Classes",
+    "question": "Which keyword is used to declare an abstract class?",
+    "options": [
+      "interface",
+      "abstract",
+      "static",
+      "final"
+    ],
+    "answer": "B",
+    "explanation": "The `abstract` keyword before `class` marks it as an abstract class."
+  },
+  {
+    "id": 61,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Abstract Classes",
+    "question": "An abstract method is a method that:",
+    "options": [
+      "Is declared without a body and must be implemented by a subclass",
+      "Has a complete body and can be called directly",
+      "Can only exist in a final class",
+      "Is automatically static"
+    ],
+    "answer": "A",
+    "explanation": "Abstract methods only declare a signature; the actual implementation is deferred to a concrete subclass."
+  },
+  {
+    "id": 62,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Abstract Classes",
+    "question": "Can an abstract class contain fully implemented (concrete) methods?",
+    "options": [
+      "Yes, alongside abstract methods",
+      "No, all methods must be abstract",
+      "Only static methods can be concrete",
+      "Only private methods can be concrete"
+    ],
+    "answer": "A",
+    "explanation": "Abstract classes may freely mix abstract method declarations with regular, fully implemented methods."
+  },
+  {
+    "id": 63,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Abstract Classes",
+    "question": "Can you create an object directly from an abstract class using `new`?",
+    "options": [
+      "Yes, always allowed",
+      "Yes, but only inside main()",
+      "No, it is not allowed",
+      "Yes, if it has no abstract methods declared"
+    ],
+    "answer": "C",
+    "explanation": "Even an abstract class with zero abstract methods still cannot be instantiated because of the `abstract` keyword itself."
+  },
+  {
+    "id": 64,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Abstract Classes",
+    "question": "If a subclass does not implement all abstract methods of its abstract superclass, the subclass must:",
+    "options": [
+      "Be declared final",
+      "Be declared static",
+      "Automatically inherit default implementations",
+      "Also be declared abstract"
+    ],
+    "answer": "D",
+    "explanation": "A concrete class must implement every inherited abstract method; otherwise it, too, must remain abstract."
+  },
+  {
+    "id": 65,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Abstract Classes",
+    "question": "Which of the following distinguishes an abstract class from a normal (concrete) class?",
+    "options": [
+      "A concrete class can have abstract methods but an abstract class cannot",
+      "Both are identical in every aspect",
+      "Only concrete classes can have constructors",
+      "An abstract class may have unimplemented (abstract) methods; a concrete class cannot"
+    ],
+    "answer": "D",
+    "explanation": "The presence of possible abstract methods and the inability to instantiate is what sets abstract classes apart."
+  },
+  {
+    "id": 66,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Abstract Classes",
+    "question": "Abstract classes are used in inheritance chiefly to:",
+    "options": [
+      "Prevent subclassing entirely",
+      "Enforce that subclasses provide specific behavior while sharing common structure",
+      "Allow objects to be created without any subclass",
+      "Avoid using constructors"
+    ],
+    "answer": "B",
+    "explanation": "They establish a contract-like relationship: shared code plus required, subclass-specific implementations."
+  },
+  {
+    "id": 67,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Abstract Classes",
+    "question": "Can an abstract class have a constructor?",
+    "options": [
+      "No, abstract classes cannot have constructors",
+      "Yes, but it can never be called",
+      "Yes, which is called when a subclass object is instantiated",
+      "Only static constructors are allowed"
+    ],
+    "answer": "C",
+    "explanation": "Abstract classes can define constructors, invoked via `super()` when a concrete subclass object is created."
+  },
+  {
+    "id": 68,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Abstract Classes",
+    "question": "abstract class Shape {\n  abstract void draw();\n}\nclass Circle extends Shape {\n}\nWhat happens when this code is compiled?",
+    "options": [
+      "Compilation error, because Circle does not implement draw()",
+      "Compiles successfully",
+      "Runtime exception when Circle object is created",
+      "Circle automatically becomes an interface"
+    ],
+    "answer": "A",
+    "explanation": "Since Circle is concrete but fails to override the abstract method draw(), the compiler reports an error."
+  },
+  {
+    "id": 69,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Abstract Classes",
+    "question": "Which statement about abstract classes is a common misconception that is actually FALSE?",
+    "options": [
+      "An abstract class can contain instance variables",
+      "An abstract class must contain at least one abstract method",
+      "An abstract class can have static methods",
+      "An abstract class can be used as a reference type"
+    ],
+    "answer": "B",
+    "explanation": "An abstract class is not required to declare any abstract method — it can be abstract purely to prevent instantiation."
+  },
+  {
+    "id": 70,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Interfaces",
+    "question": "An interface in Java is best described as:",
+    "options": [
+      "A class that can be instantiated directly",
+      "A contract that specifies a set of methods a class must implement",
+      "A special kind of static block",
+      "A private helper structure"
+    ],
+    "answer": "B",
+    "explanation": "Interfaces define what a class must do (its methods) without dictating how, forming a contract."
+  },
+  {
+    "id": 71,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Interfaces",
+    "question": "What is the main purpose of using interfaces?",
+    "options": [
+      "To store instance data unique to each object",
+      "To prevent classes from implementing any methods",
+      "To achieve abstraction and support multiple inheritance of type",
+      "To replace constructors"
+    ],
+    "answer": "C",
+    "explanation": "Interfaces let unrelated classes agree to a common set of behaviors, and a class may implement several interfaces."
+  },
+  {
+    "id": 72,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Interfaces",
+    "question": "Which keyword is used to declare an interface?",
+    "options": [
+      "abstract",
+      "class",
+      "interface",
+      "static"
+    ],
+    "answer": "C",
+    "explanation": "The `interface` keyword is used in place of `class` to define an interface type."
+  },
+  {
+    "id": 73,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Interfaces",
+    "question": "A class uses which keyword to implement an interface?",
+    "options": [
+      "implements",
+      "extends",
+      "imports",
+      "uses"
+    ],
+    "answer": "A",
+    "explanation": "Classes use `implements` to indicate they are fulfilling the contract defined by an interface."
+  },
+  {
+    "id": 74,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Interfaces",
+    "question": "By default, methods declared in an interface (without a body) are implicitly:",
+    "options": [
+      "public and abstract",
+      "private and final",
+      "protected and static",
+      "public and final"
+    ],
+    "answer": "A",
+    "explanation": "Interface methods without a body are, by default, public and abstract, requiring implementation in the implementing class."
+  },
+  {
+    "id": 75,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Interfaces",
+    "question": "Fields declared in an interface are implicitly:",
+    "options": [
+      "private and static",
+      "protected and final",
+      "default access and non-final",
+      "public, static, and final"
+    ],
+    "answer": "D",
+    "explanation": "Any variable in an interface is automatically treated as a constant: public, static, and final."
+  },
+  {
+    "id": 76,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Interfaces",
+    "question": "Can a class implement more than one interface at the same time?",
+    "options": [
+      "No, only one interface per class is allowed",
+      "Yes, a class can implement multiple interfaces",
+      "Only abstract classes can implement multiple interfaces",
+      "Only if the interfaces are in the same package"
+    ],
+    "answer": "B",
+    "explanation": "Java allows a class to implement several interfaces, which is how it supports multiple inheritance of type."
+  },
+  {
+    "id": 77,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Interfaces",
+    "question": "Since interface methods (without a body) are abstract by nature, what must an implementing class do?",
+    "options": [
+      "Leave them unimplemented",
+      "Declare them private",
+      "Convert them into static methods",
+      "Provide a concrete implementation for those methods"
+    ],
+    "answer": "D",
+    "explanation": "A non-abstract class implementing an interface must supply bodies for all its abstract methods."
+  },
+  {
+    "id": 78,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Interfaces",
+    "question": "Which of the following is a key difference between interfaces and abstract classes at this syllabus level?",
+    "options": [
+      "An abstract class can be implemented by multiple classes, but an interface cannot",
+      "Interfaces can have constructors, but abstract classes cannot",
+      "Abstract classes cannot have any methods at all",
+      "A class can implement multiple interfaces, but can extend only one class (abstract or not)"
+    ],
+    "answer": "D",
+    "explanation": "Java supports single class inheritance but multiple interface implementation, which is a core structural difference."
+  },
+  {
+    "id": 79,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Interfaces",
+    "question": "Can an object be created directly from an interface using `new`?",
+    "options": [
+      "No, interfaces cannot be instantiated",
+      "Yes, always",
+      "Yes, but only with no methods declared",
+      "Yes, if it has only one method"
+    ],
+    "answer": "A",
+    "explanation": "Like abstract classes, interfaces cannot be instantiated directly since they represent a contract, not a complete implementation."
+  },
+  {
+    "id": 80,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Interfaces",
+    "question": "interface Shape {\n  void area();\n}\nclass Square implements Shape {\n  public void area(){ System.out.println(\"Area\"); }\n}\nWill this code compile?",
+    "options": [
+      "No, because interfaces cannot be implemented",
+      "No, because area() must be private",
+      "Yes, because Square correctly implements the abstract method area()",
+      "No, because Square must also extend a class"
+    ],
+    "answer": "C",
+    "explanation": "Square provides a public implementation of the interface's abstract method, satisfying the contract, so it compiles."
+  },
+  {
+    "id": 81,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Interfaces",
+    "question": "Which of the following is TRUE regarding interface methods at this syllabus level?",
+    "options": [
+      "An implementing class may ignore any interface methods it does not need",
+      "Interface methods can have private access by default",
+      "An implementing class must override all abstract methods declared in the interface it implements",
+      "Interface methods are automatically static"
+    ],
+    "answer": "C",
+    "explanation": "Because interface methods (without a body) are public and abstract by default, the implementing class is obligated to override every one of them."
+  },
+  {
+    "id": 82,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Inner Classes",
+    "question": "An inner class in Java is:",
+    "options": [
+      "A class defined outside all other classes",
+      "A class defined within another (outer) class",
+      "A special kind of interface",
+      "A class that cannot have methods"
+    ],
+    "answer": "B",
+    "explanation": "Inner classes are nested inside an outer class, tying their existence conceptually to that outer class."
+  },
+  {
+    "id": 83,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Inner Classes",
+    "question": "A common purpose of using inner classes is to:",
+    "options": [
+      "Make classes accessible from any package automatically",
+      "Avoid ever creating objects of the outer class",
+      "Logically group classes that are used in only one place, increasing encapsulation",
+      "Prevent the outer class from having any methods"
+    ],
+    "answer": "C",
+    "explanation": "Inner classes tie helper functionality closely to the outer class, hiding it from unrelated code."
+  },
+  {
+    "id": 84,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Inner Classes",
+    "question": "Where is an inner class physically declared?",
+    "options": [
+      "In a separate file with no relation to any class",
+      "Inside the body of another class",
+      "Inside a method's return statement",
+      "Inside the package declaration"
+    ],
+    "answer": "B",
+    "explanation": "An inner (non-static nested) class is written within the braces of its enclosing outer class."
+  },
+  {
+    "id": 85,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Inner Classes",
+    "question": "A non-static inner class object is associated with:",
+    "options": [
+      "No outer class instance at all",
+      "Every class in the package",
+      "A specific instance of its outer class",
+      "Only static members of the outer class"
+    ],
+    "answer": "C",
+    "explanation": "A non-static inner class instance implicitly holds a reference to the outer class instance that created it."
+  },
+  {
+    "id": 86,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Inner Classes",
+    "question": "Which of the following correctly creates an object of a non-static inner class `Inner` from outside the outer class `Outer`?",
+    "options": [
+      "Outer.Inner innerObj = new Inner();",
+      "Outer.Inner innerObj = new Outer.Inner();",
+      "Outer outerObj = new Outer(); Outer.Inner innerObj = outerObj.new Inner();",
+      "Inner innerObj = new Outer().Inner();"
+    ],
+    "answer": "C",
+    "explanation": "Because a non-static inner class needs an outer instance, it must be created using outerObjectReference.new Inner()."
+  },
+  {
+    "id": 87,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Inner Classes",
+    "question": "Can a non-static inner class access the private members of its outer class?",
+    "options": [
+      "No, never",
+      "Only if they are declared protected",
+      "Only through getter methods",
+      "Yes, it can access them directly"
+    ],
+    "answer": "D",
+    "explanation": "Inner classes have full access to all members, including private ones, of their enclosing outer class."
+  },
+  {
+    "id": 88,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Inner Classes",
+    "question": "The scope of a non-static inner class is limited to:",
+    "options": [
+      "The entire package regardless of access modifiers",
+      "The body/scope of its enclosing outer class",
+      "Every class in the project",
+      "Only the main() method"
+    ],
+    "answer": "B",
+    "explanation": "Its visibility, unless made public, is naturally tied to the enclosing class's scope."
+  },
+  {
+    "id": 89,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Inner Classes",
+    "question": "What is a common mistake when creating an inner-class object?",
+    "options": [
+      "Declaring the inner class as public",
+      "Giving the inner class a constructor",
+      "Declaring a method inside the inner class",
+      "Trying to instantiate a non-static inner class without first creating an outer class object"
+    ],
+    "answer": "D",
+    "explanation": "Since a non-static inner class instance needs an enclosing instance, skipping that step causes a compile-time error."
+  },
+  {
+    "id": 90,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Inner Classes",
+    "question": "class Outer {\n  class Inner {\n    void show(){ System.out.println(\"Inner class\"); }\n  }\n}\nWhich statement correctly creates and uses an Inner object in another class' main() method?",
+    "options": [
+      "Outer.Inner i = new Outer.Inner(); i.show();",
+      "Outer o = new Outer(); Outer.Inner i = o.new Inner(); i.show();",
+      "Inner i = new Inner(); i.show();",
+      "Outer.Inner i = new Inner(new Outer()); i.show();"
+    ],
+    "answer": "B",
+    "explanation": "The correct syntax requires an outer object first, then using it to instantiate the inner class with `.new`."
+  },
+  {
+    "id": 91,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Inner Classes",
+    "question": "Which best differentiates an inner class from its outer class?",
+    "options": [
+      "The inner class is nested within, and often depends on, the outer class instance; the outer class stands independently",
+      "The outer class always depends on the inner class instance",
+      "Both must always be declared static",
+      "Neither can access the other's members"
+    ],
+    "answer": "A",
+    "explanation": "Inner classes are dependent constructs tied to the outer class, whereas the outer class can exist and be used independently."
+  },
+  {
+    "id": 92,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Wrapper Classes",
+    "question": "A wrapper class in Java is used to:",
+    "options": [
+      "Replace all primitive types entirely",
+      "Store only static final constants",
+      "Represent a primitive data type as an object",
+      "Define new primitive types"
+    ],
+    "answer": "C",
+    "explanation": "Wrapper classes wrap a primitive value inside an object, enabling it to be used where objects are required."
+  },
+  {
+    "id": 93,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Wrapper Classes",
+    "question": "Wrapper classes are especially useful when:",
+    "options": [
+      "Primitive performance needs to be maximized in loops",
+      "Primitive values need to be treated as objects, e.g., in collections",
+      "You want to avoid using classes altogether",
+      "You need to declare an interface"
+    ],
+    "answer": "B",
+    "explanation": "Many Java APIs (like collections, prior to widespread generics-with-primitives support) require objects, so wrapper classes bridge that gap."
+  },
+  {
+    "id": 94,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Wrapper Classes",
+    "question": "Which wrapper class corresponds to the primitive type `int`?",
+    "options": [
+      "Integer",
+      "Int",
+      "Integar",
+      "Num"
+    ],
+    "answer": "A",
+    "explanation": "The wrapper class for `int` is named `Integer`, following Java's standard wrapper naming."
+  },
+  {
+    "id": 95,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Wrapper Classes",
+    "question": "Which wrapper class corresponds to the primitive type `char`?",
+    "options": [
+      "Char",
+      "Charactor",
+      "Character",
+      "Chr"
+    ],
+    "answer": "C",
+    "explanation": "The primitive `char` maps to the wrapper class `Character`."
+  },
+  {
+    "id": 96,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Wrapper Classes",
+    "question": "Which wrapper class corresponds to the primitive type `boolean`?",
+    "options": [
+      "Boolean",
+      "Bool",
+      "Boolen",
+      "Bit"
+    ],
+    "answer": "A",
+    "explanation": "`boolean` is wrapped by the class `Boolean`."
+  },
+  {
+    "id": 97,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Wrapper Classes",
+    "question": "Which wrapper class corresponds to the primitive type `double`?",
+    "options": [
+      "Decimal",
+      "Double",
+      "Float",
+      "Real"
+    ],
+    "answer": "B",
+    "explanation": "The primitive `double` maps to the wrapper class `Double` (note: `float` maps separately to `Float`)."
+  },
+  {
+    "id": 98,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Wrapper Classes",
+    "question": "Which of the following is NOT a Java wrapper class?",
+    "options": [
+      "Integer",
+      "Number",
+      "Long",
+      "Byte"
+    ],
+    "answer": "B",
+    "explanation": "`Number` is an abstract superclass of the numeric wrapper classes, not itself a primitive's direct wrapper class."
+  },
+  {
+    "id": 99,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Wrapper Classes",
+    "question": "Which of the following is TRUE about wrapper classes compared to primitives?",
+    "options": [
+      "Primitives can be stored directly in object-only structures but wrapper classes cannot",
+      "Wrapper classes take up less memory than primitives",
+      "There is no difference between primitives and wrapper classes",
+      "Wrapper objects can be stored in data structures that require objects, whereas primitives cannot"
+    ],
+    "answer": "D",
+    "explanation": "Because wrapper classes are objects, they satisfy APIs requiring object references, unlike raw primitives."
+  },
+  {
+    "id": 100,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Wrapper Classes",
+    "question": "Converting a primitive value into its corresponding wrapper object is generally referred to as:",
+    "options": [
+      "Casting",
+      "Serialization",
+      "Overriding",
+      "Boxing"
+    ],
+    "answer": "D",
+    "explanation": "Wrapping a primitive into an object form is called boxing (with auto-boxing being the automatic version of this)."
+  },
+  {
+    "id": 101,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Wrapper Classes",
+    "question": "Integer num = 25;\nWhat does this statement represent?",
+    "options": [
+      "A compilation error since int cannot become Integer",
+      "Auto-boxing of the primitive int value into an Integer object",
+      "Explicit casting of Integer to int",
+      "Declaration of a static variable"
+    ],
+    "answer": "B",
+    "explanation": "Java automatically converts (auto-boxes) the primitive 25 into an Integer object during assignment."
+  },
+  {
+    "id": 102,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Packages",
+    "question": "A package in Java is essentially:",
+    "options": [
+      "A single class containing all program code",
+      "A synonym for a static method",
+      "A type of wrapper class",
+      "A namespace/grouping mechanism that organizes related classes and interfaces"
+    ],
+    "answer": "D",
+    "explanation": "Packages group related types together and provide a hierarchical namespace to avoid naming conflicts."
+  },
+  {
+    "id": 103,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Packages",
+    "question": "One major purpose of using packages is to:",
+    "options": [
+      "Prevent any class from being reused",
+      "Force all classes to be public",
+      "Eliminate the need for access modifiers",
+      "Avoid class name conflicts and organize code logically"
+    ],
+    "answer": "D",
+    "explanation": "Packages act as containers that keep related classes together and distinguish identically named classes in different packages."
+  },
+  {
+    "id": 104,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Packages",
+    "question": "Which statement correctly declares that a class belongs to package `mypack`?",
+    "options": [
+      "package mypack;",
+      "import mypack;",
+      "using mypack;",
+      "namespace mypack;"
+    ],
+    "answer": "A",
+    "explanation": "The `package` keyword, followed by the package name and a semicolon, must be the first statement in the source file."
+  },
+  {
+    "id": 105,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Packages",
+    "question": "Where must the package declaration statement appear in a Java source file?",
+    "options": [
+      "Anywhere in the file",
+      "Only at the end of the file",
+      "Immediately before the main method",
+      "As the very first statement, before any import or class declaration"
+    ],
+    "answer": "D",
+    "explanation": "Java requires the package declaration, if present, to be the first non-comment line of the file."
+  },
+  {
+    "id": 106,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Packages",
+    "question": "Java package names are conventionally written in:",
+    "options": [
+      "All uppercase letters",
+      "All lowercase letters",
+      "CamelCase starting with uppercase",
+      "Numbers only"
+    ],
+    "answer": "B",
+    "explanation": "By convention, package names use lowercase to avoid conflicts with class names, which typically start uppercase."
+  },
+  {
+    "id": 107,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Packages",
+    "question": "Which of these is a benefit of using packages?",
+    "options": [
+      "Elimination of all compilation errors",
+      "Better access control through package-level visibility",
+      "Automatic conversion of primitives to wrapper classes",
+      "Guaranteed thread safety"
+    ],
+    "answer": "B",
+    "explanation": "Packages allow package-private access, letting classes in the same package cooperate closely while hiding details from outside."
+  },
+  {
+    "id": 108,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Packages",
+    "question": "The relationship between a package and the classes within it is best described as:",
+    "options": [
+      "A package is a subclass of every class it contains",
+      "Each class must belong to multiple packages simultaneously",
+      "A package acts as a container holding one or more related classes and interfaces",
+      "Classes cannot exist without belonging to a package with the same name as the class"
+    ],
+    "answer": "C",
+    "explanation": "Packages are organizational containers; a class belongs to exactly one package (default package if unspecified)."
+  },
+  {
+    "id": 109,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Packages",
+    "question": "If a Java file has no package statement, the class belongs to:",
+    "options": [
+      "The java.lang package automatically",
+      "The default (unnamed) package",
+      "No package at all, causing a compile error",
+      "Every package simultaneously"
+    ],
+    "answer": "B",
+    "explanation": "Classes without an explicit package declaration are placed in Java's default, unnamed package."
+  },
+  {
+    "id": 110,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Package Access",
+    "question": "'Package access' (default access, no modifier) means a member is accessible:",
+    "options": [
+      "Only to classes within the same package",
+      "To all classes in any package",
+      "Only within the same class",
+      "Only to subclasses regardless of package"
+    ],
+    "answer": "A",
+    "explanation": "Default access restricts visibility to classes that reside in the same package as the member's class."
+  },
+  {
+    "id": 111,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Package Access",
+    "question": "A class with default (package) access can be used by:",
+    "options": [
+      "Any class in any package",
+      "Only subclasses in other packages",
+      "Any other class in the same package",
+      "No other class at all"
+    ],
+    "answer": "C",
+    "explanation": "Default access allows unrestricted use within the same package but not from outside it."
+  },
+  {
+    "id": 112,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Package Access",
+    "question": "Can a class from a different package access a member declared with default (no modifier) access?",
+    "options": [
+      "Yes, always",
+      "Yes, but only if it's static",
+      "No, it cannot",
+      "Yes, but only through inheritance"
+    ],
+    "answer": "C",
+    "explanation": "Default access is strictly limited to the same package; classes in other packages cannot access such members, even subclasses."
+  },
+  {
+    "id": 113,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Package Access",
+    "question": "How does package access relate to encapsulation?",
+    "options": [
+      "It exposes all members to every class regardless of package",
+      "It has no relation to encapsulation",
+      "It only affects static methods",
+      "It restricts visibility to trusted classes within the same package, supporting encapsulation"
+    ],
+    "answer": "D",
+    "explanation": "By limiting visibility to the package, default access helps hide implementation details from unrelated external code."
+  },
+  {
+    "id": 114,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Package Access",
+    "question": "package pkgA;\nclass Sample {\n  int value = 5; // default access\n}\nCan a class in `package pkgB` directly access `value`?",
+    "options": [
+      "Yes, directly",
+      "Yes, if pkgB imports pkgA.*",
+      "No, because default access is limited to the same package",
+      "Yes, if the accessing class is public"
+    ],
+    "answer": "C",
+    "explanation": "Since `value` has default access, only classes physically inside pkgA can access it, regardless of imports."
+  },
+  {
+    "id": 115,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Package Access",
+    "question": "Which scenario represents VALID access to a default-access member?",
+    "options": [
+      "A subclass in a different package directly using the member",
+      "A totally unrelated class in a different package using the member",
+      "Any class using it via wildcard import from another package",
+      "A class in the same package directly using the member"
+    ],
+    "answer": "D",
+    "explanation": "Only same-package classes can validly access default-access members; even subclasses elsewhere cannot."
+  },
+  {
+    "id": 116,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Package Access",
+    "question": "Which is an INVALID access scenario for a default-access method?",
+    "options": [
+      "A class in the same package calling the method",
+      "The class itself calling its own method",
+      "A subclass in the same package calling the method",
+      "A class in a different package, with no inheritance relation, calling the method"
+    ],
+    "answer": "D",
+    "explanation": "Default access forbids any class outside the declaring package from calling the method, related or not."
+  },
+  {
+    "id": 117,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Package Access",
+    "question": "How does package (default) access differ from protected access?",
+    "options": [
+      "Default access allows subclasses in different packages, while protected does not",
+      "Protected access also allows subclasses in different packages, while default access does not",
+      "Both are identical in every respect",
+      "Protected access is more restrictive than default access"
+    ],
+    "answer": "B",
+    "explanation": "Protected extends default access by additionally permitting subclass access across package boundaries."
+  },
+  {
+    "id": 118,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Importing Packages and Classes",
+    "question": "The `import` statement in Java is used to:",
+    "options": [
+      "Physically copy source code from another package",
+      "Declare which package the current class belongs to",
+      "Prevent access to classes in other packages",
+      "Allow a class to use classes from another package without fully qualifying their names"
+    ],
+    "answer": "D",
+    "explanation": "Import statements let you refer to classes by their simple name instead of writing the full package path every time."
+  },
+  {
+    "id": 119,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Importing Packages and Classes",
+    "question": "Which statement correctly imports the class `Scanner` from `java.util`?",
+    "options": [
+      "import java.util.Scanner();",
+      "package java.util.Scanner;",
+      "using java.util.Scanner;",
+      "import java.util.Scanner;"
+    ],
+    "answer": "D",
+    "explanation": "A single-class import specifies the fully qualified class name ending with the class itself, followed by a semicolon."
+  },
+  {
+    "id": 120,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Importing Packages and Classes",
+    "question": "How can multiple specific classes from the same package be imported in Java?",
+    "options": [
+      "By separating class names with commas in a single import statement",
+      "It is not possible to import more than one class",
+      "By writing a separate import statement for each class",
+      "By using the `multiimport` keyword"
+    ],
+    "answer": "C",
+    "explanation": "Java requires one import statement per class name; there is no comma-separated multi-class import syntax."
+  },
+  {
+    "id": 121,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Importing Packages and Classes",
+    "question": "What does `import java.util.*;` do?",
+    "options": [
+      "Imports java.util and all its sub-packages recursively",
+      "Imports only one randomly chosen class",
+      "Causes a compilation error",
+      "Imports all publicly accessible classes and interfaces directly within the java.util package"
+    ],
+    "answer": "D",
+    "explanation": "The wildcard `*` imports all top-level types in that specific package, but not its sub-packages."
+  },
+  {
+    "id": 122,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Importing Packages and Classes",
+    "question": "Where must `import` statements appear in a Java source file?",
+    "options": [
+      "After all class declarations",
+      "After the package statement (if any) and before any class declaration",
+      "Inside the main method only",
+      "Anywhere inside a method body"
+    ],
+    "answer": "B",
+    "explanation": "Import statements come after an optional package declaration and before the class/interface definitions."
+  },
+  {
+    "id": 123,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Importing Packages and Classes",
+    "question": "What is the key difference between a package declaration and an import statement?",
+    "options": [
+      "package specifies which package the current file belongs to, whereas import brings in classes from other packages",
+      "import specifies which package the current file belongs to, whereas package brings in outside classes",
+      "Both statements do exactly the same thing",
+      "package is optional but import is mandatory in every file"
+    ],
+    "answer": "A",
+    "explanation": "`package` defines the file's own package membership, while `import` allows use of external classes by simple name."
+  },
+  {
+    "id": 124,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Importing Packages and Classes",
+    "question": "If a class uses `java.util.ArrayList` without importing it and without using the fully qualified name, what happens?",
+    "options": [
+      "It compiles fine automatically",
+      "It runs but throws a runtime exception",
+      "A compilation error occurs, since the compiler cannot resolve the simple name",
+      "Java assumes it is a user-defined class"
+    ],
+    "answer": "C",
+    "explanation": "Without an import or a fully qualified reference, the compiler cannot locate the ArrayList class and reports an error."
+  },
+  {
+    "id": 125,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Importing Packages and Classes",
+    "question": "Instead of importing, a class can also be used by writing its:",
+    "options": [
+      "Package name alone",
+      "Class name in lowercase",
+      "Interface name",
+      "Fully qualified name, e.g., java.util.ArrayList"
+    ],
+    "answer": "D",
+    "explanation": "A fully qualified name includes the entire package path, letting you use the class without any import statement."
+  },
+  {
+    "id": 126,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "User-Defined Packages",
+    "question": "A user-defined package is:",
+    "options": [
+      "A package pre-built into the Java standard library",
+      "A package created by the programmer to organize their own classes",
+      "A package that cannot contain more than one class",
+      "A synonym for the default package"
+    ],
+    "answer": "B",
+    "explanation": "Unlike built-in packages like java.util, user-defined packages are custom namespaces created by developers."
+  },
+  {
+    "id": 127,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "User-Defined Packages",
+    "question": "What is the first step to create a user-defined package?",
+    "options": [
+      "Create an interface with the package's name",
+      "Add a `package packageName;` statement at the top of the source file",
+      "Add a static block naming the package",
+      "Import java.lang explicitly"
+    ],
+    "answer": "B",
+    "explanation": "Declaring the package name as the very first statement places the class into that user-defined package."
+  },
+  {
+    "id": 128,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "User-Defined Packages",
+    "question": "For a class declared as `package shapes;`, where should its compiled .class file typically reside for it to be found correctly?",
+    "options": [
+      "In any folder regardless of name",
+      "In a folder named after the class only",
+      "In a folder named `shapes`, matching the package name",
+      "Directly in the root with no folder"
+    ],
+    "answer": "C",
+    "explanation": "Java's classloader expects the directory structure to mirror the package name for proper resolution."
+  },
+  {
+    "id": 129,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "User-Defined Packages",
+    "question": "User-defined packages help programmers by:",
+    "options": [
+      "Automatically making all classes public",
+      "Grouping logically related custom classes together, separate from other packages",
+      "Preventing classes from having constructors",
+      "Removing the need for the main method"
+    ],
+    "answer": "B",
+    "explanation": "Just like built-in packages, user-defined ones let developers organize their own code into logical, reusable units."
+  },
+  {
+    "id": 130,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "User-Defined Packages",
+    "question": "How can a class in package `pkg1` access a public class in a user-defined package `pkg2`?",
+    "options": [
+      "Access is impossible across user-defined packages",
+      "By declaring the class private",
+      "By renaming the class to match pkg1",
+      "By importing pkg2's class or using its fully qualified name"
+    ],
+    "answer": "D",
+    "explanation": "Public classes in user-defined packages are accessed the same way as classes in built-in packages: via import or fully qualified name."
+  },
+  {
+    "id": 131,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "User-Defined Packages",
+    "question": "Which statement correctly imports a class `Employee` from a user-defined package `company`?",
+    "options": [
+      "import company.Employee;",
+      "import company.*.Employee;",
+      "package company.Employee;",
+      "using company.Employee;"
+    ],
+    "answer": "A",
+    "explanation": "The import syntax for a user-defined package's class is identical to that for a built-in package's class."
+  },
+  {
+    "id": 132,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "User-Defined Packages",
+    "question": "package school;\npublic class Student { }\nWhich of the following correctly uses this class from another package?",
+    "options": [
+      "Student s = new Student(); (with no import, in a class from a different package)",
+      "package school.Student; Student s = new Student();",
+      "school Student s = new Student();",
+      "import school.Student; ... Student s = new Student();"
+    ],
+    "answer": "D",
+    "explanation": "Without importing or fully qualifying, a class from a different package cannot directly reference Student."
+  },
+  {
+    "id": 133,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "User-Defined Packages",
+    "question": "A common mistake when creating user-defined packages is:",
+    "options": [
+      "Naming the package in lowercase",
+      "Declaring the class as public",
+      "Forgetting to place the package statement as the very first line of the file",
+      "Compiling the file at all"
+    ],
+    "answer": "C",
+    "explanation": "If the package statement isn't the first statement, or is missing when expected, the class will not belong to the intended package, causing errors."
+  },
+  {
+    "id": 134,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Which correctly compares local scope and member (instance) scope?",
+    "options": [
+      "Member scope is limited to a single method; local scope spans the whole class",
+      "Local scope is limited to the block/method of declaration; member scope spans the whole class",
+      "Both scopes are identical in extent",
+      "Local scope variables are shared by all objects while member scope is not"
+    ],
+    "answer": "B",
+    "explanation": "Local variables live only within their declaring block, while instance variables are visible throughout the class (subject to access modifiers)."
+  },
+  {
+    "id": 135,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Which correctly compares static data and instance data?",
+    "options": [
+      "Static data has a single copy shared by the class; instance data has a separate copy per object",
+      "Instance data has a single shared copy; static data has a separate copy per object",
+      "Both always share a single copy",
+      "Neither is stored in memory until referenced"
+    ],
+    "answer": "A",
+    "explanation": "This is the defining conceptual contrast between class-level and object-level data storage."
+  },
+  {
+    "id": 136,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Which correctly compares static and instance methods?",
+    "options": [
+      "An instance method can be invoked without an object; a static method needs one",
+      "A static method can be invoked without an object; an instance method needs an object to be invoked",
+      "Both require an object to be invoked",
+      "Neither can access static data"
+    ],
+    "answer": "B",
+    "explanation": "Static methods operate at class level and don't require object creation, unlike instance methods."
+  },
+  {
+    "id": 137,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Which correctly compares a static block and a static method?",
+    "options": [
+      "A static method runs automatically once at class loading; a static block must be called explicitly",
+      "A static block runs automatically once at class loading; a static method runs only when explicitly called",
+      "Both run automatically at class loading",
+      "Both must be called explicitly by name"
+    ],
+    "answer": "B",
+    "explanation": "Static blocks have no name and cannot be invoked; they execute automatically, unlike named static methods."
+  },
+  {
+    "id": 138,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Which correctly compares an abstract class and a concrete class?",
+    "options": [
+      "An abstract class may contain unimplemented methods and cannot be instantiated; a concrete class must implement all methods and can be instantiated",
+      "A concrete class may contain unimplemented methods; an abstract class cannot",
+      "Both can always be instantiated directly",
+      "Neither can have constructors"
+    ],
+    "answer": "A",
+    "explanation": "This captures the essential contrast: partial vs. complete implementation, and instantiability."
+  },
+  {
+    "id": 139,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Which correctly compares an abstract class and an interface at this syllabus level?",
+    "options": [
+      "A class can extend only one abstract class but implement multiple interfaces",
+      "A class can extend multiple abstract classes but implement only one interface",
+      "Both allow multiple inheritance of implementation equally",
+      "Neither can be used as a reference type"
+    ],
+    "answer": "A",
+    "explanation": "Java restricts class inheritance to single abstract/concrete classes, while permitting multiple interface implementation."
+  },
+  {
+    "id": 140,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Which correctly compares an inner class and its outer class?",
+    "options": [
+      "The outer class always depends on an inner class instance",
+      "Both are always independent of each other",
+      "Neither can access the other's members",
+      "A non-static inner class instance typically depends on an outer class instance; the outer class can exist independently"
+    ],
+    "answer": "D",
+    "explanation": "The dependency is generally one-directional: inner classes rely on the outer instance, not vice versa."
+  },
+  {
+    "id": 141,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Which correctly compares a primitive type and its wrapper class?",
+    "options": [
+      "A wrapper class stores a raw value directly; a primitive stores it inside an object",
+      "A primitive stores a raw value directly; a wrapper class stores the value inside an object",
+      "Both are identical in memory representation",
+      "Primitives can be used wherever objects are required, but wrappers cannot"
+    ],
+    "answer": "B",
+    "explanation": "Wrapper classes exist precisely to represent primitive values as full-fledged objects."
+  },
+  {
+    "id": 142,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Which correctly compares a package and a class?",
+    "options": [
+      "A package is a container that can hold multiple classes; a class is a single unit of code within a package",
+      "A class is a container that holds multiple packages",
+      "A package can only contain one class",
+      "Both are exactly the same construct"
+    ],
+    "answer": "A",
+    "explanation": "Packages organize and group classes; a class is one member of that grouping."
+  },
+  {
+    "id": 143,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Which correctly compares a package declaration and an import statement?",
+    "options": [
+      "import declares which package the current file belongs to; package brings in outside classes",
+      "Both statements always appear multiple times per file",
+      "Neither can appear in the same file together",
+      "package declares which package the current file belongs to; import brings in classes from other packages for use"
+    ],
+    "answer": "D",
+    "explanation": "These are complementary but distinct statements serving different roles in a Java source file."
+  },
+  {
+    "id": 144,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Which correctly compares access within a package versus access from outside a package (for default-access members)?",
+    "options": [
+      "Within the same package, default-access members are freely accessible; from outside the package, they are not accessible at all",
+      "From outside the package, default-access members are freely accessible; within the package, they are not",
+      "Both cases allow full access",
+      "Both cases disallow all access"
+    ],
+    "answer": "A",
+    "explanation": "Default access is deliberately package-scoped, granting access inside but denying it entirely to outside classes."
+  },
+  {
+    "id": 145,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code, Output and Compilation Questions",
+    "question": "class Test {\n  static int a = 5;\n  public static void main(String[] args){\n    int a = 10;\n    System.out.println(a);\n  }\n}\nWhat is printed?",
+    "options": [
+      "5",
+      "10",
+      "15",
+      "Compilation error"
+    ],
+    "answer": "B",
+    "explanation": "The local variable a inside main() shadows the static field a, so the local value 10 is printed."
+  },
+  {
+    "id": 146,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code, Output and Compilation Questions",
+    "question": "Which of these class declarations is VALID?",
+    "options": [
+      "public abstract final class Animal { abstract void sound(); }",
+      "private class Animal { }",
+      "abstract final class Animal { }",
+      "public abstract class Animal { abstract void sound(); }"
+    ],
+    "answer": "D",
+    "explanation": "abstract and final together on a class are contradictory, and top-level classes cannot be private, so only the first option is valid."
+  },
+  {
+    "id": 147,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code, Output and Compilation Questions",
+    "question": "Which modifier is applicable to a local variable but NOT to a top-level class?",
+    "options": [
+      "static can apply to both equally",
+      "public can apply to both equally",
+      "abstract can apply to both equally",
+      "final can apply to both, but private cannot apply to a top-level class"
+    ],
+    "answer": "D",
+    "explanation": "private is disallowed on top-level classes, while final is valid on both local variables and classes; the distinguishing restricted modifier here is private."
+  },
+  {
+    "id": 148,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code, Output and Compilation Questions",
+    "question": "class Box {\n  private int size;\n  void setSize(int size){ this.size = size; }\n}\nWhich variable does `this.size` refer to inside setSize?",
+    "options": [
+      "The parameter `size`",
+      "The instance variable `size` of the class",
+      "A new local variable",
+      "Undefined behavior"
+    ],
+    "answer": "B",
+    "explanation": "`this.size` explicitly refers to the instance variable, disambiguating it from the parameter of the same name."
+  },
+  {
+    "id": 149,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code, Output and Compilation Questions",
+    "question": "class Loader {\n  static { System.out.println(\"Loading\"); }\n  Loader(){ System.out.println(\"Object created\"); }\n}\npublic class Test {\n  public static void main(String[] a){\n    Loader l1 = new Loader();\n    Loader l2 = new Loader();\n  }\n}\nWhat is printed?",
+    "options": [
+      "Loading, Loading, Object created, Object created",
+      "Object created, Object created, Loading",
+      "Loading, Object created",
+      "Loading, Object created, Object created"
+    ],
+    "answer": "D",
+    "explanation": "The static block runs once when the class is loaded, and the constructor runs once per object created (twice here)."
+  },
+  {
+    "id": 150,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code, Output and Compilation Questions",
+    "question": "class Util {\n  static void greet(){ System.out.println(\"Hi\"); }\n}\nCan `greet()` be called as `Util.greet();` from another class?",
+    "options": [
+      "No, static methods can never be called from another class",
+      "Only if Util is declared abstract",
+      "Only if greet() is declared public and Util has an object created first",
+      "Yes, since it is a static method accessible via the class name"
+    ],
+    "answer": "D",
+    "explanation": "Assuming default/public access permits it, a static method can be invoked directly with ClassName.method()."
+  },
+  {
+    "id": 151,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code, Output and Compilation Questions",
+    "question": "abstract class Vehicle {\n  abstract void move();\n}\nWhich statement is INVALID?",
+    "options": [
+      "Vehicle v = new Vehicle();",
+      "Vehicle v = new Car(); // where Car extends Vehicle and implements move()",
+      "abstract class Vehicle{ } (no other change)",
+      "class Car extends Vehicle { void move(){ } }"
+    ],
+    "answer": "A",
+    "explanation": "You cannot instantiate an abstract class directly, even though you can reference it via a concrete subclass object."
+  },
+  {
+    "id": 152,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code, Output and Compilation Questions",
+    "question": "interface Movable {\n  void move();\n}\nclass Robot implements Movable {\n  public void move(){ System.out.println(\"Moving\"); }\n}\nWhich class correctly implements the interface?",
+    "options": [
+      "Robot, but only if move() is declared private",
+      "No class can correctly implement Movable without extending it too",
+      "Robot only if it also declares move() as abstract",
+      "Robot, because it overrides move() with public access"
+    ],
+    "answer": "D",
+    "explanation": "Interface methods are implicitly public and abstract, so implementing classes must override them with public access."
+  },
+  {
+    "id": 153,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code, Output and Compilation Questions",
+    "question": "class Outer {\n  class Inner { }\n}\npublic class Test {\n  public static void main(String[] a){\n    Outer.Inner obj = new Outer().new Inner();\n  }\n}\nIs this declaration valid?",
+    "options": [
+      "No, Inner classes can never be instantiated from outside Outer",
+      "No, `new Outer().new Inner()` is invalid syntax",
+      "Only valid if Inner is declared static",
+      "Yes, this is the correct way to instantiate a non-static inner class from outside"
+    ],
+    "answer": "D",
+    "explanation": "This is the standard syntax: create the outer instance, then use it with `.new` to create the inner instance."
+  },
+  {
+    "id": 154,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code, Output and Compilation Questions",
+    "question": "double d = 10.5;\nDouble dObj = d;\nWhat does the second line represent?",
+    "options": [
+      "Auto-boxing of the primitive double into a Double wrapper object",
+      "A compilation error",
+      "Explicit unboxing",
+      "Static initialization"
+    ],
+    "answer": "A",
+    "explanation": "Java automatically converts the primitive double value into a Double object through auto-boxing."
+  },
+  {
+    "id": 155,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code, Output and Compilation Questions",
+    "question": "Is the following valid?\nimport java.util.*;\npackage myapp;\npublic class Test { }",
+    "options": [
+      "Yes, order does not matter",
+      "Yes, but only if Test is abstract",
+      "No, because the package statement must come before any import statement",
+      "Yes, because import statements can appear anywhere"
+    ],
+    "answer": "C",
+    "explanation": "The package declaration, if present, must always be the very first statement in the file, before any imports."
+  },
+  {
+    "id": 156,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code, Output and Compilation Questions",
+    "question": "Is `import java.util.ArrayList, java.util.HashMap;` valid Java syntax?",
+    "options": [
+      "Yes, comma-separated imports are valid",
+      "Yes, but only inside a static block",
+      "Yes, if both classes are in the same package",
+      "No, each class must be imported using a separate import statement"
+    ],
+    "answer": "D",
+    "explanation": "Java does not support importing multiple classes with a single comma-separated import statement."
+  },
+  {
+    "id": 157,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult & Tricky Questions",
+    "question": "class A {\n  int x = 1;\n  void method(){\n    int x = x + 1; // Line X\n    System.out.println(x);\n  }\n}\nWhat happens at Line X?",
+    "options": [
+      "Compilation error, because the local variable x is used in its own initializer before being definitely assigned",
+      "Prints 2",
+      "Prints 1",
+      "Prints 0"
+    ],
+    "answer": "A",
+    "explanation": "The local x shadows the instance x from the point of declaration, so `x + 1` refers to the not-yet-initialized local x, causing an error."
+  },
+  {
+    "id": 158,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult & Tricky Questions",
+    "question": "class Demo {\n  static int count;\n  static { count = 10; }\n  static { count += 5; }\n  public static void main(String[] args){ System.out.println(count); }\n}\nWhat is printed?",
+    "options": [
+      "10",
+      "15",
+      "5",
+      "Compilation error"
+    ],
+    "answer": "B",
+    "explanation": "Both static blocks execute in order at class loading: first sets count to 10, second adds 5, giving 15 before main() runs."
+  },
+  {
+    "id": 159,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult & Tricky Questions",
+    "question": "Which of these is a valid combination for a method modifier?",
+    "options": [
+      "public static final void show(){}",
+      "abstract static void show();",
+      "private abstract void show();",
+      "final abstract void show();"
+    ],
+    "answer": "A",
+    "explanation": "abstract requires the method to be overridden, which conflicts with static (class-bound, hidden not overridden), private (not inheritable), and final (cannot be overridden)."
+  },
+  {
+    "id": 160,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult & Tricky Questions",
+    "question": "abstract class Base {\n  void display(){ System.out.println(\"Base display\"); }\n}\nclass Derived extends Base { }\npublic class Test {\n  public static void main(String[] a){\n    Base b = new Derived();\n    b.display();\n  }\n}\nWhat is the output?",
+    "options": [
+      "Compilation error, because Base is abstract",
+      "Nothing is printed",
+      "Base display",
+      "Runtime exception"
+    ],
+    "answer": "C",
+    "explanation": "Even though Base is abstract and cannot be instantiated directly, referencing a Derived object via a Base reference and calling an inherited concrete method works fine."
+  },
+  {
+    "id": 161,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult & Tricky Questions",
+    "question": "interface A { void show(); }\ninterface B { void show(); }\nclass C implements A, B {\n  public void show(){ System.out.println(\"C's show\"); }\n}\nIs this valid?",
+    "options": [
+      "No, a class cannot implement two interfaces with the same method name",
+      "No, this always causes ambiguity errors",
+      "Yes, because both interfaces declare the same abstract method signature, one implementation satisfies both",
+      "Only valid if A and B are in the same package"
+    ],
+    "answer": "C",
+    "explanation": "Since both interface methods share an identical signature, a single override in C satisfies both contracts without conflict."
+  },
+  {
+    "id": 162,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult & Tricky Questions",
+    "question": "class Outer {\n  private int x = 100;\n  class Inner {\n    void show(){ System.out.println(x); }\n  }\n}\npublic class Test {\n  public static void main(String[] a){\n    Outer.Inner in = new Outer().new Inner();\n    in.show();\n  }\n}\nWhat is printed?",
+    "options": [
+      "100",
+      "Compilation error, x is private",
+      "0",
+      "Runtime exception"
+    ],
+    "answer": "A",
+    "explanation": "Inner classes have full access to the private members of their enclosing outer class, so x=100 is accessible and printed."
+  },
+  {
+    "id": 163,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult & Tricky Questions",
+    "question": "Integer a = 100;\nInteger b = 100;\nSystem.out.println(a == b);\nWhat is printed, and why (conceptually, at this syllabus level)?",
+    "options": [
+      "true, because small boxed integer values are commonly cached and may reference the same object",
+      "false, because == always compares object identity and never matches for wrapper objects",
+      "Compilation error",
+      "true, because == always compares values for wrapper classes"
+    ],
+    "answer": "A",
+    "explanation": "Java caches boxed Integer objects for a small value range, so `==` can return true for values in this cached range; this is a well-known tricky behavior for wrapper classes."
+  },
+  {
+    "id": 164,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult & Tricky Questions",
+    "question": "package pkgA;\nclass Helper {\n  void assist(){ System.out.println(\"Assisting\"); }\n}\npackage pkgB;\nimport pkgA.Helper;\npublic class Test {\n  public static void main(String[] a){\n    Helper h = new Helper();\n    h.assist();\n  }\n}\nWhat is the likely result?",
+    "options": [
+      "Compiles and runs, printing 'Assisting'",
+      "Compilation error, because Helper class itself has default access and cannot be used outside pkgA",
+      "Runtime exception only",
+      "Compiles but prints nothing"
+    ],
+    "answer": "B",
+    "explanation": "Even though Helper is imported, its own class-level default access restricts usage to classes within pkgA; importing does not override that restriction."
+  },
+  {
+    "id": 165,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult & Tricky Questions",
+    "question": "class Parent {\n  static void greet(){ System.out.println(\"Parent\"); }\n}\nclass Child extends Parent {\n  static void greet(){ System.out.println(\"Child\"); }\n}\npublic class Test {\n  public static void main(String[] a){\n    Parent p = new Child();\n    p.greet();\n  }\n}\nWhat is printed?",
+    "options": [
+      "Child",
+      "Compilation error",
+      "Parent",
+      "Both Parent and Child"
+    ],
+    "answer": "C",
+    "explanation": "Static methods are resolved based on the reference type at compile time (method hiding), not the actual object type, so Parent's greet() runs."
+  },
+  {
+    "id": 166,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult & Tricky Questions",
+    "question": "class Test {\n  final int x;\n  Test(){ x = 10; }\n  public static void main(String[] a){\n    Test t = new Test();\n    System.out.println(t.x);\n  }\n}\nIs this valid, and what is printed?",
+    "options": [
+      "Valid; prints 10, because a blank final variable can be assigned exactly once in the constructor",
+      "Compilation error, because final variables must be initialized at declaration",
+      "Invalid, because final fields cannot be assigned in constructors",
+      "Prints 0, since final fields always default to 0"
+    ],
+    "answer": "A",
+    "explanation": "A 'blank final' instance variable is allowed as long as it is definitely assigned exactly once, such as in every constructor."
+  },
+  {
+    "id": 167,
+    "level": "Intermediate",
+    "type": "Mixed Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which of the following members belongs to the class rather than to individual objects?",
+    "options": [
+      "An instance variable",
+      "A local variable inside a constructor",
+      "A method parameter",
+      "A static data member"
+    ],
+    "answer": "D",
+    "explanation": "Static data members are associated with the class itself and shared across all its objects."
+  },
+  {
+    "id": 168,
+    "level": "Intermediate",
+    "type": "Mixed Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which modifier combination on a class is definitely invalid?",
+    "options": [
+      "public final",
+      "public abstract",
+      "abstract final",
+      "abstract (alone)"
+    ],
+    "answer": "C",
+    "explanation": "abstract and final are mutually exclusive on a class because one requires subclassing and the other forbids it."
+  },
+  {
+    "id": 169,
+    "level": "Intermediate",
+    "type": "Mixed Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "A class implementing an interface but not providing bodies for all abstract methods must itself be declared:",
+    "options": [
+      "abstract",
+      "final",
+      "static",
+      "private"
+    ],
+    "answer": "A",
+    "explanation": "If not all abstract methods are implemented, the implementing class remains incomplete and must be marked abstract."
+  },
+  {
+    "id": 170,
+    "level": "Intermediate",
+    "type": "Mixed Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which of the following correctly creates a non-static inner class instance?",
+    "options": [
+      "new InnerClass()",
+      "new OuterClass.InnerClass()",
+      "InnerClass.new()",
+      "outerRef.new InnerClass()"
+    ],
+    "answer": "D",
+    "explanation": "A non-static inner class requires an existing outer instance, accessed via the `.new` syntax on that instance."
+  },
+  {
+    "id": 171,
+    "level": "Intermediate",
+    "type": "Mixed Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which wrapper class is used for the primitive `long`?",
+    "options": [
+      "Long",
+      "Large",
+      "LongInt",
+      "BigLong"
+    ],
+    "answer": "A",
+    "explanation": "The wrapper class corresponding to primitive `long` is simply named `Long`."
+  },
+  {
+    "id": 172,
+    "level": "Intermediate",
+    "type": "Mixed Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which statement about static blocks is correct?",
+    "options": [
+      "They execute once, automatically, when the class is loaded",
+      "They execute once for every object created",
+      "They must be explicitly called using the class name",
+      "They can accept method arguments"
+    ],
+    "answer": "A",
+    "explanation": "Static blocks are automatic, unnamed initializers tied strictly to class loading, not object creation."
+  },
+  {
+    "id": 173,
+    "level": "Intermediate",
+    "type": "Mixed Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which of these is TRUE about default (package) access?",
+    "options": [
+      "It permits access to all classes everywhere",
+      "It permits access only within the declaring class",
+      "It is the most permissive access level in Java",
+      "It permits access only to classes within the same package"
+    ],
+    "answer": "D",
+    "explanation": "Default access sits between private and protected in restrictiveness, scoped exactly to the package."
+  },
+  {
+    "id": 174,
+    "level": "Intermediate",
+    "type": "Mixed Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which import statement is syntactically correct?",
+    "options": [
+      "import java.io.File",
+      "include java.io.File;",
+      "import java.io.File;",
+      "import(java.io.File);"
+    ],
+    "answer": "C",
+    "explanation": "A valid import statement uses the `import` keyword, the fully qualified class name, and ends with a semicolon."
+  },
+  {
+    "id": 175,
+    "level": "Intermediate",
+    "type": "Mixed Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which statement about interfaces is TRUE at this syllabus level?",
+    "options": [
+      "All fields in an interface are implicitly public, static, and final",
+      "Interface fields can be modified after being set",
+      "Interfaces can be instantiated with `new`",
+      "A class can implement only one interface"
+    ],
+    "answer": "A",
+    "explanation": "Interface fields are always treated as constants: public, static, and final by default."
+  },
+  {
+    "id": 176,
+    "level": "Intermediate",
+    "type": "Mixed Practice",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "In `package shapes;`, if the class `Circle` is declared `public`, how should another package's class access it?",
+    "options": [
+      "Directly, without any import, from any package",
+      "By importing `shapes.Circle` or using the fully qualified name `shapes.Circle`",
+      "It cannot be accessed since it belongs to a user-defined package",
+      "Only if it is also declared static"
+    ],
+    "answer": "B",
+    "explanation": "Public classes in user-defined packages follow the same access rules as any built-in package class: import or full qualification."
+  }
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

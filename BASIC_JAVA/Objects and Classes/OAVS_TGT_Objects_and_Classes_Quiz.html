@@ -1,0 +1,4084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+{
+    "id": 1,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Object Fundamentals",
+    "question": "What is an object in Java?",
+    "options": [
+      "An instance of a class having state and behavior",
+      "A primitive data type",
+      "A keyword used to define a class",
+      "A blueprint used to create classes"
+    ],
+    "answer": "A",
+    "explanation": "An object is a runtime instance of a class; it possesses state (fields) and behavior (methods)."
+  },
+  {
+    "id": 2,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Object Fundamentals",
+    "question": "Which of the following best describes the 'state' of an object?",
+    "options": [
+      "The class from which it was created",
+      "The memory address of the object",
+      "The set of methods it can execute",
+      "The values currently stored in its instance variables"
+    ],
+    "answer": "D",
+    "explanation": "State refers to the data (values of instance variables) an object holds at a given time."
+  },
+  {
+    "id": 3,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Object Fundamentals",
+    "question": "The 'behavior' of an object is defined by its:",
+    "options": [
+      "Class name",
+      "Methods",
+      "Constructors only",
+      "Instance variables"
+    ],
+    "answer": "B",
+    "explanation": "Behavior is what an object can do, implemented through its methods."
+  },
+  {
+    "id": 4,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Object Fundamentals",
+    "question": "An object is created in Java using which operator?",
+    "options": [
+      "this",
+      "new",
+      "create",
+      "class"
+    ],
+    "answer": "B",
+    "explanation": "The new operator allocates memory and creates a new instance of a class."
+  },
+  {
+    "id": 5,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Object Fundamentals",
+    "question": "Two references pointing to the same object in memory are said to have the same:",
+    "options": [
+      "Behavior",
+      "State",
+      "Class hierarchy",
+      "Identity"
+    ],
+    "answer": "D",
+    "explanation": "Object identity refers to the unique existence of an object in memory."
+  },
+  {
+    "id": 6,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Object Fundamentals",
+    "question": "If two different objects have exactly the same field values, are they identical?",
+    "options": [
+      "Yes, because Java treats equal state as equal identity",
+      "No, they belong to different classes",
+      "Yes, they are always the same object",
+      "No, they have the same state but different identities"
+    ],
+    "answer": "D",
+    "explanation": "Equal state does not imply the same identity; each object created with new has a distinct identity."
+  },
+  {
+    "id": 7,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "Object Fundamentals",
+    "question": "A class acts as a ______ for creating objects.",
+    "options": [
+      "Method",
+      "Template/blueprint",
+      "Subclass",
+      "Constructor call"
+    ],
+    "answer": "B",
+    "explanation": "A class defines the structure and behavior that its objects will have; it is the blueprint for object creation."
+  },
+  {
+    "id": 8,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "Object Fundamentals",
+    "question": "Every object in Java is an instance of exactly one ______ at the time of creation.",
+    "options": [
+      "package",
+      "method",
+      "interface",
+      "class"
+    ],
+    "answer": "D",
+    "explanation": "An object is instantiated from a specific class using new."
+  },
+  {
+    "id": 9,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Object Fundamentals",
+    "question": "Which statement about objects is TRUE?",
+    "options": [
+      "An object exists only during compilation",
+      "Objects and classes are the same thing",
+      "An object cannot have more than one instance variable",
+      "An object combines data and the methods that operate on that data"
+    ],
+    "answer": "D",
+    "explanation": "Objects bundle state (data) with behavior (methods), the core idea of object-based design."
+  },
+  {
+    "id": 10,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Object Fundamentals",
+    "question": "What happens when an object is created without ever being assigned to a reference variable?",
+    "options": [
+      "Java throws a compile-time error",
+      "It exists in memory but becomes unreachable and inaccessible",
+      "It is stored as a static object",
+      "It automatically becomes a class"
+    ],
+    "answer": "B",
+    "explanation": "An object created without a reference has no way to be accessed and is effectively unreachable."
+  },
+  {
+    "id": 11,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Object Fundamentals",
+    "question": "Which of these is NOT a characteristic of an object?",
+    "options": [
+      "It occupies no memory until a method is called",
+      "It has state",
+      "It has identity",
+      "It has behavior"
+    ],
+    "answer": "A",
+    "explanation": "An object occupies memory as soon as it is created, not only when a method is invoked."
+  },
+  {
+    "id": 12,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Object Fundamentals",
+    "question": "A reference variable in Java stores:",
+    "options": [
+      "Only the class name of the object",
+      "The memory reference to an object",
+      "The object's methods as text",
+      "The complete object copy"
+    ],
+    "answer": "B",
+    "explanation": "Reference variables hold a reference (address) to an object stored in memory, not the object itself."
+  },
+  {
+    "id": 13,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Object Fundamentals",
+    "question": "Multiple reference variables can refer to:",
+    "options": [
+      "The same single object",
+      "Only their own separate object",
+      "A class, but never an object",
+      "Nothing at runtime"
+    ],
+    "answer": "A",
+    "explanation": "In Java, several references can point to the same object simultaneously."
+  },
+  {
+    "id": 14,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Object Fundamentals",
+    "question": "Object A and Object B are instances of the same class Car. Changing a field of A does NOT affect B because:",
+    "options": [
+      "Each object maintains its own independent copy of instance variables",
+      "B was never initialized",
+      "Cars cannot have instance variables",
+      "Objects of the same class always share fields"
+    ],
+    "answer": "A",
+    "explanation": "Instance variables belong to each object individually, so changes to one object's state don't affect another."
+  },
+  {
+    "id": 15,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Object Fundamentals",
+    "question": "The relationship between a class and its objects is best described as:",
+    "options": [
+      "Classes and objects are interchangeable terms",
+      "One class can be used to create many objects",
+      "One object can belong to many unrelated classes",
+      "A class can only ever create one object"
+    ],
+    "answer": "B",
+    "explanation": "A single class definition can be used to instantiate multiple independent objects."
+  },
+  {
+    "id": 16,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Object Fundamentals",
+    "question": "Assertion (A): All objects of a class share the same values for their instance variables. Reason (R): Instance variables are allocated separately for every object.",
+    "options": [
+      "Both A and R are false",
+      "A is false, R is true",
+      "A is true, R is false",
+      "Both A and R are true, R explains A"
+    ],
+    "answer": "B",
+    "explanation": "Instance variables are allocated per-object, so objects generally hold different values; the assertion is false while the reason is true."
+  },
+  {
+    "id": 17,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Pass by Value",
+    "question": "Java passes arguments to methods using which mechanism?",
+    "options": [
+      "Pass by value",
+      "Pass by reference",
+      "Pass by pointer",
+      "Pass by name"
+    ],
+    "answer": "A",
+    "explanation": "Java always passes a copy of the argument's value to a method, regardless of the type."
+  },
+  {
+    "id": 18,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Pass by Value",
+    "question": "When a primitive int is passed to a method and modified inside it, what happens to the original variable?",
+    "options": [
+      "It remains unchanged",
+      "It is updated to the new value",
+      "A compile-time error occurs",
+      "It becomes undefined"
+    ],
+    "answer": "A",
+    "explanation": "Since a copy of the value is passed, changes inside the method do not affect the caller's original variable."
+  },
+  {
+    "id": 19,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Pass by Value",
+    "question": "The variables listed in a method's declaration (e.g., void m(int x)) are called:",
+    "options": [
+      "Actual parameters",
+      "Static parameters",
+      "Return parameters",
+      "Formal parameters"
+    ],
+    "answer": "D",
+    "explanation": "Formal parameters are the variables defined in the method signature that receive values."
+  },
+  {
+    "id": 20,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Pass by Value",
+    "question": "The values supplied when calling a method (e.g., m(5)) are called:",
+    "options": [
+      "Actual parameters",
+      "Instance parameters",
+      "Formal parameters",
+      "Reference parameters"
+    ],
+    "answer": "A",
+    "explanation": "Actual parameters (arguments) are the real values passed to a method at the call site."
+  },
+  {
+    "id": 21,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Pass by Value",
+    "question": "When an object reference is passed to a method, what exactly is copied?",
+    "options": [
+      "Nothing is copied",
+      "The entire object including all its fields",
+      "A copy of the reference (the memory address), not the object itself",
+      "Only the object's class name"
+    ],
+    "answer": "C",
+    "explanation": "Java copies the reference value; both the original and copied reference point to the same object."
+  },
+  {
+    "id": 22,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Pass by Value",
+    "question": "If a method changes a field of an object through a passed reference, is this change visible outside the method?",
+    "options": [
+      "Yes, but only for final objects",
+      "No, references are always copies of copies",
+      "Yes, because both references point to the same object",
+      "No, because objects are passed by reference in Java"
+    ],
+    "answer": "C",
+    "explanation": "Since the copied reference points to the same object, modifying the object's fields affects the shared object."
+  },
+  {
+    "id": 23,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Pass by Value",
+    "question": "If inside a method a passed reference is reassigned to a brand-new object, does the caller's original reference change?",
+    "options": [
+      "Yes, the caller's reference now points to the new object",
+      "Yes, but only for arrays",
+      "No, only the local copy of the reference is reassigned",
+      "A compile-time error occurs"
+    ],
+    "answer": "C",
+    "explanation": "Reassigning the local reference variable inside the method only affects that copy, not the caller's reference."
+  },
+  {
+    "id": 24,
+    "level": "Advanced",
+    "type": "Misconception",
+    "topic": "Pass by Value",
+    "question": "A student says 'Java passes objects by reference.' Why is this technically incorrect?",
+    "options": [
+      "Java always passes a copy of the reference value, which is still pass by value",
+      "Objects cannot be passed as parameters",
+      "It is actually correct terminology",
+      "Java never allows object references to be passed"
+    ],
+    "answer": "A",
+    "explanation": "Java uses pass by value uniformly; for objects, the value passed happens to be a reference, not the object."
+  },
+  {
+    "id": 25,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Pass by Value",
+    "question": "void change(int x){ x = x + 10; } ... int a = 5; change(a); System.out.println(a); What is the output?",
+    "options": [
+      "5",
+      "10",
+      "Compilation error",
+      "15"
+    ],
+    "answer": "A",
+    "explanation": "Since int is primitive, a copy of a is passed; modifying x inside change() has no effect on a."
+  },
+  {
+    "id": 26,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Pass by Value",
+    "question": "class Box{int v;} void update(Box b){ b.v = 100; } Box obj = new Box(); obj.v = 5; update(obj); print(obj.v); What is the output?",
+    "options": [
+      "5",
+      "0",
+      "Compilation error",
+      "100"
+    ],
+    "answer": "D",
+    "explanation": "The copied reference inside update() points to the same Box object, so modifying its field changes the shared object."
+  },
+  {
+    "id": 27,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Pass by Value",
+    "question": "void reset(Box b){ b = new Box(); b.v = 999; } Box obj = new Box(); obj.v = 1; reset(obj); print(obj.v); What is the output?",
+    "options": [
+      "1",
+      "Compilation error",
+      "0",
+      "999"
+    ],
+    "answer": "A",
+    "explanation": "reset() reassigns its local copy b to a new object; obj still refers to the original object, so obj.v remains 1."
+  },
+  {
+    "id": 28,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Pass by Value",
+    "question": "Pass by value in Java ensures that:",
+    "options": [
+      "Method parameters are always final",
+      "Arrays are passed differently from other objects",
+      "A method can always change the caller's primitive variables",
+      "A method cannot change the caller's original reference variable, only the object it points to (for objects)"
+    ],
+    "answer": "D",
+    "explanation": "The key guarantee is that the local variable in the method is independent of the caller's variable, though shared object contents can still be mutated."
+  },
+  {
+    "id": 29,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Pass by Value",
+    "question": "Which of these is passed by value exactly like a primitive, in terms of the reference itself?",
+    "options": [
+      "An object reference",
+      "The heap memory block",
+      "The object",
+      "The class definition"
+    ],
+    "answer": "A",
+    "explanation": "The reference variable itself is copied by value; what it points to (the object) is shared, not copied."
+  },
+  {
+    "id": 30,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Pass by Value",
+    "question": "Assertion (A): Swapping two int variables using a swap(int a, int b) method works in Java. Reason (R): Java passes primitives by value.",
+    "options": [
+      "Both are false",
+      "A is true, R is false",
+      "Both A and R are true, R explains A",
+      "A is false, R is true"
+    ],
+    "answer": "D",
+    "explanation": "Because primitives are passed by value, swap() only affects local copies, so the swap does not persist outside the method."
+  },
+  {
+    "id": 31,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "'this' Reference",
+    "question": "What does the 'this' keyword refer to?",
+    "options": [
+      "The current object on which a method or constructor is invoked",
+      "A static reference shared by all objects",
+      "The superclass of the current object",
+      "The name of the current class"
+    ],
+    "answer": "A",
+    "explanation": "this always refers to the object whose method or constructor is currently executing."
+  },
+  {
+    "id": 32,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "'this' Reference",
+    "question": "Which of the following is a common use of 'this'?",
+    "options": [
+      "Distinguishing an instance variable from a parameter with the same name",
+      "Creating a static method",
+      "Importing a package",
+      "Declaring a new class"
+    ],
+    "answer": "A",
+    "explanation": "When a parameter shadows an instance variable, this.name explicitly refers to the instance variable."
+  },
+  {
+    "id": 33,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "'this' Reference",
+    "question": "class Student{ String name; Student(String name){ this.name = name; } } Here, this.name refers to:",
+    "options": [
+      "A static variable",
+      "A local variable inside a loop",
+      "The instance variable name of the object",
+      "The parameter name"
+    ],
+    "answer": "C",
+    "explanation": "this.name accesses the object's field, avoiding ambiguity with the constructor parameter of the same name."
+  },
+  {
+    "id": 34,
+    "level": "Intermediate",
+    "type": "Error-identification",
+    "topic": "'this' Reference",
+    "question": "class Student{ String name; Student(String name){ name = name; } } What is the likely issue with this constructor?",
+    "options": [
+      "It sets name to null explicitly",
+      "It causes a compilation error",
+      "It correctly initializes the instance variable",
+      "It assigns the parameter to itself; the instance variable name remains unset"
+    ],
+    "answer": "D",
+    "explanation": "Without this, 'name = name' refers to the parameter on both sides, so the instance field is never assigned."
+  },
+  {
+    "id": 35,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "'this' Reference",
+    "question": "Can 'this' be used inside a static method?",
+    "options": [
+      "Yes, always",
+      "No, because static methods are not associated with any particular object",
+      "Yes, if the class has no constructors",
+      "Yes, but only in the main method"
+    ],
+    "answer": "B",
+    "explanation": "this refers to an object instance, but static methods belong to the class, not to any object."
+  },
+  {
+    "id": 36,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "'this' Reference",
+    "question": "One constructor calling another constructor of the same class using 'this(...)' is called:",
+    "options": [
+      "Constructor finalization",
+      "Constructor hiding",
+      "Constructor overriding",
+      "Constructor chaining"
+    ],
+    "answer": "D",
+    "explanation": "this(...) invokes another constructor in the same class, allowing shared initialization logic."
+  },
+  {
+    "id": 37,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "'this' Reference",
+    "question": "In a method, 'this' allows an object to:",
+    "options": [
+      "Directly modify the class definition",
+      "Skip calling its own constructor",
+      "Access another unrelated object's private data",
+      "Pass a reference to itself to another method"
+    ],
+    "answer": "D",
+    "explanation": "this can be passed as an argument, letting other code reference back to the current object."
+  },
+  {
+    "id": 38,
+    "level": "Advanced",
+    "type": "Misconception",
+    "topic": "'this' Reference",
+    "question": "A beginner writes 'int x = this.x + this.x;' expecting it to double a local variable x. What's wrong?",
+    "options": [
+      "The code correctly doubles the local variable",
+      "this.x is invalid syntax",
+      "this can only be used in constructors",
+      "this.x refers to the instance variable, not the local variable x"
+    ],
+    "answer": "D",
+    "explanation": "this.x always refers to the object's field; a plain local variable x is unrelated and unaffected."
+  },
+  {
+    "id": 39,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "'this' Reference",
+    "question": "class P{ int x=5; void show(){ int x=10; System.out.println(this.x); } } What is the output of show()?",
+    "options": [
+      "10",
+      "5",
+      "Compilation error",
+      "15"
+    ],
+    "answer": "B",
+    "explanation": "this.x accesses the instance variable (5), ignoring the local variable x (10) which shadows it."
+  },
+  {
+    "id": 40,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "'this' Reference",
+    "question": "Which statement is FALSE about 'this'?",
+    "options": [
+      "'this' refers to the current object",
+      "'this' can be passed as a method argument",
+      "'this' can be used to refer to a static variable exclusively",
+      "'this' can resolve naming conflicts"
+    ],
+    "answer": "C",
+    "explanation": "this relates to instance context; it is not used exclusively for static members, which belong to the class."
+  },
+  {
+    "id": 41,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "'this' Reference",
+    "question": "'this' is typically used in a constructor to:",
+    "options": [
+      "Declare a new object",
+      "Assign parameter values to instance variables with matching names",
+      "Convert the object to its superclass",
+      "Define the return type of the constructor"
+    ],
+    "answer": "B",
+    "explanation": "Constructors often use this.field = parameter to initialize instance variables when parameter names match field names."
+  },
+  {
+    "id": 42,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "'this' Reference",
+    "question": "Inside an instance method, ______ always refers to the object through which the method was invoked.",
+    "options": [
+      "self",
+      "static",
+      "super",
+      "this"
+    ],
+    "answer": "D",
+    "explanation": "this is Java's keyword for referring to the invoking object within instance context."
+  },
+  {
+    "id": 43,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "'this' Reference",
+    "question": "Method compareTo(Person other) needs to compare the current object's age with another Person's age. Which expression correctly refers to the current object's age?",
+    "options": [
+      "this.age",
+      "Person.age",
+      "other.age only",
+      "super.age"
+    ],
+    "answer": "A",
+    "explanation": "this.age explicitly accesses the age field of the object on which compareTo was called."
+  },
+  {
+    "id": 44,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "'this' Reference",
+    "question": "Assertion (A): 'this' can be used inside every method of a class. Reason (R): 'this' refers to the object currently executing the method.",
+    "options": [
+      "A is false, R is true",
+      "A is true, R is false",
+      "Both are false",
+      "Both A and R are true, R explains A"
+    ],
+    "answer": "A",
+    "explanation": "this cannot be used in static methods since there is no invoking object, so the assertion is false even though the reason is generally true."
+  },
+  {
+    "id": 45,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Data Hiding and Encapsulation",
+    "question": "Data hiding refers to:",
+    "options": [
+      "Restricting direct access to an object's internal data",
+      "Deleting unused variables from a class",
+      "Hiding entire classes from a package",
+      "Compiling code without showing errors"
+    ],
+    "answer": "A",
+    "explanation": "Data hiding conceals the internal state of an object from outside interference and misuse."
+  },
+  {
+    "id": 46,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Data Hiding and Encapsulation",
+    "question": "Encapsulation is best described as:",
+    "options": [
+      "Converting object data into static fields",
+      "Removing constructors from a class",
+      "Bundling data and the methods that operate on it within a single unit, while restricting direct access",
+      "Separating class definitions from method definitions"
+    ],
+    "answer": "C",
+    "explanation": "Encapsulation wraps state and behavior together and controls access via methods, protecting the object's data."
+  },
+  {
+    "id": 47,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Data Hiding and Encapsulation",
+    "question": "What is a primary benefit of data hiding?",
+    "options": [
+      "It protects the internal state of an object from unintended external modification",
+      "It increases the number of classes needed",
+      "It removes the need for constructors",
+      "It eliminates the need for methods"
+    ],
+    "answer": "A",
+    "explanation": "By restricting direct access, data hiding prevents external code from corrupting an object's internal data."
+  },
+  {
+    "id": 48,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Data Hiding and Encapsulation",
+    "question": "Controlled access to an object's data is typically provided through:",
+    "options": [
+      "Removing all methods",
+      "Public methods (such as getters and setters) that mediate access to private fields",
+      "Making all fields public",
+      "Using only static fields"
+    ],
+    "answer": "B",
+    "explanation": "Encapsulation exposes a controlled interface (methods) while keeping the underlying fields hidden."
+  },
+  {
+    "id": 49,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Data Hiding and Encapsulation",
+    "question": "How are data hiding and encapsulation related?",
+    "options": [
+      "Data hiding is a form of inheritance",
+      "Data hiding is a key outcome achieved through encapsulation",
+      "Encapsulation always requires overriding",
+      "They are entirely unrelated concepts"
+    ],
+    "answer": "B",
+    "explanation": "Encapsulation is the technique of bundling data with methods, and data hiding is the protective result of restricting access."
+  },
+  {
+    "id": 50,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Data Hiding and Encapsulation",
+    "question": "Which scenario best illustrates encapsulation?",
+    "options": [
+      "A subclass overrides all superclass methods",
+      "A class exposes methods to get and set a field's value instead of allowing direct field access",
+      "Two unrelated classes share the same variable name",
+      "A class has no methods at all"
+    ],
+    "answer": "B",
+    "explanation": "Encapsulation typically manifests through controlled access methods rather than exposing fields directly."
+  },
+  {
+    "id": 51,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Data Hiding and Encapsulation",
+    "question": "Which of these design choices supports data hiding most directly?",
+    "options": [
+      "Avoiding the use of methods",
+      "Declaring instance variables as public",
+      "Declaring instance variables as private",
+      "Making the class itself private in the same file"
+    ],
+    "answer": "C",
+    "explanation": "Marking fields private prevents direct outside access, enforcing data hiding."
+  },
+  {
+    "id": 52,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Data Hiding and Encapsulation",
+    "question": "How does encapsulation differ conceptually from mere data hiding?",
+    "options": [
+      "Encapsulation only applies to constructors",
+      "Encapsulation includes bundling both data and behavior, while data hiding specifically concerns restricting access to data",
+      "They are exact synonyms with no distinction",
+      "Data hiding is broader and includes method behavior too"
+    ],
+    "answer": "B",
+    "explanation": "Encapsulation is the broader design principle of combining state and behavior; data hiding emphasizes concealing state."
+  },
+  {
+    "id": 53,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Data Hiding and Encapsulation",
+    "question": "What could go wrong if an object's fields are NOT protected through data hiding?",
+    "options": [
+      "The object would lose its identity",
+      "The class would fail to compile",
+      "External code could directly set the fields to invalid or inconsistent values",
+      "The object would automatically become static"
+    ],
+    "answer": "C",
+    "explanation": "Without protection, outside code can freely modify fields, potentially violating the object's intended constraints."
+  },
+  {
+    "id": 54,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Data Hiding and Encapsulation",
+    "question": "Encapsulation supports which broader software quality?",
+    "options": [
+      "Automatic thread synchronization",
+      "Faster compilation of unrelated classes",
+      "Maintainability, since internal implementation can change without affecting external code",
+      "Guaranteed absence of runtime errors"
+    ],
+    "answer": "C",
+    "explanation": "Because internal details are hidden behind a stable interface, implementation can evolve without breaking external code."
+  },
+  {
+    "id": 55,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "Data Hiding and Encapsulation",
+    "question": "A class whose fields are private and accessed only through public methods is said to exhibit strong ______.",
+    "options": [
+      "encapsulation",
+      "overriding",
+      "inheritance",
+      "finalization"
+    ],
+    "answer": "A",
+    "explanation": "This design pattern is the hallmark of well-encapsulated classes."
+  },
+  {
+    "id": 56,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Data Hiding and Encapsulation",
+    "question": "A BankAccount class keeps 'balance' private and only allows changes through a deposit() method that validates the amount. This primarily demonstrates:",
+    "options": [
+      "Dynamic method dispatch",
+      "Method overriding",
+      "Constructor overloading",
+      "Data hiding combined with encapsulation"
+    ],
+    "answer": "D",
+    "explanation": "Restricting direct access to balance and mediating changes through a validating method is a classic encapsulation example."
+  },
+  {
+    "id": 57,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Overloading",
+    "question": "Method overloading means:",
+    "options": [
+      "Defining a method in a subclass with the same signature as in the superclass",
+      "Reusing a variable name across multiple classes",
+      "Declaring a method as final",
+      "Defining multiple methods in the same class with the same name but different parameter lists"
+    ],
+    "answer": "D",
+    "explanation": "Overloading allows methods sharing a name to be distinguished by differing parameter lists within the same class."
+  },
+  {
+    "id": 58,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Overloading",
+    "question": "Which of the following can distinguish overloaded methods?",
+    "options": [
+      "The method body content",
+      "The number or types of parameters",
+      "The return type alone",
+      "The access modifier alone"
+    ],
+    "answer": "B",
+    "explanation": "Overload resolution is based on the parameter list, not on return type or access modifier alone."
+  },
+  {
+    "id": 59,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Overloading",
+    "question": "void add(int a, int b) and int add(int a, int b) - is this valid overloading?",
+    "options": [
+      "No, because only the return type differs; the parameter list is identical",
+      "Yes, because the return types differ",
+      "Yes, because one method returns void",
+      "No, because overloading is never allowed with void"
+    ],
+    "answer": "A",
+    "explanation": "Overloading requires a different parameter list; differing only in return type causes a compile-time error."
+  },
+  {
+    "id": 60,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Overloading",
+    "question": "Which of these method pairs represents VALID overloading?",
+    "options": [
+      "void show(int a) and void show(int b)",
+      "void show(int a) and void display(int a)",
+      "void show(int a) and void show(int a, int b)",
+      "void show(int a) and int show(int a)"
+    ],
+    "answer": "C",
+    "explanation": "Differing in the number of parameters (one vs two) is a valid basis for overloading."
+  },
+  {
+    "id": 61,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Overloading",
+    "question": "Overloading primarily helps achieve:",
+    "options": [
+      "Compile-time (static) polymorphism",
+      "Object finalization",
+      "Runtime (dynamic) polymorphism",
+      "Data hiding"
+    ],
+    "answer": "A",
+    "explanation": "Since the compiler resolves which overloaded method to call based on argument types at compile time, overloading is static polymorphism."
+  },
+  {
+    "id": 62,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Overloading",
+    "question": "Given print(int x), print(double x), and print(String x), which one is called for print(5)?",
+    "options": [
+      "print(double x)",
+      "print(int x)",
+      "print(String x)",
+      "Compilation error due to ambiguity"
+    ],
+    "answer": "B",
+    "explanation": "The literal 5 is an int, so the exact-match overload print(int x) is selected."
+  },
+  {
+    "id": 63,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Overloading",
+    "question": "Given print(int x) and print(double x), which is called for print(5.0)?",
+    "options": [
+      "print(int x)",
+      "print(double x)",
+      "Compilation error",
+      "Both are called"
+    ],
+    "answer": "B",
+    "explanation": "5.0 is a double literal, matching print(double x) directly."
+  },
+  {
+    "id": 64,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Overloading",
+    "question": "Can overloaded methods have different access modifiers?",
+    "options": [
+      "No, only constructors can vary access modifiers",
+      "Yes, access modifiers can differ between overloaded methods",
+      "Yes, but only if parameter types are identical",
+      "No, all overloaded methods must share the same access modifier"
+    ],
+    "answer": "B",
+    "explanation": "Access modifiers are independent of overload resolution rules and can differ freely among overloaded methods."
+  },
+  {
+    "id": 65,
+    "level": "Advanced",
+    "type": "Misconception",
+    "topic": "Overloading",
+    "question": "A student claims that changing only a parameter's name (not its type) creates a valid overload. Is this correct?",
+    "options": [
+      "No, because overloading requires different method names",
+      "Yes, parameter names are sufficient to overload a method",
+      "No, parameter names do not affect overload resolution; only type/number/order matter",
+      "Yes, but only for private methods"
+    ],
+    "answer": "C",
+    "explanation": "Overloading depends solely on the parameter list's types, count, or order - not on parameter names."
+  },
+  {
+    "id": 66,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Overloading",
+    "question": "int calc(int a, int b){return a+b;} double calc(double a, double b){return a+b;} calc(2,3) invokes which version?",
+    "options": [
+      "Compilation error due to ambiguity",
+      "Both methods execute",
+      "calc(int, int)",
+      "calc(double, double)"
+    ],
+    "answer": "C",
+    "explanation": "Since 2 and 3 are int literals, they match calc(int,int) exactly, so that overload executes."
+  },
+  {
+    "id": 67,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Overloading",
+    "question": "Which of the following is TRUE about overloading and parameter order?",
+    "options": [
+      "Parameter order never affects overloading",
+      "Changing the order of different-typed parameters (e.g., (int,double) vs (double,int)) can create valid overloads",
+      "Overloading requires identical parameter order across all versions",
+      "Order only matters for constructors, not methods"
+    ],
+    "answer": "B",
+    "explanation": "A different order of differing parameter types produces a distinct signature, enabling valid overloading."
+  },
+  {
+    "id": 68,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Overloading",
+    "question": "A Calculator class needs an add() method that can accept either two ints or two doubles. Which technique should be used?",
+    "options": [
+      "Object finalization",
+      "Dynamic method dispatch",
+      "Method overriding",
+      "Method overloading"
+    ],
+    "answer": "D",
+    "explanation": "Providing multiple add() methods with different parameter types within the same class is a textbook overloading scenario."
+  },
+  {
+    "id": 69,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "Overloading",
+    "question": "Overloaded methods must have the ______ name but a different parameter list.",
+    "options": [
+      "same",
+      "static",
+      "final",
+      "different"
+    ],
+    "answer": "A",
+    "explanation": "The defining feature of overloading is the shared method name paired with differing parameter signatures."
+  },
+  {
+    "id": 70,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Overloading",
+    "question": "void greet(){print('Hi');} void greet(String name){print('Hi '+name);} Calling greet('Sam') outputs:",
+    "options": [
+      "Hi",
+      "Hi null",
+      "Compilation error",
+      "Hi Sam"
+    ],
+    "answer": "D",
+    "explanation": "The call greet('Sam') matches the overloaded version accepting a String parameter."
+  },
+  {
+    "id": 71,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Overloading",
+    "question": "Assertion (A): Two methods differing only in their thrown-exception clause, with an identical parameter list, are validly overloaded. Reason (R): Overload resolution depends only on the parameter list.",
+    "options": [
+      "Both are false",
+      "A is true, R is false",
+      "A is false, R is true",
+      "Both A and R are true, R explains A"
+    ],
+    "answer": "C",
+    "explanation": "Since exceptions are not part of the parameter list, two methods with an identical parameter list cannot be overloaded on that basis alone; the assertion is false."
+  },
+  {
+    "id": 72,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Overriding",
+    "question": "Method overriding occurs when:",
+    "options": [
+      "A class defines two methods with the same name but different parameters",
+      "A method is declared without a body",
+      "A subclass provides its own implementation of a method already defined in its superclass with the same signature",
+      "A constructor is called more than once"
+    ],
+    "answer": "C",
+    "explanation": "Overriding redefines inherited method behavior in a subclass using an identical method signature."
+  },
+  {
+    "id": 73,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Overriding",
+    "question": "Overriding is primarily used to achieve:",
+    "options": [
+      "Data hiding",
+      "Compile-time polymorphism",
+      "Runtime (dynamic) polymorphism",
+      "Constructor chaining"
+    ],
+    "answer": "C",
+    "explanation": "Because the actual method executed is determined at runtime based on the object's real type, overriding enables dynamic polymorphism."
+  },
+  {
+    "id": 74,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Overriding",
+    "question": "For a subclass method to override a superclass method, the method signature must be:",
+    "options": [
+      "Completely different",
+      "Different only in return type",
+      "Different only in parameter names",
+      "The same as the superclass method"
+    ],
+    "answer": "D",
+    "explanation": "Overriding requires an identical method name and parameter list as the superclass version."
+  },
+  {
+    "id": 75,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Overriding",
+    "question": "class Animal{void sound(){print('generic');}} class Dog extends Animal{void sound(){print('bark');}} Dog's sound() is an example of:",
+    "options": [
+      "Constructor overloading",
+      "Method overloading",
+      "Method overriding",
+      "Data hiding"
+    ],
+    "answer": "C",
+    "explanation": "Dog redefines the inherited sound() method with the same signature, which is overriding."
+  },
+  {
+    "id": 76,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Overriding",
+    "question": "Which of the following distinguishes overriding from overloading?",
+    "options": [
+      "There is no meaningful difference between them",
+      "Overriding is resolved at compile time; overloading at runtime",
+      "Overriding involves a superclass and subclass relationship; overloading occurs within the same class",
+      "Overriding always changes the parameter list; overloading never does"
+    ],
+    "answer": "C",
+    "explanation": "Overriding is inherently tied to inheritance, while overloading happens among methods in the same class."
+  },
+  {
+    "id": 77,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Overriding",
+    "question": "Which relationship must exist between the classes for overriding to occur?",
+    "options": [
+      "Superclass and subclass (inheritance) relationship",
+      "The classes must be in different packages only",
+      "No particular relationship is required",
+      "The classes must be unrelated"
+    ],
+    "answer": "A",
+    "explanation": "Overriding specifically involves a subclass redefining a method inherited from its superclass."
+  },
+  {
+    "id": 78,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Overriding",
+    "question": "class A{void show(){print('A');}} class B extends A{void show(){print('B');}} A obj = new B(); obj.show(); Output?",
+    "options": [
+      "B",
+      "AB",
+      "A",
+      "Compilation error"
+    ],
+    "answer": "A",
+    "explanation": "Even though the reference type is A, the actual object is B, so the overridden show() in B executes."
+  },
+  {
+    "id": 79,
+    "level": "Advanced",
+    "type": "Misconception",
+    "topic": "Overriding",
+    "question": "A student overrides a method but accidentally changes its parameter list. What actually happens?",
+    "options": [
+      "The program fails to compile in all cases",
+      "It becomes a constructor",
+      "Java automatically corrects the parameter list",
+      "It becomes an overloaded method instead of an overriding one"
+    ],
+    "answer": "D",
+    "explanation": "Changing the parameter list breaks the identical-signature requirement, so it is treated as a new overloaded method."
+  },
+  {
+    "id": 80,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Overriding",
+    "question": "Which of these is a rule directly relevant to overriding in this syllabus context?",
+    "options": [
+      "The overriding method must be defined before the superclass method",
+      "The overriding method must always be declared static",
+      "The overriding method must have the same name and parameter list as the superclass method",
+      "The overriding method must be defined in the same class"
+    ],
+    "answer": "C",
+    "explanation": "Matching the method signature exactly is the essential requirement to override an inherited method."
+  },
+  {
+    "id": 81,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Overriding",
+    "question": "A Vehicle class has method start(); a Car subclass also defines start() with the same signature. Calling start() on a Car object executes:",
+    "options": [
+      "Vehicle's version of start()",
+      "Both versions in sequence",
+      "Car's version of start()",
+      "Neither version"
+    ],
+    "answer": "C",
+    "explanation": "The subclass's overriding implementation takes precedence when invoked on a subclass instance."
+  },
+  {
+    "id": 82,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "Overriding",
+    "question": "Overriding allows a subclass to ______ behavior inherited from its superclass.",
+    "options": [
+      "rename",
+      "redefine",
+      "duplicate",
+      "delete"
+    ],
+    "answer": "B",
+    "explanation": "Overriding replaces (redefines) the inherited method's implementation in the subclass."
+  },
+  {
+    "id": 83,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Overriding",
+    "question": "A Shape class has a method area() that returns 0. Circle and Square subclasses each provide their own area() calculation. This design uses:",
+    "options": [
+      "Method overloading",
+      "Pass by value",
+      "Method overriding",
+      "Data hiding"
+    ],
+    "answer": "C",
+    "explanation": "Each subclass supplies its own specific implementation of the inherited area() method, which is overriding."
+  },
+  {
+    "id": 84,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Overriding",
+    "question": "Which statement is correct: 'Overriding can occur without inheritance.'",
+    "options": [
+      "False, but only for constructors",
+      "True, overriding can happen between unrelated classes",
+      "False, overriding requires an inheritance (superclass-subclass) relationship",
+      "True, overriding only needs same class"
+    ],
+    "answer": "C",
+    "explanation": "Overriding is fundamentally dependent on the existence of a superclass method being redefined by a subclass."
+  },
+  {
+    "id": 85,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Overriding",
+    "question": "Overloading changes the ______, while overriding keeps the ______ the same.",
+    "options": [
+      "parameter list; method signature",
+      "object; constructor",
+      "class; return type",
+      "method name; parameter list"
+    ],
+    "answer": "A",
+    "explanation": "Overloading requires varying parameter lists with the same name, whereas overriding preserves the exact same signature."
+  },
+  {
+    "id": 86,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Overriding",
+    "question": "Assertion (A): Overriding is resolved at compile time. Reason (R): The compiler always knows the exact runtime type of every object reference.",
+    "options": [
+      "A is false, R is true",
+      "Both A and R are true, R explains A",
+      "A is true, R is false",
+      "Both A and R are false"
+    ],
+    "answer": "D",
+    "explanation": "Overriding is resolved at runtime, and the compiler cannot generally know an object's exact runtime type in advance, so both statements are false."
+  },
+  {
+    "id": 87,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Constructors",
+    "question": "A constructor in Java is used to:",
+    "options": [
+      "Declare a static variable",
+      "Override a method",
+      "Initialize a newly created object",
+      "Destroy an object"
+    ],
+    "answer": "C",
+    "explanation": "Constructors run automatically when an object is created, setting up its initial state."
+  },
+  {
+    "id": 88,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Constructors",
+    "question": "A constructor's name must:",
+    "options": [
+      "Be different from the class name",
+      "Exactly match the class name",
+      "Match the name of any method in the class",
+      "Start with a lowercase letter always"
+    ],
+    "answer": "B",
+    "explanation": "Java requires a constructor's name to be identical to its class name."
+  },
+  {
+    "id": 89,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Constructors",
+    "question": "Constructors are invoked:",
+    "options": [
+      "Only for static classes",
+      "Only once per class regardless of the number of objects",
+      "Automatically when an object is created using new",
+      "Only when explicitly called like a normal method"
+    ],
+    "answer": "C",
+    "explanation": "The new keyword triggers the appropriate constructor automatically as part of object creation."
+  },
+  {
+    "id": 90,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Constructors",
+    "question": "Does a constructor have a return type?",
+    "options": [
+      "Yes, constructors always return void",
+      "Yes, constructors return an int by default",
+      "No, constructors do not declare any return type, not even void",
+      "Yes, constructors return the class type explicitly"
+    ],
+    "answer": "C",
+    "explanation": "Unlike methods, constructors have no return type declaration, which distinguishes them from methods."
+  },
+  {
+    "id": 91,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Constructors",
+    "question": "A constructor that accepts arguments to initialize an object is called a:",
+    "options": [
+      "Static constructor",
+      "Default constructor",
+      "Parameterized constructor",
+      "Overriding constructor"
+    ],
+    "answer": "C",
+    "explanation": "A parameterized constructor takes input values used to set the initial state of the object."
+  },
+  {
+    "id": 92,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Constructors",
+    "question": "If a class defines no constructor at all, Java provides:",
+    "options": [
+      "A no-argument default constructor automatically",
+      "A constructor that throws an exception",
+      "A static factory method",
+      "No way to create objects of that class"
+    ],
+    "answer": "A",
+    "explanation": "The compiler supplies an implicit no-arg constructor when the class defines none explicitly."
+  },
+  {
+    "id": 93,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Constructors",
+    "question": "Defining multiple constructors in the same class with different parameter lists is called:",
+    "options": [
+      "Constructor finalization",
+      "Constructor overriding",
+      "Constructor overloading",
+      "Constructor inheritance"
+    ],
+    "answer": "C",
+    "explanation": "Like methods, constructors can be overloaded by varying their parameter lists within the same class."
+  },
+  {
+    "id": 94,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Constructors",
+    "question": "class Point{ Point(){...} Point(int x, int y){...} } This class demonstrates:",
+    "options": [
+      "Method overriding",
+      "Constructor overriding",
+      "Constructor overloading",
+      "Data hiding"
+    ],
+    "answer": "C",
+    "explanation": "Two constructors with different parameter lists in the same class represent overloading."
+  },
+  {
+    "id": 95,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Constructors",
+    "question": "Can constructors be overridden in a subclass?",
+    "options": [
+      "Yes, if declared final",
+      "Yes, exactly like normal methods",
+      "No, constructors are not inherited and therefore cannot be overridden",
+      "Yes, but only no-argument constructors"
+    ],
+    "answer": "C",
+    "explanation": "Constructors are tied to their own class and are not inherited by subclasses."
+  },
+  {
+    "id": 96,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Constructors",
+    "question": "class Box{ Box(){print('default');} Box(int s){print('sized');} } new Box(5); Output?",
+    "options": [
+      "Compilation error",
+      "sized",
+      "default",
+      "sized then default"
+    ],
+    "answer": "B",
+    "explanation": "Passing an argument 5 matches the parameterized constructor Box(int s)."
+  },
+  {
+    "id": 97,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Constructors",
+    "question": "Which of these correctly relates constructors and object creation?",
+    "options": [
+      "A constructor runs only if explicitly invoked by name later",
+      "A constructor runs before the object's memory is allocated",
+      "A constructor runs exactly once, right after memory is allocated for a new object",
+      "A constructor runs every time any method of the object is called"
+    ],
+    "answer": "C",
+    "explanation": "Constructors execute automatically as the final step of object creation, running once per object."
+  },
+  {
+    "id": 98,
+    "level": "Advanced",
+    "type": "Misconception",
+    "topic": "Constructors",
+    "question": "A student defines a method named the same as the class but adds a return type of void. Is this a constructor?",
+    "options": [
+      "No, because constructor names cannot match the class name",
+      "Yes, it is still treated as a constructor",
+      "No, adding any return type (even void) makes it a regular method, not a constructor",
+      "Yes, but it will never be called automatically"
+    ],
+    "answer": "C",
+    "explanation": "The absence of a return type is essential to constructor syntax; specifying void makes it an ordinary method."
+  },
+  {
+    "id": 99,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "Constructors",
+    "question": "A constructor that takes no parameters is commonly called a ______ constructor.",
+    "options": [
+      "abstract",
+      "static",
+      "final",
+      "no-argument (default)"
+    ],
+    "answer": "D",
+    "explanation": "A constructor with an empty parameter list is referred to as a no-argument or default constructor."
+  },
+  {
+    "id": 100,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Constructors",
+    "question": "A Rectangle class needs to support creating objects either with default dimensions or with specific width and height supplied by the caller. Which feature should be used?",
+    "options": [
+      "Dynamic method dispatch",
+      "Constructor overloading",
+      "Method overriding",
+      "Data hiding"
+    ],
+    "answer": "B",
+    "explanation": "Providing both a no-arg constructor and a parameterized constructor lets objects be created in multiple ways."
+  },
+  {
+    "id": 101,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Constructors",
+    "question": "Assertion (A): If a class defines a parameterized constructor only, calling new ClassName() with no arguments will fail to compile. Reason (R): Java does not automatically provide a no-argument constructor once any constructor is explicitly defined.",
+    "options": [
+      "A is false, R is true",
+      "Both A and R are true, and R correctly explains A",
+      "A is true, R is false",
+      "Both A and R are false"
+    ],
+    "answer": "B",
+    "explanation": "Once a class defines any explicit constructor, the compiler no longer supplies a default no-arg constructor."
+  },
+  {
+    "id": 102,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Finalization",
+    "question": "The concept of finalization in Java relates to:",
+    "options": [
+      "Actions performed immediately when an object is created",
+      "Declaring a class as final",
+      "Actions performed on an object before it is reclaimed by garbage collection",
+      "Compiling a class into bytecode"
+    ],
+    "answer": "C",
+    "explanation": "Finalization refers to cleanup-related processing associated with an object nearing the end of its lifecycle."
+  },
+  {
+    "id": 103,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Finalization",
+    "question": "The purpose of finalization is generally to:",
+    "options": [
+      "Prevent objects from ever being deleted",
+      "Speed up object creation",
+      "Allow an object a chance to perform cleanup before it is removed from memory",
+      "Convert an object into its superclass"
+    ],
+    "answer": "C",
+    "explanation": "Finalization gives an object an opportunity to release resources or perform final tasks before reclamation."
+  },
+  {
+    "id": 104,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Finalization",
+    "question": "Finalization is related to which part of an object's existence?",
+    "options": [
+      "The middle of its lifecycle during normal method calls",
+      "It is unrelated to the object lifecycle",
+      "The very beginning, during construction",
+      "The end of its lifecycle, just before memory reclamation"
+    ],
+    "answer": "D",
+    "explanation": "Finalization specifically concerns the object's lifecycle near its conclusion, prior to reclamation."
+  },
+  {
+    "id": 105,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Finalization",
+    "question": "When might finalization occur for an object?",
+    "options": [
+      "Only when the program starts",
+      "When the object is no longer reachable and is being considered for garbage collection",
+      "Immediately after the constructor finishes",
+      "Every time a method is called on the object"
+    ],
+    "answer": "B",
+    "explanation": "Finalization is associated with unreachable objects that are eligible for garbage collection."
+  },
+  {
+    "id": 106,
+    "level": "Basic",
+    "type": "Basic Characteristic",
+    "topic": "Finalization",
+    "question": "Is the exact timing of finalization guaranteed to be immediate after an object becomes unreachable?",
+    "options": [
+      "No, its timing is not guaranteed to be immediate",
+      "Yes, but only for static objects",
+      "No, it never happens at all",
+      "Yes, it always happens instantly"
+    ],
+    "answer": "A",
+    "explanation": "Finalization timing is not precisely predictable; it depends on when the object is processed for reclamation."
+  },
+  {
+    "id": 107,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Finalization",
+    "question": "Finalization is best associated with which broader stage of object management?",
+    "options": [
+      "Object creation",
+      "Method overloading",
+      "Constructor chaining",
+      "Object lifecycle conclusion / cleanup"
+    ],
+    "answer": "D",
+    "explanation": "It represents the closing stage of an object's life, distinct from creation or normal usage."
+  },
+  {
+    "id": 108,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Finalization",
+    "question": "Which statement about finalization is most accurate at a basic conceptual level?",
+    "options": [
+      "It runs before an object is ever used",
+      "It is required for every object in Java",
+      "It provides a mechanism to perform final operations before an object is reclaimed",
+      "It replaces the need for constructors"
+    ],
+    "answer": "C",
+    "explanation": "Finalization offers an optional opportunity for last operations, not a mandatory or initial step."
+  },
+  {
+    "id": 109,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "Finalization",
+    "question": "Finalization is conceptually the counterpart to ______ in an object's lifecycle.",
+    "options": [
+      "construction/initialization",
+      "polymorphism",
+      "overloading",
+      "encapsulation"
+    ],
+    "answer": "A",
+    "explanation": "If construction begins an object's life, finalization is conceptually associated with its end."
+  },
+  {
+    "id": 110,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Finalization",
+    "question": "A resource-holding object is no longer used anywhere in a program. Basic finalization concept suggests that:",
+    "options": [
+      "The object is automatically overridden",
+      "The object is immediately converted to null",
+      "The object gains a new constructor",
+      "The object may get a chance to perform final cleanup before being reclaimed"
+    ],
+    "answer": "D",
+    "explanation": "Once unreachable, an object may undergo finalization-related processing prior to being reclaimed."
+  },
+  {
+    "id": 111,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Subclasses (Inheritance)",
+    "question": "Inheritance in Java allows a class to:",
+    "options": [
+      "Merge two unrelated classes permanently",
+      "Acquire the fields and methods of another class",
+      "Delete methods from another class",
+      "Prevent any class from being extended"
+    ],
+    "answer": "B",
+    "explanation": "Inheritance lets a class (subclass) reuse and extend the members of another class (superclass)."
+  },
+  {
+    "id": 112,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Subclasses (Inheritance)",
+    "question": "The class that inherits from another class is called the:",
+    "options": [
+      "Subclass",
+      "Constructor class",
+      "Superclass",
+      "Interface"
+    ],
+    "answer": "A",
+    "explanation": "The inheriting class is termed the subclass (or derived/child class)."
+  },
+  {
+    "id": 113,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Subclasses (Inheritance)",
+    "question": "The class being inherited from is called the:",
+    "options": [
+      "Final class",
+      "Superclass",
+      "Object class only",
+      "Subclass"
+    ],
+    "answer": "B",
+    "explanation": "The class whose members are inherited is called the superclass (or base/parent class)."
+  },
+  {
+    "id": 114,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Subclasses (Inheritance)",
+    "question": "The primary purpose of inheritance is to:",
+    "options": [
+      "Promote code reuse by allowing subclasses to use superclass functionality",
+      "Prevent classes from sharing any behavior",
+      "Eliminate the need for constructors",
+      "Force every subclass to redefine all methods"
+    ],
+    "answer": "A",
+    "explanation": "Inheritance enables a subclass to reuse existing fields and methods rather than rewriting them."
+  },
+  {
+    "id": 115,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Subclasses (Inheritance)",
+    "question": "Which members of a superclass are typically inherited by a subclass?",
+    "options": [
+      "Only constructors",
+      "Only private fields",
+      "Only static methods",
+      "Non-private fields and methods"
+    ],
+    "answer": "D",
+    "explanation": "A subclass generally inherits accessible (non-private) fields and methods; constructors are not inherited."
+  },
+  {
+    "id": 116,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Subclasses (Inheritance)",
+    "question": "The relationship established by inheritance between a subclass and superclass is often described as:",
+    "options": [
+      "A completely independent relationship",
+      "A parent-child (is-a) relationship",
+      "A uses-a relationship exclusively",
+      "A has-a relationship exclusively"
+    ],
+    "answer": "B",
+    "explanation": "Inheritance models an 'is-a' relationship, where a subclass object is a specialized kind of the superclass."
+  },
+  {
+    "id": 117,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Subclasses (Inheritance)",
+    "question": "Which of these is an advantage of using inheritance?",
+    "options": [
+      "It always increases the number of unrelated classes needed",
+      "It reduces code duplication by reusing existing class functionality",
+      "It prevents subclasses from adding new functionality",
+      "It removes the need for any class to have methods"
+    ],
+    "answer": "B",
+    "explanation": "Inheritance's core benefit is reusing established behavior, reducing redundant code across related classes."
+  },
+  {
+    "id": 118,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Subclasses (Inheritance)",
+    "question": "class Vehicle{...} class Car extends Vehicle{...} Car is the:",
+    "options": [
+      "Constructor",
+      "Superclass",
+      "Interface",
+      "Subclass"
+    ],
+    "answer": "D",
+    "explanation": "Car extends Vehicle, making Car the subclass that inherits from the superclass Vehicle."
+  },
+  {
+    "id": 119,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Subclasses (Inheritance)",
+    "question": "Which keyword is used in Java to establish inheritance between classes?",
+    "options": [
+      "implements",
+      "super",
+      "extends",
+      "inherits"
+    ],
+    "answer": "C",
+    "explanation": "The extends keyword is used when a subclass inherits from a superclass in Java."
+  },
+  {
+    "id": 120,
+    "level": "Basic",
+    "type": "Basic Characteristic",
+    "topic": "Subclasses (Inheritance)",
+    "question": "Can a subclass add new fields and methods not present in its superclass?",
+    "options": [
+      "No, a subclass can only use existing superclass members",
+      "No, a subclass must have identical members to its superclass",
+      "Yes, but only new fields, never new methods",
+      "Yes, a subclass can extend the superclass by adding its own new members"
+    ],
+    "answer": "D",
+    "explanation": "In addition to inheriting members, subclasses can introduce entirely new fields and methods."
+  },
+  {
+    "id": 121,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Subclasses (Inheritance)",
+    "question": "A Manager class extends an Employee class, reusing salary calculation logic while adding a teamSize field. This illustrates:",
+    "options": [
+      "Overloading",
+      "Data hiding",
+      "Finalization",
+      "Inheritance"
+    ],
+    "answer": "D",
+    "explanation": "Manager reuses Employee's functionality while extending it with new members, which is inheritance."
+  },
+  {
+    "id": 122,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "Subclasses (Inheritance)",
+    "question": "In an inheritance relationship, the subclass is also referred to as the ______ class.",
+    "options": [
+      "static",
+      "final",
+      "abstract",
+      "derived (or child)"
+    ],
+    "answer": "D",
+    "explanation": "Subclass, derived class, and child class are commonly interchangeable terms for the inheriting class."
+  },
+  {
+    "id": 123,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Subclasses (Inheritance)",
+    "question": "Which statement about parent-child class relationships is correct?",
+    "options": [
+      "A child class can have only one method",
+      "A child class inherits characteristics from its parent class but may also specialize them",
+      "A parent class inherits from its child class",
+      "Parent and child classes must always be unrelated in behavior"
+    ],
+    "answer": "B",
+    "explanation": "The child (subclass) builds upon its parent's (superclass's) behavior, often specializing or extending it."
+  },
+  {
+    "id": 124,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Subclasses (Inheritance)",
+    "question": "Superclass vs Subclass - which best characterizes their typical relationship?",
+    "options": [
+      "The superclass is always smaller in code size",
+      "The subclass always has fewer methods than the superclass",
+      "They have no hierarchical relationship",
+      "The superclass is more general; the subclass is more specific"
+    ],
+    "answer": "D",
+    "explanation": "Superclasses typically represent general concepts, while subclasses specialize or refine that general behavior."
+  },
+  {
+    "id": 125,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Superclass and Subclass Object Relationship",
+    "question": "A subclass object can generally be treated as an object of its:",
+    "options": [
+      "Only its own class, never another",
+      "Interface it does not implement",
+      "Superclass",
+      "Any unrelated class"
+    ],
+    "answer": "C",
+    "explanation": "Because of the is-a relationship, a subclass object is also considered an object of its superclass type."
+  },
+  {
+    "id": 126,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Superclass and Subclass Object Relationship",
+    "question": "Is every superclass object also a subclass object?",
+    "options": [
+      "No, a superclass object is not necessarily a subclass object",
+      "Yes, always",
+      "Yes, but only for abstract superclasses",
+      "No such relationship exists"
+    ],
+    "answer": "A",
+    "explanation": "The is-a relationship is one-directional: subclass objects are superclass objects, but not the reverse."
+  },
+  {
+    "id": 127,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Superclass and Subclass Object Relationship",
+    "question": "A reference variable of the superclass type can hold:",
+    "options": [
+      "An object of the superclass or any of its subclasses",
+      "Only an object of the exact same class",
+      "Nothing except null under all circumstances",
+      "Only objects of unrelated classes"
+    ],
+    "answer": "A",
+    "explanation": "Superclass references are flexible enough to point to subclass instances, reflecting the inheritance hierarchy."
+  },
+  {
+    "id": 128,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Superclass and Subclass Object Relationship",
+    "question": "Can a superclass reference variable hold a subclass object directly through assignment?",
+    "options": [
+      "Yes, but only inside static methods",
+      "No, this always causes a compile-time error",
+      "Yes, this assignment is allowed and considered valid",
+      "No, this always causes a runtime error"
+    ],
+    "answer": "C",
+    "explanation": "Assigning a subclass object to a superclass reference is a fundamental, valid part of Java's type compatibility rules."
+  },
+  {
+    "id": 129,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Superclass and Subclass Object Relationship",
+    "question": "Type compatibility in inheritance means that:",
+    "options": [
+      "Only identical classes are type-compatible",
+      "A superclass type is compatible with any subclass type without restriction",
+      "A subclass type is compatible with (can be treated as) its superclass type",
+      "No two related classes are ever type-compatible"
+    ],
+    "answer": "C",
+    "explanation": "Subclass types are compatible with their superclass because they inherit and extend its structure."
+  },
+  {
+    "id": 130,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Superclass and Subclass Object Relationship",
+    "question": "class A{} class B extends A{} A ref = new B(); Is this valid?",
+    "options": [
+      "Only valid if A is abstract",
+      "No, this is a compile-time error",
+      "No, this is a runtime error",
+      "Yes, valid because B is a subclass of A"
+    ],
+    "answer": "D",
+    "explanation": "Assigning a B object to an A-typed reference is valid due to the inheritance relationship between A and B."
+  },
+  {
+    "id": 131,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Superclass and Subclass Object Relationship",
+    "question": "Which of these correctly compares superclass and subclass objects?",
+    "options": [
+      "A subclass object generally contains all superclass members plus its own additional members",
+      "A subclass object contains fewer members than its superclass object",
+      "A subclass object and superclass object are always identical in structure",
+      "A subclass object cannot have any members of its own"
+    ],
+    "answer": "A",
+    "explanation": "Because of inheritance, subclass objects extend the superclass structure with additional state and behavior."
+  },
+  {
+    "id": 132,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Superclass and Subclass Object Relationship",
+    "question": "A subclass object 'is-a' superclass object; this relationship supports:",
+    "options": [
+      "Assigning subclass objects to superclass references",
+      "Removing the superclass entirely from memory",
+      "Preventing any use of inherited methods",
+      "Assigning superclass objects freely to subclass references without restriction"
+    ],
+    "answer": "A",
+    "explanation": "The is-a relationship is precisely what allows subclass instances to be referenced using superclass-typed variables."
+  },
+  {
+    "id": 133,
+    "level": "Basic",
+    "type": "Basic Relationship",
+    "topic": "Superclass and Subclass Object Relationship",
+    "question": "Which best describes the object relationship in inheritance?",
+    "options": [
+      "A subclass object and superclass object are entirely unrelated at runtime",
+      "A subclass object can be viewed as a more specific version of a superclass object",
+      "Subclass and superclass objects never share any relationship",
+      "A superclass object is a more specific version of a subclass object"
+    ],
+    "answer": "B",
+    "explanation": "The subclass specializes the superclass, so its objects represent more specific instances of the general superclass type."
+  },
+  {
+    "id": 134,
+    "level": "Advanced",
+    "type": "Output/Behavior",
+    "topic": "Superclass and Subclass Object Relationship",
+    "question": "Animal a = new Dog(); What can be said about 'a' at this point?",
+    "options": [
+      "This line always fails to compile",
+      "a is a reference of type Animal referring to an actual Dog object",
+      "a cannot refer to a Dog object at all",
+      "a is a Dog reference referring to an Animal object"
+    ],
+    "answer": "B",
+    "explanation": "The reference type is Animal, but the actual object it points to is a Dog, which is valid due to inheritance."
+  },
+  {
+    "id": 135,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Superclass and Subclass Object Relationship",
+    "question": "Assertion (A): A superclass reference can always call any method defined newly in the subclass. Reason (R): The relationship between superclass and subclass objects makes all subclass members accessible via superclass references.",
+    "options": [
+      "Both A and R are true, R explains A",
+      "Both A and R are false",
+      "A is true, R is false",
+      "A is false, R is true"
+    ],
+    "answer": "B",
+    "explanation": "A superclass reference can only directly call methods declared in the superclass (or overridden ones), not new subclass-only methods."
+  },
+  {
+    "id": 136,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Implicit Subclass-to-Superclass Conversion",
+    "question": "Assigning a subclass object to a superclass reference without any explicit cast is known as:",
+    "options": [
+      "Implicit upcasting",
+      "Dynamic casting",
+      "Explicit downcasting",
+      "Object finalization"
+    ],
+    "answer": "A",
+    "explanation": "This automatic, cast-free conversion from subclass to superclass type is called implicit upcasting."
+  },
+  {
+    "id": 137,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Implicit Subclass-to-Superclass Conversion",
+    "question": "Is a cast operator required to assign a subclass object to a superclass reference?",
+    "options": [
+      "Yes, an explicit cast is always mandatory",
+      "No, this conversion happens automatically without an explicit cast",
+      "Yes, but only for abstract superclasses",
+      "No such assignment is permitted at all"
+    ],
+    "answer": "B",
+    "explanation": "Because it is a widening (upcasting) conversion, Java performs it implicitly without requiring a cast."
+  },
+  {
+    "id": 138,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Implicit Subclass-to-Superclass Conversion",
+    "question": "Which of the following correctly demonstrates implicit conversion (Animal is the superclass of Dog)?",
+    "options": [
+      "Dog d = new Animal();",
+      "Animal a = new Dog();",
+      "Object o = (Dog) new Animal();",
+      "Dog d = new Object();"
+    ],
+    "answer": "B",
+    "explanation": "Assigning a Dog object directly to an Animal reference is a valid, implicit upcasting conversion."
+  },
+  {
+    "id": 139,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Implicit Subclass-to-Superclass Conversion",
+    "question": "Why is subclass-to-superclass conversion considered 'safe' and automatic?",
+    "options": [
+      "Because Java does not check type compatibility at all",
+      "Because superclass objects are always smaller in memory",
+      "Because a subclass object always contains everything a superclass object has, and more",
+      "Because subclasses never add new members"
+    ],
+    "answer": "C",
+    "explanation": "Since the subclass is guaranteed to include the superclass's structure, treating it as a superclass instance is inherently safe."
+  },
+  {
+    "id": 140,
+    "level": "Basic",
+    "type": "Valid/Invalid",
+    "topic": "Implicit Subclass-to-Superclass Conversion",
+    "question": "Is 'Object obj = new String(\"hi\");' a valid implicit conversion?",
+    "options": [
+      "No, this requires an explicit cast",
+      "Yes, but only inside static methods",
+      "No, Strings cannot be converted to Object",
+      "Yes, since String is (indirectly) a subclass of Object"
+    ],
+    "answer": "D",
+    "explanation": "Every class in Java is ultimately a subclass of Object, so assigning any object to an Object reference is valid."
+  },
+  {
+    "id": 141,
+    "level": "Advanced",
+    "type": "Misconception",
+    "topic": "Implicit Subclass-to-Superclass Conversion",
+    "question": "A student believes implicit conversion works both ways (superclass object to subclass reference) without a cast. Is this correct?",
+    "options": [
+      "Yes, both directions work implicitly",
+      "Yes, but only for final classes",
+      "No, neither direction is ever allowed",
+      "No, converting a superclass reference to a subclass reference requires an explicit cast (downcasting)"
+    ],
+    "answer": "D",
+    "explanation": "Only subclass-to-superclass (upcasting) is implicit; the reverse (downcasting) needs an explicit cast."
+  },
+  {
+    "id": 142,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Implicit Subclass-to-Superclass Conversion",
+    "question": "After implicit conversion, a superclass reference variable pointing to a subclass object can directly access:",
+    "options": [
+      "Only the members defined in the superclass (plus overridden methods behaving polymorphically)",
+      "No members at all",
+      "All members defined anywhere in the subclass without restriction",
+      "Only static members of the subclass"
+    ],
+    "answer": "A",
+    "explanation": "The reference type restricts which members are directly accessible, even though the actual object is of the subclass type."
+  },
+  {
+    "id": 143,
+    "level": "Advanced",
+    "type": "Output/Behavior",
+    "topic": "Implicit Subclass-to-Superclass Conversion",
+    "question": "class A{void show(){print('A');}} class B extends A{void show(){print('B');} void extra(){print('extra');}} A ref = new B(); ref.show(); Output?",
+    "options": [
+      "Compilation error",
+      "extra",
+      "A",
+      "B"
+    ],
+    "answer": "D",
+    "explanation": "Even via implicit conversion to type A, the overridden show() executes according to the actual object's class, B."
+  },
+  {
+    "id": 144,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Implicit Subclass-to-Superclass Conversion",
+    "question": "Attempting ref.extra() where ref is declared as type A but refers to a B object (extra() only exists in B) results in:",
+    "options": [
+      "It runs normally without issue",
+      "A runtime-only error with no compile issue",
+      "A compile-time error, since A's reference type doesn't declare extra()",
+      "extra() executes as if it were inherited"
+    ],
+    "answer": "C",
+    "explanation": "The compiler checks accessibility based on the reference's declared type, so this fails to compile."
+  },
+  {
+    "id": 145,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "Implicit Subclass-to-Superclass Conversion",
+    "question": "Assigning a subclass object to a superclass reference without a cast is known as ______.",
+    "options": [
+      "narrowing",
+      "upcasting",
+      "downcasting",
+      "finalizing"
+    ],
+    "answer": "B",
+    "explanation": "This automatic, safe conversion is specifically termed upcasting."
+  },
+  {
+    "id": 146,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Implicit Subclass-to-Superclass Conversion",
+    "question": "Assertion (A): Implicit subclass-to-superclass conversion can lose access to subclass-specific members through that reference. Reason (R): The compiler restricts accessible members based on the reference's declared type.",
+    "options": [
+      "A is true, R is false",
+      "Both A and R are true, and R correctly explains A",
+      "A is false, R is true",
+      "Both are false"
+    ],
+    "answer": "B",
+    "explanation": "Because member accessibility is determined by the declared reference type, subclass-specific members become inaccessible directly through it."
+  },
+  {
+    "id": 147,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Dynamic Method Dispatch",
+    "question": "Dynamic method dispatch refers to:",
+    "options": [
+      "Converting primitives to objects",
+      "Resolving overloaded methods at compile time",
+      "Assigning values to instance variables",
+      "The mechanism by which an overridden method call is resolved at runtime based on the actual object's type"
+    ],
+    "answer": "D",
+    "explanation": "Dynamic method dispatch determines, at runtime, which overridden method implementation actually executes."
+  },
+  {
+    "id": 148,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Dynamic Method Dispatch",
+    "question": "Dynamic method dispatch is closely tied to which concept?",
+    "options": [
+      "Method overriding",
+      "Method overloading",
+      "Data hiding",
+      "Constructor chaining"
+    ],
+    "answer": "A",
+    "explanation": "This mechanism specifically applies to overridden methods, selecting the correct version based on the object's actual class."
+  },
+  {
+    "id": 149,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Dynamic Method Dispatch",
+    "question": "When a superclass reference refers to a subclass object and an overridden method is called, which version executes?",
+    "options": [
+      "The subclass's overridden version",
+      "Neither version executes",
+      "Both versions execute in sequence",
+      "The superclass's version always"
+    ],
+    "answer": "A",
+    "explanation": "Dynamic dispatch selects the method implementation belonging to the actual runtime object, which is the subclass."
+  },
+  {
+    "id": 150,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Dynamic Method Dispatch",
+    "question": "class A{void greet(){print('Hello from A');}} class B extends A{void greet(){print('Hello from B');}} A obj = new B(); obj.greet(); Output?",
+    "options": [
+      "Hello from A",
+      "Hello from A then Hello from B",
+      "Hello from B",
+      "Compilation error"
+    ],
+    "answer": "C",
+    "explanation": "Despite the reference type being A, the actual object is B, so dynamic dispatch invokes B's overridden greet()."
+  },
+  {
+    "id": 151,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Dynamic Method Dispatch",
+    "question": "Method selection for dynamic dispatch occurs:",
+    "options": [
+      "At compile time",
+      "At runtime",
+      "Never, it is a static decision",
+      "During class loading only, never after"
+    ],
+    "answer": "B",
+    "explanation": "The defining feature of dynamic dispatch is that method resolution happens while the program is running."
+  },
+  {
+    "id": 152,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Dynamic Method Dispatch",
+    "question": "Static (compile-time) method selection differs from dynamic method dispatch in that:",
+    "options": [
+      "Dynamic dispatch only applies to constructors",
+      "Static selection is decided by the compiler using reference type; dynamic dispatch is decided at runtime using the actual object type",
+      "Static selection always overrides dynamic dispatch results",
+      "They are identical processes with different names"
+    ],
+    "answer": "B",
+    "explanation": "Overload resolution (static) depends on declared types at compile time, whereas dynamic dispatch depends on the real object type at runtime."
+  },
+  {
+    "id": 153,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Dynamic Method Dispatch",
+    "question": "Dynamic method dispatch allows a program to:",
+    "options": [
+      "Always execute the superclass version of a method",
+      "Skip calling constructors during object creation",
+      "Exhibit different behavior for the same method call depending on the actual object type",
+      "Prevent any subclass from overriding methods"
+    ],
+    "answer": "C",
+    "explanation": "This runtime flexibility is exactly what enables polymorphic behavior through a common reference type."
+  },
+  {
+    "id": 154,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Dynamic Method Dispatch",
+    "question": "class Shape{void draw(){print('Shape');}} class Circle extends Shape{void draw(){print('Circle');}} class Square extends Shape{void draw(){print('Square');}} Shape s; s=new Circle(); s.draw(); s=new Square(); s.draw(); Output (two lines)?",
+    "options": [
+      "Circle then Square",
+      "Circle then Circle",
+      "Shape then Shape",
+      "Square then Square"
+    ],
+    "answer": "A",
+    "explanation": "Each time, dynamic dispatch selects the draw() method matching the object currently assigned to s."
+  },
+  {
+    "id": 155,
+    "level": "Intermediate",
+    "type": "Rule-based",
+    "topic": "Dynamic Method Dispatch",
+    "question": "Which is a requirement for dynamic method dispatch to apply to a method call?",
+    "options": [
+      "The method must be static",
+      "The method must be overridden in the subclass with the same signature",
+      "The method must be overloaded, not overridden",
+      "The method must be declared final"
+    ],
+    "answer": "B",
+    "explanation": "Dynamic dispatch only applies to overriding relationships; static and final methods are resolved differently."
+  },
+  {
+    "id": 156,
+    "level": "Advanced",
+    "type": "Misconception",
+    "topic": "Dynamic Method Dispatch",
+    "question": "A student thinks the reference type alone determines which overridden method executes. Is this correct?",
+    "options": [
+      "No, the actual object type (not the reference type) determines which overridden method executes",
+      "Yes, the reference type always determines it",
+      "No, the method executed is chosen randomly",
+      "Yes, but only for static methods"
+    ],
+    "answer": "A",
+    "explanation": "Dynamic dispatch bases its decision on the object's real, runtime type - not merely its reference's declared type."
+  },
+  {
+    "id": 157,
+    "level": "Advanced",
+    "type": "Execution Behavior",
+    "topic": "Dynamic Method Dispatch",
+    "question": "In dynamic method dispatch, which factor is primarily responsible for selecting the correct overridden method at runtime?",
+    "options": [
+      "The garbage collector",
+      "The constructor of the superclass",
+      "The runtime object's actual type information",
+      "The compiler's static type checker only"
+    ],
+    "answer": "C",
+    "explanation": "The JVM uses the actual object's runtime type to look up and invoke the correct overridden method version."
+  },
+  {
+    "id": 158,
+    "level": "Intermediate",
+    "type": "Scenario",
+    "topic": "Dynamic Method Dispatch",
+    "question": "A drawing application stores various shape objects and calls draw() on each through a common Shape-typed reference without knowing their specific subclass. This relies on:",
+    "options": [
+      "Constructor overloading",
+      "Pass by value",
+      "Dynamic method dispatch",
+      "Data hiding"
+    ],
+    "answer": "C",
+    "explanation": "Calling draw() polymorphically on different subclass objects through a common superclass type is the classic use case for dynamic dispatch."
+  },
+  {
+    "id": 159,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "Dynamic Method Dispatch",
+    "question": "Dynamic method dispatch allows a superclass reference to invoke a method whose specific implementation is determined by the object's ______ type.",
+    "options": [
+      "runtime (actual)",
+      "static",
+      "compile-time",
+      "declared"
+    ],
+    "answer": "A",
+    "explanation": "The runtime (actual) type of the referenced object governs which overridden method version executes."
+  },
+  {
+    "id": 160,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Dynamic Method Dispatch",
+    "question": "Assertion (A): Overloaded methods are also resolved through dynamic method dispatch. Reason (R): Overload resolution depends on the compile-time reference type, not the runtime object type.",
+    "options": [
+      "A is true, R is false",
+      "A is false, R is true",
+      "Both are false",
+      "Both A and R are true, R explains A"
+    ],
+    "answer": "B",
+    "explanation": "Overloading is resolved at compile time based on reference types, so it does not use dynamic dispatch."
+  },
+  {
+    "id": 161,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Object vs Class - which statement is correct?",
+    "options": [
+      "Objects and classes are the same thing viewed differently",
+      "A class can only produce one object",
+      "An object is a blueprint; a class is a runtime instance",
+      "A class is a blueprint; an object is a runtime instance created from that blueprint"
+    ],
+    "answer": "D",
+    "explanation": "The class defines structure and behavior; objects are the actual instances created based on that definition."
+  },
+  {
+    "id": 162,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Pass by Value vs 'reference-like' behavior - which is accurate for Java?",
+    "options": [
+      "Java has no consistent parameter-passing mechanism",
+      "Java is strictly pass by value, even though object reference values can make it appear as if references are passed",
+      "Java uses pass by reference for objects and pass by value for primitives",
+      "Java uses pass by reference for all types"
+    ],
+    "answer": "B",
+    "explanation": "Java uniformly copies values (including reference values) when passing arguments, which is technically always pass by value."
+  },
+  {
+    "id": 163,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Data Hiding vs Encapsulation - how are they best distinguished?",
+    "options": [
+      "They are entirely unrelated concepts with no overlap",
+      "Data hiding is the restriction of access to data; encapsulation is the broader bundling of data and methods with controlled access",
+      "Encapsulation only applies to constructors",
+      "Data hiding is broader than encapsulation"
+    ],
+    "answer": "B",
+    "explanation": "Encapsulation is the general design principle; data hiding is the protective restriction of direct data access it enables."
+  },
+  {
+    "id": 164,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Overloading vs Overriding - key structural difference?",
+    "options": [
+      "Overloading occurs within the same class with differing parameter lists; overriding occurs across superclass-subclass with identical signatures",
+      "Both occur only within the same class",
+      "Overloading occurs across classes; overriding occurs within one class",
+      "Both require different parameter lists"
+    ],
+    "answer": "A",
+    "explanation": "This is the fundamental structural distinction between the two forms of polymorphism-related features."
+  },
+  {
+    "id": 165,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Constructor vs Method - which is a key difference?",
+    "options": [
+      "A constructor always has a return type; a method never does",
+      "A constructor has no return type and shares the class's name; a method has a return type and can have any valid name",
+      "Constructors and methods are identical in every respect",
+      "Methods must share the class name; constructors need not"
+    ],
+    "answer": "B",
+    "explanation": "The absence of a return type and the mandatory class-name match are defining features that separate constructors from methods."
+  },
+  {
+    "id": 166,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Superclass vs Subclass - which best captures their relationship?",
+    "options": [
+      "A subclass is always more general than its superclass",
+      "A superclass depends on its subclass for its own definition",
+      "They must always have identical members",
+      "A superclass is more general; a subclass extends and specializes it"
+    ],
+    "answer": "D",
+    "explanation": "Inheritance flows from a general superclass to a more specific subclass, which extends the general behavior."
+  },
+  {
+    "id": 167,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Superclass reference vs Subclass reference - accessing subclass-specific members:",
+    "options": [
+      "A superclass reference has broader access than a subclass reference",
+      "Neither reference type can access subclass-only members",
+      "Both reference types can access all subclass members equally",
+      "A superclass reference cannot directly access members declared only in the subclass, while a subclass reference can"
+    ],
+    "answer": "D",
+    "explanation": "The declared reference type restricts which members are directly accessible; superclass references are limited to superclass-declared members."
+  },
+  {
+    "id": 168,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Static (compile-time) method selection vs Dynamic Method Dispatch - how do they differ?",
+    "options": [
+      "Both occur exclusively at compile time",
+      "Static selection uses reference type at compile time (as in overloading); dynamic dispatch uses actual object type at runtime (as in overriding)",
+      "Both occur exclusively at runtime",
+      "Static selection applies to overriding, dynamic dispatch applies to overloading"
+    ],
+    "answer": "B",
+    "explanation": "This is the essential contrast: compile-time resolution relies on declared types, while dynamic dispatch relies on the object's real runtime type."
+  },
+  {
+    "id": 169,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Which comparison correctly relates encapsulation and overloading?",
+    "options": [
+      "Overloading always breaks encapsulation",
+      "Encapsulation and overloading are synonyms",
+      "Overloading is a technique used exclusively to achieve encapsulation",
+      "They address different concerns entirely: encapsulation is about controlling access to data, while overloading is about providing multiple method versions with the same name"
+    ],
+    "answer": "D",
+    "explanation": "These two concepts serve entirely different purposes in object-oriented design and are not directly related mechanisms."
+  },
+  {
+    "id": 170,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Constructors vs Overriding - why can't constructors be overridden?",
+    "options": [
+      "Because constructors are not inherited by subclasses at all",
+      "Because constructors have no name",
+      "Because subclasses are not allowed to define any constructors",
+      "Because constructors are always declared final"
+    ],
+    "answer": "A",
+    "explanation": "Since inheritance does not extend to constructors, the concept of overriding cannot apply to them."
+  },
+  {
+    "id": 171,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Object vs Class - in terms of memory, which statement is correct?",
+    "options": [
+      "A class and its objects always occupy identical memory",
+      "Objects consume no memory at all",
+      "Only classes consume memory, never their objects",
+      "A class definition itself does not consume memory the way an instantiated object does"
+    ],
+    "answer": "D",
+    "explanation": "The class serves as a compiled template, while each object created from it occupies its own memory for its state."
+  },
+  {
+    "id": 172,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Comparison Questions",
+    "question": "Which correctly compares subclass-to-superclass conversion direction with the reverse?",
+    "options": [
+      "Both directions require an explicit cast",
+      "Subclass-to-superclass conversion is implicit; superclass-to-subclass conversion requires an explicit cast",
+      "Subclass-to-superclass requires a cast; the reverse does not",
+      "Both directions are implicit"
+    ],
+    "answer": "B",
+    "explanation": "Upcasting (subclass to superclass) is automatic, while downcasting (superclass to subclass) must be explicitly cast."
+  },
+  {
+    "id": 173,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code and Output-Based Questions",
+    "question": "class Emp{ String name; Emp(String n){this.name=n;} } Emp e = new Emp('Rita'); print(e.name); Output?",
+    "options": [
+      "Emp",
+      "Compilation error",
+      "null",
+      "Rita"
+    ],
+    "answer": "D",
+    "explanation": "The constructor uses this.name to assign the parameter to the instance variable, so e.name correctly holds 'Rita'."
+  },
+  {
+    "id": 174,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code and Output-Based Questions",
+    "question": "class Counter{ int c=0; void inc(){c++;} } Counter x=new Counter(); Counter y=x; y.inc(); print(x.c); Output?",
+    "options": [
+      "1",
+      "Compilation error",
+      "2",
+      "0"
+    ],
+    "answer": "A",
+    "explanation": "x and y reference the same object, so incrementing through y also affects the object x refers to."
+  },
+  {
+    "id": 175,
+    "level": "Intermediate",
+    "type": "Which Method Invoked",
+    "topic": "Code and Output-Based Questions",
+    "question": "class P{void m(){print('P.m');}} class Q extends P{void m(){print('Q.m');}} P obj=new Q(); obj.m(); Which method executes?",
+    "options": [
+      "Q's m() method",
+      "P's m() method",
+      "Both execute",
+      "Neither executes, compile error"
+    ],
+    "answer": "A",
+    "explanation": "Dynamic method dispatch selects Q's overridden m() based on the actual object type."
+  },
+  {
+    "id": 176,
+    "level": "Intermediate",
+    "type": "Which Constructor Executes",
+    "topic": "Code and Output-Based Questions",
+    "question": "class Item{ Item(){print('no-arg');} Item(int q){print('qty:'+q);} } new Item(3); Output?",
+    "options": [
+      "no-arg",
+      "qty:3",
+      "Compilation error",
+      "qty:3 then no-arg"
+    ],
+    "answer": "B",
+    "explanation": "The argument 3 matches the parameterized constructor Item(int q), so that constructor runs."
+  },
+  {
+    "id": 177,
+    "level": "Intermediate",
+    "type": "Which Object Created",
+    "topic": "Code and Output-Based Questions",
+    "question": "class A{} class B extends A{} A ref = new B(); What type of object does ref actually refer to?",
+    "options": [
+      "An object of class A",
+      "No object, only a reference",
+      "An object of class B",
+      "An object of class Object"
+    ],
+    "answer": "C",
+    "explanation": "Although declared as type A, ref is assigned a newly created B object via new B()."
+  },
+  {
+    "id": 178,
+    "level": "Basic",
+    "type": "What Does 'this' Refer To",
+    "topic": "Code and Output-Based Questions",
+    "question": "class Car{ String model; Car(String model){ this.model = model; } String getModel(){ return this.model; } } Inside getModel(), this refers to:",
+    "options": [
+      "A static variable",
+      "The Car class itself",
+      "The Car object on which getModel() was called",
+      "The parameter model"
+    ],
+    "answer": "C",
+    "explanation": "this always denotes the specific object instance currently executing the method."
+  },
+  {
+    "id": 179,
+    "level": "Intermediate",
+    "type": "Overloaded or Overridden",
+    "topic": "Code and Output-Based Questions",
+    "question": "class Calc{ int add(int a,int b){return a+b;} double add(double a,double b){return a+b;} } The two add() methods are:",
+    "options": [
+      "Overridden",
+      "Overloaded",
+      "Neither",
+      "Both overloaded and overridden"
+    ],
+    "answer": "B",
+    "explanation": "Both methods exist in the same class with different parameter types, which defines overloading."
+  },
+  {
+    "id": 180,
+    "level": "Intermediate",
+    "type": "Subclass to Superclass Reference",
+    "topic": "Code and Output-Based Questions",
+    "question": "class Bird{void fly(){print('flies');}} class Sparrow extends Bird{} Bird b = new Sparrow(); b.fly(); What happens?",
+    "options": [
+      "Nothing is printed",
+      "Runtime error",
+      "It prints 'flies' since Sparrow inherits fly() from Bird",
+      "Compilation error since Sparrow has no fly()"
+    ],
+    "answer": "C",
+    "explanation": "Sparrow does not override fly(), so it inherits and uses Bird's implementation directly."
+  },
+  {
+    "id": 181,
+    "level": "Advanced",
+    "type": "Method Selected in Dynamic Dispatch",
+    "topic": "Code and Output-Based Questions",
+    "question": "class Emp{double salary(){return 1000;}} class Manager extends Emp{double salary(){return 2000;}} Emp e=new Manager(); print(e.salary()); Output?",
+    "options": [
+      "1000.0",
+      "3000.0",
+      "Compilation error",
+      "2000.0"
+    ],
+    "answer": "D",
+    "explanation": "Dynamic method dispatch invokes Manager's overridden salary() since the actual object is a Manager."
+  },
+  {
+    "id": 182,
+    "level": "Advanced",
+    "type": "Valid Conversion Check",
+    "topic": "Code and Output-Based Questions",
+    "question": "class X{} class Y extends X{} X obj1 = new Y(); Y obj2 = new X(); Which line is invalid?",
+    "options": [
+      "Both lines are invalid",
+      "X obj1 = new Y();",
+      "Neither line is invalid",
+      "Y obj2 = new X();"
+    ],
+    "answer": "D",
+    "explanation": "Assigning a superclass object (X) to a subclass reference (Y) requires an explicit cast; the first line is valid implicit upcasting."
+  },
+  {
+    "id": 183,
+    "level": "Intermediate",
+    "type": "Value Passed to Method",
+    "topic": "Code and Output-Based Questions",
+    "question": "void update(int val){ val = val * 2; } int num = 10; update(num); print(num); Output?",
+    "options": [
+      "20",
+      "Compilation error",
+      "0",
+      "10"
+    ],
+    "answer": "D",
+    "explanation": "Since int is a primitive, only a copy of num's value is passed, so changes inside update() do not affect num."
+  },
+  {
+    "id": 184,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code and Output-Based Questions",
+    "question": "class Point{int x,y; Point(int x,int y){this.x=x; this.y=y;} void show(){print(this.x+','+this.y);}} new Point(3,4).show(); Output?",
+    "options": [
+      "3,4",
+      "Compilation error",
+      "0,0",
+      "4,3"
+    ],
+    "answer": "A",
+    "explanation": "The constructor assigns parameters to instance variables via this, and show() prints them in the same order."
+  },
+  {
+    "id": 185,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code and Output-Based Questions",
+    "question": "class A{int x=1;} class B extends A{void show(){print(x);}} new B().show(); Output?",
+    "options": [
+      "null",
+      "Compilation error",
+      "0",
+      "1"
+    ],
+    "answer": "D",
+    "explanation": "B inherits the field x from A with value 1, and show() correctly prints the inherited value."
+  },
+  {
+    "id": 186,
+    "level": "Advanced",
+    "type": "Program-Tracing",
+    "topic": "Code and Output-Based Questions",
+    "question": "class Base{Base(){print('Base');} void greet(){print('Base greet');}} class Derived extends Base{Derived(){print('Derived');} void greet(){print('Derived greet');}} Base b=new Derived(); b.greet(); Output (in order)?",
+    "options": [
+      "Derived, then Base, then Base greet",
+      "Base greet, then Derived greet",
+      "Base, then Derived, then Derived greet",
+      "Base, then Derived, then Base greet"
+    ],
+    "answer": "C",
+    "explanation": "Object creation runs the superclass constructor first, then the subclass constructor; afterward, dynamic dispatch invokes Derived's overridden greet()."
+  },
+  {
+    "id": 187,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult and Tricky Questions",
+    "question": "class A{ void m(){print('A');} } class B extends A{ void m(){print('B'); super.m();} } new B().m(); Output?",
+    "options": [
+      "B",
+      "A, then B",
+      "A",
+      "B, then A"
+    ],
+    "answer": "D",
+    "explanation": "B's m() first prints 'B', then explicitly calls the superclass version using super.m(), printing 'A'."
+  },
+  {
+    "id": 188,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult and Tricky Questions",
+    "question": "class Data{int val;} void modify(Data d){ d.val = 50; d = new Data(); d.val = 100; } Data obj = new Data(); obj.val=1; modify(obj); print(obj.val); Output?",
+    "options": [
+      "1",
+      "Compilation error",
+      "50",
+      "100"
+    ],
+    "answer": "C",
+    "explanation": "The first modification (d.val=50) affects the shared object; reassigning d afterward does not affect obj, so obj.val remains 50."
+  },
+  {
+    "id": 189,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult and Tricky Questions",
+    "question": "class A{ int x; A(){ this(10); } A(int x){ this.x=x; } } What is the value of new A().x?",
+    "options": [
+      "Undefined",
+      "Compilation error",
+      "10",
+      "0"
+    ],
+    "answer": "C",
+    "explanation": "The no-arg constructor uses this(10) to invoke the parameterized constructor, setting x to 10."
+  },
+  {
+    "id": 190,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult and Tricky Questions",
+    "question": "void test(int a, long b){} void test(long a, int b){} test(5,5); Result?",
+    "options": [
+      "Calls test(long,int)",
+      "Compilation error due to ambiguous method call",
+      "Calls test(int,long)",
+      "Both methods execute"
+    ],
+    "answer": "B",
+    "explanation": "Since 5 can widen to either position equally well, the compiler cannot determine a single best match, causing ambiguity."
+  },
+  {
+    "id": 191,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult and Tricky Questions",
+    "question": "class A{ protected void show(){} } class B extends A{ private void show(){} } Is this valid overriding?",
+    "options": [
+      "Yes, but only for private methods",
+      "No, an overriding method cannot reduce the visibility of the overridden method",
+      "Yes, subclasses can freely reduce visibility",
+      "No, because show() must be static"
+    ],
+    "answer": "B",
+    "explanation": "Java requires the overriding method's access level to be the same or more accessible, never more restrictive."
+  },
+  {
+    "id": 192,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult and Tricky Questions",
+    "question": "class A{ int x=1; void show(){print(x);} } class B extends A{ int x=2; void show(){print(x);} } A obj=new B(); obj.show(); print(obj.x); Output (two lines)?",
+    "options": [
+      "2, then 1",
+      "1, then 2",
+      "1, then 1",
+      "2, then 2"
+    ],
+    "answer": "A",
+    "explanation": "show() is overridden, so dynamic dispatch prints B's x (2); field access is resolved by reference type at compile time, so obj.x prints A's x (1)."
+  },
+  {
+    "id": 193,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult and Tricky Questions",
+    "question": "class A{ A(){print('A-init');} } class B extends A{ B(){print('B-init');} } new B(); What is the output order?",
+    "options": [
+      "A-init, then B-init",
+      "B-init, then A-init",
+      "B-init only",
+      "A-init only"
+    ],
+    "answer": "A",
+    "explanation": "A subclass constructor implicitly calls the superclass constructor first before executing its own body."
+  },
+  {
+    "id": 194,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult and Tricky Questions",
+    "question": "class A{ void common(){} } class B extends A{ void common(){} void special(){} } A ref=new B(); ref.special(); Result?",
+    "options": [
+      "Compilation error: special() is not accessible through an A-typed reference",
+      "Runs normally, printing nothing",
+      "Runs special() from B via dynamic dispatch",
+      "Runtime error only"
+    ],
+    "answer": "A",
+    "explanation": "The compiler restricts accessible methods based on the declared reference type (A), which does not declare special()."
+  },
+  {
+    "id": 195,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult and Tricky Questions",
+    "question": "Assertion (A): An object is guaranteed to undergo finalization the moment it becomes unreachable. Reason (R): Finalization timing is controlled entirely by explicit programmer calls.",
+    "options": [
+      "A is false, R is true",
+      "Both A and R are true, R explains A",
+      "Both A and R are false",
+      "A is true, R is false"
+    ],
+    "answer": "C",
+    "explanation": "Finalization is not guaranteed to occur immediately upon unreachability, and its timing is not directly controlled by explicit programmer calls."
+  },
+  {
+    "id": 196,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult and Tricky Questions",
+    "question": "class A{ void calc(int x){print('A-int');} } class B extends A{ void calc(int x){print('B-int');} void calc(double x){print('B-double');} } A obj=new B(); obj.calc(5); Output?",
+    "options": [
+      "Compilation error",
+      "B-double",
+      "B-int",
+      "A-int"
+    ],
+    "answer": "C",
+    "explanation": "calc(int) in B overrides A's version; since 5 is an int, dynamic dispatch resolves to B's overriding calc(int)."
+  },
+  {
+    "id": 197,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult and Tricky Questions",
+    "question": "class A{ void run(){ print('A.run'); helper(); } void helper(){print('A.helper');} } class B extends A{ void helper(){print('B.helper');} } A obj=new B(); obj.run(); Output (two lines)?",
+    "options": [
+      "A.run, then B.helper",
+      "A.run only",
+      "A.run, then A.helper",
+      "B.run, then B.helper"
+    ],
+    "answer": "A",
+    "explanation": "run() executes as defined in A, but its internal call to helper() is dynamically dispatched to B's overridden version."
+  },
+  {
+    "id": 198,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Difficult and Tricky Questions",
+    "question": "class Shape{ String name(){return 'Shape';} } class Circle extends Shape{ String name(){return 'Circle';} } Shape s1=new Shape(); Shape s2=new Circle(); print(s1.name()+','+s2.name()); Output?",
+    "options": [
+      "Shape,Shape",
+      "Circle,Circle",
+      "Shape,Circle",
+      "Circle,Shape"
+    ],
+    "answer": "C",
+    "explanation": "s1 is an actual Shape object printing 'Shape'; s2 is a Circle object accessed via a Shape reference, and dynamic dispatch resolves to Circle's name()."
+  },
+  {
+    "id": 199,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which OOP feature allows a Manager object to be treated as an Employee object without any cast, assuming Manager extends Employee?",
+    "options": [
+      "Finalization",
+      "Downcasting",
+      "Overloading",
+      "Implicit subclass-to-superclass conversion (upcasting)"
+    ],
+    "answer": "D",
+    "explanation": "Since Manager is a subclass of Employee, this automatic conversion is implicit upcasting."
+  },
+  {
+    "id": 200,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "A class Book has two constructors: one with no arguments and one accepting title and author. This design choice illustrates:",
+    "options": [
+      "Method overriding",
+      "Dynamic method dispatch",
+      "Data hiding",
+      "Constructor overloading"
+    ],
+    "answer": "D",
+    "explanation": "Multiple constructors with differing parameter lists in the same class represent constructor overloading."
+  },
+  {
+    "id": 201,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which keyword lets a method or constructor refer to the object it belongs to?",
+    "options": [
+      "this",
+      "super",
+      "static",
+      "new"
+    ],
+    "answer": "A",
+    "explanation": "this is Java's reference to the currently executing object."
+  },
+  {
+    "id": 202,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "A subclass method with the same name and parameters as a superclass method, providing new behavior, demonstrates:",
+    "options": [
+      "Constructor chaining",
+      "Method overloading",
+      "Object finalization",
+      "Method overriding"
+    ],
+    "answer": "D",
+    "explanation": "Redefining an inherited method's behavior with an identical signature is overriding."
+  },
+  {
+    "id": 203,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which principle protects an object's internal fields from uncontrolled outside access?",
+    "options": [
+      "Data hiding (through encapsulation)",
+      "Constructor overloading",
+      "Overloading",
+      "Dynamic method dispatch"
+    ],
+    "answer": "A",
+    "explanation": "Data hiding restricts direct access, typically achieved via encapsulation using private fields and public methods."
+  },
+  {
+    "id": 204,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "When a superclass reference calls an overridden method on a subclass object, which mechanism determines the method that runs?",
+    "options": [
+      "Static binding",
+      "Dynamic method dispatch",
+      "Pass by value",
+      "Constructor chaining"
+    ],
+    "answer": "B",
+    "explanation": "The actual object's type governs which overridden method executes at runtime."
+  },
+  {
+    "id": 205,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Two methods in the same class named calculate(), one taking an int and another taking a String, represent:",
+    "options": [
+      "A compilation error",
+      "Valid method overloading",
+      "Invalid overloading due to different types",
+      "Method overriding"
+    ],
+    "answer": "B",
+    "explanation": "Differing parameter types with the same method name in one class is a valid overload."
+  },
+  {
+    "id": 206,
+    "level": "Intermediate",
+    "type": "Application-based",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "If a Student object's roll number is changed inside a method that received the object as a parameter, why does this change persist after the method returns?",
+    "options": [
+      "Because Java passes objects by reference, not value",
+      "Because the parameter is a copy of the reference, which still points to the same original object",
+      "Because the method automatically returns the object",
+      "Because roll number is a static field"
+    ],
+    "answer": "B",
+    "explanation": "The copied reference and the original both point to the same object, so field changes are visible outside; passing itself remains by value."
+  },
+  {
+    "id": 207,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "A subclass inherits members from its superclass primarily to achieve:",
+    "options": [
+      "Making all methods private",
+      "Preventing object creation",
+      "Removing constructors from the hierarchy",
+      "Reusability of existing code and behavior"
+    ],
+    "answer": "D",
+    "explanation": "Inheritance's main goal is enabling reuse of already-defined class functionality."
+  },
+  {
+    "id": 208,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Which of these accurately reflects finalization's basic role?",
+    "options": [
+      "It offers an object a chance for final processing before reclamation",
+      "It replaces the constructor entirely",
+      "It initializes an object's fields",
+      "It converts an object into a subclass instance"
+    ],
+    "answer": "A",
+    "explanation": "Finalization is conceptually linked to the end-of-life cleanup opportunity for an object."
+  },
+  {
+    "id": 209,
+    "level": "Basic",
+    "type": "Identification",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "A superclass reference variable assigned a subclass object, followed by a call to an overridden method, will execute:",
+    "options": [
+      "The subclass's version of the method",
+      "Neither version, causing an error",
+      "The superclass's version of the method",
+      "Both versions"
+    ],
+    "answer": "A",
+    "explanation": "This is the standard behavior of dynamic method dispatch based on the object's actual runtime type."
+  },
+  {
+    "id": 210,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Mixed OAVS TGT Practice Set",
+    "question": "Assertion (A): A well-designed class typically keeps its instance variables private and exposes public methods to interact with them. Reason (R): This approach supports both data hiding and encapsulation.",
+    "options": [
+      "A is false, R is true",
+      "A is true, R is false",
+      "Both are false",
+      "Both A and R are true, and R correctly explains A"
+    ],
+    "answer": "D",
+    "explanation": "Restricting direct field access while providing controlled public methods is the standard practice embodying data hiding and encapsulation together."
+  }
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

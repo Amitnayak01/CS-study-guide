@@ -1,0 +1,3034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Strings Fundamentals",
+    "question": "What is a string in C?",
+    "options": [
+      "An array of characters terminated by a null character",
+      "A collection of integers",
+      "A pointer to memory",
+      "A single character"
+    ],
+    "answer": "A",
+    "explanation": "In C, a string is an array of characters terminated by the null character '\\0'."
+  },
+  {
+    "id": 2,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Strings Fundamentals",
+    "question": "Which character marks the end of a string in C?",
+    "options": [
+      "'\\n'",
+      "EOF",
+      "'\\0'",
+      "'\\t'"
+    ],
+    "answer": "C",
+    "explanation": "The null character '\\0' marks the logical end of every C string."
+  },
+  {
+    "id": 3,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Strings Fundamentals",
+    "question": "What is the ASCII value of the null character '\\0'?",
+    "options": [
+      "-1",
+      "10",
+      "0",
+      "1"
+    ],
+    "answer": "C",
+    "explanation": "The null character has ASCII value 0, distinguishing it from printable characters."
+  },
+  {
+    "id": 4,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "Strings Fundamentals",
+    "question": "Which of the following is a valid string declaration in C?",
+    "options": [
+      "char str[10];",
+      "str char[10];",
+      "char str = \"text\";",
+      "string str;"
+    ],
+    "answer": "A",
+    "explanation": "Strings are declared as character arrays using char arrayName[size];"
+  },
+  {
+    "id": 5,
+    "level": "Basic",
+    "type": "Representation",
+    "topic": "Strings Fundamentals",
+    "question": "How is a string represented internally in memory?",
+    "options": [
+      "As a stack of characters",
+      "As a hash table",
+      "As a contiguous array of characters ending with '\\0'",
+      "As a linked list of characters"
+    ],
+    "answer": "C",
+    "explanation": "C stores string characters in contiguous memory cells, followed by a terminating '\\0'."
+  },
+  {
+    "id": 6,
+    "level": "Basic",
+    "type": "Initialization",
+    "topic": "Strings Fundamentals",
+    "question": "Which statement correctly and safely initializes the string \"Hello\"?",
+    "options": [
+      "char str[6] = \"Hello\";",
+      "char str = \"Hello\";",
+      "char str[5] = \"Hello\";",
+      "int str[] = \"Hello\";"
+    ],
+    "answer": "A",
+    "explanation": "\"Hello\" needs 5 characters plus a null terminator, so the array size must be at least 6."
+  },
+  {
+    "id": 7,
+    "level": "Basic",
+    "type": "Storage",
+    "topic": "Strings Fundamentals",
+    "question": "What is the minimum array size required to store the string \"OAVS\" including its null terminator?",
+    "options": [
+      "3",
+      "6",
+      "4",
+      "5"
+    ],
+    "answer": "D",
+    "explanation": "\"OAVS\" has 4 characters; one extra byte is needed for '\\0', giving a minimum size of 5."
+  },
+  {
+    "id": 8,
+    "level": "Basic",
+    "type": "Reading Strings",
+    "topic": "Strings Fundamentals",
+    "question": "Which function/approach is commonly used to read a string containing spaces from user input?",
+    "options": [
+      "getchar() only",
+      "gets() or fgets()",
+      "scanf(\"%d\", &x);",
+      "printf();"
+    ],
+    "answer": "B",
+    "explanation": "gets() (unsafe/deprecated) and fgets() can read strings with embedded spaces, unlike scanf(\"%s\")."
+  },
+  {
+    "id": 9,
+    "level": "Basic",
+    "type": "Reading Strings",
+    "topic": "Strings Fundamentals",
+    "question": "Which format specifier is used with scanf/printf to read or display a string?",
+    "options": [
+      "%d",
+      "%s",
+      "%f",
+      "%c"
+    ],
+    "answer": "B",
+    "explanation": "%s is the format specifier reserved for string input/output in C."
+  },
+  {
+    "id": 10,
+    "level": "Basic",
+    "type": "Reading Strings",
+    "topic": "Strings Fundamentals",
+    "question": "Why is gets() considered unsafe in modern C programming?",
+    "options": [
+      "It cannot read strings at all",
+      "It requires <math.h>",
+      "It runs too slowly",
+      "It does not check array bounds, causing buffer overflow"
+    ],
+    "answer": "D",
+    "explanation": "gets() has no way to limit how many characters it reads, so it can overflow the destination array."
+  },
+  {
+    "id": 11,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "Strings Fundamentals",
+    "question": "Which of the following is a characteristic of strings in C?",
+    "options": [
+      "Strings can only be numeric",
+      "Strings are terminated by a null character",
+      "Strings are always fixed at length 10",
+      "Strings cannot be stored in arrays"
+    ],
+    "answer": "B",
+    "explanation": "Null termination is a defining characteristic that lets library functions know where a string ends."
+  },
+  {
+    "id": 12,
+    "level": "Basic",
+    "type": "Storage",
+    "topic": "Strings Fundamentals",
+    "question": "Given char str[10] = \"Hello\"; what value is stored at str[5]?",
+    "options": [
+      "'o'",
+      "'\\0'",
+      "Garbage value",
+      "'H'"
+    ],
+    "answer": "B",
+    "explanation": "Indices 0-4 hold H-e-l-l-o; index 5 holds the automatically-added null terminator."
+  },
+  {
+    "id": 13,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "Strings Fundamentals",
+    "question": "Which of the following is a common real-world application of strings?",
+    "options": [
+      "Matrix multiplication",
+      "Binary search on numeric arrays",
+      "Text processing and handling file names",
+      "Sorting only integers"
+    ],
+    "answer": "C",
+    "explanation": "Strings are fundamental to handling text, names, messages, and file paths in programs."
+  },
+  {
+    "id": 14,
+    "level": "Basic",
+    "type": "Initialization",
+    "topic": "Strings Fundamentals",
+    "question": "What happens when a string literal is assigned without specifying array size, e.g. char str[] = \"OAVS\";?",
+    "options": [
+      "Compiler error",
+      "Compiler automatically allocates size = length + 1",
+      "It allocates size = length only, with no null character",
+      "It allocates size 100 by default"
+    ],
+    "answer": "B",
+    "explanation": "The compiler computes the exact size needed, which is the string's length plus one for '\\0'."
+  },
+  {
+    "id": 15,
+    "level": "Basic",
+    "type": "Statement-based",
+    "topic": "Strings Fundamentals",
+    "question": "Statement: \"Every valid C string must be terminated with a null character.\" This statement is:",
+    "options": [
+      "False",
+      "True only for globally declared arrays",
+      "True",
+      "True only for string literals"
+    ],
+    "answer": "C",
+    "explanation": "Null termination is what makes a character array recognizable as a valid C string to library functions."
+  },
+  {
+    "id": 16,
+    "level": "Basic",
+    "type": "Fill-in-the-Blank",
+    "topic": "Strings Fundamentals",
+    "question": "A string is essentially an array of ____ ending with a null character.",
+    "options": [
+      "characters",
+      "pointers",
+      "integers",
+      "floats"
+    ],
+    "answer": "A",
+    "explanation": "Strings are arrays of type char, terminated by '\\0'."
+  },
+  {
+    "id": 17,
+    "level": "Basic",
+    "type": "Function-based",
+    "topic": "Strings Fundamentals",
+    "question": "Which of the following correctly displays a string using printf?",
+    "options": [
+      "printf(\"%c\", str);",
+      "printf(\"%f\", str);",
+      "printf(\"%s\", str);",
+      "printf(\"%d\", str);"
+    ],
+    "answer": "C",
+    "explanation": "The %s specifier tells printf to print characters until it reaches the null terminator."
+  },
+  {
+    "id": 18,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Strings Fundamentals",
+    "question": "Assertion (A): Strings are not a distinct built-in data type in C.\nReason (R): Strings are implemented using arrays of characters terminated by '\\0'.",
+    "options": [
+      "A is true, R is false",
+      "A is false, R is true",
+      "Both A and R are true, but R does not explain A",
+      "Both A and R are true, and R correctly explains A"
+    ],
+    "answer": "D",
+    "explanation": "C has no dedicated 'string' type; strings are simply null-terminated character arrays, which is exactly why A is true."
+  },
+  {
+    "id": 19,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Strings Fundamentals",
+    "question": "Which of the following statements about string storage is TRUE?",
+    "options": [
+      "Characters of a string are stored in contiguous memory locations",
+      "Strings are stored on a separate stack",
+      "Strings cannot be stored in arrays",
+      "Strings are stored in reverse order in memory"
+    ],
+    "answer": "A",
+    "explanation": "C strings occupy consecutive memory addresses, one byte per character, ending with '\\0'."
+  },
+  {
+    "id": 20,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Strings Fundamentals",
+    "question": "Given char str[20] = \"OAVS\"; what is guaranteed about indices 4 through 19?",
+    "options": [
+      "They cause a compilation error",
+      "They contain unpredictable garbage values",
+      "They are all automatically initialized to '\\0' (zero)",
+      "They contain repeated copies of \"OAVS\""
+    ],
+    "answer": "C",
+    "explanation": "When an initializer list is shorter than the array size, C guarantees the remaining elements are zero-initialized."
+  },
+  {
+    "id": 21,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Strings Fundamentals",
+    "question": "Which of the following is TRUE regarding character arrays used to store strings?",
+    "options": [
+      "The array must have at least length + 1 elements to accommodate the null terminator",
+      "A null terminator is optional in every case",
+      "Character arrays cannot store strings",
+      "The array size must exactly match the string's length"
+    ],
+    "answer": "A",
+    "explanation": "An extra element is always required so that '\\0' can be stored after the visible characters."
+  },
+  {
+    "id": 22,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Strings Fundamentals",
+    "question": "What is the key difference between the string constant \"A\" and the character constant 'A'?",
+    "options": [
+      "'A' is a string; \"A\" is a character",
+      "There is no difference",
+      "\"A\" is a 2-element char array {'A','\\0'}; 'A' is a single character",
+      "Both are treated as integers only"
+    ],
+    "answer": "C",
+    "explanation": "Double quotes create a string (with an implicit null terminator); single quotes create one character."
+  },
+  {
+    "id": 23,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Strings Fundamentals",
+    "question": "How many bytes does the empty string literal \"\" occupy in memory?",
+    "options": [
+      "2 bytes",
+      "Undefined, compiler dependent",
+      "1 byte (just the null character)",
+      "0 bytes"
+    ],
+    "answer": "C",
+    "explanation": "Even an empty string needs storage for its single null terminator."
+  },
+  {
+    "id": 24,
+    "level": "Intermediate",
+    "type": "Application-oriented",
+    "topic": "Strings Fundamentals",
+    "question": "Which loop condition is typically used to traverse a string character by character until its end?",
+    "options": [
+      "while(i < 0)",
+      "while(str[i] != '\\0')",
+      "while(str[i] == 1)",
+      "while(str[i] > 100)"
+    ],
+    "answer": "B",
+    "explanation": "Traversal continues until the null terminator is encountered, since that marks the string's end."
+  },
+  {
+    "id": 25,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Strings Fundamentals",
+    "question": "A student writes char name[5] = \"Rohit\"; What is the likely consequence?",
+    "options": [
+      "It automatically truncates to \"Rohi\"",
+      "It always compiles and runs with no risk",
+      "The compiler silently extends the array to size 6",
+      "\"Rohit\" needs 6 bytes (5 letters + '\\0'); with no room left, the array is not null-terminated, risking undefined behavior"
+    ],
+    "answer": "D",
+    "explanation": "Since the array size exactly equals the letter count, there is no space reserved for the terminator."
+  },
+  {
+    "id": 26,
+    "level": "Basic",
+    "type": "Function-based",
+    "topic": "Strings Fundamentals",
+    "question": "Which header file must be included to use standard string handling functions in C?",
+    "options": [
+      "<string.h>",
+      "<stdio.h>",
+      "<stdlib.h>",
+      "<ctype.h>"
+    ],
+    "answer": "A",
+    "explanation": "<string.h> declares strlen(), strcpy(), strcat(), strcmp(), and related functions."
+  },
+  {
+    "id": 27,
+    "level": "Intermediate",
+    "type": "Application-oriented",
+    "topic": "Strings Fundamentals",
+    "question": "Strings are widely used in which of the following real applications?",
+    "options": [
+      "Only boolean logic operations",
+      "Exclusively low-level graphics rendering",
+      "Only arithmetic calculations",
+      "Storing names, addresses, and other text-based data"
+    ],
+    "answer": "D",
+    "explanation": "Text-based data such as names and addresses is naturally represented using strings."
+  },
+  {
+    "id": 28,
+    "level": "Intermediate",
+    "type": "Previous-Year Pattern",
+    "topic": "Strings Fundamentals",
+    "question": "Which of the following correctly reads a full line of text into a string, including embedded spaces?",
+    "options": [
+      "scanf(\"%s\", str);",
+      "fgets(str, size, stdin);",
+      "scanf(\"%d\", str);",
+      "getchar(str);"
+    ],
+    "answer": "B",
+    "explanation": "fgets() reads an entire line (up to a size limit), including spaces, unlike scanf(\"%s\")."
+  },
+  {
+    "id": 29,
+    "level": "Intermediate",
+    "type": "Match-the-Following",
+    "topic": "Strings Fundamentals",
+    "question": "Match: (i) '\\0'  (ii) %s  (iii) string.h  (iv) char array  with  (1) format specifier (2) header file (3) null terminator (4) storage for a string",
+    "options": [
+      "i-2, ii-1, iii-4, iv-3",
+      "i-4, ii-3, iii-2, iv-1",
+      "i-3, ii-1, iii-2, iv-4",
+      "i-1, ii-2, iii-3, iv-4"
+    ],
+    "answer": "C",
+    "explanation": "'\\0' terminates a string, %s formats it, string.h declares functions, and a char array stores it."
+  },
+  {
+    "id": 30,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "Strings Fundamentals",
+    "question": "Which of the following is NOT true when comparing strings to a simple data type like int?",
+    "options": [
+      "Strings need a terminating character; int does not",
+      "A string is stored as a single value in one memory cell, exactly like int",
+      "A string's storage size depends on its content length plus one",
+      "Strings are stored as arrays; int occupies a single memory location"
+    ],
+    "answer": "B",
+    "explanation": "Unlike int, a string spans multiple contiguous memory cells (an array), not a single cell."
+  },
+  {
+    "id": 31,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Strings Fundamentals",
+    "question": "Which of the following string initializations is INVALID (a compile-time error)?",
+    "options": [
+      "char *str = \"Hello\";",
+      "char str[] = \"Hello\";",
+      "char str[5] = {'H','e','l','l','o','\\0'};",
+      "char str[6] = {'H','e','l','l','o','\\0'};"
+    ],
+    "answer": "C",
+    "explanation": "An array of size 5 cannot hold 6 initializer values; this causes a 'too many initializers' error."
+  },
+  {
+    "id": 32,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Strings Fundamentals",
+    "question": "Which of these correctly checks whether array 'str' currently holds an empty (zero-length) string?",
+    "options": [
+      "if(str = \"\")",
+      "if(strlen(str) == -1)",
+      "if(str == 0)",
+      "if(str[0] == '\\0')"
+    ],
+    "answer": "D",
+    "explanation": "An empty string has its very first element equal to the null terminator."
+  },
+  {
+    "id": 33,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Strings Fundamentals",
+    "question": "Displaying a string with printf(\"%s\", str) primarily relies on:",
+    "options": [
+      "The null character marking where output should stop",
+      "The size of the compiler being used",
+      "The system clock speed",
+      "The number of vowels in the string"
+    ],
+    "answer": "A",
+    "explanation": "printf keeps printing characters until it reaches '\\0', regardless of the array's allocated size."
+  },
+  {
+    "id": 34,
+    "level": "Basic",
+    "type": "Fill-in-the-Blank",
+    "topic": "Strings Fundamentals",
+    "question": "In C, standard string handling functions are declared in the ____ header file.",
+    "options": [
+      "string.h",
+      "stdio.h",
+      "conio.h",
+      "math.h"
+    ],
+    "answer": "A",
+    "explanation": "string.h is the standard header for strlen(), strcpy(), strcat(), strcmp(), etc."
+  },
+  {
+    "id": 35,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "Strings Fundamentals",
+    "question": "Which option best summarizes the characteristics of strings in C?",
+    "options": [
+      "Contents that can never be modified once created",
+      "A structure that is automatically resized at runtime",
+      "A fixed data type with automatic bounds checking",
+      "An array of characters, null-terminated, size fixed at declaration, contents mutable (unless a literal)"
+    ],
+    "answer": "D",
+    "explanation": "Strings in C are simply null-terminated char arrays with a size fixed when declared."
+  },
+  {
+    "id": 36,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "strlen()",
+    "question": "What does the strlen() function do?",
+    "options": [
+      "Concatenates two strings",
+      "Copies a string",
+      "Compares two strings",
+      "Returns the length of a string excluding the null character"
+    ],
+    "answer": "D",
+    "explanation": "strlen() counts characters in a string up to, but not including, the terminating '\\0'."
+  },
+  {
+    "id": 37,
+    "level": "Basic",
+    "type": "Function-based",
+    "topic": "strlen()",
+    "question": "Which header file must be included to use strlen()?",
+    "options": [
+      "<stdlib.h>",
+      "<stdio.h>",
+      "<string.h>",
+      "<ctype.h>"
+    ],
+    "answer": "C",
+    "explanation": "strlen() is declared in <string.h>."
+  },
+  {
+    "id": 38,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "strlen()",
+    "question": "What is the return type of strlen()?",
+    "options": [
+      "float",
+      "int",
+      "char*",
+      "size_t (an unsigned integer type)"
+    ],
+    "answer": "D",
+    "explanation": "The C standard defines strlen()'s return type as size_t, an unsigned integer type."
+  },
+  {
+    "id": 39,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "strlen()",
+    "question": "Which is the correct usage syntax for strlen()?",
+    "options": [
+      "strlen();",
+      "size_t len = strlen(str);",
+      "strlen(str1, str2);",
+      "len = strlen;"
+    ],
+    "answer": "B",
+    "explanation": "strlen() takes exactly one string argument and returns its length, typically stored in a size_t variable."
+  },
+  {
+    "id": 40,
+    "level": "Basic",
+    "type": "Output-based",
+    "topic": "strlen()",
+    "question": "What is the output of: printf(\"%d\", strlen(\"OAVS\"));",
+    "options": [
+      "4",
+      "0",
+      "3",
+      "5"
+    ],
+    "answer": "A",
+    "explanation": "\"OAVS\" has 4 characters; strlen() excludes the null terminator from the count."
+  },
+  {
+    "id": 41,
+    "level": "Basic",
+    "type": "Parameters",
+    "topic": "strlen()",
+    "question": "How many parameters does strlen() take?",
+    "options": [
+      "2",
+      "3",
+      "1",
+      "0"
+    ],
+    "answer": "C",
+    "explanation": "strlen() accepts a single pointer/array argument representing the string to be measured."
+  },
+  {
+    "id": 42,
+    "level": "Basic",
+    "type": "Output-based",
+    "topic": "strlen()",
+    "question": "What is the output of strlen(\"\")?",
+    "options": [
+      "1",
+      "-1",
+      "0",
+      "Undefined"
+    ],
+    "answer": "C",
+    "explanation": "An empty string has zero characters before its null terminator."
+  },
+  {
+    "id": 43,
+    "level": "Basic",
+    "type": "Behavior",
+    "topic": "strlen()",
+    "question": "Does strlen() count the null character as part of its returned length?",
+    "options": [
+      "Only for empty strings",
+      "No, it excludes the null character",
+      "Yes, always",
+      "Only for arrays larger than 10"
+    ],
+    "answer": "B",
+    "explanation": "strlen() reports only the visible characters, never the terminator itself."
+  },
+  {
+    "id": 44,
+    "level": "Basic",
+    "type": "Code-snippet",
+    "topic": "strlen()",
+    "question": "char s[] = \"Computer\"; printf(\"%d\", strlen(s)); What is the output?",
+    "options": [
+      "9",
+      "7",
+      "10",
+      "8"
+    ],
+    "answer": "D",
+    "explanation": "\"Computer\" contains 8 letters, so strlen() returns 8."
+  },
+  {
+    "id": 45,
+    "level": "Basic",
+    "type": "Limitations",
+    "topic": "strlen()",
+    "question": "Which situation could cause strlen() to behave unpredictably (undefined behavior)?",
+    "options": [
+      "Passing a properly null-terminated string",
+      "Passing a character array that is NOT null-terminated",
+      "Passing an empty string",
+      "Passing a string literal"
+    ],
+    "answer": "B",
+    "explanation": "Without a '\\0' inside its bounds, strlen() keeps reading past the array, causing undefined behavior."
+  },
+  {
+    "id": 46,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "strlen()",
+    "question": "What is a common application of strlen()?",
+    "options": [
+      "Determining loop bounds while processing a string",
+      "Opening files",
+      "Sorting integers",
+      "Performing arithmetic addition"
+    ],
+    "answer": "A",
+    "explanation": "Knowing a string's length is essential for safely looping through or validating its content."
+  },
+  {
+    "id": 47,
+    "level": "Basic",
+    "type": "Differences",
+    "topic": "strlen()",
+    "question": "How does strlen() differ from sizeof() when applied to a character array?",
+    "options": [
+      "They are fully interchangeable in every situation",
+      "strlen() returns the actual string length (excluding '\\0'); sizeof() returns the total allocated array size",
+      "sizeof() excludes the null character; strlen() includes it",
+      "Both always return the same value"
+    ],
+    "answer": "B",
+    "explanation": "sizeof() reports the compile-time allocated size, while strlen() reports the runtime content length."
+  },
+  {
+    "id": 48,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "strlen()",
+    "question": "Assertion (A): strlen() can be safely used on any character array regardless of null-termination.\nReason (R): strlen() keeps counting characters until it encounters a '\\0'.",
+    "options": [
+      "Both A and R are false",
+      "A is false, but R correctly describes how strlen() works",
+      "Both A and R are true, and R explains A",
+      "A is true, R is false"
+    ],
+    "answer": "B",
+    "explanation": "strlen() is unsafe on non-terminated arrays precisely because it relies on finding '\\0', which R correctly states."
+  },
+  {
+    "id": 49,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "strlen()",
+    "question": "What is the outcome of calling strlen(NULL)?",
+    "options": [
+      "It returns -1",
+      "Undefined behavior (commonly a crash)",
+      "It returns 0",
+      "It returns 1"
+    ],
+    "answer": "B",
+    "explanation": "Passing a NULL pointer to strlen() is undefined behavior since there is no memory to scan."
+  },
+  {
+    "id": 50,
+    "level": "Basic",
+    "type": "Output-based",
+    "topic": "strlen()",
+    "question": "char a[20] = \"Hi\"; printf(\"%d\", strlen(a)); What is the output?",
+    "options": [
+      "18",
+      "2",
+      "3",
+      "20"
+    ],
+    "answer": "B",
+    "explanation": "strlen() only counts the actual characters before '\\0' (\"Hi\" = 2), ignoring unused allocated space."
+  },
+  {
+    "id": 51,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "strlen()",
+    "question": "Which manual loop logic mirrors what strlen() internally performs?",
+    "options": [
+      "while(1) break;",
+      "for(i=0; str[i]!='\\0'; i++) count++;",
+      "for(i=0;i<10;i++) sum+=i;",
+      "for(i=n;i>0;i--) count--;"
+    ],
+    "answer": "B",
+    "explanation": "strlen() effectively scans forward, incrementing a counter until it hits the null terminator."
+  },
+  {
+    "id": 52,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "strlen()",
+    "question": "A program must verify a password string is at least 8 characters long. Which function directly helps?",
+    "options": [
+      "strlen()",
+      "strcpy()",
+      "strcat()",
+      "strcmp()"
+    ],
+    "answer": "A",
+    "explanation": "strlen() reports the exact character count needed for this length check."
+  },
+  {
+    "id": 53,
+    "level": "Intermediate",
+    "type": "Application-oriented",
+    "topic": "strlen()",
+    "question": "Which format specifier correctly matches strlen()'s return type for printing?",
+    "options": [
+      "%p only",
+      "%c",
+      "%zu (matches size_t)",
+      "%f"
+    ],
+    "answer": "C",
+    "explanation": "%zu is the standard format specifier for size_t values, though %d is often used informally for small lengths."
+  },
+  {
+    "id": 54,
+    "level": "Intermediate",
+    "type": "Previous-Year Pattern",
+    "topic": "strlen()",
+    "question": "Which statement about strlen() is FALSE?",
+    "options": [
+      "It does not modify the original string",
+      "It computes length by scanning until '\\0'",
+      "It returns a signed negative number for invalid input",
+      "It requires <string.h>"
+    ],
+    "answer": "C",
+    "explanation": "strlen()'s return type (size_t) is unsigned, so it never returns a negative value."
+  },
+  {
+    "id": 55,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "strlen()",
+    "question": "Unlike strcmp(), the strlen() function:",
+    "options": [
+      "compares two strings against each other",
+      "always returns either 0 or 1",
+      "copies string contents into another array",
+      "operates on a single string argument only"
+    ],
+    "answer": "D",
+    "explanation": "strlen() takes just one string, whereas strcmp() requires two strings to compare."
+  },
+  {
+    "id": 56,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "strcat()",
+    "question": "What is the purpose of the strcat() function?",
+    "options": [
+      "Appends (concatenates) one string to the end of another",
+      "Finds the length of a string",
+      "Copies one string to another",
+      "Compares two strings"
+    ],
+    "answer": "A",
+    "explanation": "strcat() joins the source string onto the end of the destination string."
+  },
+  {
+    "id": 57,
+    "level": "Basic",
+    "type": "Function-based",
+    "topic": "strcat()",
+    "question": "Which header file declares strcat()?",
+    "options": [
+      "<stdlib.h>",
+      "<string.h>",
+      "<math.h>",
+      "<stdio.h>"
+    ],
+    "answer": "B",
+    "explanation": "strcat() is part of the standard string library declared in <string.h>."
+  },
+  {
+    "id": 58,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "strcat()",
+    "question": "What does strcat(dest, src) return?",
+    "options": [
+      "void (nothing)",
+      "An int representing status",
+      "A pointer to src",
+      "A pointer to dest"
+    ],
+    "answer": "D",
+    "explanation": "strcat() returns the same pointer passed in as dest, now containing the combined string."
+  },
+  {
+    "id": 59,
+    "level": "Basic",
+    "type": "Code-snippet",
+    "topic": "strcat()",
+    "question": "char a[20]=\"Hello \"; char b[]=\"World\"; strcat(a,b); printf(\"%s\",a); What is the output?",
+    "options": [
+      "HelloWorld",
+      "Hello",
+      "Hello World",
+      "World Hello"
+    ],
+    "answer": "C",
+    "explanation": "strcat() appends \"World\" right after \"Hello \" (which already has a trailing space)."
+  },
+  {
+    "id": 60,
+    "level": "Basic",
+    "type": "Behavior",
+    "topic": "strcat()",
+    "question": "What must be true about the destination array for strcat() to work safely?",
+    "options": [
+      "It must have enough space to hold both strings plus the null terminator",
+      "It must start out completely empty",
+      "It must be declared with the const keyword",
+      "It must be exactly the size of src"
+    ],
+    "answer": "A",
+    "explanation": "Insufficient space in dest leads to buffer overflow, since strcat() performs no bounds checking."
+  },
+  {
+    "id": 61,
+    "level": "Basic",
+    "type": "Behavior",
+    "topic": "strcat()",
+    "question": "Where does strcat() begin writing the appended characters into dest?",
+    "options": [
+      "Right after src's own null terminator",
+      "At a randomly chosen position",
+      "At the position of dest's existing null terminator",
+      "At the very beginning, overwriting dest entirely"
+    ],
+    "answer": "C",
+    "explanation": "strcat() locates dest's terminating '\\0' first, then starts copying src's characters from there."
+  },
+  {
+    "id": 62,
+    "level": "Basic",
+    "type": "Behavior",
+    "topic": "strcat()",
+    "question": "What happens to dest's original null terminator during a strcat() call?",
+    "options": [
+      "It is overwritten, and a new null terminator is placed at the very end",
+      "It is removed permanently with nothing replacing it",
+      "It gets duplicated twice",
+      "It stays in the middle of the final combined string"
+    ],
+    "answer": "A",
+    "explanation": "The old terminator is overwritten by the first character of src; a fresh '\\0' ends the final result."
+  },
+  {
+    "id": 63,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "strcat()",
+    "question": "What can happen if strcat() is used without ensuring the destination array is large enough?",
+    "options": [
+      "A guaranteed compilation error",
+      "A buffer overflow / undefined behavior",
+      "Nothing; C automatically resizes arrays at runtime",
+      "The extra characters are safely and silently discarded"
+    ],
+    "answer": "B",
+    "explanation": "strcat() blindly writes past the array bounds if there isn't enough room, corrupting memory."
+  },
+  {
+    "id": 64,
+    "level": "Basic",
+    "type": "Statement-based",
+    "topic": "strcat()",
+    "question": "Which of the following is a valid use of strcat()?",
+    "options": [
+      "strcat(\"Hello\", \"World\");",
+      "char dest[20]=\"Hello\"; strcat(dest,\"World\");",
+      "strcat();",
+      "strcat(5, \"World\");"
+    ],
+    "answer": "B",
+    "explanation": "dest must be a writable character array; string literals (as in option A) are typically not modifiable."
+  },
+  {
+    "id": 65,
+    "level": "Basic",
+    "type": "Output-based",
+    "topic": "strcat()",
+    "question": "char s[10]=\"Hi\"; strcat(s,\"!\"); printf(\"%s\",s); What is the output?",
+    "options": [
+      "Hi",
+      "Hi!",
+      "!Hi",
+      "Compilation error"
+    ],
+    "answer": "B",
+    "explanation": "strcat() appends \"!\" right after the existing content \"Hi\"."
+  },
+  {
+    "id": 66,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "strcat()",
+    "question": "strcat() is commonly used to:",
+    "options": [
+      "Convert a string into an integer",
+      "Merge/build up strings, such as combining a directory path with a filename",
+      "Sort an array of characters",
+      "Delete a portion of a string"
+    ],
+    "answer": "B",
+    "explanation": "Building composite strings from smaller pieces is a classic use case for strcat()."
+  },
+  {
+    "id": 67,
+    "level": "Basic",
+    "type": "Differences",
+    "topic": "strcat()",
+    "question": "What is the key difference between strcat() and strcpy()?",
+    "options": [
+      "strcat() only works with integer arrays",
+      "strcat() overwrites the destination; strcpy() appends to it",
+      "Both functions behave identically",
+      "strcat() appends src to dest; strcpy() overwrites dest with src"
+    ],
+    "answer": "D",
+    "explanation": "strcpy() replaces dest's content, while strcat() adds src onto the end of dest's existing content."
+  },
+  {
+    "id": 68,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "strcat()",
+    "question": "Assertion (A): strcat(dest, src) can cause undefined behavior if dest and src overlap in memory.\nReason (R): strcat() performs no check for overlapping memory regions.",
+    "options": [
+      "Both A and R are false",
+      "A is true, R is false",
+      "Both A and R are true, and R correctly explains A",
+      "A is false, R is true"
+    ],
+    "answer": "C",
+    "explanation": "Overlapping source and destination is unsafe precisely because strcat() does not guard against it."
+  },
+  {
+    "id": 69,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "strcat()",
+    "question": "What is the practical use of strcat()'s return value?",
+    "options": [
+      "It allows chaining, e.g. passing the result directly into another function call, since it returns dest's pointer",
+      "It is mainly used for error checking",
+      "It represents the new combined string's length",
+      "It is always ignored by the compiler"
+    ],
+    "answer": "A",
+    "explanation": "Because strcat() returns dest, its result can be passed straight into functions like printf()."
+  },
+  {
+    "id": 70,
+    "level": "Basic",
+    "type": "Parameters",
+    "topic": "strcat()",
+    "question": "Which statement about strcat()'s parameters is TRUE?",
+    "options": [
+      "Both parameters must be integers",
+      "Neither parameter needs a null terminator",
+      "Both dest and src must be properly null-terminated strings",
+      "Only the second parameter needs a null terminator"
+    ],
+    "answer": "C",
+    "explanation": "strcat() relies on null terminators in both dest (to find where to start) and src (to know where to stop)."
+  },
+  {
+    "id": 71,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "strcat()",
+    "question": "To join a first name and last name with a space between them using strcat(), which sequence works correctly?",
+    "options": [
+      "strcat(first,\"\\0\"); strcat(first,last);",
+      "strcat(first,last,\" \");",
+      "strcat(first,\" \"); strcat(first,last);",
+      "strcat(last,first);"
+    ],
+    "answer": "C",
+    "explanation": "First appending a space, then the last name, correctly builds \"First Last\" in the first array."
+  },
+  {
+    "id": 72,
+    "level": "Basic",
+    "type": "Fill-in-the-Blank",
+    "topic": "strcat()",
+    "question": "strcat() appends a copy of the source string, ____ its terminating null character, onto the destination string.",
+    "options": [
+      "including",
+      "duplicating",
+      "excluding",
+      "reversing"
+    ],
+    "answer": "A",
+    "explanation": "The appended copy of src brings its own '\\0' along, which becomes the new end of dest."
+  },
+  {
+    "id": 73,
+    "level": "Intermediate",
+    "type": "Previous-Year Pattern",
+    "topic": "strcat()",
+    "question": "What is a key limitation of strcat()?",
+    "options": [
+      "It requires both strings to be identical",
+      "It cannot handle strings longer than 5 characters",
+      "It cannot be used with character arrays at all",
+      "It performs no bounds checking, risking buffer overflow if dest is too small"
+    ],
+    "answer": "D",
+    "explanation": "Like strcpy(), strcat() trusts the programmer to ensure dest has sufficient space."
+  },
+  {
+    "id": 74,
+    "level": "Basic",
+    "type": "Output-based",
+    "topic": "strcat()",
+    "question": "char x[15] = \"OA\"; strcat(x, \"VS\"); strcat(x, \" Odisha\"); printf(\"%s\", x); What is the output?",
+    "options": [
+      "VSOA Odisha",
+      "OAVS Odisha",
+      "Odisha OAVS",
+      "OA VS Odisha"
+    ],
+    "answer": "B",
+    "explanation": "Successive strcat() calls keep appending onto the growing string in x."
+  },
+  {
+    "id": 75,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "strcat()",
+    "question": "Which manual process is functionally similar to what strcat() automates?",
+    "options": [
+      "Reversing the characters of a string",
+      "Finding dest's null terminator, then copying src character-by-character from that point, ending with a new '\\0'",
+      "Converting lowercase letters to uppercase",
+      "Comparing each character of two strings for equality"
+    ],
+    "answer": "B",
+    "explanation": "This describes exactly what strcat() does internally when joining two strings."
+  },
+  {
+    "id": 76,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "strcpy()",
+    "question": "What is the purpose of the strcpy() function?",
+    "options": [
+      "Compares two strings",
+      "Concatenates two strings",
+      "Copies the contents of one string into another",
+      "Finds the length of a string"
+    ],
+    "answer": "C",
+    "explanation": "strcpy() copies characters from a source string into a destination array."
+  },
+  {
+    "id": 77,
+    "level": "Basic",
+    "type": "Function-based",
+    "topic": "strcpy()",
+    "question": "Which header file declares strcpy()?",
+    "options": [
+      "<stdio.h>",
+      "<string.h>",
+      "<stdlib.h>",
+      "<ctype.h>"
+    ],
+    "answer": "B",
+    "explanation": "strcpy() is declared in the standard <string.h> header."
+  },
+  {
+    "id": 78,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "strcpy()",
+    "question": "In char *strcpy(char *dest, const char *src);, what does the 'const' before src indicate?",
+    "options": [
+      "src can still be modified by strcpy()",
+      "src is only read by strcpy() and is never modified",
+      "src must be a constant integer value",
+      "dest cannot be changed by the function"
+    ],
+    "answer": "B",
+    "explanation": "'const' signals that strcpy() only reads from src; it never alters the source string."
+  },
+  {
+    "id": 79,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "strcpy()",
+    "question": "What does strcpy() return?",
+    "options": [
+      "The length of the copied string",
+      "A pointer to the source string",
+      "0 or 1 to indicate success/failure",
+      "A pointer to the destination string"
+    ],
+    "answer": "D",
+    "explanation": "strcpy() returns the same pointer passed as dest, now holding a copy of src's contents."
+  },
+  {
+    "id": 80,
+    "level": "Basic",
+    "type": "Code-snippet",
+    "topic": "strcpy()",
+    "question": "char dest[20]; strcpy(dest,\"OAVS\"); printf(\"%s\",dest); What is the output?",
+    "options": [
+      "(empty output)",
+      "OAVS",
+      "Compilation error",
+      "dest"
+    ],
+    "answer": "B",
+    "explanation": "strcpy() copies \"OAVS\" (including its terminator) into dest, so printf displays \"OAVS\"."
+  },
+  {
+    "id": 81,
+    "level": "Basic",
+    "type": "Behavior",
+    "topic": "strcpy()",
+    "question": "Besides the visible characters, what else does strcpy() copy from src into dest?",
+    "options": [
+      "Nothing extra beyond the letters",
+      "The terminating null character '\\0'",
+      "Random garbage bytes",
+      "Only the first character"
+    ],
+    "answer": "B",
+    "explanation": "strcpy() copies characters up to and including src's null terminator."
+  },
+  {
+    "id": 82,
+    "level": "Basic",
+    "type": "Behavior",
+    "topic": "strcpy()",
+    "question": "What is required of the destination array for strcpy() to work safely?",
+    "options": [
+      "It must be at least as large as src, including room for the null terminator",
+      "It must be a string literal",
+      "It must be smaller than the source string",
+      "It must be declared with const"
+    ],
+    "answer": "A",
+    "explanation": "If dest is too small, strcpy() overflows it since it performs no bounds checking."
+  },
+  {
+    "id": 83,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "strcpy()",
+    "question": "What happens if strcpy() is used to write into a string literal, e.g. strcpy(literalPtr, \"xyz\") where literalPtr points to a literal?",
+    "options": [
+      "It swaps the two strings",
+      "It works fine and modifies the literal",
+      "Undefined behavior, since string literals are typically stored in non-modifiable memory",
+      "It always produces a compilation error"
+    ],
+    "answer": "C",
+    "explanation": "Attempting to modify a string literal's storage is undefined behavior in C."
+  },
+  {
+    "id": 84,
+    "level": "Basic",
+    "type": "Differences",
+    "topic": "strcpy()",
+    "question": "What is the key difference between strcpy() and strcat()?",
+    "options": [
+      "strcpy() only works on integer arrays",
+      "strcpy() appends; strcat() overwrites",
+      "Both perform the exact same operation",
+      "strcpy() overwrites dest; strcat() appends onto the end of dest"
+    ],
+    "answer": "D",
+    "explanation": "strcpy() replaces dest's entire content, whereas strcat() adds onto what's already there."
+  },
+  {
+    "id": 85,
+    "level": "Basic",
+    "type": "Output-based",
+    "topic": "strcpy()",
+    "question": "char a[10]=\"Hello\"; char b[10]; strcpy(b,a); printf(\"%s\",b); What is the output?",
+    "options": [
+      "b",
+      "Compilation error",
+      "(empty output)",
+      "Hello"
+    ],
+    "answer": "D",
+    "explanation": "strcpy() duplicates the contents of a into b, so b now also holds \"Hello\"."
+  },
+  {
+    "id": 86,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "strcpy()",
+    "question": "strcpy() is typically used to:",
+    "options": [
+      "Reverse an array of integers",
+      "Compare two numeric values for equality",
+      "Perform mathematical rounding",
+      "Initialize or reset a character array with new string content at runtime"
+    ],
+    "answer": "D",
+    "explanation": "Assigning fresh text into an existing char array at runtime is the classic use of strcpy()."
+  },
+  {
+    "id": 87,
+    "level": "Basic",
+    "type": "Limitations",
+    "topic": "strcpy()",
+    "question": "What is a key limitation of strcpy()?",
+    "options": [
+      "It requires both arrays to be exactly the same size",
+      "It automatically checks buffer sizes for safety",
+      "It cannot copy strings longer than 5 characters",
+      "It does not check whether dest has enough space, risking buffer overflow"
+    ],
+    "answer": "D",
+    "explanation": "Like strcat(), strcpy() offers no built-in protection against overflowing a too-small destination."
+  },
+  {
+    "id": 88,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "strcpy()",
+    "question": "Assertion (A): strcpy(dest, src) is unsafe when dest is smaller than src.\nReason (R): strcpy() copies characters until it reaches src's null terminator, without checking dest's boundary.",
+    "options": [
+      "A is true, R is false",
+      "A is false, R is true",
+      "Both A and R are false",
+      "Both A and R are true, and R correctly explains A"
+    ],
+    "answer": "D",
+    "explanation": "This is exactly why a too-small dest causes a buffer overflow when copying a longer src."
+  },
+  {
+    "id": 89,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "strcpy()",
+    "question": "Which related (though non-syllabus) function is sometimes used as a safer alternative to strcpy() by limiting the number of characters copied?",
+    "options": [
+      "strlen()",
+      "strncpy()",
+      "strcat()",
+      "strcmp()"
+    ],
+    "answer": "B",
+    "explanation": "strncpy() adds a maximum-character-count parameter, reducing (but not eliminating) overflow risk."
+  },
+  {
+    "id": 90,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "strcpy()",
+    "question": "A program needs to duplicate a string in 'source' into a new array 'backup' for safekeeping. Which function call is most direct?",
+    "options": [
+      "strlen(source);",
+      "strcat(source, backup);",
+      "strcmp(source, backup);",
+      "strcpy(backup, source);"
+    ],
+    "answer": "D",
+    "explanation": "strcpy() copies source's content into backup, exactly matching the intended duplication."
+  },
+  {
+    "id": 91,
+    "level": "Basic",
+    "type": "Fill-in-the-Blank",
+    "topic": "strcpy()",
+    "question": "strcpy() copies characters from src to dest ____ the terminating null character has also been copied.",
+    "options": [
+      "before",
+      "without",
+      "until",
+      "after"
+    ],
+    "answer": "C",
+    "explanation": "Copying continues, character by character, until '\\0' itself has been transferred."
+  },
+  {
+    "id": 92,
+    "level": "Basic",
+    "type": "Output-based",
+    "topic": "strcpy()",
+    "question": "char s[6]; strcpy(s,\"OAVS\"); printf(\"%d\", strlen(s)); What is the output?",
+    "options": [
+      "6",
+      "0",
+      "4",
+      "5"
+    ],
+    "answer": "C",
+    "explanation": "strlen() reports the 4 visible characters of \"OAVS\", not the array's allocated size."
+  },
+  {
+    "id": 93,
+    "level": "Intermediate",
+    "type": "Previous-Year Pattern",
+    "topic": "strcpy()",
+    "question": "Which statement is TRUE regarding strcpy()'s two parameters?",
+    "options": [
+      "Only src is modified; dest remains unchanged",
+      "Both parameters are modified after the call",
+      "Neither parameter is changed by the call",
+      "Only dest is modified; src remains unchanged"
+    ],
+    "answer": "D",
+    "explanation": "strcpy() writes into dest only; src is treated as read-only (as reflected by its 'const' qualifier)."
+  },
+  {
+    "id": 94,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "strcpy()",
+    "question": "Why is calling strcpy(dest, dest) considered redundant and conceptually risky?",
+    "options": [
+      "Source and destination fully overlap here; in general, overlapping regions passed to strcpy() are undefined behavior",
+      "It automatically clears the contents of dest",
+      "It always crashes the compiler immediately",
+      "It silently swaps the characters of dest"
+    ],
+    "answer": "A",
+    "explanation": "Even though copying onto itself seems harmless, overlapping arguments are technically undefined behavior for strcpy()."
+  },
+  {
+    "id": 95,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "strcpy()",
+    "question": "Unlike strcmp(), which only reads its two string arguments, strcpy():",
+    "options": [
+      "writes into (modifies) its destination argument",
+      "never accesses memory at all",
+      "also only reads both of its arguments",
+      "returns a true/false boolean value"
+    ],
+    "answer": "A",
+    "explanation": "strcpy() actively modifies dest by writing src's characters into it."
+  },
+  {
+    "id": 96,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "strcmp()",
+    "question": "What is the purpose of the strcmp() function?",
+    "options": [
+      "Finds the length of a string",
+      "Copies one string into another",
+      "Compares two strings lexicographically",
+      "Concatenates two strings"
+    ],
+    "answer": "C",
+    "explanation": "strcmp() compares two strings character by character based on their ASCII values."
+  },
+  {
+    "id": 97,
+    "level": "Basic",
+    "type": "Function-based",
+    "topic": "strcmp()",
+    "question": "Which header file declares strcmp()?",
+    "options": [
+      "<stdio.h>",
+      "<stdlib.h>",
+      "<ctype.h>",
+      "<string.h>"
+    ],
+    "answer": "D",
+    "explanation": "strcmp() is part of the standard string library in <string.h>."
+  },
+  {
+    "id": 98,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "strcmp()",
+    "question": "What does strcmp() return when both strings are exactly equal?",
+    "options": [
+      "-1",
+      "0",
+      "NULL",
+      "1"
+    ],
+    "answer": "B",
+    "explanation": "A return value of 0 indicates that both strings match exactly."
+  },
+  {
+    "id": 99,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "strcmp()",
+    "question": "What does strcmp() return when the first string is lexicographically greater than the second?",
+    "options": [
+      "The string itself",
+      "Zero",
+      "A negative value",
+      "A positive value"
+    ],
+    "answer": "D",
+    "explanation": "A positive return value means the first string comes after the second in lexicographic order."
+  },
+  {
+    "id": 100,
+    "level": "Basic",
+    "type": "Return Value",
+    "topic": "strcmp()",
+    "question": "What does strcmp() return when the first string is lexicographically smaller than the second?",
+    "options": [
+      "Zero",
+      "A positive value",
+      "Undefined",
+      "A negative value"
+    ],
+    "answer": "D",
+    "explanation": "A negative return value means the first string comes before the second in lexicographic order."
+  },
+  {
+    "id": 101,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "strcmp()",
+    "question": "In int strcmp(const char *s1, const char *s2);, what is the return type?",
+    "options": [
+      "void",
+      "int",
+      "char",
+      "float"
+    ],
+    "answer": "B",
+    "explanation": "strcmp() returns an int whose sign indicates the comparison result."
+  },
+  {
+    "id": 102,
+    "level": "Basic",
+    "type": "Code-snippet",
+    "topic": "strcmp()",
+    "question": "if(strcmp(\"apple\",\"apple\")==0) printf(\"Equal\"); What is the output?",
+    "options": [
+      "Not Equal",
+      "Compilation error",
+      "No output",
+      "Equal"
+    ],
+    "answer": "D",
+    "explanation": "Since both strings are identical, strcmp() returns 0, so the condition is true."
+  },
+  {
+    "id": 103,
+    "level": "Basic",
+    "type": "Behavior",
+    "topic": "strcmp()",
+    "question": "On what basis does strcmp() compare characters?",
+    "options": [
+      "Alphabetical position, ignoring case, only",
+      "Only the total length of each string",
+      "Their memory addresses",
+      "Their ASCII (numeric) values, character by character"
+    ],
+    "answer": "D",
+    "explanation": "strcmp() compares corresponding characters' ASCII codes until a mismatch or a null terminator is found."
+  },
+  {
+    "id": 104,
+    "level": "Basic",
+    "type": "Output-based",
+    "topic": "strcmp()",
+    "question": "What can we conclude from: strcmp(\"apple\",\"banana\") returning a negative value?",
+    "options": [
+      "The two strings are equal",
+      "'a' has a smaller ASCII value than 'b', so \"apple\" precedes \"banana\"",
+      "This indicates a runtime error",
+      "\"apple\" is longer than \"banana\""
+    ],
+    "answer": "B",
+    "explanation": "The first differing characters are 'a' and 'b'; since 'a' < 'b' in ASCII, the result is negative."
+  },
+  {
+    "id": 105,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "strcmp()",
+    "question": "What is a practical use of strcmp()?",
+    "options": [
+      "Checking user input against a stored password string",
+      "Reversing the characters of a string",
+      "Adding two strings together numerically",
+      "Measuring the length of a string"
+    ],
+    "answer": "A",
+    "explanation": "strcmp() is ideal for verifying exact matches, such as password or command validation."
+  },
+  {
+    "id": 106,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "strcmp()",
+    "question": "Does strcmp() perform a case-sensitive comparison?",
+    "options": [
+      "This depends entirely on the compiler used",
+      "Only the first letter's case matters",
+      "Yes, \"Apple\" and \"apple\" are treated as different strings",
+      "No, it always ignores case"
+    ],
+    "answer": "C",
+    "explanation": "Because comparison is based on raw ASCII values, uppercase and lowercase letters differ."
+  },
+  {
+    "id": 107,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "strcmp()",
+    "question": "Which of these is used (though non-standard/compiler-specific) for case-insensitive string comparison, unlike strcmp()?",
+    "options": [
+      "A function like strcmpi()/stricmp()",
+      "strlen()",
+      "strcmp()",
+      "strcpy()"
+    ],
+    "answer": "A",
+    "explanation": "strcmp() itself is always case-sensitive; case-insensitive comparison needs a different, non-ANSI-standard function."
+  },
+  {
+    "id": 108,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "strcmp()",
+    "question": "Assertion (A): strcmp() alone cannot be used as the basis of a sorting comparison function for strings.\nReason (R): strcmp() only returns 0, a negative value, or a positive value, which is sufficient information to order two strings.",
+    "options": [
+      "A is true, R is false",
+      "Both A and R are false",
+      "Both A and R are true, and R explains A",
+      "A is false, and R correctly explains why strcmp() actually works well for sorting"
+    ],
+    "answer": "D",
+    "explanation": "strcmp()'s three possible outcomes (0, negative, positive) are exactly what sorting comparators require, making A false."
+  },
+  {
+    "id": 109,
+    "level": "Basic",
+    "type": "Output-based",
+    "topic": "strcmp()",
+    "question": "What is the sign of strcmp(\"Zebra\",\"apple\")?",
+    "options": [
+      "Negative, because uppercase 'Z' (90) has a lower ASCII value than lowercase 'a' (97)",
+      "Cannot be determined without running the code",
+      "Positive",
+      "Zero, since both start with letters"
+    ],
+    "answer": "A",
+    "explanation": "Uppercase letters have lower ASCII values than lowercase letters, so \"Zebra\" compares as 'less than' \"apple\"."
+  },
+  {
+    "id": 110,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "strcmp()",
+    "question": "A menu-driven program checks whether the user typed \"exit\" to quit. Which function directly helps?",
+    "options": [
+      "strlen()",
+      "strcmp()",
+      "strcat()",
+      "strcpy()"
+    ],
+    "answer": "B",
+    "explanation": "strcmp() confirms an exact match between the user's input and the string \"exit\"."
+  },
+  {
+    "id": 111,
+    "level": "Basic",
+    "type": "Fill-in-the-Blank",
+    "topic": "strcmp()",
+    "question": "strcmp() stops comparing further characters as soon as it finds ____ characters, or reaches the end of either string.",
+    "options": [
+      "identical",
+      "uppercase",
+      "numeric",
+      "differing"
+    ],
+    "answer": "D",
+    "explanation": "Comparison halts at the first point of difference, since the outcome is already determined."
+  },
+  {
+    "id": 112,
+    "level": "Intermediate",
+    "type": "Previous-Year Pattern",
+    "topic": "strcmp()",
+    "question": "What does the C standard actually guarantee about strcmp()'s numeric return value when two strings differ?",
+    "options": [
+      "It always equals the exact ASCII difference of the differing characters",
+      "It is always exactly +1 or -1",
+      "Only the sign is guaranteed to indicate order; the exact magnitude is implementation-defined",
+      "It is always exactly +100 or -100"
+    ],
+    "answer": "C",
+    "explanation": "Programmers should test the sign of the result (e.g., <0, ==0, >0), not rely on a specific numeric value."
+  },
+  {
+    "id": 113,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "strcmp()",
+    "question": "How does strcmp() differ from directly using == on two character arrays (str1 == str2)?",
+    "options": [
+      "Both perform identical content-based comparison",
+      "== always evaluates to true for equal-content strings",
+      "strcmp() compares addresses only, not content",
+      "strcmp() compares actual string content; == on arrays compares their addresses, not content"
+    ],
+    "answer": "D",
+    "explanation": "Arrays decay to pointers in such an expression, so == compares memory addresses, not the text inside them."
+  },
+  {
+    "id": 114,
+    "level": "Basic",
+    "type": "Applications",
+    "topic": "strcmp()",
+    "question": "strcmp() plays an essential role in implementing:",
+    "options": [
+      "General file compression algorithms",
+      "Mathematical square root calculations",
+      "Sorting algorithms for arrays of strings and searching for exact matches",
+      "Random number generation"
+    ],
+    "answer": "C",
+    "explanation": "Both alphabetical sorting and exact-match searching of strings rely on strcmp()'s comparison result."
+  },
+  {
+    "id": 115,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "strcmp()",
+    "question": "While strlen() takes exactly one argument, strcmp() takes:",
+    "options": [
+      "A variable number of arguments",
+      "Zero arguments",
+      "Three arguments",
+      "Two arguments (the two strings being compared)"
+    ],
+    "answer": "D",
+    "explanation": "strcmp() needs two strings, s1 and s2, in order to compare them against each other."
+  },
+  {
+    "id": 116,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "String vs Char Array",
+    "question": "What is the fundamental relationship between a string and a one-dimensional character array in C?",
+    "options": [
+      "Strings are a built-in type completely distinct from arrays",
+      "They are entirely unrelated concepts",
+      "A string is essentially implemented as a one-dimensional character array terminated by '\\0'",
+      "A string is always a two-dimensional array"
+    ],
+    "answer": "C",
+    "explanation": "C has no separate string type; strings ARE null-terminated one-dimensional char arrays."
+  },
+  {
+    "id": 117,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "String vs Char Array",
+    "question": "Which of these is a genuine similarity between strings and general 1-D character arrays?",
+    "options": [
+      "Both store elements of type char in contiguous memory",
+      "Both are automatically sorted by the compiler",
+      "Neither can be accessed using indexing",
+      "Both must always have exactly 10 elements"
+    ],
+    "answer": "A",
+    "explanation": "Both are simply arrays of char stored in sequential memory locations."
+  },
+  {
+    "id": 118,
+    "level": "Basic",
+    "type": "Conceptual",
+    "topic": "String vs Char Array",
+    "question": "What key feature distinguishes a 'string' from a plain character array holding arbitrary (non-text) data?",
+    "options": [
+      "A string must be terminated with '\\0'; a general char array need not have this terminator or represent text",
+      "Strings cannot be indexed, but plain arrays can",
+      "A string may only contain digit characters",
+      "There is no distinction between the two in any respect"
+    ],
+    "answer": "A",
+    "explanation": "The presence of a null terminator (marking valid text data) is what makes an array a proper string."
+  },
+  {
+    "id": 119,
+    "level": "Basic",
+    "type": "Access Methods",
+    "topic": "String vs Char Array",
+    "question": "How is an individual character within a string/character array accessed?",
+    "options": [
+      "Individual characters cannot be accessed",
+      "Only by calling strcmp()",
+      "Using indexing syntax such as str[i]",
+      "Only by calling strcat()"
+    ],
+    "answer": "C",
+    "explanation": "Array indexing (str[i]) directly accesses the character at position i."
+  },
+  {
+    "id": 120,
+    "level": "Basic",
+    "type": "Internal Representation",
+    "topic": "String vs Char Array",
+    "question": "Given char arr[5] = {'H','e','l','l','o'};, is 'arr' a valid, safely usable C-string?",
+    "options": [
+      "Only when compiled using a C++ compiler",
+      "Yes, always",
+      "Yes, because it has exactly 5 characters",
+      "No — there is no null terminator within the array to mark where the text ends"
+    ],
+    "answer": "D",
+    "explanation": "All 5 slots are filled with letters, leaving no room for a '\\0', so functions like strlen() cannot safely process it."
+  },
+  {
+    "id": 121,
+    "level": "Basic",
+    "type": "Memory Organization",
+    "topic": "String vs Char Array",
+    "question": "A string holding n visible characters typically requires how much storage (one byte per char)?",
+    "options": [
+      "n + 1 bytes (n characters plus the null terminator)",
+      "2n bytes",
+      "n - 1 bytes",
+      "n bytes"
+    ],
+    "answer": "A",
+    "explanation": "The extra byte accounts for the mandatory terminating '\\0'."
+  },
+  {
+    "id": 122,
+    "level": "Basic",
+    "type": "Null Termination",
+    "topic": "String vs Char Array",
+    "question": "Which of the following is TRUE regarding null termination?",
+    "options": [
+      "Null termination applies only to arrays of integers",
+      "Null termination is optional even for valid strings",
+      "Every character array is automatically null-terminated by the compiler",
+      "Only arrays intended to represent strings need an explicit '\\0'; a general-purpose char array doesn't require one"
+    ],
+    "answer": "D",
+    "explanation": "Plain char arrays used for non-string data (like a fixed buffer of grades) have no such requirement."
+  },
+  {
+    "id": 123,
+    "level": "Basic",
+    "type": "Practical Implications",
+    "topic": "String vs Char Array",
+    "question": "Why is it unsafe to call strlen() on a character array that is not null-terminated?",
+    "options": [
+      "strlen() simply refuses to compile in that case",
+      "strlen() automatically returns 0 in that case",
+      "strlen() keeps reading memory past the array's boundary searching for '\\0', causing undefined behavior",
+      "strlen() returns the array's declared size instead of scanning it"
+    ],
+    "answer": "C",
+    "explanation": "With no terminator inside the array, the scan runs into unrelated memory, which is undefined behavior."
+  },
+  {
+    "id": 124,
+    "level": "Basic",
+    "type": "Access Methods",
+    "topic": "String vs Char Array",
+    "question": "What is the standard way to access characters of a string / character array in C?",
+    "options": [
+      "Through simple array indexing, e.g., str[i]",
+      "Only through file input/output operations",
+      "Only via the strcmp() function",
+      "Only through complex pointer arithmetic"
+    ],
+    "answer": "A",
+    "explanation": "Indexing is the most direct and common way to access individual characters."
+  },
+  {
+    "id": 125,
+    "level": "Basic",
+    "type": "Array Notation",
+    "topic": "String vs Char Array",
+    "question": "In char str[] = \"OAVS\";, what does str[0] refer to?",
+    "options": [
+      "The first character 'O'",
+      "The entire string at once",
+      "The null terminator",
+      "The last character 'S'"
+    ],
+    "answer": "A",
+    "explanation": "Array indices start at 0, so str[0] is the string's first character."
+  },
+  {
+    "id": 126,
+    "level": "Intermediate",
+    "type": "Comparison-based",
+    "topic": "String vs Char Array",
+    "question": "How does the total allocated size of a char array typically compare to the 'string length' it holds?",
+    "options": [
+      "Allocated size can be greater than or equal to (string length + 1); strlen() only reports characters before '\\0'",
+      "Allocated size is always smaller than the string's length",
+      "There is never any relationship between the two",
+      "They are always exactly identical"
+    ],
+    "answer": "A",
+    "explanation": "An array can be declared larger than currently needed, while strlen() reports only the actual content length."
+  },
+  {
+    "id": 127,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "String vs Char Array",
+    "question": "For char arr[10] = \"Hi\";, what are the values of sizeof(arr) and strlen(arr) respectively?",
+    "options": [
+      "sizeof = 2, strlen = 2",
+      "sizeof = 10, strlen = 2",
+      "sizeof = 2, strlen = 10",
+      "sizeof = 10, strlen = 10"
+    ],
+    "answer": "B",
+    "explanation": "sizeof() reports the full declared array size (10 bytes); strlen() reports only \"Hi\"'s 2 characters."
+  },
+  {
+    "id": 128,
+    "level": "Basic",
+    "type": "Differences",
+    "topic": "String vs Char Array",
+    "question": "Can a plain 1-D character array (not intended as text) be reliably used with strlen() or strcat()?",
+    "options": [
+      "Never, under any circumstances whatsoever",
+      "Only if the array's size is less than 5",
+      "Yes, always, regardless of its contents",
+      "Only if it happens to contain a '\\0' terminator somewhere within its declared bounds"
+    ],
+    "answer": "D",
+    "explanation": "Without a null terminator present, these functions cannot correctly determine where the 'string' ends."
+  },
+  {
+    "id": 129,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "String vs Char Array",
+    "question": "A programmer declares char grades[5]; and fills all 5 slots with letter grades, leaving no '\\0'. Can this be safely passed to strlen()?",
+    "options": [
+      "No — without a null terminator inside its bounds, strlen() causes undefined behavior by reading beyond the array",
+      "Only if grades is declared as a static array",
+      "Yes, strlen() will simply return 5 in this case",
+      "Yes, it is always completely safe"
+    ],
+    "answer": "A",
+    "explanation": "strlen() will keep scanning past the array's end looking for a '\\0' that was never placed there."
+  },
+  {
+    "id": 130,
+    "level": "Basic",
+    "type": "Initialization",
+    "topic": "String vs Char Array",
+    "question": "How does initializing a string literal differ from initializing a general character array with individual characters?",
+    "options": [
+      "char s[] = \"Hi\"; automatically appends '\\0'; char arr[2] = {'H','i'}; does NOT include a null terminator",
+      "Both automatically receive a null terminator",
+      "Neither automatically receives a null terminator",
+      "Only arrays declared as static automatically get a null terminator"
+    ],
+    "answer": "A",
+    "explanation": "String-literal initialization always adds '\\0'; manually listing characters equal to the array size does not."
+  },
+  {
+    "id": 131,
+    "level": "Intermediate",
+    "type": "Application-oriented",
+    "topic": "String vs Char Array",
+    "question": "Why do C programmers rely on treating strings as char arrays with a guaranteed '\\0' terminator?",
+    "options": [
+      "It offers no practical benefit at all",
+      "It allows standard library functions (strlen, strcpy, strcat, strcmp, printf's %s) to correctly determine where the text ends",
+      "It prevents any form of array indexing on the data",
+      "It is required only for performing arithmetic operations"
+    ],
+    "answer": "B",
+    "explanation": "The terminator is the shared convention that all string-handling functions depend on."
+  },
+  {
+    "id": 132,
+    "level": "Basic",
+    "type": "Statement-based",
+    "topic": "String vs Char Array",
+    "question": "Statement: 'Every one-dimensional character array in C is automatically treated as a string by the compiler.' This is:",
+    "options": [
+      "True only for arrays declared with the const keyword",
+      "True only when using a C++ compiler",
+      "True",
+      "False — an array only qualifies as a valid C-string if it is properly null-terminated"
+    ],
+    "answer": "D",
+    "explanation": "The compiler does not enforce null-termination; it is the programmer's responsibility to ensure it for string usage."
+  },
+  {
+    "id": 133,
+    "level": "Intermediate",
+    "type": "Match-the-Following",
+    "topic": "String vs Char Array",
+    "question": "Match: (i) char str[6]=\"Hello\";  (ii) char arr[5]={'H','e','l','l','o'};  (iii) strlen(str)  (iv) str[5]   with   (1) 5  (2) '\\0'  (3) Valid null-terminated string  (4) Not a valid string (no terminator)",
+    "options": [
+      "i-3, ii-4, iii-1, iv-2",
+      "i-2, ii-1, iii-4, iv-3",
+      "i-4, ii-3, iii-2, iv-1",
+      "i-1, ii-2, iii-3, iv-4"
+    ],
+    "answer": "A",
+    "explanation": "str is a valid string (i-3), arr lacks a terminator (ii-4), strlen(str)=5 (iii-1), and str[5] holds '\\0' (iv-2)."
+  },
+  {
+    "id": 134,
+    "level": "Basic",
+    "type": "Character Indexing",
+    "topic": "String vs Char Array",
+    "question": "Which statement best explains 'character indexing' as it applies to strings?",
+    "options": [
+      "Characters within a string cannot be individually accessed",
+      "Indexing of string characters starts from 1 in C",
+      "Each character occupies a unique position starting from index 0, accessible via str[index]",
+      "Only the very last character of a string can be indexed"
+    ],
+    "answer": "C",
+    "explanation": "C uses zero-based indexing for all arrays, strings included."
+  },
+  {
+    "id": 135,
+    "level": "Basic",
+    "type": "Practical Implications",
+    "topic": "String vs Char Array",
+    "question": "What is a key practical implication of using a null terminator in strings?",
+    "options": [
+      "It allows functions to determine a string's length dynamically without needing a separate length parameter",
+      "It effectively converts the array into a linked list",
+      "It prevents any function from ever reading the array",
+      "It doubles the memory required to store any string"
+    ],
+    "answer": "A",
+    "explanation": "Because the terminator marks the end, functions like strlen() and printf() never need to be told the length explicitly."
+  },
+  {
+    "id": 136,
+    "level": "Intermediate",
+    "type": "Previous-Year Pattern",
+    "topic": "String vs Char Array",
+    "question": "Which of the following declarations creates an array that IS a valid, properly null-terminated string?",
+    "options": [
+      "char a[4] = {'C','A','T','\\0'};",
+      "char a[3] = {'C','A','T'};",
+      "char a[3] = {'C','A'};",
+      "char a[2] = {'C','A','T'};"
+    ],
+    "answer": "A",
+    "explanation": "Here, all 3 letters plus an explicit '\\0' fit exactly within the declared size of 4."
+  },
+  {
+    "id": 137,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "String vs Char Array",
+    "question": "Given char arr[6] = \"ABCDE\"; and char brr[5] = {'A','B','C','D','E'};, which array is guaranteed to be a valid null-terminated string?",
+    "options": [
+      "Only arr, since its extra 6th slot is automatically set to '\\0'",
+      "Neither array is a valid string",
+      "Only brr",
+      "Both arrays are guaranteed valid strings"
+    ],
+    "answer": "A",
+    "explanation": "arr has one spare byte reserved for the terminator; brr's 5 slots are entirely filled with letters, leaving no room for '\\0'."
+  },
+  {
+    "id": 138,
+    "level": "Basic",
+    "type": "Memory Organization",
+    "topic": "String vs Char Array",
+    "question": "Which statement accurately describes the memory organization of a string?",
+    "options": [
+      "Characters of a string are stored in scattered, non-contiguous memory locations",
+      "Strings always require exactly double the memory of an equivalent plain array",
+      "Characters of a string occupy contiguous, sequential memory addresses, ending with '\\0'",
+      "Strings are stored in reverse memory order compared to ordinary arrays"
+    ],
+    "answer": "C",
+    "explanation": "Just like any array, a string's characters sit one after another in memory, followed by the terminator."
+  },
+  {
+    "id": 139,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "String vs Char Array",
+    "question": "Is char c = 'A'; equivalent to char str[] = \"A\";?",
+    "options": [
+      "Yes, both are identical in memory representation",
+      "No — 'A' is a single character occupying 1 byte, while \"A\" is a 2-element array {'A','\\0'}",
+      "No — 'A' actually requires more memory than \"A\"",
+      "Yes, because both ultimately represent the letter A"
+    ],
+    "answer": "B",
+    "explanation": "A character constant is one byte; a string literal always includes an implicit null terminator, making it at least 2 bytes here."
+  },
+  {
+    "id": 140,
+    "level": "Intermediate",
+    "type": "Application-oriented",
+    "topic": "String vs Char Array",
+    "question": "For exam purposes, what is the single most important factor distinguishing a string from a general character array?",
+    "options": [
+      "Strings are restricted to holding only numeric digits",
+      "The array's size must always be an even number",
+      "The presence (in a string) or absence (in a general array) of a null terminator marking valid string data",
+      "Character arrays can never be printed using %s under any circumstance"
+    ],
+    "answer": "C",
+    "explanation": "This null-terminator distinction is the core concept tested across OAVS-style questions on this topic."
+  }
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

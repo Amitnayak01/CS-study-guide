@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+{"id": 1, "level": "Basic", "type": "Definition", "topic": "Structure as a Homogeneous and Heterogeneous Collection", "question": "Which term best defines a C structure?", "options": ["A collection of variables of the same data type", "A user-defined data type that groups variables of different data types under one name", "A pointer to a function", "A named constant"], "answer": "B", "explanation": "A structure groups related variables of possibly different data types under a single name."},
+{"id": 2, "level": "Intermediate", "type": "Homogeneous Collection", "topic": "Structure as a Homogeneous and Heterogeneous Collection", "question": "An array is best described as a _______ collection of elements.", "options": ["Heterogeneous", "Homogeneous", "Nested", "Anonymous"], "answer": "B", "explanation": "Arrays store elements of the same data type, making them a homogeneous collection."},
+{"id": 3, "level": "Basic", "type": "Heterogeneous Collection", "topic": "Structure as a Homogeneous and Heterogeneous Collection", "question": "A structure is best described as a _______ collection of elements.", "options": ["Homogeneous", "Sequential", "Heterogeneous", "Static"], "answer": "C", "explanation": "Structures can hold members of different data types, making them heterogeneous."},
+{"id": 4, "level": "Advanced", "type": "Characteristics", "topic": "Structure as a Homogeneous and Heterogeneous Collection", "question": "Which of the following is a key characteristic of a structure?", "options": ["All members must share the same data type", "Members are accessed only through numeric indices", "Members can be of different data types grouped under one name", "A structure cannot contain more than one member"], "answer": "C", "explanation": "Structures allow grouping of dissimilar data types under a single identifier."},
+{"id": 5, "level": "Intermediate", "type": "Need for Structures", "topic": "Structure as a Homogeneous and Heterogeneous Collection", "question": "Why are structures needed in C programming?", "options": ["To store only integer values", "To represent a record containing related but dissimilar data items", "To replace all arrays in a program", "To perform arithmetic operations faster"], "answer": "B", "explanation": "Structures let a programmer represent a real-world record, such as a student, as one logical unit."},
+{"id": 6, "level": "Basic", "type": "Advantages", "topic": "Structure as a Homogeneous and Heterogeneous Collection", "question": "Which is an advantage of using structures over separate unrelated variables?", "options": ["They reduce logical grouping of data", "They allow related data of different types to be handled as a single unit", "They restrict data to one type only", "They eliminate the need for functions"], "answer": "B", "explanation": "Structures bundle related data together, simplifying handling and passing of grouped information."},
+{"id": 7, "level": "Intermediate", "type": "Applications", "topic": "Structure as a Homogeneous and Heterogeneous Collection", "question": "Which real-world entity is most suitable to represent using a structure?", "options": ["A single integer marks value", "A list of 10 identical float numbers", "A student record with name, roll number, and marks", "A single character grade"], "answer": "C", "explanation": "A student record naturally has mixed data types (string, integer, float), ideal for a structure."},
+{"id": 8, "level": "Basic", "type": "Comparison with basic data types", "topic": "Structure as a Homogeneous and Heterogeneous Collection", "question": "Unlike basic data types such as int or float, a structure:", "options": ["Can hold only one value", "Is a derived, user-defined data type that can hold multiple values of possibly different types", "Cannot be used to declare variables", "Is always smaller in size than an int"], "answer": "B", "explanation": "A structure is a derived data type composed of one or more basic (or derived) types."},
+{"id": 9, "level": "Advanced", "type": "Homogeneous vs Heterogeneous", "topic": "Structure as a Homogeneous and Heterogeneous Collection", "question": "Which statement correctly distinguishes arrays from structures?", "options": ["Arrays are heterogeneous; structures are homogeneous", "Both are strictly homogeneous", "Arrays are homogeneous; structures are heterogeneous", "Both are strictly heterogeneous"], "answer": "C", "explanation": "Arrays hold same-type elements, while structures may hold members of different types."},
+{"id": 10, "level": "Intermediate", "type": "Characteristics", "topic": "Structure as a Homogeneous and Heterogeneous Collection", "question": "Which of these is generally NOT true of a plain C structure?", "options": ["It can group variables of different types", "It automatically converts values between unrelated member types", "It can be used to declare multiple variables", "It can contain arrays as members"], "answer": "B", "explanation": "Structures do not automatically convert types between unrelated members; each member retains its own type."},
+{"id": 11, "level": "Basic", "type": "Definition", "topic": "Structure as a Homogeneous and Heterogeneous Collection", "question": "Which keyword is used to define a structure in C?", "options": ["struct", "record", "class", "union"], "answer": "A", "explanation": "The keyword 'struct' is used to define a structure in C."},
+{"id": 12, "level": "Intermediate", "type": "Need for Structures", "topic": "Structure as a Homogeneous and Heterogeneous Collection", "question": "Without structures, representing a record with mixed data types in C would require:", "options": ["A single array of one basic type", "Multiple unrelated variables that are harder to manage together", "Only pointers with no variables", "Only global constants"], "answer": "B", "explanation": "Without structures, related but dissimilar data must be handled as scattered, separately-named variables."},
+{"id": 13, "level": "Basic", "type": "Applications", "topic": "Structure as a Homogeneous and Heterogeneous Collection", "question": "Which of the following is NOT a typical application of a structure?", "options": ["Representing an employee record", "Representing a complex number (real and imaginary parts)", "Storing a million identical sensor readings of the same type efficiently", "Representing coordinates (x, y) of a point"], "answer": "C", "explanation": "Storing many identical values of one single type is better suited to an array, not a structure."},
+{"id": 14, "level": "Advanced", "type": "Comparison with basic data types", "topic": "Structure as a Homogeneous and Heterogeneous Collection", "question": "A structure variable, unlike a basic-type variable, occupies memory that:", "options": ["Is always exactly 4 bytes", "Is the combined layout of all its members, possibly with compiler-added padding", "Is shared with all other structure variables of any type", "Cannot be determined at compile time"], "answer": "B", "explanation": "A structure's size depends on the sizes of its members plus any padding added for alignment."},
+{"id": 15, "level": "Basic", "type": "Record Representation", "topic": "Applications of Structures", "question": "Which of the following best represents record representation using a structure?", "options": ["int marks[50];", "float avg;", "char grade;", "struct Student { char name[20]; int roll; float marks; };"], "answer": "D", "explanation": "A structure grouping name, roll number and marks into one record exactly represents record representation."},
+{"id": 16, "level": "Intermediate", "type": "Practical Applications", "topic": "Applications of Structures", "question": "In a payroll system, which member combination is most practical for an Employee record?", "options": ["name, employee_id, basic_salary, department", "Only basic_salary repeated 100 times", "Only employee_id as an array", "A single float variable"], "answer": "A", "explanation": "A payroll record naturally groups name, id, salary and department of different types into one structure."},
+{"id": 17, "level": "Basic", "type": "Data Organization", "topic": "Applications of Structures", "question": "Structures help in data organization mainly by:", "options": ["Forcing all data to be integers", "Removing the need for variable names", "Logically grouping related fields under one named unit", "Making all variables global"], "answer": "C", "explanation": "Structures organize data by logically grouping related fields together under a single name."},
+{"id": 18, "level": "Advanced", "type": "Real-world Usage", "topic": "Applications of Structures", "question": "Which real-world system is a classic use case for structures?", "options": ["Storing a single temperature reading", "A library system storing book title, author, ISBN, and price together", "Storing one boolean flag", "Storing a single character"], "answer": "B", "explanation": "A library book record has multiple related fields of different types, ideal for a structure."},
+{"id": 19, "level": "Intermediate", "type": "Advantages", "topic": "Applications of Structures", "question": "Which is a direct advantage of using structures for record representation?", "options": ["It increases the number of unrelated variables needed", "It prevents grouping of any data", "It requires re-declaring each field separately every time it is used", "It allows a whole record to be passed to a function using a single variable"], "answer": "D", "explanation": "Because all fields are bundled together, an entire record can be handled using just one structure variable."},
+{"id": 20, "level": "Basic", "type": "Practical Applications", "topic": "Applications of Structures", "question": "A structure representing a bank account would most appropriately include which members?", "options": ["account_number, holder_name, balance", "Only 100 integers of account numbers", "A single char", "Only balance repeated for every customer in one variable"], "answer": "A", "explanation": "A bank account record naturally combines an account number, holder name and balance of different types."},
+{"id": 21, "level": "Intermediate", "type": "Data Organization", "topic": "Applications of Structures", "question": "Which of these is a poor use of a structure, better handled by an array instead?", "options": ["Employee record with id, name, and salary", "Point with x and y coordinates", "Storing 1000 identical exam scores of the same type", "Book record with title, author, price"], "answer": "C", "explanation": "A collection of many identical-type values is homogeneous data, better suited to an array than a structure."},
+{"id": 22, "level": "Basic", "type": "Real-world Usage", "topic": "Applications of Structures", "question": "Structures are commonly used in real-world C programs for all of the following EXCEPT:", "options": ["Representing a date as day, month, and year", "Performing pure arithmetic like adding two plain integers", "Representing a rectangle using length and breadth", "Representing a complex number"], "answer": "B", "explanation": "Simple arithmetic on plain integers does not need a structure; the other options combine related fields."},
+{"id": 23, "level": "Advanced", "type": "Advantages", "topic": "Applications of Structures", "question": "One advantage of structures in data organization is that they:", "options": ["Force every member to occupy the same memory address", "Disallow use inside functions", "Only work with a single data type", "Improve code readability by naming related fields together"], "answer": "D", "explanation": "Naming related fields together, such as name, roll and marks, makes code more readable and maintainable."},
+{"id": 24, "level": "Intermediate", "type": "Record Representation", "topic": "Applications of Structures", "question": "Which is the most accurate description of record representation using structures?", "options": ["Modeling a real-world entity as one unit containing its distinct attributes", "Storing only one attribute per program", "Avoiding the use of any data type", "Replacing all functions in a program"], "answer": "A", "explanation": "Record representation means modeling an entity, like a student or employee, as a single unit of its attributes."},
+{"id": 25, "level": "Basic", "type": "Structure Declaration Syntax", "topic": "Syntax of Declaring Structure", "question": "What is the correct general syntax to declare a structure in C?", "options": ["struct { tag type member; };", "tag struct type member;", "struct tag member type { };", "struct tag { type member1; type member2; ... };"], "answer": "D", "explanation": "The general syntax is 'struct tag { type member1; type member2; ... };' with a terminating semicolon."},
+{"id": 26, "level": "Intermediate", "type": "Structure Tag", "topic": "Syntax of Declaring Structure", "question": "In 'struct Student { ... };', the identifier 'Student' is called the:", "options": ["Structure tag", "Structure variable", "Member name", "Function name"], "answer": "A", "explanation": "'Student' here is the structure tag, naming the structure type."},
+{"id": 27, "level": "Basic", "type": "Member Declaration", "topic": "Syntax of Declaring Structure", "question": "Which of the following is a valid member declaration inside a structure?", "options": ["int 1number;", "float default;", "int rollNumber;", "char struct;"], "answer": "C", "explanation": "'rollNumber' is a valid identifier; the other options violate naming rules or use reserved keywords."},
+{"id": 28, "level": "Advanced", "type": "Valid and Invalid Declarations", "topic": "Syntax of Declaring Structure", "question": "Which structure declaration is syntactically INVALID in C?", "options": ["struct Point { int x; int y; };", "struct Point { int x; int y; }", "struct { int x; int y; } p1;", "struct Point { int x, y; };"], "answer": "B", "explanation": "A structure definition must end with a semicolon; option B is missing the terminating semicolon."},
+{"id": 29, "level": "Intermediate", "type": "Structure Definition", "topic": "Syntax of Declaring Structure", "question": "A structure definition in C specifies:", "options": ["Only the size of the structure", "Only the tag name with no members", "The values stored in the structure", "The template listing the members and their types"], "answer": "D", "explanation": "A structure definition is a blueprint describing member names and types; it does not allocate storage by itself."},
+{"id": 30, "level": "Basic", "type": "Naming Conventions", "topic": "Syntax of Declaring Structure", "question": "Which of the following is an invalid structure tag name?", "options": ["2Dpoint", "Point2D", "_Employee", "StudentRecord"], "answer": "A", "explanation": "Identifiers cannot begin with a digit, so '2Dpoint' is invalid as a structure tag."},
+{"id": 31, "level": "Intermediate", "type": "Structure Declaration Syntax", "topic": "Syntax of Declaring Structure", "question": "In 'struct Employee { int id; float salary; } e1;', what does 'e1' represent?", "options": ["A member of the structure", "The structure tag", "A structure variable declared along with the definition", "A data type keyword"], "answer": "C", "explanation": "'e1' is a variable of type 'struct Employee', declared at the same time as the structure definition."},
+{"id": 32, "level": "Basic", "type": "Member Declaration", "topic": "Syntax of Declaring Structure", "question": "Which statement about structure members is TRUE?", "options": ["All members must have unique data types across the whole program", "Members can be of different data types, including arrays and pointers", "A structure can have at most two members", "Members must always be initialized inside the declaration"], "answer": "B", "explanation": "Structure members may be of any valid type, including arrays, pointers, and even other structures."},
+{"id": 33, "level": "Advanced", "type": "Valid and Invalid Declarations", "topic": "Syntax of Declaring Structure", "question": "Which of these correctly declares an anonymous (untagged) structure variable?", "options": ["struct { int x; };", "struct Point x;", "struct Point { int x; };", "struct { int x; } p;"], "answer": "D", "explanation": "Omitting the tag but including a variable name, as in 'struct { int x; } p;', declares an untagged structure variable."},
+{"id": 34, "level": "Intermediate", "type": "Structure Declaration Syntax", "topic": "Syntax of Declaring Structure", "question": "Which of the following correctly declares a structure with an integer and a character member?", "options": ["struct Item { int code; char grade; };", "struct Item ( int code; char grade; );", "struct Item [int code; char grade;];", "struct Item int code; char grade;"], "answer": "A", "explanation": "Curly braces enclose the member list, followed by a semicolon after the closing brace."},
+{"id": 35, "level": "Basic", "type": "Naming Conventions", "topic": "Syntax of Declaring Structure", "question": "Which is a recommended good practice while naming a structure tag?", "options": ["Always use a C reserved keyword", "Start the tag name with a digit", "Use a meaningful, descriptive name such as 'Employee' or 'Point'", "Always use single non-descriptive letters like 'x'"], "answer": "C", "explanation": "Meaningful tag names improve code readability and maintainability."},
+{"id": 36, "level": "Intermediate", "type": "Structure Tag", "topic": "Syntax of Declaring Structure", "question": "Once a structure tag such as 'struct Book' is defined, it can be used to:", "options": ["Declare a new keyword in C", "Declare further variables of that structure type elsewhere in the program", "Automatically create global variables", "Replace the 'int' data type"], "answer": "B", "explanation": "The tag acts as a type name, allowing declaration of additional variables of that structure type later."},
+{"id": 37, "level": "Basic", "type": "Member Declaration", "topic": "Syntax of Declaring Structure", "question": "Can a structure member itself be an array, such as 'char name[20];' inside a structure?", "options": ["No, arrays are never allowed as members", "Only if the array is of type int", "No, only pointers are allowed as members", "Yes, arrays are valid structure members"], "answer": "D", "explanation": "Arrays are perfectly valid as structure members, for example to store a string like a name."},
+{"id": 38, "level": "Advanced", "type": "Valid and Invalid Declarations", "topic": "Syntax of Declaring Structure", "question": "Which structure declaration correctly nests one structure inside another?", "options": ["struct Date { int d, m, y; }; struct Employee { char name[20]; struct Date doj; };", "struct Employee { char name[20]; Date doj; };", "struct Employee { struct Date; };", "struct Employee { int Date doj; };"], "answer": "A", "explanation": "To nest structures, the inner structure must be declared first and referenced using 'struct Date doj;' inside the outer one."},
+{"id": 39, "level": "Basic", "type": "Initialization Syntax", "topic": "Initializing Structures", "question": "Which is the correct syntax to initialize a structure variable at the time of declaration?", "options": ["struct Point p; p = {1,2};", "struct Point p(1,2);", "struct Point p[1,2];", "struct Point p = {1, 2};"], "answer": "D", "explanation": "A structure variable can be initialized at declaration using 'struct Point p = {1, 2};', assigning values to members in order."},
+{"id": 40, "level": "Intermediate", "type": "Member Initialization", "topic": "Initializing Structures", "question": "In 'struct Point p = {5, 10};' for 'struct Point { int x; int y; };', what happens?", "options": ["p.x is set to 5 and p.y is set to 10, in declaration order", "Both p.x and p.y are set to 5", "Only p.y is initialized", "It causes a compile-time error"], "answer": "A", "explanation": "Initializer values are assigned to members in the order the members are declared."},
+{"id": 41, "level": "Basic", "type": "Partial Initialization", "topic": "Initializing Structures", "question": "What happens when a structure is partially initialized, e.g. 'struct Point p = {5};'?", "options": ["It is always a compile error", "Both members get value 5", "The remaining uninitialized members are automatically set to zero", "The remaining members contain the previous value of p"], "answer": "C", "explanation": "In partial initialization, the specified members get the given values while the rest are automatically set to zero."},
+{"id": 42, "level": "Advanced", "type": "Complete Initialization", "topic": "Initializing Structures", "question": "'struct Emp { int id; float salary; } e = {101, 25000.0};' is an example of:", "options": ["Partial initialization", "Complete initialization", "Invalid initialization", "Runtime initialization only"], "answer": "B", "explanation": "All members (id and salary) are given explicit values, making this a complete initialization."},
+{"id": 43, "level": "Intermediate", "type": "Initialization Rules", "topic": "Initializing Structures", "question": "Which rule applies to structure initialization in C?", "options": ["Initializer values may appear in any random order regardless of member order", "A structure can never be initialized at declaration", "Only the last member can be initialized", "Initializer values are assigned to members strictly in their declared order"], "answer": "D", "explanation": "In standard positional initialization, values map to members in the exact order they were declared."},
+{"id": 44, "level": "Basic", "type": "Initialization Syntax", "topic": "Initializing Structures", "question": "Which C99 feature allows initializing specific structure members by name?", "options": ["Designated initializers, e.g. {.roll = 5, .name = \"Amit\"}", "Anonymous unions", "Bit-fields", "Typedef aliasing"], "answer": "A", "explanation": "C99 designated initializers let you initialize specific members by name, using the '.member = value' syntax."},
+{"id": 45, "level": "Intermediate", "type": "Member Initialization", "topic": "Initializing Structures", "question": "Can individual members be assigned values after declaration instead of during initialization?", "options": ["No, only during declaration", "Only for the first member", "Yes, using the member access operator, e.g. p.x = 5;", "Only using pointers"], "answer": "C", "explanation": "Members can always be assigned values after declaration using the dot operator, e.g. 'p.x = 5;'."},
+{"id": 46, "level": "Basic", "type": "Partial Initialization", "topic": "Initializing Structures", "question": "If 'struct Rect { int len, wid; } r = {10};' is written, what is the value of r.wid?", "options": ["Garbage/undefined value", "0", "10", "It causes a syntax error"], "answer": "B", "explanation": "With partial initialization, unspecified trailing members are automatically initialized to zero."},
+{"id": 47, "level": "Advanced", "type": "Initialization Rules", "topic": "Initializing Structures", "question": "Which of the following initializations is INVALID in standard C?", "options": ["struct Point p = {1, 2};", "struct Point p = {0};", "struct Point p = {.x = 1, .y = 2};", "struct Point p = {1, 2, 3, 4}; // struct has only 2 members"], "answer": "D", "explanation": "Supplying more initializer values than the number of declared members is invalid."},
+{"id": 48, "level": "Intermediate", "type": "Complete Initialization", "topic": "Initializing Structures", "question": "Complete initialization of a structure means:", "options": ["Every member is explicitly assigned a value in the initializer list", "Only the first member is assigned a value", "No member is assigned a value", "The structure is initialized using a loop only"], "answer": "A", "explanation": "Complete initialization provides an explicit value for each and every member of the structure."},
+{"id": 49, "level": "Basic", "type": "Initialization Syntax", "topic": "Initializing Structures", "question": "Array members inside a structure, such as 'char name[10];', can be initialized as:", "options": ["name = \"Ravi\"; only outside of declaration", "They can never be given initial values", "struct Student s = {\"Ravi\", 21}; assigning \"Ravi\" to the name array member", "Only using pointer arithmetic"], "answer": "C", "explanation": "A character array member can be initialized with a string literal within the structure's initializer list."},
+{"id": 50, "level": "Intermediate", "type": "Member Initialization", "topic": "Initializing Structures", "question": "What is the value of an uninitialized local structure variable's members (no initializer given)?", "options": ["Always zero automatically", "Indeterminate/garbage values", "Always equal to their previous declaration", "A compile-time error occurs"], "answer": "B", "explanation": "If a local structure variable is declared without any initializer, its members contain indeterminate values."},
+{"id": 51, "level": "Basic", "type": "Initialization Rules", "topic": "Initializing Structures", "question": "Which is TRUE regarding nested structure initialization, e.g. Employee containing a Date member?", "options": ["Nested members cannot ever be initialized", "Only the outer structure's first member can be initialized", "Braces cannot be nested in initializer lists", "Nested braces can be used to initialize the inner structure's members, e.g. {\"Ravi\", {12, 5, 2024}}"], "answer": "D", "explanation": "Nested initializer lists using additional braces let you initialize the members of an inner (nested) structure."},
+{"id": 52, "level": "Basic", "type": "Declaration", "topic": "Structure Variables", "question": "Which statement correctly declares a structure variable after 'struct Point' has already been defined?", "options": ["struct Point p1;", "Point p1;", "struct p1 Point;", "int Point p1;"], "answer": "A", "explanation": "After a structure type is defined, variables are declared using 'struct TagName variableName;'."},
+{"id": 53, "level": "Intermediate", "type": "Definition", "topic": "Structure Variables", "question": "A structure definition alone, without declaring any variable, does:", "options": ["Allocate memory for a structure variable immediately", "Create multiple copies of the structure", "Not allocate any memory; it only creates a template/type", "Automatically initialize all future variables to zero"], "answer": "C", "explanation": "Defining a structure only creates a type/template; memory is allocated only when a variable of that type is declared."},
+{"id": 54, "level": "Basic", "type": "Memory Allocation", "topic": "Structure Variables", "question": "When is memory actually allocated for a structure?", "options": ["At the time the structure is defined, before any variable exists", "When a structure variable is declared", "Only when the program is compiled, regardless of variables", "Structures never occupy memory"], "answer": "B", "explanation": "Memory is reserved only when a variable of the structure type is declared, not merely when the type is defined."},
+{"id": 55, "level": "Advanced", "type": "Access", "topic": "Structure Variables", "question": "How is an individual member of a structure variable accessed?", "options": ["Using square brackets, e.g. p[0]", "Using the -> operator only, even for non-pointer variables", "Using the & operator alone", "Using the dot (.) operator, e.g. p.x"], "answer": "D", "explanation": "For a direct (non-pointer) structure variable, members are accessed using the dot operator."},
+{"id": 56, "level": "Intermediate", "type": "Usage", "topic": "Structure Variables", "question": "Multiple structure variables of the same type can be declared as:", "options": ["struct Point p1, p2, p3;", "struct Point p1; struct Point2 p2;", "Only one variable per structure type is allowed", "struct Point p1 = p2 = p3;"], "answer": "A", "explanation": "Multiple variables of the same structure type can be declared together, separated by commas."},
+{"id": 57, "level": "Basic", "type": "Memory Allocation", "topic": "Structure Variables", "question": "If 'struct Point { int x; int y; };' and int is 4 bytes, the size of a struct Point variable is typically:", "options": ["Always exactly 1 byte", "Undeterminable at compile time", "At least 8 bytes, possibly more with padding", "Always exactly 2 bytes"], "answer": "C", "explanation": "Two int members of 4 bytes each require at least 8 bytes, though padding or alignment may add more."},
+{"id": 58, "level": "Intermediate", "type": "Declaration", "topic": "Structure Variables", "question": "Which of these declares a structure variable at the SAME time as defining the structure?", "options": ["struct Point p1; (defined elsewhere)", "struct Point { int x, y; } p1;", "Point p1; struct { int x; };", "p1 struct Point;"], "answer": "B", "explanation": "Placing a variable name right after the closing brace declares a variable at the same time the structure is defined."},
+{"id": 59, "level": "Basic", "type": "Usage", "topic": "Structure Variables", "question": "Two different structure variables of the same type, p1 and p2, are:", "options": ["Forced to always hold identical values", "Not allowed to coexist in the same program", "Sharing the same memory location", "Independent variables, each with its own separate copy of the members"], "answer": "D", "explanation": "Each structure variable has its own distinct memory and copy of member values, independent of the other."},
+{"id": 60, "level": "Advanced", "type": "Access", "topic": "Structure Variables", "question": "Given 'struct Point p1;', which is the correct way to assign 5 to its member x?", "options": ["p1.x = 5;", "p1->x = 5;", "x.p1 = 5;", "*p1.x = 5;"], "answer": "A", "explanation": "For a plain (non-pointer) structure variable, the dot operator is used: p1.x = 5;."},
+{"id": 61, "level": "Intermediate", "type": "Definition", "topic": "Structure Variables", "question": "What is the relationship between a structure definition and a structure variable?", "options": ["They are the same thing with no distinction", "A variable can exist without any corresponding definition", "The definition provides the type/template, and the variable is an instance of that type occupying memory", "A definition can only be used once in an entire program"], "answer": "C", "explanation": "The definition is the type blueprint; a variable is an actual instance of that type that occupies memory."},
+{"id": 62, "level": "Basic", "type": "Member Access Operator", "topic": "Accessing Structure Members Using Member Operator (.)", "question": "Which operator is used to access a member of a structure variable directly (not through a pointer)?", "options": ["->", ".", "::", "&"], "answer": "B", "explanation": "The dot (.) operator accesses members of a structure variable directly."},
+{"id": 63, "level": "Intermediate", "type": "Syntax", "topic": "Accessing Structure Members Using Member Operator (.)", "question": "The correct syntax to access member 'roll' of structure variable 's' is:", "options": ["s->roll", "s[roll]", "roll.s", "s.roll"], "answer": "D", "explanation": "The syntax 'variable.member' is used to access a structure member directly."},
+{"id": 64, "level": "Basic", "type": "Accessing Members", "topic": "Accessing Structure Members Using Member Operator (.)", "question": "Given 'struct Point p = {3, 4};', which expression correctly reads the value of p's y member?", "options": ["p.y", "p[y]", "p->y (invalid here since p is not a pointer)", "y.p"], "answer": "A", "explanation": "'p.y' correctly reads member y of the non-pointer structure variable p."},
+{"id": 65, "level": "Advanced", "type": "Reading Values", "topic": "Accessing Structure Members Using Member Operator (.)", "question": "Which line correctly prints the 'salary' member of structure variable 'emp' using printf?", "options": ["printf(\"%f\", emp);", "printf(\"%f\", &emp.salary);", "printf(\"%f\", emp.salary);", "printf(\"%f\", salary.emp);"], "answer": "C", "explanation": "'emp.salary' correctly accesses the value of the salary member for use in printf."},
+{"id": 66, "level": "Intermediate", "type": "Modifying Values", "topic": "Accessing Structure Members Using Member Operator (.)", "question": "Which statement correctly modifies the 'marks' member of structure variable 's' to 95?", "options": ["marks = 95.s;", "s.marks = 95;", "s->marks = 95; (only valid if s were a pointer)", "95 = s.marks;"], "answer": "B", "explanation": "The dot operator on the left side of an assignment correctly modifies the member's value: s.marks = 95;."},
+{"id": 67, "level": "Basic", "type": "Applications", "topic": "Accessing Structure Members Using Member Operator (.)", "question": "The member access operator (.) is typically used for which purpose?", "options": ["To allocate memory dynamically", "To declare a new structure type", "To compare two entire structures", "To read or modify individual fields of a structure variable"], "answer": "D", "explanation": "The dot operator is used to both read and modify individual member fields of a structure variable."},
+{"id": 68, "level": "Intermediate", "type": "Member Access Operator", "topic": "Accessing Structure Members Using Member Operator (.)", "question": "Can the dot operator be used directly on a structure pointer, e.g. 'ptr.member'?", "options": ["No, using dot directly on a pointer type is incorrect; -> or (*ptr).member should be used", "Yes, always with identical behavior to ->", "Yes, but only for integer members", "Yes, but only inside main()"], "answer": "A", "explanation": "The dot operator works on structure variables, not pointers; for pointers, -> or (*ptr).member is required."},
+{"id": 69, "level": "Basic", "type": "Syntax", "topic": "Accessing Structure Members Using Member Operator (.)", "question": "In 'employee.department.name', what does this expression represent?", "options": ["An invalid expression, dot cannot be chained", "Accessing 'employee' as an array", "Accessing the 'name' member of a nested structure member called 'department' inside 'employee'", "Multiplying employee by department by name"], "answer": "C", "explanation": "Chained dot operators access members of nested structures, here reaching 'name' inside 'department' inside 'employee'."},
+{"id": 70, "level": "Advanced", "type": "Reading Values", "topic": "Accessing Structure Members Using Member Operator (.)", "question": "Which of these correctly stores the value of s.marks into a variable 'm'?", "options": ["m.s = marks;", "int m = s.marks;", "s.marks = m; (this stores m into s.marks, not the reverse)", "m = marks.s;"], "answer": "B", "explanation": "'int m = s.marks;' reads the value stored in s.marks and assigns it to m."},
+{"id": 71, "level": "Intermediate", "type": "Modifying Values", "topic": "Accessing Structure Members Using Member Operator (.)", "question": "After executing 's.age = s.age + 1;', what happens?", "options": ["A new structure variable is created", "Nothing changes, this is a syntax error", "The structure tag is renamed", "The 'age' member of 's' is incremented by 1"], "answer": "D", "explanation": "This reads the current value of s.age, adds 1, and stores the result back into s.age."},
+{"id": 72, "level": "Basic", "type": "Applications", "topic": "Accessing Structure Members Using Member Operator (.)", "question": "Which scenario demonstrates a correct application of the member access operator?", "options": ["Copying one member value to another variable of the same type, e.g. int r = s.roll;", "Declaring a new structure tag", "Allocating memory using malloc for a structure", "Comparing two structures using the == operator directly"], "answer": "A", "explanation": "The dot operator is correctly used to copy or read an individual member's value into another variable."},
+{"id": 73, "level": "Intermediate", "type": "Accessing Members", "topic": "Accessing Structure Members Using Member Operator (.)", "question": "For 'struct Book { char title[30]; float price; } b;', which line correctly assigns \"C Programming\" to title?", "options": ["b.title = \"C Programming\";", "title.b = \"C Programming\";", "strcpy(b.title, \"C Programming\");", "b->title = \"C Programming\";"], "answer": "C", "explanation": "Since 'title' is a character array, string assignment requires strcpy(); direct '=' assignment is not allowed for arrays."},
+{"id": 74, "level": "Basic", "type": "Member Access Operator", "topic": "Accessing Structure Members Using Member Operator (.)", "question": "Which of these is TRUE about the dot (.) operator's precedence?", "options": ["It has lower precedence than arithmetic operators", "It has very high precedence, binding tightly to the variable and member name", "It has the lowest precedence among all C operators", "It cannot be used in expressions with other operators"], "answer": "B", "explanation": "The dot operator has very high precedence, so it is evaluated before most other operators in an expression."},
+{"id": 75, "level": "Basic", "type": "Declaration", "topic": "Arrays of Structures", "question": "Which declares an array of 50 structures of type 'struct Student'?", "options": ["struct Student[50] arr;", "struct arr Student[50];", "Student struct arr[50];", "struct Student arr[50];"], "answer": "D", "explanation": "The correct syntax places the array size after the variable name: struct Student arr[50];."},
+{"id": 76, "level": "Intermediate", "type": "Initialization", "topic": "Arrays of Structures", "question": "Which correctly initializes an array of 2 structures, e.g. struct Point arr[2]?", "options": ["struct Point arr[2] = {{1,2}, {3,4}};", "struct Point arr[2] = {1,2,3,4}; using nested braces is required, this form is not preferred", "struct Point arr = {{1,2},{3,4}};", "struct Point arr[2] = (1,2)(3,4);"], "answer": "A", "explanation": "Each element's initializer is wrapped in its own braces within the outer braces: {{1,2},{3,4}}."},
+{"id": 77, "level": "Basic", "type": "Accessing Elements", "topic": "Arrays of Structures", "question": "How do you access the 'name' member of the 3rd element of 'struct Student arr[10];'?", "options": ["arr.name[2]", "arr[name].2", "arr[2].name", "arr->2.name"], "answer": "C", "explanation": "Array indexing is applied first, then the dot operator accesses the member: arr[2].name."},
+{"id": 78, "level": "Advanced", "type": "Applications", "topic": "Arrays of Structures", "question": "Arrays of structures are most useful for:", "options": ["Storing a single scalar value", "Managing a collection of records of the same type, like a class of students", "Replacing all pointers in a program", "Avoiding the use of loops entirely"], "answer": "B", "explanation": "An array of structures is ideal for holding many records of the same type, such as a list of students."},
+{"id": 79, "level": "Intermediate", "type": "Characteristics", "topic": "Arrays of Structures", "question": "Which characteristic is TRUE for an array of structures?", "options": ["Each element can be of a different structure type", "All elements must have different member names", "Only the first element can be accessed", "All elements share the same structure type and member layout"], "answer": "D", "explanation": "Every element in an array of structures is of the identical structure type and layout."},
+{"id": 80, "level": "Basic", "type": "Declaration", "topic": "Arrays of Structures", "question": "Given 'struct Point { int x, y; };', which correctly declares an uninitialized array of 5 such structures?", "options": ["struct Point pts[5];", "struct Point pts(5);", "Point pts[5];", "struct Point[5] pts;"], "answer": "A", "explanation": "'struct Point pts[5];' declares an uninitialized array of 5 structure elements."},
+{"id": 81, "level": "Intermediate", "type": "Accessing Elements", "topic": "Arrays of Structures", "question": "Which loop correctly prints the roll number of every element in 'struct Student s[10];'?", "options": ["for(i=0;i<10;i++) printf(\"%d\", s.roll[i]);", "for(i=0;i<10;i++) printf(\"%d\", s[i]->roll);", "for(i=0;i<10;i++) printf(\"%d\", s[i].roll);", "for(i=0;i<10;i++) printf(\"%d\", roll[i].s);"], "answer": "C", "explanation": "Each array element is accessed with s[i], then its member with the dot operator: s[i].roll."},
+{"id": 82, "level": "Basic", "type": "Initialization", "topic": "Arrays of Structures", "question": "What value does arr[2].x hold if 'struct Point arr[3] = {{1,1},{2,2}};' (3rd element not given)?", "options": ["Garbage value only, x is undefined", "0, since the 3rd element is not explicitly initialized", "Same as arr[1].x", "It causes a compile-time error"], "answer": "B", "explanation": "An array of structures follows the same partial-initialization rule; missing elements/members default to zero."},
+{"id": 83, "level": "Advanced", "type": "Applications", "topic": "Arrays of Structures", "question": "Which is a practical example of using an array of structures?", "options": ["A single float variable holding one temperature", "An int variable storing one student's roll number", "A single character variable", "An array 'struct Employee emp[100];' to store data of 100 employees"], "answer": "D", "explanation": "An array of structures naturally stores many employee records, each with its own set of fields."},
+{"id": 84, "level": "Intermediate", "type": "Characteristics", "topic": "Arrays of Structures", "question": "What is the memory layout of an array of structures in C?", "options": ["Elements are stored in contiguous memory, one structure's block right after another", "Each element is stored in a randomly scattered location", "Only the first element is stored in memory; others are references", "Structures cannot form arrays at all"], "answer": "A", "explanation": "Like any array, an array of structures is stored contiguously in memory, one structure block after another."},
+{"id": 85, "level": "Basic", "type": "Declaration", "topic": "Arrays of Structures", "question": "Which is a valid way to declare and partially initialize a 4-element array of structures, giving values to only the first 2?", "options": ["struct Point arr[4] = {1,2,3,4,5,6,7,8};", "struct Point arr[] = ; (no braces)", "struct Point arr[4] = {{1,2},{3,4}};", "struct Point arr(4) = {{1,2},{3,4}};"], "answer": "C", "explanation": "Providing initializer braces for only the first two elements leaves the remaining elements zero-initialized."},
+{"id": 86, "level": "Intermediate", "type": "Accessing Elements", "topic": "Arrays of Structures", "question": "To modify the marks of the 5th student in 'struct Student s[20];' to 88, you would write:", "options": ["s.marks[5] = 88;", "s[4].marks = 88;", "s[5].marks = 88; (this modifies the 6th student)", "marks[4].s = 88;"], "answer": "B", "explanation": "Since array indices start at 0, the 5th student is at index 4: s[4].marks = 88;."},
+{"id": 87, "level": "Basic", "type": "Applications", "topic": "Arrays of Structures", "question": "Which built-in C mechanism is typically combined with an array of structures to process all records?", "options": ["The union keyword", "Recursion only", "The switch statement exclusively", "A for or while loop iterating over the array indices"], "answer": "D", "explanation": "Loops are the standard way to iterate through and process every element of an array of structures."},
+{"id": 88, "level": "Advanced", "type": "Characteristics", "topic": "Arrays of Structures", "question": "What happens if you access an out-of-bounds index of an array of structures, e.g. arr[10] for a 10-element array (valid 0-9)?", "options": ["It results in undefined behavior since C does not perform automatic bounds checking", "The compiler automatically prevents it at compile time", "It safely returns a zero-initialized structure", "It throws a runtime exception automatically"], "answer": "A", "explanation": "C does not perform automatic array bounds checking, so accessing an out-of-bounds index leads to undefined behavior."},
+{"id": 89, "level": "Basic", "type": "Declaration", "topic": "Array as a Member of Structure", "question": "Which correctly declares a structure with an array member for storing 5 subject marks?", "options": ["struct Student { int marks; [5]; };", "struct Student { array int marks[5]; };", "struct Student { int marks[5]; };", "struct Student { int[5] marks; };"], "answer": "C", "explanation": "The array member is declared just like a normal array, inside the structure: int marks[5];."},
+{"id": 90, "level": "Intermediate", "type": "Initialization", "topic": "Array as a Member of Structure", "question": "How can the array member 'marks[3]' inside a structure be initialized at declaration?", "options": ["It cannot be initialized inside the structure at all", "struct Student s = {\"Ravi\", {90, 85, 88}};", "struct Student s = 90,85,88;", "s.marks = {90,85,88}; after declaration"], "answer": "B", "explanation": "Nested braces are used to initialize an array member along with the rest of the structure's initializer list."},
+{"id": 91, "level": "Basic", "type": "Access", "topic": "Array as a Member of Structure", "question": "How do you access the 2nd mark (index 1) stored in the array member 'marks' of structure variable 's'?", "options": ["s[1].marks", "marks[1].s", "s.marks.1", "s.marks[1]"], "answer": "D", "explanation": "First the dot operator reaches the array member, then normal indexing accesses its element: s.marks[1]."},
+{"id": 92, "level": "Advanced", "type": "Applications", "topic": "Array as a Member of Structure", "question": "An array as a structure member is most useful for:", "options": ["Storing multiple related values of the same type for one record, like 5 subject marks for one student", "Storing values of different types together", "Replacing the entire structure with an array", "Declaring function prototypes"], "answer": "A", "explanation": "An array member stores several same-type values, like marks in multiple subjects, belonging to a single record."},
+{"id": 93, "level": "Intermediate", "type": "Memory Organization", "topic": "Array as a Member of Structure", "question": "In 'struct Student { char name[20]; int marks[5]; };', how is memory organized?", "options": ["name and marks share the exact same memory address", "Only name occupies memory; marks is ignored", "name's 20 bytes and marks's memory are laid out sequentially within the structure (subject to padding)", "marks is stored in a completely separate structure automatically"], "answer": "C", "explanation": "Array members occupy their designated space sequentially within the structure's overall memory layout."},
+{"id": 94, "level": "Basic", "type": "Declaration", "topic": "Array as a Member of Structure", "question": "Which structure below correctly stores a name and five test scores?", "options": ["struct Result { char name; int scores[5]; };", "struct Result { char name[20]; int scores[5]; };", "struct Result { char name[20]; int scores; };", "struct Result { char[20] name; int scores[5]; };"], "answer": "B", "explanation": "Both members are correctly declared as arrays: char name[20] for a string, int scores[5] for five scores."},
+{"id": 95, "level": "Intermediate", "type": "Initialization", "topic": "Array as a Member of Structure", "question": "Which of the following partially initializes the array member, leaving the rest as zero?", "options": ["struct Item it = ; (empty)", "struct Item it = {1,2,3,4,5,6,7,8,9,10}; regardless of the array's actual size", "This can never be done for array members", "struct Item { int codes[5]; } it = {{1,2}};"], "answer": "D", "explanation": "Supplying fewer values than the array size zero-initializes the remaining elements of the array member."},
+{"id": 96, "level": "Basic", "type": "Access", "topic": "Array as a Member of Structure", "question": "To find the sum of all elements in the array member 'marks[5]' of structure variable 's', you would typically use:", "options": ["A loop: for(i=0;i<5;i++) sum += s.marks[i];", "sum = s.marks; directly, since arrays sum automatically", "sum = s[marks].sum;", "A single statement without any loop, since arrays sum themselves"], "answer": "A", "explanation": "A loop is needed to iterate over each element of the array member and accumulate their sum."},
+{"id": 97, "level": "Advanced", "type": "Applications", "topic": "Array as a Member of Structure", "question": "Which scenario best demonstrates 'array as a member of structure'?", "options": ["struct Point { int x; int y; };", "struct Flag { int isActive; };", "struct Matrix { int data[3][3]; }; storing a 3x3 grid of numbers for one matrix record", "int arr[10]; declared outside any structure"], "answer": "C", "explanation": "The Matrix structure uses a 2D array member to store all the numbers belonging to a single matrix record."},
+{"id": 98, "level": "Intermediate", "type": "Memory Organization", "topic": "Array as a Member of Structure", "question": "If 'int' is 4 bytes, how much memory does the array member 'int marks[5];' contribute within a structure (ignoring padding)?", "options": ["5 bytes", "20 bytes", "4 bytes", "1 byte"], "answer": "B", "explanation": "Five int elements of 4 bytes each require 5 x 4 = 20 bytes for that array member."},
+{"id": 99, "level": "Basic", "type": "Declaration", "topic": "Array as a Member of Structure", "question": "Can the size of an array member inside a structure be specified using a non-constant variable at compile time?", "options": ["Yes, always freely using any variable", "Only in C++ but never in standard C", "Yes, but only for character arrays", "No, in standard C the array member's size must generally be a compile-time constant"], "answer": "D", "explanation": "Array members in a standard C structure require a fixed, compile-time constant size (excluding flexible array members)."},
+{"id": 100, "level": "Intermediate", "type": "Access", "topic": "Array as a Member of Structure", "question": "Given 'struct Class { char students[10][20]; };', how would you access the name of the 3rd student?", "options": ["c.students[2]", "c[2].students", "students.c[2]", "c.students(2)"], "answer": "A", "explanation": "'students' is a 2D char array member; indexing with [2] accesses the 3rd row (student): c.students[2]."},
+{"id": 101, "level": "Basic", "type": "Similarities", "topic": "Conceptual Difference Between Arrays and Structures", "question": "What is a similarity between arrays and structures?", "options": ["Both must contain data of different types", "Both cannot be passed to functions", "Both are derived data types that group multiple elements/members under one name", "Both allocate memory only at runtime using malloc"], "answer": "C", "explanation": "Arrays and structures are both derived data types that group multiple items together under a single variable name."},
+{"id": 102, "level": "Intermediate", "type": "Differences", "topic": "Conceptual Difference Between Arrays and Structures", "question": "What is the primary conceptual difference between an array and a structure?", "options": ["Arrays cannot be indexed while structures can", "An array holds elements of the same type; a structure can hold members of different types", "Structures cannot be declared as variables", "Arrays always use the dot operator; structures use square brackets"], "answer": "B", "explanation": "The core difference is homogeneity: arrays are same-type collections, structures may combine different types."},
+{"id": 103, "level": "Basic", "type": "Memory Organization", "topic": "Conceptual Difference Between Arrays and Structures", "question": "How does the memory organization of arrays compare to that of structures?", "options": ["Arrays use non-contiguous memory; structures use contiguous memory", "Neither uses contiguous memory", "Both are stored only on the heap", "Both typically use contiguous memory, but structure members may include padding for alignment"], "answer": "D", "explanation": "Both are contiguous in memory, though structures may include extra padding bytes between members for alignment."},
+{"id": 104, "level": "Advanced", "type": "Data Storage", "topic": "Conceptual Difference Between Arrays and Structures", "question": "How are elements typically retrieved in an array versus a structure?", "options": ["Array elements are accessed by numeric index; structure members are accessed by name", "Both are accessed only by name", "Both are accessed only by numeric index", "Array elements are accessed by name; structure members by index"], "answer": "A", "explanation": "Arrays use an index like arr[i], while structures use named member access like s.member."},
+{"id": 105, "level": "Intermediate", "type": "Applications", "topic": "Conceptual Difference Between Arrays and Structures", "question": "Which is a more appropriate use case for a structure rather than an array?", "options": ["Storing 100 integer scores of the same type", "Storing a list of 50 identical float temperatures", "Storing one employee's id, name, and salary together", "Storing a sequence of characters as a string"], "answer": "C", "explanation": "Combining different types (id, name, salary) for a single entity is a natural fit for a structure, not an array."},
+{"id": 106, "level": "Basic", "type": "Advantages", "topic": "Conceptual Difference Between Arrays and Structures", "question": "Which is an advantage of a structure over an array for representing a record?", "options": ["A structure is always smaller in memory than an equivalent array", "A structure can combine different data types meaningfully into one named record", "A structure automatically sorts its members", "A structure cannot have more than one instance"], "answer": "B", "explanation": "Structures can meaningfully combine dissimilar data types describing one entity, which arrays cannot do directly."},
+{"id": 107, "level": "Intermediate", "type": "Limitations", "topic": "Conceptual Difference Between Arrays and Structures", "question": "Which is a limitation shared by both arrays and structures in standard C?", "options": ["Neither can be passed to a function", "Neither can contain more than one element/member", "Neither can be used inside another structure", "Neither automatically resizes itself once declared with a fixed size"], "answer": "D", "explanation": "Both arrays and structures with fixed-size members have a size fixed at compile time and do not auto-resize."},
+{"id": 108, "level": "Basic", "type": "Similarities", "topic": "Conceptual Difference Between Arrays and Structures", "question": "In what way are arrays and structures similar regarding functions?", "options": ["Both can be passed to and returned from functions", "Neither can ever be passed to a function", "Only arrays can be returned from functions", "Only structures can be passed to functions"], "answer": "A", "explanation": "Both arrays (via pointers/decay) and structures (by value or pointer) can be used with functions."},
+{"id": 109, "level": "Advanced", "type": "Differences", "topic": "Conceptual Difference Between Arrays and Structures", "question": "Which statement correctly contrasts declaring an array vs a structure?", "options": ["int arr[5]; and struct Point p; both create heterogeneous collections", "Declaring an array requires a tag; declaring a structure does not", "int arr[5]; creates a homogeneous set of 5 ints; struct Point p; creates one variable with possibly different-typed members", "Neither requires specifying a size or member list"], "answer": "C", "explanation": "An array declaration fixes a count of same-type elements, while a structure defines named, possibly differently-typed members."},
+{"id": 110, "level": "Intermediate", "type": "Data Storage", "topic": "Conceptual Difference Between Arrays and Structures", "question": "Which best explains how data is stored differently between the two?", "options": ["Arrays store named fields; structures store indexed elements", "Arrays store a sequence of same-type values; structures store a set of named, possibly different-type values", "Both store data identically with no difference", "Structures cannot store more than one value ever"], "answer": "B", "explanation": "Arrays are a sequence of same-type values; structures are a set of named fields that may differ in type."},
+{"id": 111, "level": "Basic", "type": "Applications", "topic": "Conceptual Difference Between Arrays and Structures", "question": "Which combination best illustrates using arrays and structures together?", "options": ["Using only arrays and avoiding structures entirely", "Using only structures and avoiding arrays entirely", "Never combining the two constructs", "An array of structures, such as 'struct Student class[30];', to store many records of the same structured type"], "answer": "D", "explanation": "Combining both, an array of structures, is a very common way to store many records of one structured type."},
+{"id": 112, "level": "Intermediate", "type": "Limitations", "topic": "Conceptual Difference Between Arrays and Structures", "question": "Which is a genuine limitation of arrays compared to structures?", "options": ["Arrays cannot naturally combine unrelated different-typed values into one meaningful unit", "Arrays can never be looped over", "Arrays are always heterogeneous", "Arrays cannot be declared with a fixed size"], "answer": "A", "explanation": "Because arrays require uniform element types, they cannot naturally combine different-typed data the way structures can."},
+{"id": 113, "level": "Basic", "type": "Using Structures with Functions", "topic": "Functions and Structures", "question": "In C, structures can be used with functions in which of the following ways?", "options": ["Only passed by value, never returned", "Passed as arguments and also returned as the function's return type", "Only passed by reference using arrays", "Never allowed inside function bodies"], "answer": "B", "explanation": "C allows structures to be passed to functions as arguments and also returned from functions as the return type."},
+{"id": 114, "level": "Intermediate", "type": "Passing Structures to Functions", "topic": "Functions and Structures", "question": "When a structure is passed to a function by value, what happens?", "options": ["The original structure variable is modified directly", "Only a pointer to the structure is passed", "Nothing is copied; the function accesses the caller's memory", "A complete copy of the structure is made and passed to the function"], "answer": "D", "explanation": "Passing by value copies the entire structure's contents into the function's local parameter."},
+{"id": 115, "level": "Basic", "type": "Returning Structures", "topic": "Functions and Structures", "question": "Can a C function return an entire structure as its return type?", "options": ["Yes, a function can be declared to return a struct type directly", "No, functions can only return basic data types", "Only pointers to structures can ever be returned", "Only using global variables, never a return statement"], "answer": "A", "explanation": "C functions can be declared with a structure type as the return type and return a struct value directly."},
+{"id": 116, "level": "Advanced", "type": "Applications", "topic": "Functions and Structures", "question": "Which is a practical reason to pass a structure to a function?", "options": ["To make the function unable to access any member", "To force recompilation of the program", "To let the function process an entire record (like a student) as one unit", "To avoid using the dot operator inside the function"], "answer": "C", "explanation": "Passing a structure lets a function operate on a whole related record in a single, clean parameter."},
+{"id": 117, "level": "Intermediate", "type": "Function Interaction", "topic": "Functions and Structures", "question": "What is a drawback of passing a large structure to a function by value?", "options": ["It is always faster than passing a pointer", "It creates overhead due to copying the entire structure's data", "It automatically converts to a pointer, avoiding any copy", "It prevents the function from accessing any members"], "answer": "B", "explanation": "Passing large structures by value copies all their data, which can be costly compared to passing a pointer."},
+{"id": 118, "level": "Basic", "type": "Passing Structures to Functions", "topic": "Functions and Structures", "question": "To avoid the overhead of copying a large structure when calling a function, it is better to:", "options": ["Pass each member individually as many separate arguments", "Avoid using structures in functions altogether", "Always pass by value regardless of size", "Pass the address of the structure (a pointer) to the function"], "answer": "D", "explanation": "Passing a pointer avoids copying the whole structure, since only the address is passed."},
+{"id": 119, "level": "Intermediate", "type": "Returning Structures", "topic": "Functions and Structures", "question": "Consider 'struct Point makePoint(int a,int b){struct Point p={a,b}; return p;}'. What does this do?", "options": ["It creates a local structure and returns a copy of it to the caller", "It causes undefined behavior because local structures cannot be returned", "It returns only the address of p, not its value", "It modifies a global structure variable"], "answer": "A", "explanation": "The function builds a local structure and returns a copy of its value, which is valid and common in C."},
+{"id": 120, "level": "Basic", "type": "Using Structures with Functions", "topic": "Functions and Structures", "question": "Which function signature correctly accepts a structure by value?", "options": ["void show(struct Point *p);", "void show(int p);", "void show(struct Point p);", "void show(Point p);"], "answer": "C", "explanation": "'void show(struct Point p);' correctly declares a parameter of structure type, passed by value."},
+{"id": 121, "level": "Advanced", "type": "Function Interaction", "topic": "Functions and Structures", "question": "If a function modifies a structure parameter passed by value, what happens to the caller's original structure?", "options": ["The caller's structure is also modified", "The caller's original structure remains unchanged, since only a copy was modified", "It causes a runtime crash", "Both the copy and original are deleted"], "answer": "B", "explanation": "Since pass-by-value creates a separate copy, changes to the parameter inside the function do not affect the caller's original."},
+{"id": 122, "level": "Intermediate", "type": "Applications", "topic": "Functions and Structures", "question": "Which is an appropriate real use of returning a structure from a function?", "options": ["A function that only prints text with no data", "A function that returns nothing (void)", "A function that takes no parameters and no output", "A function 'struct Date getCurrentDate()' that builds and returns a Date structure"], "answer": "D", "explanation": "Returning a fully built structure, like a computed date, is a natural and common use of structure return types."},
+{"id": 123, "level": "Basic", "type": "Passing Structures to Functions", "topic": "Functions and Structures", "question": "Which correctly passes a structure by reference (using a pointer) to a function?", "options": ["void update(struct Point *p) { p->x = 10; }", "void update(struct Point p) { p->x = 10; }", "void update(int p) { p.x = 10; }", "void update() { p.x = 10; }"], "answer": "A", "explanation": "Declaring the parameter as a pointer, 'struct Point *p', and using -> allows modifying the caller's original structure."},
+{"id": 124, "level": "Intermediate", "type": "Function Interaction", "topic": "Functions and Structures", "question": "What must match between a function's return type declaration and its return statement, when returning a structure?", "options": ["Nothing needs to match", "Only the tag name needs to differ", "The structure type of the returned value must match the function's declared structure return type", "Only the first member needs to match"], "answer": "C", "explanation": "The value returned must be of the exact structure type declared as the function's return type."},
+{"id": 125, "level": "Basic", "type": "Definition", "topic": "Nested Structures", "question": "What is a nested structure in C?", "options": ["A structure that contains another structure as one of its members", "A structure with no members at all", "Two unrelated structures declared in the same file", "A structure declared inside a function only"], "answer": "A", "explanation": "A nested structure occurs when one structure type is used as a member inside another structure."},
+{"id": 126, "level": "Intermediate", "type": "Declaration", "topic": "Nested Structures", "question": "Which correctly declares a nested structure, with 'Date' nested inside 'Employee'?", "options": ["struct Employee { Date doj; };", "struct Employee { struct Date; };", "struct Employee { char name[20]; struct Date doj; };", "struct Date { struct Employee e; }; struct Employee {};"], "answer": "C", "explanation": "The inner structure type is referenced with 'struct Date doj;', correctly declaring a nested member with a name."},
+{"id": 127, "level": "Basic", "type": "Initialization", "topic": "Nested Structures", "question": "How would you initialize a nested structure, e.g. Employee containing a Date member, at declaration?", "options": ["It cannot be initialized directly; only assigned member-by-member after declaration", "struct Employee e = {\"Ravi\", {12, 5, 2024}}; using nested braces", "struct Employee e = \"Ravi\", 12, 5, 2024; without any braces", "struct Employee e[] = {\"Ravi\"}; ignoring the Date entirely"], "answer": "B", "explanation": "Nested braces are used within the outer initializer list to initialize the inner structure's members."},
+{"id": 128, "level": "Advanced", "type": "Accessing Members", "topic": "Nested Structures", "question": "How do you access the 'year' member of the nested Date structure inside Employee variable 'e'?", "options": ["e.year", "e.Date.year", "year.e.doj", "e.doj.year"], "answer": "D", "explanation": "Chained dot operators are used: first reach the nested member 'doj', then its own member 'year': e.doj.year."},
+{"id": 129, "level": "Intermediate", "type": "Applications", "topic": "Nested Structures", "question": "Which is a good real-world use of a nested structure?", "options": ["An Employee structure containing a nested Address structure with street, city, and pincode", "A single int variable", "An array with no structure involved", "Two completely unrelated structures in different files"], "answer": "A", "explanation": "Grouping an Address (street, city, pincode) as a nested structure inside Employee models a real-world relationship well."},
+{"id": 130, "level": "Basic", "type": "Advantages", "topic": "Nested Structures", "question": "What is an advantage of using nested structures?", "options": ["They prevent any further member access", "They eliminate the need for the dot operator", "They allow logical grouping of related sub-records within a larger record", "They can only exist inside functions"], "answer": "C", "explanation": "Nested structures let a large record be organized into logical sub-groups, improving clarity and structure."},
+{"id": 131, "level": "Intermediate", "type": "Declaration", "topic": "Nested Structures", "question": "Which of the following is a valid rule for declaring nested structures?", "options": ["The inner structure can be declared after the outer structure that uses it", "The inner structure must be fully declared/defined before it is used as a member type in the outer structure", "Nested structures cannot have their own tag name", "Only one level of nesting is permitted in C"], "answer": "B", "explanation": "In C, the inner structure type must already be defined before the outer structure can use it as a member's type."},
+{"id": 132, "level": "Basic", "type": "Accessing Members", "topic": "Nested Structures", "question": "For deeply nested structures, how are the deepest members accessed?", "options": ["Only through pointers, never with dot notation", "It is not possible to access more than 2 levels deep", "Using array indexing only", "By chaining the dot operator through each level, e.g. a.b.c.d"], "answer": "D", "explanation": "Multiple levels of nesting are accessed by chaining dot operators through each intermediate structure member."},
+{"id": 133, "level": "Advanced", "type": "Usage", "topic": "Nested Structures", "question": "Which statement about nested structures and memory is TRUE?", "options": ["The outer structure's total size includes the memory required by its nested structure member(s)", "Nested structure members do not occupy any memory", "Nesting always doubles the memory used regardless of member sizes", "Nested structures share memory with unrelated variables"], "answer": "A", "explanation": "A nested structure member contributes its own size to the total memory footprint of the outer structure."},
+{"id": 134, "level": "Intermediate", "type": "Declaration", "topic": "Nested Structures", "question": "Can a structure contain a nested structure of its own exact same type directly as a value member?", "options": ["Yes, always, with no restriction", "Yes, but only for the first member", "No, this causes infinite recursive size and a compile error; only a pointer to the same type is allowed", "Yes, but only in nested nested pairs"], "answer": "C", "explanation": "A structure cannot directly contain a value member of its own type (infinite size), but it can contain a pointer to its own type."},
+{"id": 135, "level": "Basic", "type": "Applications", "topic": "Nested Structures", "question": "Which nested structure design correctly represents a Company with multiple Departments, each having employees?", "options": ["Flattening everything into a single structure with no nesting", "struct Company { struct Department depts[10]; }; where struct Department { struct Employee emp[20]; };", "Declaring all employees as separate unrelated global variables", "Avoiding structures and using only arrays of int"], "answer": "B", "explanation": "Nesting arrays of structures within structures models hierarchical real-world data like Company-Department-Employee."},
+{"id": 136, "level": "Intermediate", "type": "Initialization", "topic": "Nested Structures", "question": "Which correctly performs partial initialization of a nested structure, leaving the inner Date defaulted to zero?", "options": ["struct Employee e = ; (nothing at all)", "struct Employee e = {12, 5, 2024, \"Ravi\"}; (wrong order, no nested braces)", "It is impossible to partially initialize nested structures", "struct Employee e = {\"Ravi\"}; leaving the nested doj structure's members zero-initialized"], "answer": "D", "explanation": "Just as with simple structures, omitted nested members (and their own members) are automatically zero-initialized."},
+{"id": 137, "level": "Basic", "type": "Definition", "topic": "Nested Structures", "question": "Which best distinguishes a nested structure from simply having two separate, unrelated structures?", "options": ["In a nested structure, one structure type is embedded as an actual member inside another, forming one combined type", "There is no real difference between the two", "Nested structures cannot be given tags", "Nested structures must always be arrays"], "answer": "A", "explanation": "Nesting specifically means one structure type becomes a member of another, combining them into a single composite type."},
+{"id": 138, "level": "Basic", "type": "Concept", "topic": "Anonymous Structures", "question": "What is an anonymous structure in C?", "options": ["A structure with multiple tags", "A structure declared only inside a loop", "A structure defined without giving it a tag name", "A structure that can never have members"], "answer": "C", "explanation": "An anonymous structure is one defined without a tag name, often used directly with a variable or as an unnamed nested member."},
+{"id": 139, "level": "Intermediate", "type": "Declaration", "topic": "Anonymous Structures", "question": "Which of the following declares an anonymous structure variable?", "options": ["struct Point { int x, y; };", "struct { int x, y; } p;", "struct Point p;", "typedef struct Point p;"], "answer": "B", "explanation": "Omitting the tag name while still declaring a variable, as in 'struct { int x, y; } p;', creates an anonymous structure."},
+{"id": 140, "level": "Basic", "type": "Usage", "topic": "Anonymous Structures", "question": "Since an anonymous structure has no tag, how can it typically be reused elsewhere in standard C?", "options": ["It can be reused freely by its tag name anywhere", "It automatically becomes a global type usable everywhere", "It converts itself into a named structure automatically", "It generally cannot be reused by name; typedef is often used to give it a reusable alias"], "answer": "D", "explanation": "Without a tag, an anonymous structure can't be referenced later by name; typedef is commonly used to give it a reusable alias."},
+{"id": 141, "level": "Advanced", "type": "Concept", "topic": "Anonymous Structures", "question": "An anonymous structure is most commonly combined with which keyword to create a reusable named type?", "options": ["typedef", "extern", "static", "register"], "answer": "A", "explanation": "'typedef struct { ... } TypeName;' combines an anonymous structure with typedef to create a reusable alias."},
+{"id": 142, "level": "Intermediate", "type": "Characteristics", "topic": "Anonymous Structures", "question": "Which is a characteristic of an anonymous structure used as a nested member (compiler-supported)?", "options": ["It requires a member name to access its own fields from the outer structure", "It cannot contain any members", "Its members can sometimes be accessed directly through the outer structure without an intermediate name", "It must always be declared globally"], "answer": "C", "explanation": "In compilers supporting anonymous nested structures/unions, inner members can sometimes be accessed directly via the outer structure."},
+{"id": 143, "level": "Basic", "type": "Applications", "topic": "Anonymous Structures", "question": "Which is a typical use case for an anonymous structure with typedef?", "options": ["Declaring a function prototype", "typedef struct { int x, y; } Point; to create a concise, reusable Point type without repeating 'struct'", "Declaring a for loop counter", "Declaring a preprocessor macro"], "answer": "B", "explanation": "This pattern lets programmers use 'Point' directly as a type name afterward, without needing to write 'struct' each time."},
+{"id": 144, "level": "Intermediate", "type": "Declaration", "topic": "Anonymous Structures", "question": "Which statement about an anonymous structure declaration is TRUE?", "options": ["It must always have exactly one member", "It cannot be initialized", "It always requires a separate tag declared elsewhere", "It omits the tag name directly after the 'struct' keyword"], "answer": "D", "explanation": "An anonymous structure simply omits the tag identifier that would normally follow the 'struct' keyword."},
+{"id": 145, "level": "Basic", "type": "Usage", "topic": "Anonymous Structures", "question": "What is a limitation of using anonymous structures without typedef?", "options": ["Variables of that exact structure layout cannot easily be declared again elsewhere by referring to a type name", "They cannot have any members", "They cannot be used with the dot operator", "They must always be arrays"], "answer": "A", "explanation": "Without a tag or typedef alias, there's no name to use for declaring further variables of that same structure layout."},
+{"id": 146, "level": "Advanced", "type": "Characteristics", "topic": "Anonymous Structures", "question": "Compared to a tagged structure, an anonymous structure primarily differs in that it:", "options": ["Occupies different memory layout rules entirely", "Cannot store any data", "Lacks a tag identifier, though its members and behavior otherwise work the same way", "Must be declared using the union keyword instead"], "answer": "C", "explanation": "An anonymous structure behaves like a normal structure in memory and member access; it simply has no tag name."},
+{"id": 147, "level": "Basic", "type": "Definition", "topic": "Self-Referential Structures", "question": "What is a self-referential structure?", "options": ["A structure that contains a copy of itself as a value member", "A structure that contains a pointer to another structure variable of its own type", "A structure that has no members", "A structure that can only hold integers"], "answer": "B", "explanation": "A self-referential structure contains a pointer member pointing to another instance of the same structure type."},
+{"id": 148, "level": "Intermediate", "type": "Concept", "topic": "Self-Referential Structures", "question": "Why must a self-referential structure use a pointer to itself rather than a value member of itself?", "options": ["Pointers are always faster than any other data type", "C does not allow pointers inside structures", "It is simply a stylistic choice with no technical reason", "A value member of the same type would require infinite memory, since its size would depend on itself"], "answer": "D", "explanation": "A value member of the same struct type would create an unresolvable, infinitely recursive size, so only a pointer (fixed size) works."},
+{"id": 149, "level": "Basic", "type": "Declaration", "topic": "Self-Referential Structures", "question": "Which declaration correctly creates a self-referential structure for a singly linked list node?", "options": ["struct Node { int data; struct Node *next; };", "struct Node { int data; struct Node next; };", "struct Node { int data; Node *next; };", "struct Node { int data; struct Node *Node; };"], "answer": "A", "explanation": "'struct Node *next;' correctly declares a pointer member of the same structure type, forming a valid self-referential structure."},
+{"id": 150, "level": "Advanced", "type": "Pointer Members", "topic": "Self-Referential Structures", "question": "In a self-referential structure like a linked list node, what does the 'next' pointer member typically store?", "options": ["The value of the current node's data member", "A separate array of all nodes", "The memory address of the next node in the sequence, or NULL if there is none", "A count of the total number of nodes"], "answer": "C", "explanation": "The 'next' pointer holds the address of the next node in the list, and is set to NULL to mark the end of the list."},
+{"id": 151, "level": "Intermediate", "type": "Applications", "topic": "Self-Referential Structures", "question": "Self-referential structures are the foundational building block for which common data structure?", "options": ["Simple arrays only", "Linked lists (and similarly trees)", "Two-dimensional arrays only", "Basic integer variables"], "answer": "B", "explanation": "Self-referential structures, with pointers to their own type, form the basis of linked lists and tree structures."},
+{"id": 152, "level": "Basic", "type": "Characteristics", "topic": "Self-Referential Structures", "question": "Which characteristic is true of a self-referential structure?", "options": ["It must have exactly one member, the pointer itself", "It cannot contain any data members other than the pointer", "It always requires dynamic memory allocation to even be declared", "It combines regular data members with at least one pointer member of its own structure type"], "answer": "D", "explanation": "A typical self-referential structure has ordinary data fields plus one or more pointer members referencing the same type."},
+{"id": 153, "level": "Intermediate", "type": "Concept", "topic": "Self-Referential Structures", "question": "What does it mean when a self-referential structure's pointer member is set to NULL?", "options": ["It indicates there is no further connected node (e.g., the end of a linked list)", "It means the structure has crashed", "It means the pointer now points to itself", "It automatically deletes the structure"], "answer": "A", "explanation": "A NULL pointer in a self-referential structure conventionally signals there is no next (or connected) element."},
+{"id": 154, "level": "Basic", "type": "Declaration", "topic": "Self-Referential Structures", "question": "Why is 'struct Node *next;' valid even though 'struct Node' is still being defined at that point?", "options": ["It is actually invalid and never compiles", "The compiler ignores incomplete types entirely", "A pointer to an incomplete type is allowed because pointers have a fixed, known size regardless of the pointed-to type", "'next' must be declared outside the structure instead"], "answer": "C", "explanation": "Since all pointers have a fixed size, the compiler can allocate space for a pointer member even while the full type is still being defined."},
+{"id": 155, "level": "Advanced", "type": "Applications", "topic": "Self-Referential Structures", "question": "Which of these best illustrates a practical use of a self-referential structure?", "options": ["A structure storing only two int coordinates for a point", "A tree node structure with data, a left child pointer, and a right child pointer, both of the node's own type", "A structure with only a single char member", "An array of 10 unrelated integers"], "answer": "B", "explanation": "A binary tree node, referencing left and right children of its own type via pointers, is a classic self-referential structure."},
+{"id": 156, "level": "Intermediate", "type": "Pointer Members", "topic": "Self-Referential Structures", "question": "How many self-referencing pointer members can a self-referential structure have?", "options": ["Exactly one, always", "Zero, by definition", "At most two, and no more", "One or more, depending on the design (e.g., a tree node may have two: left and right)"], "answer": "D", "explanation": "A self-referential structure can have one or multiple pointer members of its own type, as needed by the data structure's design."},
+{"id": 157, "level": "Basic", "type": "Pointer Members", "topic": "Pointer as Member of Structure", "question": "Which of the following correctly declares a structure with a pointer member pointing to an int?", "options": ["struct Data { int *ptr; };", "struct Data { int ptr*; };", "struct Data { *int ptr; };", "struct Data { ptr int*; };"], "answer": "A", "explanation": "'int *ptr;' correctly declares a pointer-to-int member named ptr inside the structure."},
+{"id": 158, "level": "Intermediate", "type": "Declaration", "topic": "Pointer as Member of Structure", "question": "Can a structure member be a pointer to a different structure type entirely (not itself)?", "options": ["No, pointer members can only point to basic types", "No, pointer members are never allowed inside structures", "Yes, a structure member can be a pointer to any valid type, including another structure type", "Only if the pointed-to structure has no members"], "answer": "C", "explanation": "A structure can have pointer members pointing to basic types, other structures, functions, or its own type."},
+{"id": 159, "level": "Basic", "type": "Access", "topic": "Pointer as Member of Structure", "question": "Given 'struct Data { int *ptr; } d; int x = 5; d.ptr = &x;', how do you access the value pointed to by d.ptr?", "options": ["d.ptr", "*(d.ptr)", "d->ptr", "&d.ptr"], "answer": "B", "explanation": "'*(d.ptr)' dereferences the pointer member to get the int value it points to."},
+{"id": 160, "level": "Advanced", "type": "Applications", "topic": "Pointer as Member of Structure", "question": "What is a practical use of a pointer member inside a structure?", "options": ["It always wastes memory with no benefit", "It prevents the structure from ever being used with functions", "It forces the structure to only store integers", "It allows dynamic linking to other data, like a string stored via a char pointer instead of a fixed array"], "answer": "D", "explanation": "A pointer member (e.g., char *name;) lets the structure reference dynamically allocated or external data flexibly."},
+{"id": 161, "level": "Intermediate", "type": "Usage", "topic": "Pointer as Member of Structure", "question": "Which is TRUE about using 'char *name;' versus 'char name[20];' as a structure member?", "options": ["The pointer version requires separate memory allocation (e.g., malloc) before use; the array version reserves fixed space directly", "Both behave identically with no differences", "The pointer version always uses less total memory in every case", "The array version cannot ever store a string"], "answer": "A", "explanation": "A char pointer member needs memory to be allocated (e.g., via malloc) before storing data, unlike a fixed-size array member."},
+{"id": 162, "level": "Basic", "type": "Pointer Members", "topic": "Pointer as Member of Structure", "question": "If a structure has a member 'struct Node *next;' where Node is the structure's own type, what kind of pointer member is this?", "options": ["A function pointer member", "A void pointer member", "A self-referential pointer member", "An array pointer member"], "answer": "C", "explanation": "A pointer member referring to the structure's own type is specifically called a self-referential pointer member."},
+{"id": 163, "level": "Intermediate", "type": "Access", "topic": "Pointer as Member of Structure", "question": "For 'struct Emp { char *name; } e; e.name = \"Ravi\";', which correctly prints the name?", "options": ["printf(\"%s\", e.name[0]);", "printf(\"%s\", e.name);", "printf(\"%s\", &e);", "printf(\"%s\", e);"], "answer": "B", "explanation": "Since name is a char pointer, printf with %s and e.name directly prints the string it points to."},
+{"id": 164, "level": "Basic", "type": "Declaration", "topic": "Pointer as Member of Structure", "question": "Which of these correctly declares a structure member that is a pointer to a function?", "options": ["struct Ops { int func(); };", "struct Ops { func *op; };", "struct Ops { int op(); };", "struct Ops { int (*op)(int, int); };"], "answer": "D", "explanation": "'int (*op)(int, int);' correctly declares a member that is a pointer to a function taking two ints and returning int."},
+{"id": 165, "level": "Advanced", "type": "Applications", "topic": "Pointer as Member of Structure", "question": "A structure member that is a pointer to another structure type is often used to model which kind of relationship?", "options": ["A relationship or link between two different records, such as an Employee pointing to its Department", "No relationship at all", "Only mathematical relationships between integers", "It can only be used for self-reference, never for other types"], "answer": "A", "explanation": "A pointer member to another structure type is commonly used to model a link or relationship between two different records."},
+{"id": 166, "level": "Intermediate", "type": "Usage", "topic": "Pointer as Member of Structure", "question": "What must be done before dereferencing a pointer member of a structure that was declared but not assigned an address?", "options": ["Nothing; it is always safe to dereference immediately", "The structure itself must be deleted first", "The pointer member must first be assigned a valid address (e.g., via & or malloc) before it is dereferenced", "Only global structures need this step"], "answer": "C", "explanation": "Dereferencing an uninitialized pointer member leads to undefined behavior; it must first point to valid, allocated memory."},
+{"id": 167, "level": "Basic", "type": "Declaration", "topic": "Pointer to Structure", "question": "Which correctly declares a pointer to a structure of type 'struct Point'?", "options": ["struct Point ptr;", "struct Point *ptr;", "struct *Point ptr;", "Point struct *ptr;"], "answer": "B", "explanation": "'struct Point *ptr;' declares ptr as a pointer variable that can store the address of a struct Point variable."},
+{"id": 168, "level": "Intermediate", "type": "Initialization", "topic": "Pointer to Structure", "question": "Given 'struct Point p = {1,2};', which correctly initializes a pointer to point to p?", "options": ["struct Point *ptr = p;", "struct Point *ptr = *p;", "struct Point ptr = &p;", "struct Point *ptr = &p;"], "answer": "D", "explanation": "The address-of operator (&) is required to assign p's address to the pointer: struct Point *ptr = &p;."},
+{"id": 169, "level": "Basic", "type": "Accessing Members", "topic": "Pointer to Structure", "question": "Given 'struct Point *ptr = &p;', which correctly accesses member x through the pointer?", "options": ["ptr->x", "ptr.x", "*ptr.x", "x->ptr"], "answer": "A", "explanation": "The arrow operator (->) is the standard way to access a member through a structure pointer: ptr->x."},
+{"id": 170, "level": "Advanced", "type": "Accessing Members", "topic": "Pointer to Structure", "question": "Which two expressions are equivalent for accessing member x via pointer ptr?", "options": ["ptr->x and ptr.x", "ptr->x and &ptr.x", "ptr->x and (*ptr).x", "ptr->x and *ptr->x"], "answer": "C", "explanation": "'ptr->x' is exactly equivalent to '(*ptr).x'; both dereference the pointer first, then access the member."},
+{"id": 171, "level": "Intermediate", "type": "Pointer Variables", "topic": "Pointer to Structure", "question": "What does a structure pointer variable actually store?", "options": ["A full copy of the entire structure's data", "The memory address of a structure variable", "Only the first member's value", "Nothing until the program ends"], "answer": "B", "explanation": "Like any pointer, a structure pointer stores the memory address of the structure variable it points to, not a copy."},
+{"id": 172, "level": "Basic", "type": "Applications", "topic": "Pointer to Structure", "question": "Why are pointers to structures commonly used when passing large structures to functions?", "options": ["They make the code harder to read with no benefit", "They force a complete copy of the structure regardless", "They are required by the C standard for all structures", "They avoid the overhead of copying the whole structure by passing just the address"], "answer": "D", "explanation": "Passing a pointer avoids copying potentially large structure data, improving efficiency."},
+{"id": 173, "level": "Intermediate", "type": "Declaration", "topic": "Pointer to Structure", "question": "Which of these declares an array of pointers to 'struct Node' structures?", "options": ["struct Node *arr[10];", "struct Node arr[10]*;", "struct *Node arr[10];", "struct Node *arr(10);"], "answer": "A", "explanation": "'struct Node *arr[10];' declares an array of 10 pointers, each capable of pointing to a struct Node."},
+{"id": 174, "level": "Basic", "type": "Initialization", "topic": "Pointer to Structure", "question": "If 'struct Point *ptr;' is declared but never assigned an address, what does ptr contain?", "options": ["Automatically the address of a zero-initialized structure", "The value 0 guaranteed by the C standard for local pointers", "An indeterminate (garbage) address, since it is an uninitialized local pointer", "The address of the main function"], "answer": "C", "explanation": "An uninitialized local pointer holds an indeterminate value; dereferencing it leads to undefined behavior."},
+{"id": 175, "level": "Advanced", "type": "Accessing Members", "topic": "Pointer to Structure", "question": "Given 'struct Emp *e; e = &emp1;', which correctly sets the 'salary' member to 50000 through the pointer?", "options": ["e.salary = 50000;", "e->salary = 50000;", "*e.salary = 50000;", "salary->e = 50000;"], "answer": "B", "explanation": "The arrow operator correctly accesses and assigns a value to a member through a structure pointer: e->salary = 50000;."},
+{"id": 176, "level": "Intermediate", "type": "Applications", "topic": "Pointer to Structure", "question": "Structure pointers are essential for implementing which of the following?", "options": ["Only simple arithmetic expressions", "Static global constants only", "Basic for loops with no data structures", "Dynamic data structures such as linked lists and trees, where nodes reference each other via pointers"], "answer": "D", "explanation": "Structure pointers allow nodes to reference one another, forming the basis of dynamic structures like linked lists and trees."},
+{"id": 177, "level": "Basic", "type": "Pointer Variables", "topic": "Pointer to Structure", "question": "Which statement about pointer variables to structures is TRUE?", "options": ["A single pointer variable can, over time, point to different structure variables of the same type", "A pointer to a structure can only ever point to one fixed variable for the life of the program", "Structure pointers cannot be reassigned once set", "Structure pointers can only point to global variables"], "answer": "A", "explanation": "Like any pointer, a structure pointer can be reassigned at different times to point to different variables of the same type."},
+{"id": 178, "level": "Intermediate", "type": "Declaration", "topic": "Pointer to Structure", "question": "Can a structure contain a pointer to another dynamically allocated structure of the same type using malloc?", "options": ["No, malloc cannot be used with structures at all", "No, only static structures are allowed", "Yes, e.g. struct Node *next = (struct Node*) malloc(sizeof(struct Node));", "Yes, but only for the first structure ever created in the program"], "answer": "C", "explanation": "malloc can dynamically allocate memory for a new structure, and its address can be stored in a pointer member."},
+{"id": 179, "level": "Basic", "type": "Accessing Members", "topic": "Pointer to Structure", "question": "Given a pointer 'struct Book *bptr' pointing to a Book structure with a char array title[30], which correctly accesses the title?", "options": ["bptr.title", "bptr->title", "title->bptr", "*bptr.title[0]"], "answer": "B", "explanation": "The arrow operator correctly accesses the title array member through the structure pointer: bptr->title."},
+{"id": 180, "level": "Basic", "type": "Purpose", "topic": "Member Selector Operator (->)", "question": "What is the primary purpose of the member selector operator (->)?", "options": ["To declare a new structure", "To allocate memory", "To compare two structures", "To access a structure's member through a pointer to that structure"], "answer": "D", "explanation": "The -> operator is specifically used to access members of a structure through a pointer to that structure."},
+{"id": 181, "level": "Intermediate", "type": "Syntax", "topic": "Member Selector Operator (->)", "question": "What is the correct syntax for using the member selector operator?", "options": ["pointer->member", "member->pointer", "pointer.->member", "pointer<-member"], "answer": "A", "explanation": "The correct syntax is 'pointer->member', where pointer is a variable pointing to a structure."},
+{"id": 182, "level": "Basic", "type": "Accessing Members Through Pointers", "topic": "Member Selector Operator (->)", "question": "Given 'struct Point *p = &pt;', which correctly accesses and prints member y?", "options": ["printf(\"%d\", p.y);", "printf(\"%d\", *p.y);", "printf(\"%d\", p->y);", "printf(\"%d\", y->p);"], "answer": "C", "explanation": "'p->y' correctly accesses member y of the structure pointed to by pointer p."},
+{"id": 183, "level": "Advanced", "type": "Applications", "topic": "Member Selector Operator (->)", "question": "The -> operator is especially useful in which programming scenario?", "options": ["Declaring simple int variables", "Traversing linked lists, where each node's members are accessed through a pointer, e.g. head->next", "Performing string concatenation", "Declaring function prototypes"], "answer": "B", "explanation": "Linked list traversal relies heavily on -> to access data and next-node pointers through each node's pointer."},
+{"id": 184, "level": "Intermediate", "type": "Comparison with . Operator", "topic": "Member Selector Operator (->)", "question": "When should you use -> instead of . to access a structure's member?", "options": ["Only when the structure has more than 5 members", "Never; . and -> are always interchangeable in every context", "Only for structures containing arrays", "When you have a pointer to the structure rather than the structure variable itself"], "answer": "D", "explanation": "Use -> when working through a pointer to a structure; use . when working directly with a structure variable."},
+{"id": 185, "level": "Basic", "type": "Syntax", "topic": "Member Selector Operator (->)", "question": "Given 'struct Emp *e; e->salary = e->salary + 1000;', what does this statement do?", "options": ["It increases the salary member (accessed through pointer e) by 1000", "It creates a new Emp structure", "It causes a syntax error since -> cannot appear twice", "It decreases the salary member by 1000"], "answer": "A", "explanation": "This reads the current salary through the pointer, adds 1000, and stores it back, all via the -> operator."},
+{"id": 186, "level": "Intermediate", "type": "Purpose", "topic": "Member Selector Operator (->)", "question": "Why can't the dot (.) operator be used directly in place of -> when you have a structure pointer?", "options": ["Dot and arrow always produce identical results with pointers", "C forbids the dot operator entirely", "The dot operator expects a structure variable, not an address; applying it to a pointer type is a type mismatch", "Only because of a stylistic convention with no real technical reason"], "answer": "C", "explanation": "The dot operator is defined to work on structure variables directly; using it on a pointer without dereferencing is a type error."},
+{"id": 187, "level": "Basic", "type": "Accessing Members Through Pointers", "topic": "Member Selector Operator (->)", "question": "For 'struct Node *head; head->data = 10; head->next = NULL;', what is being set up?", "options": ["Two separate unrelated structures", "The data and next members of the node pointed to by head, typical of initializing a linked list node", "A structure array", "A function pointer"], "answer": "B", "explanation": "This code sets both the data value and the next pointer (to NULL) of a single node pointed to by head."},
+{"id": 188, "level": "Advanced", "type": "Applications", "topic": "Member Selector Operator (->)", "question": "Which of the following demonstrates a valid, real use of the -> operator?", "options": ["int x -> 5; assigning a value to a plain int", "struct Emp e; e -> name; (e is not a pointer here)", "5 -> struct Point p;", "struct Emp *e = &emp1; printf(\"%s\", e->name);"], "answer": "D", "explanation": "Here, e is a genuine structure pointer, and -> correctly accesses the name member it points to."},
+{"id": 189, "level": "Intermediate", "type": "Comparison with . Operator", "topic": "Member Selector Operator (->)", "question": "Which correctly explains the relationship between p->x and (*p).x?", "options": ["They are exactly equivalent; -> is essentially shorthand for dereference-then-dot-access", "They always produce different results", "(*p).x is invalid syntax in C", "p->x only works with arrays, not structures"], "answer": "A", "explanation": "'p->x' is defined as shorthand for '(*p).x'; both dereference the pointer and access the member."},
+{"id": 190, "level": "Basic", "type": "Purpose", "topic": "Member Selector Operator (->)", "question": "Which best describes what happens internally when you write 'p->member'?", "options": ["The compiler ignores the pointer and reads member from a fixed address", "It first multiplies p by member", "The compiler dereferences pointer p to get the structure, then accesses 'member' within it", "It always triggers a memory allocation"], "answer": "C", "explanation": "Internally, p->member first follows the pointer (dereference) to the structure, then retrieves the specified member."},
+{"id": 191, "level": "Intermediate", "type": "Syntax", "topic": "Member Selector Operator (->)", "question": "Can the arrow operator be chained, as in 'emp->dept->name', when dept is itself a pointer member?", "options": ["No, chaining -> is never allowed in C", "Yes, if dept is a pointer to another structure containing a 'name' member, chaining -> is valid", "Only if name is an integer", "Only inside a for loop"], "answer": "B", "explanation": "When a member is itself a pointer to another structure, -> can be chained to reach members of that nested structure."},
+{"id": 192, "level": "Basic", "type": "Purpose", "topic": "Comparison Between Indirection (*) Operator and Member Selector (->) Operator", "question": "What is the purpose of the indirection (*) operator in the context of structures?", "options": ["To declare structure tags", "To access array elements only", "To compare two pointers", "To dereference a pointer, obtaining the structure (or value) it points to"], "answer": "D", "explanation": "The * operator dereferences a pointer, giving access to the actual structure (or value) that the pointer refers to."},
+{"id": 193, "level": "Intermediate", "type": "Syntax", "topic": "Comparison Between Indirection (*) Operator and Member Selector (->) Operator", "question": "Which expression correctly uses the indirection operator (with dot) to access member x via pointer p?", "options": ["(*p).x", "*p.x (without parentheses)", "p*.x", "x.*p"], "answer": "A", "explanation": "Parentheses are required: '(*p).x' first dereferences p, then accesses member x; without them, precedence causes errors."},
+{"id": 194, "level": "Basic", "type": "Usage", "topic": "Comparison Between Indirection (*) Operator and Member Selector (->) Operator", "question": "Why are parentheses necessary in '(*p).x' but not in 'p->x'?", "options": ["Parentheses are never actually necessary in either form", "Because -> has lower precedence than *", "Because '.' has higher precedence than '*', so without parentheses '*p.x' would incorrectly evaluate p.x first", "Because '.' cannot be used with pointers under any circumstance"], "answer": "C", "explanation": "The dot operator binds tighter than *, so without parentheses, 'p.x' would be attempted before dereferencing, causing an error."},
+{"id": 195, "level": "Advanced", "type": "Differences", "topic": "Comparison Between Indirection (*) Operator and Member Selector (->) Operator", "question": "What is the key difference between using * (with .) and -> to access a structure member through a pointer?", "options": ["* can only be used with arrays, -> only with structures", "(*p).x and p->x achieve the identical result, but -> is more concise and commonly preferred", "* always fails to compile with structures", "-> can only be used once per program"], "answer": "B", "explanation": "Both forms achieve the same member access, but -> is the more concise, standard, and preferred syntax in practice."},
+{"id": 196, "level": "Intermediate", "type": "Examples", "topic": "Comparison Between Indirection (*) Operator and Member Selector (->) Operator", "question": "Given 'struct Point *p = &pt;', which pair of statements produce the same result?", "options": ["p->x = 5; and p.x = 5;", "(*p).x = 5; and p[x] = 5;", "p->x = 5; and *p = 5;", "p->x = 5; and (*p).x = 5;"], "answer": "D", "explanation": "Both 'p->x = 5;' and '(*p).x = 5;' assign 5 to the same member x of the structure pointed to by p."},
+{"id": 197, "level": "Basic", "type": "Applications", "topic": "Comparison Between Indirection (*) Operator and Member Selector (->) Operator", "question": "In modern C code, which form is generally preferred for readability when accessing structure members via pointers?", "options": ["The -> operator, e.g. p->x, since it is shorter and clearer", "The (*p).x form, since it is always faster at runtime", "Neither form is ever used in practice", "Both are equally rare and discouraged"], "answer": "A", "explanation": "The -> operator is generally preferred in practice because it is shorter and more readable than the equivalent (*p).x form."},
+{"id": 198, "level": "Intermediate", "type": "Usage", "topic": "Comparison Between Indirection (*) Operator and Member Selector (->) Operator", "question": "Which of the following is TRUE regarding operator precedence relevant to * and ->?", "options": ["-> has lower precedence than most arithmetic operators", "* always has higher precedence than -> in every expression", "-> operator already includes the dereference step, so no separate * or parentheses are needed", "-> cannot be used in the same expression as any other operator"], "answer": "C", "explanation": "The -> operator combines dereferencing and member access into a single operation, unlike using * separately with dot."},
+{"id": 199, "level": "Basic", "type": "Examples", "topic": "Comparison Between Indirection (*) Operator and Member Selector (->) Operator", "question": "Which of these expressions is INVALID or would need correction, given 'struct Point *p;'?", "options": ["p->x", "*p.x (without parentheses, problematic since it doesn't do what's intended)", "(*p).x", "p->y"], "answer": "B", "explanation": "Without parentheses, '*p.x' is parsed as '*(p.x)', which is invalid since p.x needs p to be a structure, not a pointer."},
+{"id": 200, "level": "Advanced", "type": "Differences", "topic": "Comparison Between Indirection (*) Operator and Member Selector (->) Operator", "question": "Which best summarizes the difference in intent between * and -> when working with structure pointers?", "options": ["* is used to declare arrays; -> is used to declare structures", "Both operators serve completely unrelated, unconnected purposes", "* is exclusive to functions; -> is exclusive to arrays", "* generically dereferences any pointer; -> is specialized, combining dereference and member access for structures/unions"], "answer": "D", "explanation": "* is a general dereference operator for any pointer type, while -> is specifically designed for accessing structure/union members via a pointer."},
+{"id": 201, "level": "Intermediate", "type": "Purpose", "topic": "Comparison Between Indirection (*) Operator and Member Selector (->) Operator", "question": "Which code snippet correctly demonstrates equivalent use of both operators for the same task?", "options": ["int a = (*p).x; int b = p->x; // a and b will hold the same value", "int a = *p; int b = p->x; // these are unrelated, not equivalent", "int a = p.x; int b = p->x; // p.x is invalid since p is a pointer", "int a = (*p); int b = (*p).y; // not equivalent to each other"], "answer": "A", "explanation": "Both '(*p).x' and 'p->x' access the same member x of the structure pointed to by p, yielding the same value."},
+{"id": 202, "level": "Basic", "type": "Passing Structures by Value", "topic": "Structure as Function Argument", "question": "When a structure is used as a function argument passed by value, the function receives:", "options": ["The original structure's address only", "Nothing; structures cannot be arguments", "A separate copy of the entire structure's data", "Only the first member's value"], "answer": "C", "explanation": "Passing by value copies the complete structure data into the function's local parameter."},
+{"id": 203, "level": "Intermediate", "type": "Function Parameters", "topic": "Structure as Function Argument", "question": "Which function declaration correctly accepts a structure as an argument by value?", "options": ["void display(struct Point *p);", "void display(struct Point p);", "void display(int p);", "void display(Point p);"], "answer": "B", "explanation": "'void display(struct Point p);' declares a parameter of structure type, received by value (a copy)."},
+{"id": 204, "level": "Basic", "type": "Applications", "topic": "Structure as Function Argument", "question": "Why might a programmer choose to pass a structure as a function argument by value rather than by pointer?", "options": ["To always guarantee the fastest possible performance", "To force the function to modify the caller's original data", "It is required by the C standard in every case", "To ensure the function cannot accidentally modify the caller's original structure, since it works on a copy"], "answer": "D", "explanation": "Passing by value protects the caller's original data, since the function can only modify its own local copy."},
+{"id": 205, "level": "Advanced", "type": "Passing Structures by Value", "topic": "Structure as Function Argument", "question": "If 'void update(struct Point p){p.x=100;}' is called with 'update(pt);', what happens to pt.x after the call?", "options": ["pt.x remains unchanged, since only the copy p was modified", "pt.x also becomes 100", "The program crashes", "pt is deleted after the call"], "answer": "A", "explanation": "Since p is a separate copy (pass by value), modifying p.x has no effect on the original pt.x."},
+{"id": 206, "level": "Intermediate", "type": "Passing Structures Through Functions", "topic": "Structure as Function Argument", "question": "Which is a disadvantage of passing very large structures as function arguments by value repeatedly in a loop?", "options": ["It has no disadvantage whatsoever", "It automatically converts to pointer passing to optimize itself", "Repeated copying of large data can significantly reduce performance", "It prevents the function from being called more than once"], "answer": "C", "explanation": "Copying large amounts of data on every call adds overhead, which can noticeably slow down performance in loops."},
+{"id": 207, "level": "Basic", "type": "Function Parameters", "topic": "Structure as Function Argument", "question": "Which function correctly accepts a structure argument by reference (pointer) to allow modification of the caller's data?", "options": ["void update(struct Point p) { p.x = 5; }", "void update(struct Point *p) { p->x = 5; }", "void update(int *p) { p->x = 5; }", "void update() { p->x = 5; }"], "answer": "B", "explanation": "Accepting a pointer parameter and using -> allows the function to directly modify the caller's original structure."},
+{"id": 208, "level": "Intermediate", "type": "Applications", "topic": "Structure as Function Argument", "question": "Which is a valid real-world reason to pass a structure argument to a function?", "options": ["To make the function ignore the structure entirely", "To force the program to stop compiling", "To rename the structure's tag", "To let a function like 'float calculateArea(struct Rect r)' compute a result using the structure's fields"], "answer": "D", "explanation": "Passing the structure lets the function directly use its fields, like length and width, to compute a result."},
+{"id": 209, "level": "Basic", "type": "Passing Structures Through Functions", "topic": "Structure as Function Argument", "question": "Which correctly demonstrates passing a structure argument and reading (not modifying) it inside the function?", "options": ["void show(struct Point p) { printf(\"%d %d\", p.x, p.y); }", "void show(struct Point p) { printf(\"%d %d\", p->x, p->y); }", "void show(struct Point *p) { printf(\"%d %d\", p.x, p.y); }", "void show() { printf(\"%d %d\", p.x, p.y); }"], "answer": "A", "explanation": "Since p is a value parameter (not a pointer), the dot operator correctly reads its members: p.x, p.y."},
+{"id": 210, "level": "Advanced", "type": "Function Parameters", "topic": "Structure as Function Argument", "question": "What must the type of the argument passed match, when calling a function expecting a structure parameter?", "options": ["It can be any unrelated data type", "Only the tag name needs to be similar in spelling", "The argument must be of the exact same structure type as declared in the function's parameter", "It must always be a pointer, regardless of the parameter's declared type"], "answer": "C", "explanation": "The argument passed to a function must match the exact structure type expected by the function's parameter."},
+{"id": 211, "level": "Intermediate", "type": "Passing Structures by Value", "topic": "Structure as Function Argument", "question": "Passing a structure by value to a function is analogous to which behavior of basic data types like int?", "options": ["It behaves like passing an uninitialized variable", "Just like passing a plain int by value, the function receives its own independent copy of the data", "It behaves like a global variable shared by all functions", "It behaves exactly like passing an array, which decays to a pointer"], "answer": "B", "explanation": "Structures passed by value follow the same copy semantics as basic types like int passed by value."},
+{"id": 212, "level": "Basic", "type": "Applications", "topic": "Structure as Function Argument", "question": "Which scenario best justifies passing a structure by pointer instead of by value as a function argument?", "options": ["The structure has only a single small int member", "The function never needs to see any data from the structure", "The structure is never modified and is very small", "The structure is large, and/or the function needs to modify the caller's original data"], "answer": "D", "explanation": "Pointers avoid copy overhead for large structures and are necessary when the function must modify the caller's original data."},
+{"id": 213, "level": "Basic", "type": "Returning Structures", "topic": "Structure as Function Return Type", "question": "Which of the following correctly declares a function that returns a structure of type 'struct Point'?", "options": ["struct Point getPoint();", "void getPoint(struct Point);", "int getPoint(struct Point);", "struct Point *getPoint(void);"], "answer": "A", "explanation": "'struct Point getPoint();' declares a function whose return type is the structure itself, not a pointer to it."},
+{"id": 214, "level": "Intermediate", "type": "Syntax", "topic": "Structure as Function Return Type", "question": "Inside a function declared to return 'struct Point', which statement correctly returns a structure value?", "options": ["return &p; // returns a pointer, mismatched with the declared return type", "return p.x;", "return p; // where p is a local struct Point variable", "return *p;"], "answer": "C", "explanation": "'return p;' correctly returns the entire structure value p, matching the function's declared struct Point return type."},
+{"id": 215, "level": "Basic", "type": "Applications", "topic": "Structure as Function Return Type", "question": "Which is a good example of a function that returns a structure?", "options": ["int add(int a, int b);", "struct Point addPoints(struct Point p1, struct Point p2); returning a combined Point", "void printPoint(struct Point p);", "char getChar();"], "answer": "B", "explanation": "A function combining two points and returning the resulting Point structure is a classic use of structure return types."},
+{"id": 216, "level": "Advanced", "type": "Advantages", "topic": "Structure as Function Return Type", "question": "What is an advantage of a function returning a structure instead of using multiple output parameters?", "options": ["It always executes faster with no exceptions", "It prevents the function from using any local variables", "It requires the caller to pass extra pointers regardless", "It lets a function return several related values (the structure's members) together as one clean unit"], "answer": "D", "explanation": "Returning a structure lets several related values be handed back to the caller together, in one clean unit."},
+{"id": 217, "level": "Intermediate", "type": "Program Behavior", "topic": "Structure as Function Return Type", "question": "When a function returns a structure by value, what happens to the local structure variable after it returns?", "options": ["Its value is copied out to the caller before the function's local memory is reclaimed", "It continues to exist and can still be accessed directly by the caller using its original name", "It automatically becomes a global variable", "The program always crashes at that point"], "answer": "A", "explanation": "The structure's value is copied into the caller's context, and the function's local storage is then reclaimed."},
+{"id": 218, "level": "Basic", "type": "Syntax", "topic": "Structure as Function Return Type", "question": "Which is the correct way to store the structure returned by a function into a variable?", "options": ["struct Point p; p->getPoint();", "getPoint() = p;", "struct Point p = getPoint();", "struct Point p; getPoint(p);"], "answer": "C", "explanation": "The returned structure value is assigned directly to a variable of the same structure type: struct Point p = getPoint();."},
+{"id": 219, "level": "Intermediate", "type": "Returning Structures", "topic": "Structure as Function Return Type", "question": "Can a function that returns a structure also accept structure parameters at the same time?", "options": ["No, a function cannot both take and return structures", "Yes, a function can take structure parameters and also return a structure, e.g. struct Point add(struct Point a, struct Point b)", "Only if the parameters and return type are of different structure types", "Only if there are no parameters at all"], "answer": "B", "explanation": "A function can freely accept one or more structure parameters and still return a structure as its result."},
+{"id": 220, "level": "Basic", "type": "Applications", "topic": "Structure as Function Return Type", "question": "Which is a practical application of a function returning a structure?", "options": ["A function that returns nothing (void) and takes no arguments", "A function that only prints characters", "A function that only performs file operations", "A function 'struct Complex addComplex(struct Complex a, struct Complex b)' returning the sum of two complex numbers"], "answer": "D", "explanation": "Returning a Complex structure representing the sum is a natural application of structure return types in numeric computation."},
+{"id": 221, "level": "Advanced", "type": "Program Behavior", "topic": "Structure as Function Return Type", "question": "If 'struct Point getOrigin(){struct Point p={0,0}; return p;}' is called as 'struct Point o=getOrigin();', what is o.x?", "options": ["0", "An indeterminate garbage value", "It causes a compile-time error", "1"], "answer": "A", "explanation": "The function returns a Point initialized to {0,0}, so o.x correctly receives the value 0 after assignment."},
+{"id": 222, "level": "Intermediate", "type": "Advantages", "topic": "Structure as Function Return Type", "question": "Compared to using global variables to share structure data, returning a structure from a function is advantageous because it:", "options": ["Requires no function call at all", "Makes the data accessible from every part of the program automatically", "Keeps data local and explicit, improving modularity and reducing unintended side effects", "Eliminates the need for structures entirely"], "answer": "C", "explanation": "Returning a structure keeps data flow explicit and local to the function call, which is cleaner than relying on global state."}
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

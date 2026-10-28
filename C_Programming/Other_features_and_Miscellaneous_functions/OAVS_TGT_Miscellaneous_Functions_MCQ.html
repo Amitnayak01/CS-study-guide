@@ -1,0 +1,3784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Overview",
+    "question": "Which header file declares atoi(), atof(), and exit()?",
+    "options": [
+      "stdlib.h",
+      "stdio.h",
+      "string.h",
+      "ctype.h"
+    ],
+    "answer": "A",
+    "explanation": "atoi(), atof(), and exit() are all declared in the standard library header stdlib.h."
+  },
+  {
+    "id": 2,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Overview",
+    "question": "Which header file declares toupper(), tolower(), isalpha(), isalnum(), and isdigit()?",
+    "options": [
+      "conio.h",
+      "ctype.h",
+      "stdio.h",
+      "stdlib.h"
+    ],
+    "answer": "B",
+    "explanation": "Character classification and conversion functions belong to the ctype.h header."
+  },
+  {
+    "id": 3,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Overview",
+    "question": "Which of the following functions performs character testing rather than character conversion?",
+    "options": [
+      "isalpha()",
+      "tolower()",
+      "toupper()",
+      "atoi()"
+    ],
+    "answer": "A",
+    "explanation": "isalpha() tests a character's classification; it does not convert or change it."
+  },
+  {
+    "id": 4,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Overview",
+    "question": "Which of the following functions performs string-to-number conversion?",
+    "options": [
+      "isdigit()",
+      "exit()",
+      "toupper()",
+      "atof()"
+    ],
+    "answer": "D",
+    "explanation": "atof() converts a numeric string into a floating-point (double) value."
+  },
+  {
+    "id": 5,
+    "level": "Basic",
+    "type": "Scenario-Based",
+    "topic": "Overview",
+    "question": "Which function among the following is used to terminate a program?",
+    "options": [
+      "isalnum()",
+      "exit()",
+      "tolower()",
+      "atoi()"
+    ],
+    "answer": "B",
+    "explanation": "exit() immediately terminates program execution and returns a status to the OS."
+  },
+  {
+    "id": 6,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Overview",
+    "question": "How many functions are covered under \"Other Features and Miscellaneous Functions\" in this syllabus?",
+    "options": [
+      "Eight",
+      "Six",
+      "Ten",
+      "Seven"
+    ],
+    "answer": "A",
+    "explanation": "The syllabus lists exactly eight functions: atof, atoi, toupper, tolower, isalnum, isalpha, isdigit, and exit."
+  },
+  {
+    "id": 7,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Overview",
+    "question": "Which pair of functions both accept a character (as int) and return an integer true/false result?",
+    "options": [
+      "atoi() and atof()",
+      "atof() and atoi()",
+      "exit() and atoi()",
+      "isalpha() and isdigit()"
+    ],
+    "answer": "D",
+    "explanation": "isalpha() and isdigit() are character-testing functions that return a nonzero or zero integer result."
+  },
+  {
+    "id": 8,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Overview",
+    "question": "Which of these functions does NOT return control/a value to the calling program?",
+    "options": [
+      "atoi()",
+      "toupper()",
+      "isalpha()",
+      "exit()"
+    ],
+    "answer": "D",
+    "explanation": "exit() terminates the entire program and never returns control to the point from which it was called."
+  },
+  {
+    "id": 9,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atof()",
+    "question": "What does the name atof() functionally represent?",
+    "options": [
+      "Array to float",
+      "ASCII to float",
+      "Auto to float",
+      "ASCII to fixed"
+    ],
+    "answer": "B",
+    "explanation": "atof() converts an ASCII string representation of a number into a floating-point (double) value."
+  },
+  {
+    "id": 10,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atof()",
+    "question": "What is the return type of atof()?",
+    "options": [
+      "double",
+      "int",
+      "char*",
+      "float"
+    ],
+    "answer": "A",
+    "explanation": "The C standard defines atof() to return a value of type double."
+  },
+  {
+    "id": 11,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atof()",
+    "question": "What type of argument does atof() accept?",
+    "options": [
+      "single char",
+      "double*",
+      "int",
+      "const char* (a string)"
+    ],
+    "answer": "D",
+    "explanation": "atof() takes a pointer to a null-terminated character string as its only argument."
+  },
+  {
+    "id": 12,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atof()",
+    "question": "Which header must be included to use atof()?",
+    "options": [
+      "stdlib.h",
+      "ctype.h",
+      "math.h",
+      "stdio.h"
+    ],
+    "answer": "A",
+    "explanation": "atof() is declared in stdlib.h, the standard general-utilities header."
+  },
+  {
+    "id": 13,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atof()",
+    "question": "What value does atof(\"12.5\") return?",
+    "options": [
+      "\"12.5\" (string)",
+      "12",
+      "0.0",
+      "12.5"
+    ],
+    "answer": "D",
+    "explanation": "atof() parses the numeric string \"12.5\" and returns the double value 12.5."
+  },
+  {
+    "id": 14,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atof()",
+    "question": "What value does atof() return if the string contains no valid numeric conversion at all?",
+    "options": [
+      "NULL",
+      "0.0",
+      "An undefined garbage value",
+      "-1.0"
+    ],
+    "answer": "B",
+    "explanation": "If no valid conversion can be performed, atof() is defined to return 0.0."
+  },
+  {
+    "id": 15,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atof()",
+    "question": "What will atof(\"abc\") return?",
+    "options": [
+      "\"abc\" unchanged",
+      "-1",
+      "A runtime error",
+      "0.0"
+    ],
+    "answer": "D",
+    "explanation": "Since \"abc\" has no valid leading numeric portion, atof() returns 0.0."
+  },
+  {
+    "id": 16,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atof()",
+    "question": "What does atof(\" 45.6\") return, given a leading space?",
+    "options": [
+      "45.6",
+      "A compilation error",
+      "\" 45.6\" unchanged",
+      "0.0"
+    ],
+    "answer": "A",
+    "explanation": "atof() automatically skips leading whitespace characters before beginning conversion."
+  },
+  {
+    "id": 17,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atof()",
+    "question": "What is the result of atof(\"3.14xyz\")?",
+    "options": [
+      "3.14xyz (unchanged)",
+      "A runtime error",
+      "0.0",
+      "3.14"
+    ],
+    "answer": "D",
+    "explanation": "atof() converts only the initial valid numeric portion and silently ignores the trailing non-numeric characters."
+  },
+  {
+    "id": 18,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atof()",
+    "question": "Which of the following strings can atof() correctly convert to a non-zero value?",
+    "options": [
+      "\"-2.5e3\"",
+      "\"##2.5\"",
+      "\"$25.00\"",
+      "\"twenty-five\""
+    ],
+    "answer": "A",
+    "explanation": "atof() supports an optional sign and scientific (exponential) notation, so \"-2.5e3\" converts to -2500.0."
+  },
+  {
+    "id": 19,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atof()",
+    "question": "How does atof() treat a leading '+' or '-' sign in the input string?",
+    "options": [
+      "It correctly interprets the sign as part of the number",
+      "It ignores the sign completely",
+      "It treats the sign as a separate character",
+      "It treats the sign as an error"
+    ],
+    "answer": "A",
+    "explanation": "atof() recognizes an optional leading sign immediately before the digits of the number."
+  },
+  {
+    "id": 20,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atof()",
+    "question": "Which of the following statements about atof() is true?",
+    "options": [
+      "It requires the string to contain only digits",
+      "It returns a pointer to the unconverted remainder",
+      "It does not modify the original input string",
+      "It modifies the string in place during conversion"
+    ],
+    "answer": "C",
+    "explanation": "atof() only reads the string to compute a double value; the original string argument is left unchanged."
+  },
+  {
+    "id": 21,
+    "level": "Basic",
+    "type": "Scenario-Based",
+    "topic": "atof()",
+    "question": "A programmer stores the result of atof() into an int variable. What is the likely consequence?",
+    "options": [
+      "The program fails to compile",
+      "atof() throws a runtime exception",
+      "The int variable automatically becomes a double",
+      "The fractional part of the converted value is lost (truncated)"
+    ],
+    "answer": "D",
+    "explanation": "Assigning a double result to an int variable truncates any decimal portion of the value."
+  },
+  {
+    "id": 22,
+    "level": "Basic",
+    "type": "Code/Output",
+    "topic": "atof()",
+    "question": "What is the output of: printf(\"%.1f\", atof(\"7.8g9\"));",
+    "options": [
+      "A runtime error",
+      "0.0",
+      "7.8",
+      "7.89"
+    ],
+    "answer": "C",
+    "explanation": "Conversion stops at the first invalid character 'g', so only the leading \"7.8\" portion is converted."
+  },
+  {
+    "id": 23,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atof()",
+    "question": "Which function is best suited to convert the string \"99.99\" into a usable numeric value for a price calculation?",
+    "options": [
+      "toupper()",
+      "atoi()",
+      "isdigit()",
+      "atof()"
+    ],
+    "answer": "D",
+    "explanation": "atof() is designed specifically to convert decimal/floating-point numeric strings."
+  },
+  {
+    "id": 24,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atof()",
+    "question": "What does atof(\"\") (an empty string) return?",
+    "options": [
+      "0.0",
+      "A runtime error",
+      "Undefined behaviour",
+      "NULL"
+    ],
+    "answer": "A",
+    "explanation": "With no digits available to convert, atof() is defined to return 0.0 for an empty string."
+  },
+  {
+    "id": 25,
+    "level": "Basic",
+    "type": "Assertion-Reason",
+    "topic": "atof()",
+    "question": "Assertion (A): atof() can convert strings containing exponential notation like \"1e5\".\nReason (R): atof() follows the same numeric grammar as strtod(), which supports exponents.",
+    "options": [
+      "A is true, R is false",
+      "A is false, R is true",
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are false"
+    ],
+    "answer": "C",
+    "explanation": "atof() is essentially strtod() without error reporting, so it also supports scientific/exponential notation."
+  },
+  {
+    "id": 26,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "atof()",
+    "question": "Fill in the blank: atof() converts the initial portion of a string to a ____ value.",
+    "options": [
+      "integer",
+      "string",
+      "double (floating-point)",
+      "character"
+    ],
+    "answer": "C",
+    "explanation": "By definition, atof() converts a numeric string prefix into a double (floating-point) value."
+  },
+  {
+    "id": 27,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atoi()",
+    "question": "What does the name atoi() functionally represent?",
+    "options": [
+      "ASCII to integer",
+      "ASCII to index",
+      "ASCII to iterate",
+      "Array to integer"
+    ],
+    "answer": "A",
+    "explanation": "atoi() converts an ASCII numeric string into an equivalent integer value."
+  },
+  {
+    "id": 28,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atoi()",
+    "question": "What is the return type of atoi()?",
+    "options": [
+      "char",
+      "long",
+      "int",
+      "double"
+    ],
+    "answer": "C",
+    "explanation": "atoi() is defined to return a value of type int."
+  },
+  {
+    "id": 29,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atoi()",
+    "question": "Which header file declares atoi()?",
+    "options": [
+      "stdlib.h",
+      "string.h",
+      "ctype.h",
+      "stdio.h"
+    ],
+    "answer": "A",
+    "explanation": "atoi() is declared, along with atof() and exit(), in stdlib.h."
+  },
+  {
+    "id": 30,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atoi()",
+    "question": "What does atoi(\"123\") return?",
+    "options": [
+      "0",
+      "123.0",
+      "123",
+      "\"123\" (string)"
+    ],
+    "answer": "C",
+    "explanation": "atoi() converts the digit string \"123\" directly into the integer value 123."
+  },
+  {
+    "id": 31,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atoi()",
+    "question": "What does atoi(\"abc\") return?",
+    "options": [
+      "-1",
+      "A runtime error",
+      "0",
+      "\"abc\" unchanged"
+    ],
+    "answer": "C",
+    "explanation": "With no valid leading digits present, atoi() returns 0 by definition."
+  },
+  {
+    "id": 32,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atoi()",
+    "question": "What does atoi(\"45abc\") return?",
+    "options": [
+      "\"45abc\" unchanged",
+      "45",
+      "A runtime error",
+      "0"
+    ],
+    "answer": "B",
+    "explanation": "atoi() converts the leading numeric portion and stops as soon as it meets a non-digit character."
+  },
+  {
+    "id": 33,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atoi()",
+    "question": "What does atoi(\" -78\") return, given the leading space?",
+    "options": [
+      "-78",
+      "0",
+      "A runtime error",
+      "78"
+    ],
+    "answer": "A",
+    "explanation": "atoi() skips leading whitespace first, then correctly parses the negative sign and digits."
+  },
+  {
+    "id": 34,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atoi()",
+    "question": "What type of argument does atoi() require?",
+    "options": [
+      "int*",
+      "const char* (a string)",
+      "single char",
+      "double"
+    ],
+    "answer": "B",
+    "explanation": "atoi() accepts a pointer to a null-terminated character string as its argument."
+  },
+  {
+    "id": 35,
+    "level": "Basic",
+    "type": "Common Mistake",
+    "topic": "atoi()",
+    "question": "Which of the following is a common mistake when using atoi()?",
+    "options": [
+      "Passing a string literal as the argument",
+      "Storing the result in an int variable",
+      "Passing a non-numeric string and assuming the returned 0 means valid input of \"0\"",
+      "Including stdlib.h before using it"
+    ],
+    "answer": "C",
+    "explanation": "Since atoi() returns 0 both for genuinely invalid input and for the valid string \"0\", this ambiguity is a frequent source of bugs."
+  },
+  {
+    "id": 36,
+    "level": "Basic",
+    "type": "Code/Output",
+    "topic": "atoi()",
+    "question": "What is the output of: printf(\"%d\", atoi(\"3.9\"));",
+    "options": [
+      "0",
+      "3",
+      "3.9",
+      "4"
+    ],
+    "answer": "B",
+    "explanation": "atoi() stops conversion as soon as it reaches the decimal point, so only the digit \"3\" is converted."
+  },
+  {
+    "id": 37,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atoi()",
+    "question": "Which function is specifically designed to convert a whole-number string into type int for arithmetic use?",
+    "options": [
+      "toupper()",
+      "atoi()",
+      "atof()",
+      "isdigit()"
+    ],
+    "answer": "B",
+    "explanation": "atoi() is the standard function for converting integer-valued numeric strings into type int."
+  },
+  {
+    "id": 38,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atoi()",
+    "question": "What does atoi() return for the input string \"0\"?",
+    "options": [
+      "Undefined behaviour",
+      "A runtime error",
+      "0",
+      "NULL"
+    ],
+    "answer": "C",
+    "explanation": "The string \"0\" is validly parsed, and atoi() correctly returns the integer 0."
+  },
+  {
+    "id": 39,
+    "level": "Basic",
+    "type": "Assertion-Reason",
+    "topic": "atoi()",
+    "question": "Assertion (A): atoi(\"007\") returns 7.\nReason (R): atoi() ignores insignificant leading zeros when computing the numeric value.",
+    "options": [
+      "A is false, R is true",
+      "Both A and R are true, and R correctly explains A",
+      "A is true, R is false",
+      "Both A and R are false"
+    ],
+    "answer": "B",
+    "explanation": "Leading zeros do not change the numeric value of the digits that follow, so atoi() correctly returns 7."
+  },
+  {
+    "id": 40,
+    "level": "Basic",
+    "type": "Statement-Based",
+    "topic": "atoi()",
+    "question": "Which statement about atoi()'s handling of very large numeric strings is correct?",
+    "options": [
+      "It raises a compile-time error",
+      "It always returns INT_MAX in such cases",
+      "The behaviour is undefined if the value exceeds the range representable by int",
+      "It automatically promotes the result to type long"
+    ],
+    "answer": "C",
+    "explanation": "atoi() performs no overflow checking, so converting a value outside int's range results in undefined behaviour."
+  },
+  {
+    "id": 41,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atoi()",
+    "question": "What is the key difference in the outputs of atoi(\"12\") and atof(\"12\")?",
+    "options": [
+      "atoi() returns a string, while atof() returns an int",
+      "atof() returns a string, while atoi() returns an int",
+      "atoi() returns the int value 12, while atof() returns the double value 12.0",
+      "Both functions return an identical type and value"
+    ],
+    "answer": "C",
+    "explanation": "Although both parse the same digits, atoi() and atof() differ in the return type of the converted result."
+  },
+  {
+    "id": 42,
+    "level": "Basic",
+    "type": "Fill in the Blank",
+    "topic": "atoi()",
+    "question": "Fill in the blank: atoi() converts the initial portion of a string to an ____ value.",
+    "options": [
+      "boolean",
+      "integer",
+      "character",
+      "floating-point"
+    ],
+    "answer": "B",
+    "explanation": "atoi() is specifically designed for converting a numeric string into an integer."
+  },
+  {
+    "id": 43,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atoi()",
+    "question": "What is the result of atoi(\"+56\")?",
+    "options": [
+      "-56",
+      "A runtime error",
+      "56",
+      "0"
+    ],
+    "answer": "C",
+    "explanation": "atoi() correctly interprets the optional leading '+' sign, so the result is a positive 56."
+  },
+  {
+    "id": 44,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "atoi()",
+    "question": "Which statement best describes atoi()'s behaviour on encountering a non-digit character in the middle of the string?",
+    "options": [
+      "It raises a runtime exception",
+      "It immediately returns 0 regardless of prior digits",
+      "The non-digit character is skipped and parsing continues",
+      "Conversion stops at that character and the value parsed so far is returned"
+    ],
+    "answer": "D",
+    "explanation": "atoi() halts conversion the moment it encounters a character that is not part of a valid integer."
+  },
+  {
+    "id": 45,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "toupper()",
+    "question": "What is the purpose of toupper()?",
+    "options": [
+      "To check if a character is uppercase",
+      "To convert an uppercase letter to lowercase",
+      "To convert a lowercase letter to its uppercase equivalent",
+      "To convert a character to a digit"
+    ],
+    "answer": "C",
+    "explanation": "toupper() converts lowercase alphabetic characters to their corresponding uppercase form."
+  },
+  {
+    "id": 46,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "toupper()",
+    "question": "Which header file declares toupper()?",
+    "options": [
+      "string.h",
+      "stdlib.h",
+      "ctype.h",
+      "stdio.h"
+    ],
+    "answer": "C",
+    "explanation": "toupper() is a character-handling function declared in ctype.h."
+  },
+  {
+    "id": 47,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "toupper()",
+    "question": "What is the return type of toupper()?",
+    "options": [
+      "char",
+      "int",
+      "double",
+      "void"
+    ],
+    "answer": "B",
+    "explanation": "toupper() returns an int representing the (possibly converted) character."
+  },
+  {
+    "id": 48,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "toupper()",
+    "question": "What does toupper('a') return?",
+    "options": [
+      "'a' unchanged",
+      "A runtime error",
+      "'A'",
+      "97 (unchanged ASCII)"
+    ],
+    "answer": "C",
+    "explanation": "toupper() converts the lowercase letter 'a' to its uppercase equivalent 'A'."
+  },
+  {
+    "id": 49,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "toupper()",
+    "question": "What does toupper('A') return, given an already uppercase input?",
+    "options": [
+      "'A' (unchanged)",
+      "'a'",
+      "A runtime error",
+      "0"
+    ],
+    "answer": "A",
+    "explanation": "If the character is already uppercase, toupper() simply returns it unchanged."
+  },
+  {
+    "id": 50,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "toupper()",
+    "question": "What does toupper('5') return for a digit character?",
+    "options": [
+      "0",
+      "'E'",
+      "A runtime error",
+      "'5' (unchanged)"
+    ],
+    "answer": "D",
+    "explanation": "toupper() only affects lowercase alphabetic characters; non-letter characters are returned unchanged."
+  },
+  {
+    "id": 51,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "toupper()",
+    "question": "What argument type does toupper() expect?",
+    "options": [
+      "int (representing a character)",
+      "float",
+      "char* (a string)",
+      "A string literal"
+    ],
+    "answer": "A",
+    "explanation": "toupper() takes a single int argument representing the character code to convert."
+  },
+  {
+    "id": 52,
+    "level": "Basic",
+    "type": "Code/Output",
+    "topic": "toupper()",
+    "question": "What is the output of: printf(\"%c\", toupper('z'));",
+    "options": [
+      "Y",
+      "A runtime error",
+      "Z",
+      "z"
+    ],
+    "answer": "C",
+    "explanation": "toupper() converts the lowercase letter 'z' to its uppercase equivalent 'Z'."
+  },
+  {
+    "id": 53,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "toupper()",
+    "question": "What happens if toupper() is applied to a special character like '@'?",
+    "options": [
+      "It causes a runtime error",
+      "It is returned unchanged since it is not a lowercase letter",
+      "It is converted to a random letter",
+      "It is somehow converted to an uppercase '@'"
+    ],
+    "answer": "B",
+    "explanation": "toupper() only converts lowercase letters; all other characters pass through unaffected."
+  },
+  {
+    "id": 54,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "toupper()",
+    "question": "Which approach correctly converts an entire string to uppercase, character by character?",
+    "options": [
+      "Applying atoi() to the string",
+      "Applying isalpha() to the string",
+      "A single direct call to toupper() on the whole string",
+      "A loop that applies toupper() to each character of the string"
+    ],
+    "answer": "D",
+    "explanation": "Since toupper() only works on one character at a time, converting a whole string requires iterating over it."
+  },
+  {
+    "id": 55,
+    "level": "Basic",
+    "type": "Code/Output",
+    "topic": "toupper()",
+    "question": "What is the output of: printf(\"%c\", toupper('m'));",
+    "options": [
+      "m",
+      "N",
+      "n",
+      "M"
+    ],
+    "answer": "D",
+    "explanation": "toupper() converts the lowercase letter 'm' to its uppercase form 'M'."
+  },
+  {
+    "id": 56,
+    "level": "Basic",
+    "type": "Assertion-Reason",
+    "topic": "toupper()",
+    "question": "Assertion (A): toupper() changes the case of alphabetic characters only.\nReason (R): Non-alphabetic characters, such as digits and symbols, have no case to change.",
+    "options": [
+      "A is false, R is true",
+      "Both A and R are true, and R correctly explains A",
+      "A is true, R is false",
+      "Both A and R are false"
+    ],
+    "answer": "B",
+    "explanation": "Since digits and symbols lack an upper/lower case distinction, toupper() leaves them unchanged."
+  },
+  {
+    "id": 57,
+    "level": "Basic",
+    "type": "Statement-Based",
+    "topic": "toupper()",
+    "question": "Which of the following statements about toupper() is correct?",
+    "options": [
+      "It converts numeric digits into letters",
+      "It permanently modifies the original character variable in memory",
+      "It always adds a fixed offset to any character's ASCII value",
+      "It returns the character unchanged if it is not a lowercase letter"
+    ],
+    "answer": "D",
+    "explanation": "toupper() only alters lowercase letters; every other kind of input is returned unchanged."
+  },
+  {
+    "id": 58,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "toupper()",
+    "question": "What is the result of toupper(toupper('b'))?",
+    "options": [
+      "'B'",
+      "A runtime error",
+      "'C'",
+      "'b' unchanged"
+    ],
+    "answer": "A",
+    "explanation": "Applying toupper() a second time has no further effect since 'B' is already uppercase."
+  },
+  {
+    "id": 59,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "tolower()",
+    "question": "What is the purpose of tolower()?",
+    "options": [
+      "To check if a character is a letter",
+      "To convert a lowercase letter to uppercase",
+      "To convert digits into characters",
+      "To convert an uppercase letter to its lowercase equivalent"
+    ],
+    "answer": "D",
+    "explanation": "tolower() converts uppercase alphabetic characters to their corresponding lowercase form."
+  },
+  {
+    "id": 60,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "tolower()",
+    "question": "Which header file declares tolower()?",
+    "options": [
+      "ctype.h",
+      "stdio.h",
+      "stdlib.h",
+      "string.h"
+    ],
+    "answer": "A",
+    "explanation": "tolower() is declared in ctype.h alongside the other character-handling functions."
+  },
+  {
+    "id": 61,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "tolower()",
+    "question": "What is the return type of tolower()?",
+    "options": [
+      "float",
+      "char",
+      "int",
+      "void"
+    ],
+    "answer": "C",
+    "explanation": "tolower() returns an int representing the (possibly converted) character."
+  },
+  {
+    "id": 62,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "tolower()",
+    "question": "What does tolower('X') return?",
+    "options": [
+      "'x'",
+      "88 (unchanged ASCII)",
+      "'X' unchanged",
+      "A runtime error"
+    ],
+    "answer": "A",
+    "explanation": "tolower() converts the uppercase letter 'X' to its lowercase equivalent 'x'."
+  },
+  {
+    "id": 63,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "tolower()",
+    "question": "What does tolower('x') return when the input is already lowercase?",
+    "options": [
+      "0",
+      "'X'",
+      "'x' (unchanged)",
+      "A runtime error"
+    ],
+    "answer": "C",
+    "explanation": "If the character is already lowercase, tolower() simply returns it unchanged."
+  },
+  {
+    "id": 64,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "tolower()",
+    "question": "What does tolower('9') return for a digit character?",
+    "options": [
+      "'9' (unchanged)",
+      "0",
+      "A runtime error",
+      "'a'"
+    ],
+    "answer": "A",
+    "explanation": "tolower() only affects uppercase letters; digit characters are returned unchanged."
+  },
+  {
+    "id": 65,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "tolower()",
+    "question": "What argument type does tolower() accept?",
+    "options": [
+      "int (representing a character)",
+      "char* (a string)",
+      "double",
+      "A string literal"
+    ],
+    "answer": "A",
+    "explanation": "tolower() takes a single int argument representing the character code to convert."
+  },
+  {
+    "id": 66,
+    "level": "Basic",
+    "type": "Code/Output",
+    "topic": "tolower()",
+    "question": "What is the output of: printf(\"%c\", tolower('Q'));",
+    "options": [
+      "A runtime error",
+      "Q",
+      "p",
+      "q"
+    ],
+    "answer": "D",
+    "explanation": "tolower() converts the uppercase letter 'Q' to its lowercase equivalent 'q'."
+  },
+  {
+    "id": 67,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "tolower()",
+    "question": "What happens if tolower() is applied to a punctuation mark like '#'?",
+    "options": [
+      "It causes undefined behaviour",
+      "It is converted into a lowercase letter",
+      "It is returned unchanged since it is not an uppercase letter",
+      "It causes a compilation error"
+    ],
+    "answer": "C",
+    "explanation": "tolower() only converts uppercase letters; every other character remains unchanged."
+  },
+  {
+    "id": 68,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "tolower()",
+    "question": "Which construct is needed to convert an entire string to lowercase?",
+    "options": [
+      "Applying atof() to the string",
+      "A loop that applies tolower() to each character of the string",
+      "Applying isalpha() to the string",
+      "A single call to tolower() passing the whole string"
+    ],
+    "answer": "B",
+    "explanation": "tolower() works on only one character at a time, so a loop is required to process a full string."
+  },
+  {
+    "id": 69,
+    "level": "Basic",
+    "type": "Code/Output",
+    "topic": "tolower()",
+    "question": "What is the output of: printf(\"%c\", tolower('D'));",
+    "options": [
+      "e",
+      "d",
+      "D",
+      "c"
+    ],
+    "answer": "B",
+    "explanation": "tolower() converts the uppercase letter 'D' to its lowercase equivalent 'd'."
+  },
+  {
+    "id": 70,
+    "level": "Basic",
+    "type": "Assertion-Reason",
+    "topic": "tolower()",
+    "question": "Assertion (A): tolower() has no effect on digit characters.\nReason (R): Digit characters do not have an uppercase or lowercase form.",
+    "options": [
+      "A is true, R is false",
+      "A is false, R is true",
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are false"
+    ],
+    "answer": "C",
+    "explanation": "Since digits lack case, tolower() leaves them completely unaffected."
+  },
+  {
+    "id": 71,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "tolower()",
+    "question": "Which statement correctly describes tolower()'s behaviour?",
+    "options": [
+      "It always adds a fixed offset to every character's ASCII value",
+      "It returns the argument unchanged if it is not an uppercase letter",
+      "It permanently modifies the original variable passed to it",
+      "It works only on vowels"
+    ],
+    "answer": "B",
+    "explanation": "tolower() converts only uppercase alphabetic characters; everything else is passed through unchanged."
+  },
+  {
+    "id": 72,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "tolower()",
+    "question": "What is the result of tolower(tolower('R'))?",
+    "options": [
+      "A runtime error",
+      "'s'",
+      "'r'",
+      "'R' unchanged"
+    ],
+    "answer": "C",
+    "explanation": "Applying tolower() a second time has no further effect since 'r' is already lowercase."
+  },
+  {
+    "id": 73,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalnum()",
+    "question": "What is the purpose of isalnum()?",
+    "options": [
+      "To check whether an entire string is numeric",
+      "To check whether a character is a letter only",
+      "To check whether a character is alphanumeric (a letter or a digit)",
+      "To convert a character into alphanumeric form"
+    ],
+    "answer": "C",
+    "explanation": "isalnum() tests whether a character is either an alphabetic letter or a decimal digit."
+  },
+  {
+    "id": 74,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalnum()",
+    "question": "Which header file declares isalnum()?",
+    "options": [
+      "stdio.h",
+      "ctype.h",
+      "string.h",
+      "stdlib.h"
+    ],
+    "answer": "B",
+    "explanation": "isalnum() is one of the character classification functions declared in ctype.h."
+  },
+  {
+    "id": 75,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalnum()",
+    "question": "What is the return type of isalnum()?",
+    "options": [
+      "char",
+      "int",
+      "bool",
+      "void"
+    ],
+    "answer": "B",
+    "explanation": "isalnum() returns a nonzero integer to indicate true, or 0 to indicate false."
+  },
+  {
+    "id": 76,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalnum()",
+    "question": "What does isalnum('7') return?",
+    "options": [
+      "A runtime error",
+      "The character '7' itself",
+      "A nonzero value (true)",
+      "Zero (false)"
+    ],
+    "answer": "C",
+    "explanation": "'7' is a digit character, so isalnum() classifies it as alphanumeric and returns nonzero."
+  },
+  {
+    "id": 77,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalnum()",
+    "question": "What does isalnum('$') return?",
+    "options": [
+      "The character '$' itself",
+      "A runtime error",
+      "Zero (false)",
+      "A nonzero value (true)"
+    ],
+    "answer": "C",
+    "explanation": "'$' is neither a letter nor a digit, so isalnum() returns 0."
+  },
+  {
+    "id": 78,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalnum()",
+    "question": "What does isalnum('K') return for an uppercase letter?",
+    "options": [
+      "Zero (false)",
+      "A runtime error",
+      "The character 'K' itself",
+      "A nonzero value (true)"
+    ],
+    "answer": "D",
+    "explanation": "'K' is an alphabetic character, so isalnum() returns a nonzero (true) value."
+  },
+  {
+    "id": 79,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalnum()",
+    "question": "What argument type does isalnum() take?",
+    "options": [
+      "float",
+      "A string literal",
+      "int (representing a character)",
+      "char* (a string)"
+    ],
+    "answer": "C",
+    "explanation": "isalnum() accepts a single int argument representing the character to be tested."
+  },
+  {
+    "id": 80,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "isalnum()",
+    "question": "What is the output of: if(isalnum('_')) printf(\"Yes\"); else printf(\"No\");",
+    "options": [
+      "No",
+      "Yes",
+      "A runtime error",
+      "Blank output"
+    ],
+    "answer": "A",
+    "explanation": "The underscore character is not alphanumeric, so isalnum() evaluates to false."
+  },
+  {
+    "id": 81,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "isalnum()",
+    "question": "A student assumes isalnum() checks only letters. What is incorrect about this assumption?",
+    "options": [
+      "isalnum() checks both letters and digits, not just letters",
+      "isalnum() also treats whitespace as alphanumeric",
+      "isalnum() checks only digits, not letters",
+      "The assumption is completely correct"
+    ],
+    "answer": "A",
+    "explanation": "isalnum() returns true for both alphabetic characters and numeric digits."
+  },
+  {
+    "id": 82,
+    "level": "Intermediate",
+    "type": "Statement-Based",
+    "topic": "isalnum()",
+    "question": "Which statement about isalnum() is correct?",
+    "options": [
+      "It returns true only for digit characters",
+      "It returns true for spaces and punctuation marks too",
+      "It returns true for the ranges 'a'-'z', 'A'-'Z', and '0'-'9'",
+      "It converts non-alphanumeric characters into blanks"
+    ],
+    "answer": "C",
+    "explanation": "isalnum() effectively combines the checks performed by isalpha() and isdigit()."
+  },
+  {
+    "id": 83,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "isalnum()",
+    "question": "What is the output of: printf(\"%d\", isalnum('!') ? 1 : 0);",
+    "options": [
+      "33",
+      "1",
+      "A runtime error",
+      "0"
+    ],
+    "answer": "D",
+    "explanation": "'!' is a punctuation symbol, not alphanumeric, so isalnum() evaluates to false (0)."
+  },
+  {
+    "id": 84,
+    "level": "Intermediate",
+    "type": "Assertion-Reason",
+    "topic": "isalnum()",
+    "question": "Assertion (A): isalnum('A') and isalnum('9') both return nonzero values.\nReason (R): isalnum() considers both alphabetic and numeric characters as valid.",
+    "options": [
+      "Both A and R are false",
+      "A is false, R is true",
+      "A is true, R is false",
+      "Both A and R are true, and R correctly explains A"
+    ],
+    "answer": "D",
+    "explanation": "Since 'A' is a letter and '9' is a digit, both satisfy the isalnum() test."
+  },
+  {
+    "id": 85,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalnum()",
+    "question": "Which of these characters would isalnum() classify as false?",
+    "options": [
+      "'3'",
+      "' ' (a blank space)",
+      "'Z'",
+      "'m'"
+    ],
+    "answer": "B",
+    "explanation": "A blank space is neither a letter nor a digit, so isalnum() returns false for it."
+  },
+  {
+    "id": 86,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalnum()",
+    "question": "What is a practical use of isalnum()?",
+    "options": [
+      "Terminating input validation midway",
+      "Validating that a username contains only letters and digits",
+      "Converting a password to uppercase",
+      "Measuring the length of a string"
+    ],
+    "answer": "B",
+    "explanation": "isalnum() is commonly used in input validation to ensure that only alphanumeric characters are present."
+  },
+  {
+    "id": 87,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalpha()",
+    "question": "What is the purpose of isalpha()?",
+    "options": [
+      "To check whether a character is a digit",
+      "To check whether an entire string contains only letters",
+      "To check whether a character is an alphabetic letter",
+      "To convert a character into a letter"
+    ],
+    "answer": "C",
+    "explanation": "isalpha() tests whether a given character falls in the alphabetic range (a-z or A-Z)."
+  },
+  {
+    "id": 88,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalpha()",
+    "question": "Which header file declares isalpha()?",
+    "options": [
+      "stdio.h",
+      "stdlib.h",
+      "math.h",
+      "ctype.h"
+    ],
+    "answer": "D",
+    "explanation": "isalpha() is part of the character classification group declared in ctype.h."
+  },
+  {
+    "id": 89,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalpha()",
+    "question": "What is the return type of isalpha()?",
+    "options": [
+      "char",
+      "int",
+      "bool",
+      "void"
+    ],
+    "answer": "B",
+    "explanation": "isalpha() returns a nonzero value if the test is true, or 0 if it is false."
+  },
+  {
+    "id": 90,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalpha()",
+    "question": "What does isalpha('G') return?",
+    "options": [
+      "A nonzero value (true)",
+      "A runtime error",
+      "The character 'G' itself",
+      "Zero (false)"
+    ],
+    "answer": "A",
+    "explanation": "'G' is an alphabetic character, so isalpha() returns a nonzero value."
+  },
+  {
+    "id": 91,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalpha()",
+    "question": "What does isalpha('4') return for a digit?",
+    "options": [
+      "A nonzero value (true)",
+      "The character '4' itself",
+      "A runtime error",
+      "Zero (false)"
+    ],
+    "answer": "D",
+    "explanation": "Digits are not classified as alphabetic, so isalpha() returns 0 for '4'."
+  },
+  {
+    "id": 92,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalpha()",
+    "question": "What does isalpha(' ') return for a blank space character?",
+    "options": [
+      "Undefined behaviour",
+      "A nonzero value (true)",
+      "Zero (false)",
+      "A runtime error"
+    ],
+    "answer": "C",
+    "explanation": "A blank space is not a letter, so isalpha() correctly returns false."
+  },
+  {
+    "id": 93,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalpha()",
+    "question": "What argument type does isalpha() accept?",
+    "options": [
+      "double",
+      "int (representing a character)",
+      "A string literal",
+      "char* (a string)"
+    ],
+    "answer": "B",
+    "explanation": "isalpha() takes a single character, represented as an int, as its argument."
+  },
+  {
+    "id": 94,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "isalpha()",
+    "question": "What is the output of: printf(\"%d\", isalpha('z') != 0);",
+    "options": [
+      "122 always",
+      "0",
+      "The character 'z' itself",
+      "1"
+    ],
+    "answer": "D",
+    "explanation": "'z' is alphabetic, so isalpha() returns a nonzero value, and the comparison against 0 evaluates to 1 (true)."
+  },
+  {
+    "id": 95,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalpha()",
+    "question": "Which incorrect belief do students often have about isalpha()?",
+    "options": [
+      "Believing that isalpha() also returns true for digit characters",
+      "Believing isalpha() returns an int",
+      "Believing isalpha() is declared in ctype.h",
+      "Believing isalpha() checks letters only"
+    ],
+    "answer": "A",
+    "explanation": "isalpha() strictly excludes digits; only alphabetic characters satisfy this test."
+  },
+  {
+    "id": 96,
+    "level": "Intermediate",
+    "type": "Statement-Based",
+    "topic": "isalpha()",
+    "question": "Which statement about isalpha() is correct?",
+    "options": [
+      "It distinguishes alphabetic letters from all other character types, including digits",
+      "It checks specifically for whitespace characters",
+      "It converts non-letters into letters",
+      "It treats digits as letters"
+    ],
+    "answer": "A",
+    "explanation": "isalpha() is used purely to detect whether a character is alphabetic."
+  },
+  {
+    "id": 97,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "isalpha()",
+    "question": "What is the output of: if(isalpha('&')) printf(\"Letter\"); else printf(\"Not a letter\");",
+    "options": [
+      "Blank output",
+      "A runtime error",
+      "Letter",
+      "Not a letter"
+    ],
+    "answer": "D",
+    "explanation": "'&' is a symbol, not a letter, so isalpha() evaluates to false."
+  },
+  {
+    "id": 98,
+    "level": "Intermediate",
+    "type": "Assertion-Reason",
+    "topic": "isalpha()",
+    "question": "Assertion (A): isalpha('a') and isalpha('Z') both return true.\nReason (R): isalpha() checks for both lowercase and uppercase alphabetic characters.",
+    "options": [
+      "Both A and R are true, and R correctly explains A",
+      "A is true, R is false",
+      "A is false, R is true",
+      "Both A and R are false"
+    ],
+    "answer": "A",
+    "explanation": "isalpha() covers the entire alphabetic range, including both lowercase and uppercase letters."
+  },
+  {
+    "id": 99,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isalpha()",
+    "question": "What is a typical use case for isalpha()?",
+    "options": [
+      "Converting a numeric string to a number",
+      "Terminating a program on invalid input",
+      "Validating that a name field contains only alphabetic characters",
+      "Checking whether a number is even"
+    ],
+    "answer": "C",
+    "explanation": "isalpha() is commonly used in input validation to ensure that a field contains only letters."
+  },
+  {
+    "id": 100,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isdigit()",
+    "question": "What is the purpose of isdigit()?",
+    "options": [
+      "To convert a character into a digit",
+      "To check whether an entire string is numeric",
+      "To check whether a character is alphabetic",
+      "To check whether a character is a decimal digit (0-9)"
+    ],
+    "answer": "D",
+    "explanation": "isdigit() tests whether a character falls within the range '0' to '9'."
+  },
+  {
+    "id": 101,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isdigit()",
+    "question": "Which header file declares isdigit()?",
+    "options": [
+      "stdio.h",
+      "stdlib.h",
+      "ctype.h",
+      "string.h"
+    ],
+    "answer": "C",
+    "explanation": "isdigit() belongs to the character classification group declared in ctype.h."
+  },
+  {
+    "id": 102,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isdigit()",
+    "question": "What is the return type of isdigit()?",
+    "options": [
+      "bool",
+      "char",
+      "void",
+      "int"
+    ],
+    "answer": "D",
+    "explanation": "isdigit() returns a nonzero value for true, and 0 for false."
+  },
+  {
+    "id": 103,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isdigit()",
+    "question": "What does isdigit('5') return?",
+    "options": [
+      "A runtime error",
+      "Zero (false)",
+      "A nonzero value (true)",
+      "The character '5' itself"
+    ],
+    "answer": "C",
+    "explanation": "'5' is a decimal digit, so isdigit() returns a nonzero value."
+  },
+  {
+    "id": 104,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isdigit()",
+    "question": "What does isdigit('B') return for a letter?",
+    "options": [
+      "A runtime error",
+      "A nonzero value (true)",
+      "The character 'B' itself",
+      "Zero (false)"
+    ],
+    "answer": "D",
+    "explanation": "Letters are not digits, so isdigit() returns 0 for 'B'."
+  },
+  {
+    "id": 105,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isdigit()",
+    "question": "What does isdigit('.') return for a decimal point character?",
+    "options": [
+      "Undefined behaviour",
+      "Zero (false)",
+      "A runtime error",
+      "A nonzero value (true)"
+    ],
+    "answer": "B",
+    "explanation": "A period is a punctuation mark, not a digit, so isdigit() returns false for it."
+  },
+  {
+    "id": 106,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isdigit()",
+    "question": "What argument type does isdigit() accept?",
+    "options": [
+      "float",
+      "char* (a string)",
+      "int (representing a character)",
+      "A string literal"
+    ],
+    "answer": "C",
+    "explanation": "isdigit() takes a single character, passed as an int, as its argument."
+  },
+  {
+    "id": 107,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "isdigit()",
+    "question": "What is the output of: printf(\"%d\", isdigit('0') != 0);",
+    "options": [
+      "48 always",
+      "0",
+      "1",
+      "The character '0' itself"
+    ],
+    "answer": "C",
+    "explanation": "'0' is a valid digit character, so isdigit() returns a nonzero result, giving 1 after the comparison."
+  },
+  {
+    "id": 108,
+    "level": "Intermediate",
+    "type": "Common Mistake",
+    "topic": "isdigit()",
+    "question": "What incorrect assumption do students often make about isdigit()?",
+    "options": [
+      "Assuming isdigit() returns an int",
+      "Assuming isdigit() checks the numeric value of an int variable rather than a character code",
+      "Assuming isdigit() is declared in ctype.h",
+      "Assuming isdigit() takes one argument"
+    ],
+    "answer": "B",
+    "explanation": "isdigit() checks whether a character symbol represents a digit; it is not meant to test whether an integer's value lies between 0 and 9."
+  },
+  {
+    "id": 109,
+    "level": "Intermediate",
+    "type": "Statement-Based",
+    "topic": "isdigit()",
+    "question": "Which statement about isdigit() is correct?",
+    "options": [
+      "It returns true for any positive numeric value",
+      "It returns true for both letters and digits",
+      "It returns true only for the characters '0' through '9'",
+      "It converts a digit character into its numeric value"
+    ],
+    "answer": "C",
+    "explanation": "isdigit() strictly checks only for decimal digit characters."
+  },
+  {
+    "id": 110,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "isdigit()",
+    "question": "What is the output of: if(isdigit('9')) printf(\"Digit\"); else printf(\"Not digit\");",
+    "options": [
+      "Not digit",
+      "Digit",
+      "Blank output",
+      "A runtime error"
+    ],
+    "answer": "B",
+    "explanation": "'9' is a valid decimal digit, so isdigit() evaluates to true."
+  },
+  {
+    "id": 111,
+    "level": "Intermediate",
+    "type": "Assertion-Reason",
+    "topic": "isdigit()",
+    "question": "Assertion (A): isdigit() and isalnum() both return true for the character '3'.\nReason (R): isalnum() includes the same digit test performed by isdigit().",
+    "options": [
+      "Both A and R are true, and R correctly explains A",
+      "A is false, R is true",
+      "A is true, R is false",
+      "Both A and R are false"
+    ],
+    "answer": "A",
+    "explanation": "Since '3' is a digit, both isdigit() and isalnum() classify it as true."
+  },
+  {
+    "id": 112,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "isdigit()",
+    "question": "What is a common practical use of isdigit()?",
+    "options": [
+      "Terminating the program on invalid data",
+      "Measuring the length of a string",
+      "Validating that a user has entered only numeric characters in an input field",
+      "Converting text to uppercase"
+    ],
+    "answer": "C",
+    "explanation": "isdigit() is frequently used character-by-character to confirm that input consists purely of digits."
+  },
+  {
+    "id": 113,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "exit()",
+    "question": "What is the purpose of exit()?",
+    "options": [
+      "To exit only the current loop",
+      "To terminate program execution immediately",
+      "To restart the program from the beginning",
+      "To pause program execution temporarily"
+    ],
+    "answer": "B",
+    "explanation": "exit() terminates the entire program, not just the current function or loop."
+  },
+  {
+    "id": 114,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "exit()",
+    "question": "Which header file declares exit()?",
+    "options": [
+      "stdlib.h",
+      "stdio.h",
+      "process.h",
+      "ctype.h"
+    ],
+    "answer": "A",
+    "explanation": "In standard C, exit() is declared in stdlib.h."
+  },
+  {
+    "id": 115,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "exit()",
+    "question": "What is the argument type of exit()?",
+    "options": [
+      "char*",
+      "int",
+      "void",
+      "double"
+    ],
+    "answer": "B",
+    "explanation": "exit() takes a single integer status code as its argument."
+  },
+  {
+    "id": 116,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "exit()",
+    "question": "What does exit(0) typically indicate?",
+    "options": [
+      "An infinite loop was detected",
+      "An error occurred during execution",
+      "The program crashed unexpectedly",
+      "Successful program termination"
+    ],
+    "answer": "D",
+    "explanation": "A status of 0, equivalent to EXIT_SUCCESS, conventionally signals successful completion."
+  },
+  {
+    "id": 117,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "exit()",
+    "question": "What does exit(1) (a nonzero status) typically indicate?",
+    "options": [
+      "A harmless warning message",
+      "Abnormal or unsuccessful program termination",
+      "Successful termination",
+      "The program is merely paused"
+    ],
+    "answer": "B",
+    "explanation": "A nonzero exit status conventionally indicates that some error or abnormal condition occurred."
+  },
+  {
+    "id": 118,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "exit()",
+    "question": "What does exit() return to the code that called it?",
+    "options": [
+      "Nothing; it never returns to the caller",
+      "A pointer to a status message",
+      "The status code, as an int",
+      "A string describing the result"
+    ],
+    "answer": "A",
+    "explanation": "exit() halts execution entirely, so control never returns to the calling code; the status is passed to the operating system instead."
+  },
+  {
+    "id": 119,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "exit()",
+    "question": "Which two standard macros are commonly passed as arguments to exit()?",
+    "options": [
+      "SUCCESS and ERROR",
+      "EXIT_SUCCESS and EXIT_FAILURE",
+      "TRUE and FALSE",
+      "NULL and EOF"
+    ],
+    "answer": "B",
+    "explanation": "stdlib.h defines the macros EXIT_SUCCESS (0) and EXIT_FAILURE (typically 1) for use with exit()."
+  },
+  {
+    "id": 120,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "exit()",
+    "question": "What happens to open file streams when exit() is called?",
+    "options": [
+      "They cause an immediate crash",
+      "They remain open indefinitely",
+      "They are deleted from the disk",
+      "They are automatically flushed and closed"
+    ],
+    "answer": "D",
+    "explanation": "As part of its cleanup, exit() flushes output buffers and closes open streams before the program terminates."
+  },
+  {
+    "id": 121,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "exit()",
+    "question": "What is the output/flow of: int main(){ printf(\"A\"); exit(0); printf(\"B\"); return 0; }",
+    "options": [
+      "Only \"A\" is printed; \"B\" is never executed",
+      "A compilation error occurs",
+      "Only \"B\" is printed",
+      "Both \"A\" and \"B\" are printed"
+    ],
+    "answer": "A",
+    "explanation": "exit(0) terminates the program immediately after \"A\" is printed, making the following statement unreachable."
+  },
+  {
+    "id": 122,
+    "level": "Intermediate",
+    "type": "Error Identification",
+    "topic": "exit()",
+    "question": "What is wrong with calling exit() inside a function that is expected to return a value for further processing?",
+    "options": [
+      "The program terminates immediately, so no value is ever returned to the caller",
+      "It causes a compile-time error",
+      "It automatically returns 0 to the caller function",
+      "It only exits the current function, not the program"
+    ],
+    "answer": "A",
+    "explanation": "exit() ends the entire program at once, bypassing the normal function-return mechanism."
+  },
+  {
+    "id": 123,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "exit()",
+    "question": "Which of the following statements about exit() is true?",
+    "options": [
+      "exit() only works inside loops",
+      "exit() always requires two arguments",
+      "exit() can be called from any function, not just main()",
+      "exit() can only be called from within main()"
+    ],
+    "answer": "C",
+    "explanation": "exit() is a general-purpose function and can terminate the program from anywhere in the code."
+  },
+  {
+    "id": 124,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "exit()",
+    "question": "What is the key difference between calling exit() and using a plain return statement inside main()?",
+    "options": [
+      "exit() can be called from any function and always terminates the whole program, while return only ends main() when used there",
+      "return performs cleanup, while exit() does not",
+      "exit() cannot accept any argument",
+      "They behave identically in every situation"
+    ],
+    "answer": "A",
+    "explanation": "A return inside a non-main function merely exits that function, whereas exit() always terminates the entire program."
+  },
+  {
+    "id": 125,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "exit()",
+    "question": "What is the output/flow of: int main(){ int x=5; if(x==5) exit(0); printf(\"%d\",x); return 0; }",
+    "options": [
+      "It prints 5",
+      "A compilation error occurs",
+      "Nothing is printed; the program terminates before the printf statement executes",
+      "It prints 0"
+    ],
+    "answer": "C",
+    "explanation": "Since x==5 is true, exit(0) executes and the printf statement is never reached."
+  },
+  {
+    "id": 126,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "exit()",
+    "question": "Which of the following is a valid practical use of exit()?",
+    "options": [
+      "Testing whether a character is a digit",
+      "Terminating a program early when a critical file fails to open",
+      "Skipping a single iteration of a loop",
+      "Converting a string to a number"
+    ],
+    "answer": "B",
+    "explanation": "exit() is commonly used to safely end a program when a critical error, such as a failed file operation, occurs."
+  },
+  {
+    "id": 127,
+    "level": "Intermediate",
+    "type": "Assertion-Reason",
+    "topic": "exit()",
+    "question": "Assertion (A): exit() invokes any functions registered with atexit() before the program terminates.\nReason (R): exit() is designed to perform proper cleanup before ending the program.",
+    "options": [
+      "A is true, R is false",
+      "Both A and R are false",
+      "Both A and R are true, and R correctly explains A",
+      "A is false, R is true"
+    ],
+    "answer": "C",
+    "explanation": "exit() calls atexit()-registered functions as part of its standard cleanup procedure before termination."
+  },
+  {
+    "id": 128,
+    "level": "Intermediate",
+    "type": "Fill in the Blank",
+    "topic": "exit()",
+    "question": "Fill in the blank: exit() passes its integer argument as the program's ____ to the operating system.",
+    "options": [
+      "return address",
+      "memory address",
+      "process ID",
+      "exit (termination) status"
+    ],
+    "answer": "D",
+    "explanation": "The integer argument supplied to exit() becomes the exit status that is reported to the operating system."
+  },
+  {
+    "id": 129,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Comparison",
+    "question": "What is the key difference between atof() and atoi()?",
+    "options": [
+      "atof() returns an int, while atoi() returns a double",
+      "Both functions return exactly the same type",
+      "atoi() handles decimals, while atof() does not",
+      "atof() returns a double, while atoi() returns an int"
+    ],
+    "answer": "D",
+    "explanation": "atof() is designed for floating-point conversion, whereas atoi() is designed for integer conversion."
+  },
+  {
+    "id": 130,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Comparison",
+    "question": "Which function correctly converts the string \"3.14\" without losing its fractional part?",
+    "options": [
+      "atof()",
+      "isdigit()",
+      "toupper()",
+      "atoi()"
+    ],
+    "answer": "A",
+    "explanation": "atoi() would truncate the value at the decimal point, while atof() preserves the fractional part."
+  },
+  {
+    "id": 131,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Comparison",
+    "question": "What is the main difference between toupper() and tolower()?",
+    "options": [
+      "Both functions work only on digit characters",
+      "Both functions perform the exact same conversion",
+      "toupper() only tests case, while tolower() converts it",
+      "toupper() converts lowercase letters to uppercase, while tolower() converts uppercase letters to lowercase"
+    ],
+    "answer": "D",
+    "explanation": "toupper() and tolower() perform exactly opposite case conversions."
+  },
+  {
+    "id": 132,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Comparison",
+    "question": "If a character is already in its target case, how do toupper() and tolower() behave?",
+    "options": [
+      "Both raise a runtime error",
+      "Both convert the character into a digit",
+      "Their behaviour becomes unpredictable",
+      "Both simply return the character unchanged"
+    ],
+    "answer": "D",
+    "explanation": "Neither function alters a character if the requested conversion does not apply to it."
+  },
+  {
+    "id": 133,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Comparison",
+    "question": "What is the key difference between isalnum() and isalpha()?",
+    "options": [
+      "Both functions check only for digits",
+      "isalnum() checks for letters and digits, while isalpha() checks for letters only",
+      "They are functionally identical to each other",
+      "isalpha() checks for letters and digits, while isalnum() checks letters only"
+    ],
+    "answer": "B",
+    "explanation": "isalnum() performs a broader check that includes both letters and digits, unlike isalpha()."
+  },
+  {
+    "id": 134,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Comparison",
+    "question": "What is the key difference between isalpha() and isdigit()?",
+    "options": [
+      "isalpha() tests for digits, while isdigit() tests for letters",
+      "isalpha() tests for alphabetic characters, while isdigit() tests for decimal digit characters",
+      "Both functions test exactly the same condition",
+      "isdigit() also accepts alphabetic characters"
+    ],
+    "answer": "B",
+    "explanation": "These two functions test mutually exclusive categories of characters."
+  },
+  {
+    "id": 135,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Comparison",
+    "question": "Which relationship correctly describes isalnum(), isalpha(), and isdigit()?",
+    "options": [
+      "isalnum() is completely unrelated to isalpha() and isdigit()",
+      "isalpha() internally includes the check performed by isdigit()",
+      "isdigit() internally includes the check performed by isalpha()",
+      "isalnum() returns true whenever either isalpha() or isdigit() would return true for that character"
+    ],
+    "answer": "D",
+    "explanation": "isalnum() effectively combines the results of the isalpha() and isdigit() tests."
+  },
+  {
+    "id": 136,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Comparison",
+    "question": "Which grouping correctly distinguishes conversion functions from testing functions among those in this syllabus?",
+    "options": [
+      "atof(), atoi(), toupper(), and tolower() perform conversions; isalnum(), isalpha(), and isdigit() perform tests",
+      "exit() is classified as a conversion function",
+      "All eight listed functions perform conversions",
+      "All eight listed functions perform tests only"
+    ],
+    "answer": "A",
+    "explanation": "Conversion functions transform a value, while testing functions merely classify a character as true or false."
+  },
+  {
+    "id": 137,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Comparison",
+    "question": "How does exit() differ fundamentally from the other seven functions in this syllabus?",
+    "options": [
+      "exit() has no defined practical use",
+      "exit() terminates the program rather than converting or testing a value",
+      "exit() converts a string into a number",
+      "exit() tests whether a character is valid"
+    ],
+    "answer": "B",
+    "explanation": "Unlike the conversion and testing functions, exit() controls the flow and termination of the program."
+  },
+  {
+    "id": 138,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Comparison",
+    "question": "Which two functions both operate on a single character and return an integer true/false result?",
+    "options": [
+      "atoi() and exit()",
+      "isalpha() and isdigit()",
+      "atof() and atoi()",
+      "toupper() and tolower()"
+    ],
+    "answer": "B",
+    "explanation": "isalpha() and isdigit() are both character-testing functions returning a Boolean-style integer."
+  },
+  {
+    "id": 139,
+    "level": "Intermediate",
+    "type": "Concept",
+    "topic": "Comparison",
+    "question": "Which two functions both operate on a single character and return a converted character (as an int)?",
+    "options": [
+      "toupper() and tolower()",
+      "isalpha() and isalnum()",
+      "atoi() and atof()",
+      "isdigit() and exit()"
+    ],
+    "answer": "A",
+    "explanation": "toupper() and tolower() are both character-conversion functions that return the modified character as an int."
+  },
+  {
+    "id": 140,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "Comparison",
+    "question": "Scenario: A program must validate that a PIN consists only of numeric characters and then convert it into a number. Which two functions are most appropriate together?",
+    "options": [
+      "isalpha() and atof()",
+      "isdigit() for validation, followed by atoi() for conversion",
+      "exit() and isalnum()",
+      "toupper() and tolower()"
+    ],
+    "answer": "B",
+    "explanation": "isdigit() checks that each character is numeric, after which atoi() converts the validated string into an integer."
+  },
+  {
+    "id": 141,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Comparison",
+    "question": "Which statement correctly compares atoi() and isdigit()?",
+    "options": [
+      "Both functions perform exactly the same operation",
+      "atoi() only tests characters without converting them",
+      "atoi() converts a numeric string to an integer, while isdigit() only checks whether a single character is a digit",
+      "isdigit() converts characters into numbers"
+    ],
+    "answer": "C",
+    "explanation": "atoi() is a conversion function, while isdigit() is a testing function; the two serve different purposes."
+  },
+  {
+    "id": 142,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Comparison",
+    "question": "Which function(s) would be used together to build a case-insensitive comparison of two characters?",
+    "options": [
+      "tolower() (or toupper()) applied to both characters before comparing them",
+      "exit() and isalnum()",
+      "atoi() and atof()",
+      "isalpha() and isdigit()"
+    ],
+    "answer": "A",
+    "explanation": "Converting both characters to the same case before comparison ensures the comparison is case-insensitive."
+  },
+  {
+    "id": 143,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "What is the output?\nchar c = 'p';\nprintf(\"%c\", toupper(c));",
+    "options": [
+      "p",
+      "Q",
+      "P",
+      "A runtime error"
+    ],
+    "answer": "C",
+    "explanation": "toupper() converts the lowercase 'p' into its uppercase equivalent 'P'."
+  },
+  {
+    "id": 144,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "What is the output?\nprintf(\"%d\", atoi(\"25\") + atoi(\"15\"));",
+    "options": [
+      "25",
+      "2515",
+      "40",
+      "A runtime error"
+    ],
+    "answer": "C",
+    "explanation": "Both strings are converted to integers 25 and 15, and their sum is computed as 40."
+  },
+  {
+    "id": 145,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "What is the output?\nprintf(\"%.2f\", atof(\"10.5\") + atof(\"2.25\"));",
+    "options": [
+      "12.75",
+      "10.52.25",
+      "12.50",
+      "A runtime error"
+    ],
+    "answer": "A",
+    "explanation": "The two numeric strings are converted to doubles and added together, giving 12.75."
+  },
+  {
+    "id": 146,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "What is the output?\nif(isdigit('7')) printf(\"Digit\"); else printf(\"NotDigit\");",
+    "options": [
+      "NotDigit",
+      "Digit",
+      "7",
+      "A runtime error"
+    ],
+    "answer": "B",
+    "explanation": "'7' is a valid digit character, so isdigit() returns true."
+  },
+  {
+    "id": 147,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "What is the output?\nchar ch='M';\nprintf(\"%c\", tolower(ch));",
+    "options": [
+      "M",
+      "m",
+      "A runtime error",
+      "n"
+    ],
+    "answer": "B",
+    "explanation": "tolower() converts the uppercase letter 'M' into its lowercase form 'm'."
+  },
+  {
+    "id": 148,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "What is the output?\nif(isalpha('9')) printf(\"Alpha\"); else printf(\"NotAlpha\");",
+    "options": [
+      "NotAlpha",
+      "Alpha",
+      "A runtime error",
+      "9"
+    ],
+    "answer": "A",
+    "explanation": "'9' is a digit rather than a letter, so isalpha() returns false."
+  },
+  {
+    "id": 149,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "What is the output?\nprintf(\"%d\", isalnum('#') != 0);",
+    "options": [
+      "1",
+      "0",
+      "'#' itself",
+      "35"
+    ],
+    "answer": "B",
+    "explanation": "'#' is neither a letter nor a digit, so isalnum() returns false, giving 0 after the comparison."
+  },
+  {
+    "id": 150,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "What is the output?\nint main(){ printf(\"Start\"); exit(0); printf(\"End\"); }",
+    "options": [
+      "End",
+      "StartEnd",
+      "Start",
+      "A compilation error"
+    ],
+    "answer": "C",
+    "explanation": "exit(0) halts the program right after \"Start\" is printed, so \"End\" is never printed."
+  },
+  {
+    "id": 151,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "What is the output?\nprintf(\"%d\", atoi(\"12\") == 12);",
+    "options": [
+      "A runtime error",
+      "12",
+      "0",
+      "1"
+    ],
+    "answer": "D",
+    "explanation": "atoi(\"12\") evaluates to 12, and the comparison 12==12 is true, printing as 1."
+  },
+  {
+    "id": 152,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "What is the output?\nchar c = 'Z';\nif(isalpha(c) && !isdigit(c)) printf(\"Letter\"); else printf(\"Other\");",
+    "options": [
+      "Other",
+      "Z",
+      "A runtime error",
+      "Letter"
+    ],
+    "answer": "D",
+    "explanation": "'Z' is alphabetic and is not a digit, so the combined condition evaluates to true."
+  },
+  {
+    "id": 153,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "What is the output?\nprintf(\"%.1f\", atof(\"100\"));",
+    "options": [
+      "\"100\" unchanged",
+      "100.0",
+      "100",
+      "A runtime error"
+    ],
+    "answer": "B",
+    "explanation": "atof() converts \"100\" into the double value 100.0, printed with one decimal place."
+  },
+  {
+    "id": 154,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "What is the output?\nint x = atoi(\"07\");\nprintf(\"%d\", x);",
+    "options": [
+      "07",
+      "0",
+      "A runtime error",
+      "7"
+    ],
+    "answer": "D",
+    "explanation": "atoi() interprets \"07\" in decimal, ignoring the insignificant leading zero, and returns 7."
+  },
+  {
+    "id": 155,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "What is the output?\nchar c='k';\nprintf(\"%c%c\", toupper(c), tolower(toupper(c)));",
+    "options": [
+      "Kk",
+      "kK",
+      "kk",
+      "KK"
+    ],
+    "answer": "A",
+    "explanation": "toupper('k') yields 'K', and tolower('K') then yields back 'k', producing \"Kk\"."
+  },
+  {
+    "id": 156,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "Identify the error:\nint n = atof(\"3.5\");\nprintf(\"%d\", n);",
+    "options": [
+      "The code fails to compile entirely",
+      "The printf format specifier causes the program to crash",
+      "atof() cannot accept a string like \"3.5\"",
+      "Assigning the double result of atof() to an int truncates the value, printing 3 instead of 3.5"
+    ],
+    "answer": "D",
+    "explanation": "Storing a double value in an int variable truncates its fractional part, so the output is 3, not 3.5."
+  },
+  {
+    "id": 157,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "What is the output?\nfor(char c='a'; c<='c'; c++) printf(\"%c\", toupper(c));",
+    "options": [
+      "A runtime error",
+      "ABC",
+      "AbC",
+      "abc"
+    ],
+    "answer": "B",
+    "explanation": "The loop applies toupper() to each of 'a', 'b', and 'c', converting them all to uppercase."
+  },
+  {
+    "id": 158,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "What is the output/flow?\nint main(){ if(isdigit('x')) exit(1); printf(\"Valid\"); return 0; }",
+    "options": [
+      "Nothing is printed",
+      "Invalid",
+      "A compilation error",
+      "Valid"
+    ],
+    "answer": "D",
+    "explanation": "'x' is not a digit, so isdigit() is false, exit(1) is skipped, and \"Valid\" is printed."
+  },
+  {
+    "id": 159,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "What is the output?\nprintf(\"%d\", atoi(\"  -5\"));",
+    "options": [
+      "-5",
+      "5",
+      "A runtime error",
+      "0"
+    ],
+    "answer": "A",
+    "explanation": "atoi() skips the leading whitespace and correctly interprets the negative sign, returning -5."
+  },
+  {
+    "id": 160,
+    "level": "Intermediate",
+    "type": "Code/Output",
+    "topic": "Code/Output",
+    "question": "Trace the flow:\nint main(){ char c='B'; if(isalpha(c)) { c = tolower(c); printf(\"%c\", c);} else exit(1); return 0;}",
+    "options": [
+      "'b' is printed",
+      "A compilation error occurs",
+      "'B' is printed",
+      "Nothing is printed; the program exits"
+    ],
+    "answer": "A",
+    "explanation": "'B' is alphabetic, so tolower() converts it to 'b', which is then printed."
+  },
+  {
+    "id": 161,
+    "level": "Advanced",
+    "type": "Code/Output",
+    "topic": "Difficult/Tricky",
+    "question": "What happens when printf(\"%d\", atoi(\"2147483648\")); is executed, assuming a 32-bit int (where INT_MAX = 2147483647)?",
+    "options": [
+      "It reliably prints 2147483648",
+      "The result is undefined/unpredictable due to integer overflow",
+      "It reliably prints -2147483648",
+      "It always prints 0"
+    ],
+    "answer": "B",
+    "explanation": "The value exceeds INT_MAX for a 32-bit int, and since atoi() performs no overflow checking, the behaviour is undefined by the standard."
+  },
+  {
+    "id": 162,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Difficult/Tricky",
+    "question": "What does atof(\"  +.5e1\") return?",
+    "options": [
+      "A runtime error",
+      "0.5",
+      "0.0",
+      "5.0"
+    ],
+    "answer": "D",
+    "explanation": "The string represents +0.5 x 10^1 = 5.0; atof() correctly parses the leading whitespace, sign, missing integer digit, and exponent."
+  },
+  {
+    "id": 163,
+    "level": "Advanced",
+    "type": "Code/Output",
+    "topic": "Difficult/Tricky",
+    "question": "What is the output of: printf(\"%c\", toupper('1'+1));",
+    "options": [
+      "The characters '1'+1 printed literally",
+      "1",
+      "2",
+      "A runtime error"
+    ],
+    "answer": "C",
+    "explanation": "'1'+1 evaluates to the integer value of the character '2' (ASCII 50); since 50 is not a lowercase letter, toupper() returns it unchanged, so '2' is printed."
+  },
+  {
+    "id": 164,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Difficult/Tricky",
+    "question": "What does isalpha(toupper('e')) evaluate to?",
+    "options": [
+      "Zero (false)",
+      "A nonzero value (true)",
+      "A runtime error",
+      "'E' itself"
+    ],
+    "answer": "B",
+    "explanation": "toupper('e') produces 'E', and isalpha('E') is true because 'E' is an alphabetic character."
+  },
+  {
+    "id": 165,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Difficult/Tricky",
+    "question": "Assertion (A): atoi(\"3e2\") returns 3, not 300.\nReason (R): atoi() does not recognise scientific/exponential notation and stops at the first non-digit character.",
+    "options": [
+      "A is false, R is true",
+      "Both A and R are false",
+      "Both A and R are true, and R correctly explains A",
+      "A is true, R is false"
+    ],
+    "answer": "C",
+    "explanation": "Unlike atof(), atoi() has no concept of exponents, so it stops converting as soon as it reaches 'e'."
+  },
+  {
+    "id": 166,
+    "level": "Advanced",
+    "type": "Code/Output",
+    "topic": "Difficult/Tricky",
+    "question": "What can be said about the output of: printf(\"%d\", isdigit('0') + isdigit('9'));?",
+    "options": [
+      "The result is always guaranteed to be exactly 2",
+      "The result is always 0",
+      "It prints \"09\"",
+      "The result is a nonzero value, since both characters are digits (the exact numeric total is implementation-defined but nonzero)"
+    ],
+    "answer": "D",
+    "explanation": "Both '0' and '9' are digits, so isdigit() returns nonzero for each; the standard only guarantees a nonzero result, not a specific value like 1."
+  },
+  {
+    "id": 167,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Difficult/Tricky",
+    "question": "Why does atoi(\"   \") (a string of only spaces) return 0?",
+    "options": [
+      "atoi() raises an error for whitespace-only input",
+      "atoi() rounds the spaces down to zero",
+      "Spaces are treated as the digit zero",
+      "After skipping the leading whitespace, no digit characters remain to convert"
+    ],
+    "answer": "D",
+    "explanation": "Once the whitespace is skipped, atoi() finds no valid digits and therefore defaults to returning 0."
+  },
+  {
+    "id": 168,
+    "level": "Advanced",
+    "type": "Code/Output",
+    "topic": "Difficult/Tricky",
+    "question": "What is the output/flow?\nint main(){ char c='5'; int v = c - '0'; if(isdigit(c)) printf(\"%d\", v); else exit(1); }",
+    "options": [
+      "0",
+      "5",
+      "The program exits without printing anything",
+      "53"
+    ],
+    "answer": "B",
+    "explanation": "isdigit('5') is true, and the expression c-'0' correctly computes the numeric value 5, which is then printed."
+  },
+  {
+    "id": 169,
+    "level": "Advanced",
+    "type": "Code/Output",
+    "topic": "Difficult/Tricky",
+    "question": "What is the output of: printf(\"%s\", atoi(\"10\") ? \"Nonzero\" : \"Zero\");",
+    "options": [
+      "10",
+      "A runtime error",
+      "Zero",
+      "Nonzero"
+    ],
+    "answer": "D",
+    "explanation": "atoi(\"10\") returns 10, which is treated as true (nonzero) in the conditional expression."
+  },
+  {
+    "id": 170,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Difficult/Tricky",
+    "question": "Why do toupper() and tolower() take and return int rather than char?",
+    "options": [
+      "Because char cannot store any ASCII value at all",
+      "Because characters cannot be passed as function arguments in C",
+      "Purely to improve execution performance",
+      "To allow the special value EOF to be represented and to safely accommodate all unsigned char values"
+    ],
+    "answer": "D",
+    "explanation": "Using int lets these functions correctly handle every possible unsigned char value as well as the special value EOF."
+  },
+  {
+    "id": 171,
+    "level": "Advanced",
+    "type": "Scenario-Based",
+    "topic": "Difficult/Tricky",
+    "question": "A program calls isalnum(c) where c is a negative value (other than EOF) on a system with signed char. What is the concern?",
+    "options": [
+      "The function always safely returns false",
+      "There is no concern in this situation",
+      "Passing a negative value other than EOF to a ctype.h function results in undefined behaviour",
+      "The function always safely returns true"
+    ],
+    "answer": "C",
+    "explanation": "ctype.h functions require the argument to be representable as unsigned char or equal to EOF; other negative values cause undefined behaviour."
+  },
+  {
+    "id": 172,
+    "level": "Advanced",
+    "type": "Code/Output",
+    "topic": "Difficult/Tricky",
+    "question": "What is the output/flow?\nint main(){ if(!isalpha('7')) exit(0); printf(\"Reached\"); }",
+    "options": [
+      "\"7\" is printed",
+      "\"Reached\" is printed",
+      "A compilation error occurs",
+      "Nothing is printed; the program terminates"
+    ],
+    "answer": "D",
+    "explanation": "isalpha('7') is false, so !isalpha('7') is true, causing exit(0) to run before the printf statement."
+  },
+  {
+    "id": 173,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Difficult/Tricky",
+    "question": "What does atof(\"1,234.5\") actually convert?",
+    "options": [
+      "The full intended value 1234.5",
+      "Only the leading \"1\", giving the result 1.0, since the comma is not valid in the numeric grammar",
+      "0.0, because the format is considered fully invalid",
+      "It causes a runtime error"
+    ],
+    "answer": "B",
+    "explanation": "Conversion halts at the first invalid character, which in this case is the comma immediately following the digit \"1\"."
+  },
+  {
+    "id": 174,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Difficult/Tricky",
+    "question": "In the expression exit(isdigit('A')), what status value is effectively passed to exit()?",
+    "options": [
+      "1",
+      "0, since isdigit('A') evaluates to false",
+      "An undefined value",
+      "The character 'A' itself"
+    ],
+    "answer": "B",
+    "explanation": "isdigit('A') evaluates to 0 (false) because 'A' is not a digit, so exit() is effectively called with a status of 0."
+  },
+  {
+    "id": 175,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Mixed Practice",
+    "question": "Which function converts a string representing a floating-point number into a floating-point value?",
+    "options": [
+      "atof()",
+      "isdigit()",
+      "tolower()",
+      "atoi()"
+    ],
+    "answer": "A",
+    "explanation": "atof() converts the initial portion of a character string representing a floating-point number into a double value."
+  },
+  {
+    "id": 176,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Mixed Practice",
+    "question": "Which function would you use to check that a piece of user input contains only letters?",
+    "options": [
+      "isalpha()",
+      "isalnum()",
+      "isdigit()",
+      "atoi()"
+    ],
+    "answer": "A",
+    "explanation": "isalpha() is specifically designed to test whether a character is alphabetic."
+  },
+  {
+    "id": 177,
+    "level": "Advanced",
+    "type": "Match the Following",
+    "topic": "Mixed Practice",
+    "question": "Match the following functions to their correct category:\n1. atoi()  2. isalpha()  3. toupper()  4. exit()\nA. Character testing  B. Program termination  C. Integer conversion  D. Character conversion",
+    "options": [
+      "1-B, 2-D, 3-A, 4-C",
+      "1-D, 2-B, 3-C, 4-A",
+      "1-C, 2-A, 3-D, 4-B",
+      "1-A, 2-C, 3-B, 4-D"
+    ],
+    "answer": "C",
+    "explanation": "atoi() performs integer conversion, isalpha() performs character testing, toupper() performs character conversion, and exit() performs program termination."
+  },
+  {
+    "id": 178,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Mixed Practice",
+    "question": "Which function should be used first to validate that a character is numeric before converting an entire numeric string with atoi()?",
+    "options": [
+      "isdigit()",
+      "toupper()",
+      "exit()",
+      "isalpha()"
+    ],
+    "answer": "A",
+    "explanation": "isdigit() is used to validate each character before the string is converted using atoi()."
+  },
+  {
+    "id": 179,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Mixed Practice",
+    "question": "What return type is shared by toupper(), tolower(), isalnum(), isalpha(), and isdigit()?",
+    "options": [
+      "char",
+      "void",
+      "double",
+      "int"
+    ],
+    "answer": "D",
+    "explanation": "All five of these ctype.h functions return their result as an int value."
+  },
+  {
+    "id": 180,
+    "level": "Advanced",
+    "type": "Statement-Based",
+    "topic": "Mixed Practice",
+    "question": "Statement: \"atoi() and atof() both stop conversion at the first character that cannot be part of a valid number.\" Is this statement true or false?",
+    "options": [
+      "True",
+      "True only for atoi()",
+      "True only for atof()",
+      "False"
+    ],
+    "answer": "A",
+    "explanation": "Both functions parse only the initial valid numeric portion of the string and disregard anything beyond it."
+  },
+  {
+    "id": 181,
+    "level": "Advanced",
+    "type": "Scenario-Based",
+    "topic": "Mixed Practice",
+    "question": "Scenario: A calculator program reads user input as a string and must support decimal numbers. Which function is most appropriate for conversion?",
+    "options": [
+      "toupper()",
+      "isdigit()",
+      "atof()",
+      "atoi()"
+    ],
+    "answer": "C",
+    "explanation": "atof() supports decimal (floating-point) values, whereas atoi() only handles whole numbers."
+  },
+  {
+    "id": 182,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Mixed Practice",
+    "question": "Which of the following is NOT a valid use of exit()?",
+    "options": [
+      "Using exit() with a nonzero status code",
+      "Using exit() with the macro EXIT_SUCCESS",
+      "Using exit() to terminate the program after a fatal error",
+      "Using exit() to skip just the current iteration of a for loop"
+    ],
+    "answer": "D",
+    "explanation": "exit() terminates the entire program; skipping a single loop iteration should instead use 'continue', not exit()."
+  },
+  {
+    "id": 183,
+    "level": "Advanced",
+    "type": "Fill in the Blank",
+    "topic": "Mixed Practice",
+    "question": "Fill in the blank: The function ____ tests whether a character is either a letter or a digit.",
+    "options": [
+      "isalnum()",
+      "isalpha()",
+      "isdigit()",
+      "toupper()"
+    ],
+    "answer": "A",
+    "explanation": "isalnum() is the combined alphanumeric test covering both letters and digits."
+  },
+  {
+    "id": 184,
+    "level": "Advanced",
+    "type": "Code/Output",
+    "topic": "Mixed Practice",
+    "question": "What is wrong, if anything, with this code?\nchar c = 65;\nc = toupper(c);\nprintf(\"%c\",c);",
+    "options": [
+      "There is no error; 65 is the ASCII code for 'A', which toupper() leaves unchanged since it is already uppercase",
+      "toupper() cannot accept an integer literal like 65",
+      "The printf format specifier is invalid here",
+      "The code fails to compile"
+    ],
+    "answer": "A",
+    "explanation": "65 corresponds to the uppercase letter 'A', so toupper() simply returns it unchanged."
+  },
+  {
+    "id": 185,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Mixed Practice",
+    "question": "Which two functions from the syllabus are most useful together for building a robust integer-input validation routine?",
+    "options": [
+      "toupper() and tolower()",
+      "isdigit() and atoi()",
+      "isalpha() and atof()",
+      "exit() and isalnum()"
+    ],
+    "answer": "B",
+    "explanation": "isdigit() validates each character, while atoi() then performs the actual numeric conversion."
+  },
+  {
+    "id": 186,
+    "level": "Advanced",
+    "type": "Scenario-Based",
+    "topic": "Mixed Practice",
+    "question": "Application-based: A program must display an error and terminate if a user enters a non-numeric age. Which two functions are relevant here?",
+    "options": [
+      "atoi() and toupper()",
+      "isdigit() (or isalnum()) for validation and exit() for termination",
+      "tolower() and isalpha()",
+      "atof() and toupper()"
+    ],
+    "answer": "B",
+    "explanation": "isdigit() checks the validity of the input characters, and exit() ends the program if the input is invalid."
+  },
+  {
+    "id": 187,
+    "level": "Advanced",
+    "type": "Statement-Based",
+    "topic": "Mixed Practice",
+    "question": "Which of the following statements is FALSE regarding the eight syllabus functions?",
+    "options": [
+      "All eight functions are declared in the same single header file",
+      "atof(), atoi(), and exit() are declared in stdlib.h",
+      "exit() terminates the running program",
+      "toupper(), tolower(), isalnum(), isalpha(), and isdigit() are declared in ctype.h"
+    ],
+    "answer": "A",
+    "explanation": "The eight functions are split between two headers, stdlib.h and ctype.h, not a single common header."
+  },
+  {
+    "id": 188,
+    "level": "Advanced",
+    "type": "Scenario-Based",
+    "topic": "Mixed Practice",
+    "question": "A student writes: int n = atoi(\"12abc34\"); What value is stored in n?",
+    "options": [
+      "A compilation error occurs",
+      "12",
+      "0",
+      "1234"
+    ],
+    "answer": "B",
+    "explanation": "Conversion halts at the first non-digit character 'a', so only the leading \"12\" is converted."
+  },
+  {
+    "id": 189,
+    "level": "Advanced",
+    "type": "Comparison",
+    "topic": "Mixed Practice",
+    "question": "Which approach allows comparing two strings case-insensitively without permanently altering the original stored string?",
+    "options": [
+      "Applying tolower() or toupper() temporarily to characters only during the comparison",
+      "Using isalpha() and isdigit() on the strings",
+      "Using atoi() and atof() on the strings",
+      "Using exit() and isalnum() on the strings"
+    ],
+    "answer": "A",
+    "explanation": "Applying the case conversion only during comparison, rather than to the stored string, achieves case-insensitive matching without side effects."
+  },
+  {
+    "id": 190,
+    "level": "Advanced",
+    "type": "Concept",
+    "topic": "Mixed Practice",
+    "question": "Which of the eight syllabus functions is unique in that it does not process character or string data at all?",
+    "options": [
+      "isalpha()",
+      "atoi()",
+      "tolower()",
+      "exit()"
+    ],
+    "answer": "D",
+    "explanation": "exit() deals purely with program termination and takes only an integer status code, unlike the other seven functions which all process characters or strings."
+  }
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

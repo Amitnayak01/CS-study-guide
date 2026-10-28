@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {id:1,level:"Basic",type:"Concept",topic:"Introduction to Programming",question:"Which of the following best defines a computer program?",options:["A set of physical components of a computer","A sequence of instructions written to perform a specific task","An operating system managing hardware resources","A device used to input data into a computer"],answer:"B",explanation:"A computer program is a set of step-by-step instructions written in a programming language that tells the computer exactly what to do. Hardware refers to physical components, while the OS is system software."},
+  {id:2,level:"Basic",type:"Concept",topic:"Introduction to Programming",question:"Programming is best described as:",options:["Designing computer hardware circuits","The process of writing, testing, and maintaining code that instructs a computer","Installing software on a computer system","Connecting peripheral devices to a computer"],answer:"B",explanation:"Programming (or coding) is the full lifecycle of creating software: analysing the problem, writing code, testing it for correctness, and maintaining it over time. It is a purely software activity, not a hardware task."},
+  {id:3,level:"Basic",type:"Concept",topic:"Introduction to Programming",question:"Which of the following is the correct sequence in the program development cycle?",options:["Coding → Testing → Problem Analysis → Algorithm","Problem Analysis → Algorithm → Coding → Testing → Maintenance","Algorithm → Coding → Problem Analysis → Testing","Testing → Algorithm → Coding → Maintenance"],answer:"B",explanation:"The standard program development cycle always starts with understanding the problem first, then planning the solution (algorithm/flowchart), writing the code, testing it, and finally maintaining the deployed program."},
+  {id:4,level:"Basic",type:"Concept",topic:"Introduction to Programming",question:"What is the primary purpose of writing a program?",options:["To manufacture computer hardware","To automate tasks and solve computational problems","To design graphical user interfaces only","To manage network connections"],answer:"B",explanation:"The core purpose of a program is to automate repetitive tasks or solve problems that would be time-consuming or error-prone if done manually by humans."},
+  {id:5,level:"Basic",type:"Concept",topic:"Introduction to Programming",question:"Which of the following is NOT a programming language?",options:["Python","Java","HTML (for logic programming)","Microsoft Excel (as a standalone language)"],answer:"D",explanation:"Microsoft Excel is a spreadsheet application, not a programming language. Python and Java are fully-fledged programming languages. HTML is a markup language used for structuring web pages, not general-purpose programming."},
+  {id:6,level:"Basic",type:"Concept",topic:"Introduction to Programming",question:"A programmer writes instructions in a programming language. These instructions are collectively called:",options:["Hardware","Firmware","Source code","Binary data"],answer:"C",explanation:"Source code is the human-readable set of instructions written by a programmer in a programming language before it is translated into machine code. Binary data is the machine-level representation after translation."},
+  {id:7,level:"Basic",type:"Concept",topic:"Introduction to Programming",question:"Which of the following best describes 'debugging' in programming?",options:["Writing new features for a program","The process of finding and fixing errors in a program","Compiling the source code into machine code","Documenting the program for end users"],answer:"B",explanation:"Debugging is the systematic process of identifying, locating, and correcting bugs (errors) in a program. The term originated when an actual moth caused a fault in an early computer."},
+  {id:8,level:"Basic",type:"Concept",topic:"Introduction to Programming",question:"A syntax error in a program means:",options:["The program produces the wrong output logically","The program violates the grammatical rules of the programming language","The program runs out of memory during execution","The program cannot connect to the internet"],answer:"B",explanation:"A syntax error is a violation of the grammar rules of the programming language (e.g., missing a colon or bracket). The compiler/interpreter catches these before or during execution."},
+  {id:9,level:"Basic",type:"Concept",topic:"Introduction to Programming",question:"A logic error in a program means:",options:["The program has incorrect grammar in its code","The program crashes during compilation","The program runs but produces incorrect results","The program cannot find required files"],answer:"C",explanation:"A logic error does not prevent the program from running, but the program produces wrong results because the algorithm or formula used is logically incorrect. These are the hardest type of error to find."},
+  {id:10,level:"Basic",type:"Concept",topic:"Introduction to Programming",question:"Which of the following is the FIRST step in solving a programming problem?",options:["Writing the code","Testing the program","Understanding and analyzing the problem","Compiling the program"],answer:"C",explanation:"Before writing a single line of code, a programmer must fully understand the problem, its inputs, expected outputs, and constraints. Jumping to coding without analysis leads to poor solutions."},
+  {id:11,level:"Basic",type:"Concept",topic:"Introduction to Programming",question:"Documentation in programming refers to:",options:["Translating source code to machine code","Written descriptions and comments that explain what the program does","Running the program to check for errors","Designing the physical layout of the computer"],answer:"B",explanation:"Documentation includes comments within code and external manuals/guides that explain how the program works. Good documentation makes maintenance and collaboration much easier."},
+  {id:12,level:"Basic",type:"Concept",topic:"Introduction to Programming",question:"Which of the following is an example of an Integrated Development Environment (IDE)?",options:["Microsoft Word","VLC Media Player","Visual Studio Code","Google Chrome"],answer:"C",explanation:"An IDE is a software application that provides tools like a code editor, compiler/interpreter, and debugger in one place. Visual Studio Code, PyCharm, and Eclipse are popular IDEs."},
+  {id:13,level:"Basic",type:"Concept",topic:"Introduction to Programming",question:"What does 'maintenance' in the program development cycle involve?",options:["Writing the initial source code","Updating and improving the program after deployment","Translating the algorithm into code","Designing the flowchart for the program"],answer:"B",explanation:"Maintenance is the post-deployment phase where bugs discovered in real use are fixed, performance is improved, and new features are added as requirements change. It is often the longest phase."},
+  {id:14,level:"Basic",type:"Concept",topic:"Flowcharts",question:"A flowchart is best defined as:",options:["A table listing all variables used in a program","A diagrammatic representation of an algorithm using standard symbols","A written description of how a program should function","A type of high-level programming language"],answer:"B",explanation:"A flowchart uses standardised graphical symbols (ovals, rectangles, diamonds, parallelograms) connected by arrows to visually represent the logic and flow of an algorithm or process."},
+  {id:15,level:"Basic",type:"Concept",topic:"Flowcharts",question:"Which flowchart symbol represents a START or END point?",options:["Rectangle","Diamond","Oval (Terminator)","Parallelogram"],answer:"C",explanation:"The oval or rounded rectangle (terminator) marks the beginning and end of a flowchart. Every flowchart must have exactly one START and one (or more) END terminator(s)."},
+  {id:16,level:"Basic",type:"Concept",topic:"Flowcharts",question:"In a flowchart, the rectangle (process box) is used to represent:",options:["A decision or condition","Input or output operations","A processing step or computation","The start or end of the program"],answer:"C",explanation:"The rectangle represents a process — any action, calculation, or assignment statement (e.g., Total = Price × Quantity). It is the most commonly used symbol in flowcharts."},
+  {id:17,level:"Basic",type:"Concept",topic:"Flowcharts",question:"The diamond shape in a flowchart represents:",options:["A computation or process step","A decision point with two or more outcomes","The beginning or end of the flowchart","An input/output operation"],answer:"B",explanation:"The diamond (decision box) contains a yes/no or true/false question. The flowchart branches into different paths depending on the answer, enabling conditional logic and loops."},
+  {id:18,level:"Basic",type:"Concept",topic:"Flowcharts",question:"The parallelogram in a flowchart is used for:",options:["Processing steps and calculations","Decision making","Input and output operations","Connectors between different parts of the flowchart"],answer:"C",explanation:"The parallelogram represents I/O operations — reading data from the user (input) or displaying results on screen (output). Example: 'Read Name' or 'Print Total'."},
+  {id:19,level:"Basic",type:"Concept",topic:"Flowcharts",question:"Arrows in a flowchart indicate:",options:["Variables and their data types","The flow of control and sequence of steps","Memory allocation for the program","Comments added by the programmer"],answer:"B",explanation:"Arrows (flow lines) connect symbols and show the order in which steps are executed. They define the direction of program flow, including branches and loops."},
+  {id:20,level:"Basic",type:"Concept",topic:"Flowcharts",question:"Which of the following is an advantage of using flowcharts?",options:["They can be directly executed by a computer","They provide a clear visual representation making logic easier to understand","They reduce the amount of memory a program uses","They replace the need for writing any code"],answer:"B",explanation:"Flowcharts make program logic easy to understand even for non-programmers. They are excellent planning and communication tools, helping identify logical errors before coding begins."},
+  {id:21,level:"Intermediate",type:"Concept",topic:"Flowcharts",question:"Which of the following is a disadvantage of flowcharts?",options:["They cannot represent decision-making logic","For large and complex programs, flowcharts become very large and difficult to follow","They cannot show the start and end of a program","They are language-dependent and cannot be used with multiple languages"],answer:"B",explanation:"For large systems with many branches and loops, flowcharts can sprawl across many pages and become confusing. Modifying them is also time-consuming compared to updating pseudocode."},
+  {id:22,level:"Intermediate",type:"Concept",topic:"Flowcharts",question:"A connector symbol (small circle) in a flowchart is used to:",options:["Mark a decision branch","Indicate an input operation","Connect different parts of a flowchart, especially across pages","Represent a subroutine call"],answer:"C",explanation:"Connectors (small labelled circles) allow a flowchart to continue on another page or jump to another section without drawing a long crossing arrow, keeping the diagram tidy."},
+  {id:23,level:"Basic",type:"Concept",topic:"Flowcharts",question:"Which of the following best describes a 'loop' in a flowchart?",options:["A straight path from start to end with no decisions","A path that repeats a set of steps based on a condition","A direct jump from the start symbol to the end symbol","A symbol representing data storage"],answer:"B",explanation:"A loop is formed when a flowchart's arrow returns to an earlier point based on a decision diamond's condition. The loop continues executing steps until the condition becomes false."},
+  {id:24,level:"Intermediate",type:"Concept",topic:"Flowcharts",question:"What is the correct shape for representing a predefined process (subroutine) in a flowchart?",options:["Diamond","Parallelogram","Rectangle with double vertical lines on each side","Oval"],answer:"C",explanation:"A rectangle with vertical lines on both sides indicates a predefined process or subroutine — a module that is defined elsewhere. This avoids repeating its internal details in the main flowchart."},
+  {id:25,level:"Intermediate",type:"Concept",topic:"Flowcharts",question:"Which type of flowchart describes the overall flow of a complex system at a high level?",options:["Detailed flowchart","System flowchart","Data flow diagram","Pseudocode chart"],answer:"B",explanation:"A system flowchart shows the high-level flow of data and processes across an entire system (e.g., inputs, processing stages, outputs), without detailing the internal logic of each module."},
+  {id:26,level:"Basic",type:"Concept",topic:"Flowcharts",question:"Which statement about flowcharts is CORRECT?",options:["Flowcharts are written in a specific programming language","Flowcharts use standardized symbols for universal understanding","Flowcharts can only represent linear (no decision) programs","Flowcharts are only used in hardware design"],answer:"B",explanation:"Flowcharts use internationally standardised symbols (ISO 5807), making them universally understandable regardless of programming language or nationality."},
+  {id:27,level:"Basic",type:"Concept",topic:"Flowcharts",question:"A flowchart is drawn BEFORE writing code because:",options:["It automatically generates the source code","It helps plan and visualize the logic before actual coding begins","It is a legal requirement for all software development","It tests the performance of the final program"],answer:"B",explanation:"Drawing a flowchart first is a planning technique. It helps the programmer visualise the solution, spot logical flaws early, and serve as a blueprint — reducing costly errors during coding."},
+  {id:28,level:"Basic",type:"Concept",topic:"Algorithms",question:"An algorithm is best defined as:",options:["A programming language used to write software","A step-by-step procedure for solving a problem in a finite number of steps","A graphical representation of program logic","A collection of data stored in a database"],answer:"B",explanation:"An algorithm is a well-defined, finite sequence of instructions that solves a specific problem. It is language-independent and can be expressed in natural language, pseudocode, or a flowchart."},
+  {id:29,level:"Intermediate",type:"Concept",topic:"Algorithms",question:"Which of the following is NOT a characteristic of a good algorithm?",options:["Finiteness — it must terminate after a finite number of steps","Definiteness — each step must be clear and unambiguous","Infiniteness — it should run forever to handle all inputs","Effectiveness — each step must be executable"],answer:"C",explanation:"A valid algorithm MUST terminate (be finite). An algorithm that runs forever (infinite loop) is not a valid algorithm. The five key properties are: input, output, finiteness, definiteness, and effectiveness."},
+  {id:30,level:"Basic",type:"Concept",topic:"Algorithms",question:"The property of an algorithm that states every step must be precisely and clearly defined is called:",options:["Finiteness","Input","Definiteness","Generality"],answer:"C",explanation:"Definiteness means each instruction must be unambiguous — there should be no room for interpretation. Every step must have a single, clear meaning so the algorithm produces consistent results."},
+  {id:31,level:"Basic",type:"Concept",topic:"Algorithms",question:"'Finiteness' as a property of an algorithm means:",options:["The algorithm must produce at least one output","The algorithm must terminate after a finite number of steps","The algorithm must accept at least one input","The algorithm must use minimal memory"],answer:"B",explanation:"Finiteness guarantees that the algorithm will eventually stop. An algorithm that never terminates cannot be considered correct, as it would prevent the computer from doing any other work."},
+  {id:32,level:"Basic",type:"Concept",topic:"Algorithms",question:"Which of the following correctly describes 'pseudocode'?",options:["A special type of machine language","An informal high-level description of an algorithm using plain language","A strict syntax language used to compile programs","Binary code written for embedded systems"],answer:"B",explanation:"Pseudocode uses English-like statements mixed with programming constructs (IF, WHILE, FOR) to describe an algorithm without strict syntax rules. It is easier to write than code but more precise than plain English."},
+  {id:33,level:"Intermediate",type:"Concept",topic:"Algorithms",question:"The time complexity of an algorithm refers to:",options:["The physical time it takes to type the algorithm","How the execution time grows relative to the size of the input","The number of programmers needed to implement the algorithm","The amount of disk space the algorithm occupies"],answer:"B",explanation:"Time complexity measures how an algorithm's running time scales with input size n. It is expressed using Big-O notation (e.g., O(n), O(n squared)). Lower complexity means better performance on large inputs."},
+  {id:34,level:"Intermediate",type:"Concept",topic:"Algorithms",question:"Which sorting algorithm works by repeatedly swapping adjacent elements if they are in the wrong order?",options:["Merge Sort","Quick Sort","Bubble Sort","Insertion Sort"],answer:"C",explanation:"Bubble Sort repeatedly compares adjacent pairs and swaps them if they are in the wrong order, causing larger values to 'bubble up' to the end. It is simple but inefficient (O(n squared)) for large datasets."},
+  {id:35,level:"Intermediate",type:"Concept",topic:"Algorithms",question:"A binary search algorithm requires that the data must be:",options:["Stored in a linked list","Already sorted","Stored in a stack data structure","Very large in size"],answer:"B",explanation:"Binary search works by repeatedly halving the search space. It compares the target to the middle element, then searches the left or right half. This only works if the data is already in sorted order."},
+  {id:36,level:"Basic",type:"Concept",topic:"Algorithms",question:"Which of the following is an example of an algorithm in everyday life?",options:["The colour of a computer monitor","A recipe for cooking a dish","The speed of an internet connection","The physical weight of a hard drive"],answer:"B",explanation:"A cooking recipe is a perfect everyday analogy for an algorithm — it has defined inputs (ingredients), a sequence of steps (instructions), and produces a specific output (the dish)."},
+  {id:37,level:"Advanced",type:"Concept",topic:"Algorithms",question:"An algorithm that solves a problem by dividing it into smaller sub-problems of the same type uses the strategy called:",options:["Greedy approach","Brute force","Divide and conquer","Dynamic programming"],answer:"C",explanation:"Divide and conquer splits a problem into smaller sub-problems of the same type, solves each recursively, then combines results. Merge Sort and Quick Sort are classic divide-and-conquer algorithms."},
+  {id:38,level:"Basic",type:"Concept",topic:"Algorithms",question:"The OUTPUT property of an algorithm states that:",options:["The algorithm must take at least two inputs","At least one output must be produced","The algorithm runs infinitely","No external data is required"],answer:"B",explanation:"Every algorithm must produce at least one result (output). An algorithm that accepts inputs and performs steps but produces nothing useful is considered incomplete."},
+  {id:39,level:"Basic",type:"Concept",topic:"Algorithms",question:"Which of the following is NOT a way to express an algorithm?",options:["Natural language","Pseudocode","Flowchart","Random number table"],answer:"D",explanation:"Algorithms can be expressed in natural language (English), pseudocode, or flowcharts. A random number table is a statistical tool, not a method for expressing algorithmic logic."},
+  {id:40,level:"Intermediate",type:"Concept",topic:"Algorithms",question:"What is the key difference between an algorithm and a program?",options:["An algorithm is written in machine code; a program is written in assembly language","An algorithm is a logical plan for solving a problem; a program is the implementation of that plan in a specific language","A program cannot contain loops but an algorithm can","An algorithm always runs faster than a program"],answer:"B",explanation:"An algorithm is a language-independent logical solution. A program is the concrete implementation of that algorithm in a specific programming language (like Python or Java) that a computer can execute."},
+  {id:41,level:"Basic",type:"Concept",topic:"System Software",question:"System software is best defined as:",options:["Software specifically designed for word processing tasks","Software that manages and controls computer hardware, enabling application software to run","Software used only by end users for productivity tasks","Software that provides antivirus protection"],answer:"B",explanation:"System software forms the foundation layer between hardware and application software. It includes the operating system, device drivers, utilities, and language processors. Without it, hardware cannot function."},
+  {id:42,level:"Basic",type:"Concept",topic:"System Software",question:"Which of the following is an example of system software?",options:["Microsoft Word","Adobe Photoshop","Windows 11 Operating System","Google Chrome browser"],answer:"C",explanation:"Windows 11 is an operating system — the most important type of system software. Microsoft Word, Photoshop, and Chrome are all application software used to perform user-level tasks."},
+  {id:43,level:"Basic",type:"Concept",topic:"System Software",question:"The primary function of an Operating System (OS) is to:",options:["Allow users to browse the internet","Manage hardware resources and provide an interface between the user and hardware","Create documents and spreadsheets","Play multimedia files"],answer:"B",explanation:"The OS acts as an intermediary between the user/applications and the hardware. It manages the CPU, memory, storage, and I/O devices, while also providing a user interface (GUI or CLI)."},
+  {id:44,level:"Basic",type:"Concept",topic:"System Software",question:"Which of the following is NOT a function of an operating system?",options:["Memory management","Process management","Editing photographs and videos","File system management"],answer:"C",explanation:"Editing photos and videos is a task performed by application software (e.g., Photoshop, Premiere). The OS handles resource management functions: memory, processes, files, I/O devices, and security."},
+  {id:45,level:"Basic",type:"Concept",topic:"System Software",question:"A device driver is a type of system software that:",options:["Drives the CPU to execute faster","Allows the operating system to communicate with hardware devices","Provides end users with productivity tools","Manages network traffic over the internet"],answer:"B",explanation:"A device driver is a small program that translates OS commands into instructions understood by a specific hardware device (e.g., printer, keyboard, graphics card). Without drivers, hardware cannot function."},
+  {id:46,level:"Basic",type:"Concept",topic:"System Software",question:"A utility program is a type of system software designed to:",options:["Create business presentations","Perform maintenance and optimization tasks on the computer","Develop new application software","Provide internet access to users"],answer:"B",explanation:"Utility programs (system tools) help maintain, configure, and optimize a computer. Examples include antivirus software, disk defragmenters, backup tools, and file compression utilities."},
+  {id:47,level:"Basic",type:"Concept",topic:"System Software",question:"Which of the following is an example of a utility program?",options:["Microsoft Excel","Disk Defragmenter","Adobe Illustrator","VLC Media Player"],answer:"B",explanation:"Disk Defragmenter reorganises fragmented data on a hard disk to improve read/write speed. It is a system maintenance utility. Excel, Illustrator, and VLC are all application software."},
+  {id:48,level:"Intermediate",type:"Concept",topic:"System Software",question:"A language processor (compiler/interpreter/assembler) is considered:",options:["Application software","System software","Firmware","Embedded software"],answer:"B",explanation:"Language processors translate source code into machine code, enabling programs to run. They are part of system software because they support the development environment rather than performing end-user tasks."},
+  {id:49,level:"Intermediate",type:"Concept",topic:"System Software",question:"The kernel of an operating system is:",options:["The user interface of the operating system","The core part of the OS that manages system resources at the lowest level","An application program bundled with the OS","The graphical shell displayed to users"],answer:"B",explanation:"The kernel is the heart of the OS, always resident in memory. It handles CPU scheduling, memory allocation, device management, and system calls. The GUI/shell sits on top of the kernel."},
+  {id:50,level:"Basic",type:"Concept",topic:"System Software",question:"Which of the following best describes a multitasking operating system?",options:["An OS that can run only one program at a time","An OS that allows multiple programs to run apparently simultaneously","An OS designed specifically for mobile phones","An OS that only supports a single user"],answer:"B",explanation:"In multitasking, the CPU rapidly switches between multiple processes giving the illusion of simultaneous execution. Modern OSes like Windows, macOS, and Linux all support multitasking."},
+  {id:51,level:"Intermediate",type:"Concept",topic:"System Software",question:"File management as a function of the OS includes:",options:["Designing the computer's motherboard","Creating, deleting, organizing, and controlling access to files on storage devices","Rendering graphics for video games","Managing network cables and switches"],answer:"B",explanation:"The OS file management system organises files in directories, handles reading/writing operations, enforces permissions, and manages storage allocation. This is done through the file system (NTFS, FAT32, ext4, etc.)."},
+  {id:52,level:"Basic",type:"Concept",topic:"System Software",question:"Which of the following is an example of a mobile operating system?",options:["Windows Server","Ubuntu Linux Desktop","Android","macOS Ventura"],answer:"C",explanation:"Android (developed by Google) is the world's most widely used mobile OS. Windows Server and Ubuntu are desktop/server OSes, while macOS runs on Apple Mac computers, not mobile devices."},
+  {id:53,level:"Intermediate",type:"Concept",topic:"System Software",question:"What is the role of a bootstrap loader in system software?",options:["It allows users to create boot disks for backup","It is the initial program that loads the operating system when the computer is powered on","It checks for viruses during program execution","It manages the allocation of RAM to different applications"],answer:"B",explanation:"The bootstrap loader (or bootloader) is a small program stored in ROM that runs when the computer is powered on. It performs the Power-On Self-Test (POST) and then loads the OS from the storage device into RAM."},
+  {id:54,level:"Advanced",type:"Concept",topic:"System Software",question:"A Real-Time Operating System (RTOS) is mainly used in:",options:["Personal computers for home use","Systems that require immediate and predictable response to inputs, such as medical devices","Social media platforms and web servers","Word processing and spreadsheet applications"],answer:"B",explanation:"An RTOS guarantees that critical tasks are processed within a strict time deadline. They are used in aircraft control systems, medical monitors, industrial robots, and anti-lock braking systems (ABS)."},
+  {id:55,level:"Basic",type:"Concept",topic:"Application Software",question:"Application software is best defined as:",options:["Software that manages hardware components of a computer","Software designed to help the user perform specific tasks","Software stored permanently on a ROM chip","Software that provides low-level control of the processor"],answer:"B",explanation:"Application software is end-user software that directly serves a specific purpose, such as word processing, accounting, gaming, or browsing. It runs on top of system software."},
+  {id:56,level:"Basic",type:"Concept",topic:"Application Software",question:"Which of the following is an example of application software?",options:["Linux Kernel","BIOS firmware","Microsoft Excel","Device driver for a printer"],answer:"C",explanation:"Microsoft Excel is a spreadsheet application used by end users for data analysis. The Linux kernel, BIOS, and device drivers are all system-level software, not application software."},
+  {id:57,level:"Basic",type:"Concept",topic:"Application Software",question:"What is the key difference between system software and application software?",options:["System software is used by end users; application software manages hardware","System software manages hardware and resources; application software helps users perform tasks","Application software is faster than system software","System software is always free; application software is always paid"],answer:"B",explanation:"System software provides the platform (OS, drivers) that hardware needs to work. Application software sits on top and enables users to do productive work like writing documents, editing images, or playing games."},
+  {id:58,level:"Basic",type:"Concept",topic:"Application Software",question:"A word processor is an example of which type of software?",options:["System software","Firmware","Application software","Assembly language"],answer:"C",explanation:"A word processor like Microsoft Word or LibreOffice Writer is application software because it directly serves a user task: creating and editing text documents. It requires system software to run."},
+  {id:59,level:"Basic",type:"Concept",topic:"Application Software",question:"Which of the following is a General-Purpose Application software?",options:["A payroll management program for a specific company","Microsoft Word (used for various word-processing needs)","An operating system like Windows","A BIOS chip program"],answer:"B",explanation:"General-purpose application software can be used by many different types of users for a wide range of tasks. Microsoft Word suits students, businesses, authors, etc. Payroll software is a specific-purpose application."},
+  {id:60,level:"Intermediate",type:"Concept",topic:"Application Software",question:"Custom (bespoke) application software is:",options:["Software sold off-the-shelf for a wide range of users","Software developed specifically for the unique needs of a particular organization","An operating system tailored for embedded systems","Free and open-source software available to everyone"],answer:"B",explanation:"Bespoke software is built from scratch to meet the exact requirements of one client. Examples include a hospital's patient management system or a bank's internal transaction processing system."},
+  {id:61,level:"Intermediate",type:"Concept",topic:"Application Software",question:"Which of the following is an advantage of off-the-shelf application software?",options:["It is perfectly tailored to the specific needs of each organization","It is cheaper and immediately available compared to custom software","It requires no installation or setup by the user","It never needs updates or patches"],answer:"B",explanation:"Off-the-shelf software (e.g., Microsoft Office) is mass-produced, reducing cost per user. It is available immediately, well-documented, and supported by large developer teams. The trade-off is it may not perfectly fit specific needs."},
+  {id:62,level:"Intermediate",type:"Concept",topic:"Application Software",question:"Which of the following is a disadvantage of custom application software?",options:["It cannot be modified to meet organizational needs","It is generally more expensive and takes longer to develop","It is always inferior in quality to off-the-shelf software","It cannot be integrated with other software systems"],answer:"B",explanation:"Custom software requires a full development cycle (analysis, design, coding, testing) which is costly and time-consuming. However, the result perfectly fits the client's unique requirements."},
+  {id:63,level:"Basic",type:"Concept",topic:"Application Software",question:"Which of the following is NOT an example of application software?",options:["VLC Media Player","Adobe Acrobat","UNIX Operating System","Google Docs"],answer:"C",explanation:"UNIX is an operating system — a type of system software. VLC, Adobe Acrobat, and Google Docs are all application software used directly by end users to complete tasks."},
+  {id:64,level:"Basic",type:"Concept",topic:"Application Software",question:"Spreadsheet software is primarily used for:",options:["Drawing architectural plans and diagrams","Organizing, analyzing, and manipulating numerical data in rows and columns","Managing network connections and protocols","Compiling source code into machine code"],answer:"B",explanation:"Spreadsheet applications (Excel, Google Sheets) store data in cells arranged in rows and columns. They support mathematical formulas, statistical functions, charts, and data analysis tools."},
+  {id:65,level:"Basic",type:"Concept",topic:"Application Software",question:"Database management software is used to:",options:["Manage and optimize the CPU's processing cycles","Store, retrieve, and manage structured collections of data","Provide a graphical interface between the user and the OS","Create and edit video files"],answer:"B",explanation:"Database Management Systems (DBMS) like MySQL, MS Access, or Oracle allow users to create, read, update, and delete structured data using queries. They ensure data integrity, security, and efficient retrieval."},
+  {id:66,level:"Basic",type:"Concept",topic:"Application Software",question:"Which of the following is an example of educational application software?",options:["Windows Defender","Disk Cleanup","Khan Academy application","GNU Compiler Collection"],answer:"C",explanation:"Educational software is designed to teach or support learning. Khan Academy, Duolingo, and Mavis Beacon are examples. Windows Defender is a security utility; Disk Cleanup is a system utility; GCC is a compiler."},
+  {id:67,level:"Basic",type:"Concept",topic:"Application Software",question:"An application software package that combines word processing, spreadsheet, and presentation tools is called:",options:["An integrated development environment","An office suite","A utility program","A compiler toolkit"],answer:"B",explanation:"An office suite (like Microsoft Office or LibreOffice) bundles multiple productivity applications together. Users benefit from consistent interfaces and seamless data exchange between the component applications."},
+  {id:68,level:"Basic",type:"Concept",topic:"Firmware",question:"Firmware is best defined as:",options:["Software that can be easily installed and uninstalled by the user","A type of software permanently stored in hardware, providing low-level control of a device","High-level programming language code used for web development","Application software pre-installed on a smartphone"],answer:"B",explanation:"Firmware occupies the layer between hardware and software. It is embedded in a device's non-volatile memory and provides the instructions needed to control and initialise that specific device."},
+  {id:69,level:"Basic",type:"Concept",topic:"Firmware",question:"Firmware is typically stored in:",options:["RAM (Random Access Memory)","Hard Disk Drive","ROM (Read-Only Memory) or flash memory","Optical discs like CD-ROM"],answer:"C",explanation:"Firmware must persist when the device is powered off, so it is stored in non-volatile memory: ROM or flash memory. RAM is volatile (loses data when power is off), making it unsuitable for firmware."},
+  {id:70,level:"Basic",type:"Concept",topic:"Firmware",question:"Which of the following is the best example of firmware?",options:["Microsoft Office Suite","BIOS/UEFI on a computer motherboard","Google Chrome browser","Linux operating system"],answer:"B",explanation:"The BIOS (Basic Input/Output System) or its modern replacement UEFI is classic firmware. It is stored on the motherboard's flash chip and runs before the OS, initialising all hardware components."},
+  {id:71,level:"Basic",type:"Concept",topic:"Firmware",question:"What is the PRIMARY function of the BIOS firmware?",options:["To provide users with word processing capabilities","To initialize hardware components during startup and load the operating system","To connect the computer to the internet wirelessly","To compile high-level language programs"],answer:"B",explanation:"During the Power-On Self-Test (POST), BIOS checks all hardware components (RAM, CPU, keyboard, storage), initialises them, and then hands over control to the bootloader to load the OS."},
+  {id:72,level:"Intermediate",type:"Concept",topic:"Firmware",question:"Which of the following best describes the relationship between firmware and hardware?",options:["Firmware is completely independent of hardware and can run on any device","Firmware is embedded within and specifically designed to control a particular hardware device","Firmware replaces the need for any hardware in modern computers","Firmware is written by end users to customize their hardware"],answer:"B",explanation:"Firmware is device-specific. The firmware in a router only works for that router model; it cannot be transferred to a printer. It is closely tied to the hardware it controls."},
+  {id:73,level:"Intermediate",type:"Concept",topic:"Firmware",question:"Unlike application software, firmware:",options:["Can be easily uninstalled by the user from the computer's control panel","Is rarely updated and operates at a lower level, directly interfacing with hardware","Requires an internet connection to function properly","Is written in high-level languages like Python"],answer:"B",explanation:"Firmware operates at the hardware interface level, below the OS. It does not appear in the user's applications list and cannot be uninstalled like regular software. Updates require a special flashing process."},
+  {id:74,level:"Basic",type:"Concept",topic:"Firmware",question:"Firmware found in devices like washing machines, routers, and printers is an example of:",options:["General-purpose application software","Embedded firmware controlling the device's specific functions","System utilities for optimizing performance","Open-source operating systems"],answer:"B",explanation:"Consumer electronics contain embedded firmware that handles their specific functions. A washing machine's firmware controls wash cycles; a router's firmware manages packet routing and network protocols."},
+  {id:75,level:"Intermediate",type:"Concept",topic:"Firmware",question:"Updating firmware (a firmware 'flash') is done to:",options:["Increase the physical memory (RAM) of the device","Fix bugs, improve performance, or add new features to the device's hardware control","Install a new operating system on the device","Format and erase the hard drive of the computer"],answer:"B",explanation:"Firmware updates (flashing) overwrite the current firmware with a newer version. They can patch security vulnerabilities, fix operational bugs, or unlock new device capabilities without hardware changes."},
+  {id:76,level:"Intermediate",type:"Concept",topic:"Firmware",question:"Which of the following statements about firmware is CORRECT?",options:["Firmware is the same as the operating system","Firmware sits between hardware and software, providing the lowest level of software control","Firmware is always visible and accessible through the operating system's file manager","Firmware is a type of application software"],answer:"B",explanation:"Firmware bridges the gap between raw hardware and higher-level software. The OS sits above firmware; application software sits above the OS. Firmware is not accessible as a regular file through the OS."},
+  {id:77,level:"Intermediate",type:"Concept",topic:"Firmware",question:"UEFI is a modern replacement for which firmware?",options:["Device drivers","BIOS (Basic Input/Output System)","The Windows operating system kernel","Assembly language programs"],answer:"B",explanation:"UEFI (Unified Extensible Firmware Interface) replaces the older BIOS. It offers advantages including support for hard drives larger than 2TB, faster boot times, a graphical interface, and improved security (Secure Boot)."},
+  {id:78,level:"Advanced",type:"Concept",topic:"Firmware",question:"Which of the following best distinguishes firmware from system software?",options:["System software runs on hardware directly; firmware requires an OS to run","Firmware is embedded in hardware and controls the device itself; system software runs on top of hardware to manage it","Firmware is always written in high-level languages; system software is in machine code","There is no difference; firmware and system software are the same thing"],answer:"B",explanation:"Firmware is embedded inside the hardware device itself and runs without an OS. System software (like the OS) runs after firmware has initialised the hardware, providing a managed environment for applications."},
+  {id:79,level:"Basic",type:"Concept",topic:"Machine Language",question:"Machine language is defined as:",options:["A programming language that uses English-like keywords","The lowest-level programming language consisting of binary (0s and 1s) instructions directly understood by the CPU","A language used to program robots in manufacturing","A symbolic language that uses mnemonics to represent instructions"],answer:"B",explanation:"Machine language is the only language a CPU natively understands. It consists entirely of binary digits (0 and 1) representing operations and memory addresses. All other languages must eventually be translated to it."},
+  {id:80,level:"Basic",type:"Concept",topic:"Machine Language",question:"Machine language instructions are written in:",options:["Decimal (base 10) numbers","Hexadecimal (base 16) numbers only","Binary (base 2) — a sequence of 0s and 1s","Alphabetic characters and symbols"],answer:"C",explanation:"At the hardware level, all instructions are binary (base 2). While programmers sometimes use hexadecimal as a shorthand for binary, the CPU itself processes pure binary signals representing 0 (off) and 1 (on)."},
+  {id:81,level:"Basic",type:"Concept",topic:"Machine Language",question:"Which of the following is an advantage of machine language?",options:["It is easy to read and understand by programmers","It executes very fast because the CPU understands it directly without translation","Programs written in it are easily portable across different hardware","It requires minimal knowledge of computer architecture"],answer:"B",explanation:"Since no translation step is needed, machine language programs execute at maximum speed. This is why performance-critical routines in OS kernels and device drivers sometimes use machine/assembly code."},
+  {id:82,level:"Basic",type:"Concept",topic:"Machine Language",question:"Which of the following is a major disadvantage of machine language?",options:["It requires a compiler to translate it before execution","It is difficult to write, read, and debug because it consists entirely of binary codes","It cannot directly control hardware components","It runs slower than high-level language programs"],answer:"B",explanation:"Writing long sequences of binary is extremely tedious and error-prone for humans. A small mistake — one bit — can cause completely different behaviour, making debugging very difficult."},
+  {id:83,level:"Intermediate",type:"Concept",topic:"Machine Language",question:"Machine language is said to be machine-dependent because:",options:["All machines use the same binary instruction set","The instruction set differs for different processors; code written for one CPU will not work on a different CPU","It can only run on machines connected to the internet","It depends on the machine's operating system version"],answer:"B",explanation:"Different CPU families (Intel x86, ARM, RISC-V) have different instruction sets. A machine language program written for an Intel CPU is incompatible with an ARM CPU — they use entirely different binary codes."},
+  {id:84,level:"Intermediate",type:"Concept",topic:"Machine Language",question:"The set of machine language instructions a particular CPU can execute is called its:",options:["Operating system interface","Instruction Set Architecture (ISA)","Programming paradigm","Compiler toolchain"],answer:"B",explanation:"The ISA defines the complete set of binary instructions a CPU can understand, the number and size of registers, memory addressing modes, and data types. Examples: x86-64 (Intel/AMD), ARM, MIPS."},
+  {id:85,level:"Basic",type:"Concept",topic:"Machine Language",question:"Machine language is also referred to as the:",options:["Third generation language (3GL)","Second generation language (2GL)","First generation language (1GL)","Fourth generation language (4GL)"],answer:"C",explanation:"Programming languages are classified by generations. 1GL = machine language (binary), 2GL = assembly language (mnemonics), 3GL = high-level languages (Python, C), 4GL = very high-level/domain-specific (SQL)."},
+  {id:86,level:"Basic",type:"Concept",topic:"Machine Language",question:"Does machine language require any translation before execution?",options:["Yes, it always needs a compiler to translate it","Yes, it needs an interpreter to run line by line","No, the CPU directly understands and executes machine language","Yes, it needs an assembler to convert it to binary"],answer:"C",explanation:"Machine language is the native language of the CPU. No translation is needed — the processor directly fetches, decodes, and executes the binary instructions. All other language types need translation to machine code first."},
+  {id:87,level:"Intermediate",type:"Concept",topic:"Machine Language",question:"An early example of computing that used machine language programming was:",options:["Typing commands into the Windows Command Prompt","Programming first-generation computers using punched cards or toggle switches","Writing code in Python on a modern laptop","Using a spreadsheet to perform mathematical calculations"],answer:"B",explanation:"Early computers like ENIAC (1940s) were programmed by physically setting switches or feeding punched cards with binary patterns. This direct machine language programming was extremely laborious."},
+  {id:88,level:"Basic",type:"Concept",topic:"Machine Language",question:"Which generation of programming languages does machine language belong to?",options:["2nd generation","3rd generation","4th generation","1st generation"],answer:"D",explanation:"The language generation classification: 1GL (machine language) → 2GL (assembly) → 3GL (high-level: C, Java) → 4GL (SQL, report generators) → 5GL (AI/logic-based: Prolog). Machine language is the first and lowest generation."},
+  {id:89,level:"Intermediate",type:"Concept",topic:"Machine Language",question:"Portability is a problem with machine language because:",options:["It requires a large hard disk to store programs","Programs must be completely rewritten when moved to a computer with a different CPU architecture","It cannot be used to write loops or conditional statements","It cannot interface with input/output devices"],answer:"B",explanation:"Since machine language is hardware-specific, a program written for a 32-bit Intel CPU will not run on an ARM processor. Every CPU change requires complete rewriting of the program — unlike high-level languages."},
+  {id:90,level:"Basic",type:"Concept",topic:"Assembly Language",question:"Assembly language is best defined as:",options:["A high-level language that abstracts all hardware details","A low-level programming language that uses symbolic mnemonics to represent machine language instructions","A language used exclusively for web development","A machine-independent language understood by all processors"],answer:"B",explanation:"Assembly language replaces binary machine codes with human-readable mnemonics (like MOV, ADD, SUB). It still corresponds closely to machine language but is far easier for programmers to read and write."},
+  {id:91,level:"Basic",type:"Concept",topic:"Assembly Language",question:"Which of the following is an example of an assembly language mnemonic?",options:["print('Hello')","SELECT * FROM table","MOV AX, BX","<html>"],answer:"C",explanation:"MOV AX, BX is a typical x86 assembly instruction meaning 'copy the value in register BX into register AX'. print() is Python, SELECT is SQL, and html tag is HTML markup."},
+  {id:92,level:"Basic",type:"Concept",topic:"Assembly Language",question:"The program that translates assembly language code into machine language is called an:",options:["Interpreter","Compiler","Assembler","Linker"],answer:"C",explanation:"An assembler converts assembly language source code into machine code (object code). It performs a near one-to-one translation since each assembly instruction maps to one machine language instruction."},
+  {id:93,level:"Basic",type:"Concept",topic:"Assembly Language",question:"Assembly language is classified as a:",options:["First generation language (1GL)","Second generation language (2GL)","Third generation language (3GL)","Fourth generation language (4GL)"],answer:"B",explanation:"Assembly language is 2GL because it was the second level of abstraction above raw binary. It replaced binary codes with mnemonics, making programming somewhat easier while still being hardware-dependent."},
+  {id:94,level:"Basic",type:"Concept",topic:"Assembly Language",question:"Which of the following is an advantage of assembly language over machine language?",options:["Assembly language programs run slower than machine language programs","Assembly language is easier to read and write because it uses meaningful mnemonics instead of binary codes","Assembly language is machine-independent and portable across all platforms","Assembly language does not require any translation before execution"],answer:"B",explanation:"Mnemonics like ADD, SUB, LOAD are far more memorable than binary patterns. Assembly programs are also somewhat easier to debug than pure binary, while still allowing direct hardware manipulation."},
+  {id:95,level:"Intermediate",type:"Concept",topic:"Assembly Language",question:"Which of the following is a disadvantage of assembly language?",options:["It cannot be used to control hardware directly","It is machine-dependent; programs written for one CPU type cannot run on a different CPU without modification","It is always slower than high-level language programs","It cannot perform arithmetic operations"],answer:"B",explanation:"Like machine language, assembly code is processor-specific. An x86 assembly program requires rewriting to run on an ARM processor. This lack of portability is its main disadvantage compared to high-level languages."},
+  {id:96,level:"Intermediate",type:"Concept",topic:"Assembly Language",question:"Assembly language is still used today primarily for:",options:["Developing large-scale enterprise web applications","Writing device drivers, firmware, and performance-critical code that requires direct hardware access","Creating graphical user interfaces and desktop applications","Building relational database systems"],answer:"B",explanation:"Assembly is used where direct hardware control and maximum performance matter: OS kernel routines, bootloaders, device drivers, real-time systems, and cryptographic implementations that must run at hardware speed."},
+  {id:97,level:"Basic",type:"Concept",topic:"Assembly Language",question:"Which of the following correctly describes a mnemonic in assembly language?",options:["A binary string that the CPU executes directly","An abbreviated symbolic name representing a machine language instruction (e.g., ADD, SUB, MOV)","A high-level language keyword like 'while' or 'for'","A hexadecimal address in memory"],answer:"B",explanation:"Mnemonics are abbreviated memory aids. In assembly, ADD means addition, SUB means subtraction, MOV means move data. Each mnemonic corresponds to a specific binary opcode in the CPU's instruction set."},
+  {id:98,level:"Intermediate",type:"Concept",topic:"Assembly Language",question:"What is a label in assembly language?",options:["A binary code for a specific hardware register","A symbolic name given to a memory address or instruction location in the code","A comment added by the programmer for documentation","An instruction that moves data between registers"],answer:"B",explanation:"Labels in assembly give human-readable names to memory addresses. For example, 'LOOP_START:' marks the beginning of a loop so the programmer can jump to it by name rather than specifying a raw memory address."},
+  {id:99,level:"Intermediate",type:"Concept",topic:"Assembly Language",question:"Which of the following describes the relationship between assembly language and machine language?",options:["They are entirely different languages with no relation to each other","Assembly language is a symbolic representation of machine language; there is a near one-to-one correspondence","Machine language is a high-level abstraction of assembly language","Assembly language is machine-independent while machine language is not"],answer:"B",explanation:"Each assembly mnemonic corresponds to exactly one machine language instruction. The assembler simply replaces symbolic names with their binary equivalents, so the relationship is direct and one-to-one."},
+  {id:100,level:"Intermediate",type:"Concept",topic:"Assembly Language",question:"Assembly language programs generally execute:",options:["Slower than programs written in Python or Java","At roughly the same speed as machine language since the assembler translates directly to machine code","Much slower due to the assembler's translation overhead","Only on computers with specialized co-processors"],answer:"B",explanation:"After assembly (translation), the resulting machine code runs at native CPU speed. The translation overhead happens once at assembly time, not at runtime, so execution speed equals machine language performance."},
+  {id:101,level:"Basic",type:"Concept",topic:"Assembly Language",question:"Which of the following is NOT a typical use of assembly language?",options:["Writing operating system kernels","Programming microcontrollers","Developing social media web applications","Writing performance-critical routines in compilers"],answer:"C",explanation:"Social media web applications are large, complex projects requiring rapid development — they are written in high-level languages (JavaScript, Python, Ruby). Assembly is reserved for low-level, hardware-close programming."},
+  {id:102,level:"Basic",type:"Concept",topic:"Assembly Language",question:"The process of converting assembly language source code into machine code is called:",options:["Compilation","Interpretation","Assembly","Linking"],answer:"C",explanation:"The process performed by an assembler is called 'assembly'. Compilation is for high-level languages; interpretation executes source code line-by-line; linking combines object files into an executable."},
+  {id:103,level:"Basic",type:"Concept",topic:"High-Level Languages",question:"High-level programming languages are characterized by:",options:["Using binary codes and hardware-specific instructions","Using English-like syntax and being independent of specific hardware architecture","Requiring no translation to run on a CPU","Being limited to mathematical calculations only"],answer:"B",explanation:"High-level languages use syntax similar to human language (e.g., if, while, print), hiding hardware complexity. They are platform-independent — the same source code can run on different hardware with a compatible compiler."},
+  {id:104,level:"Basic",type:"Concept",topic:"High-Level Languages",question:"Which of the following is an example of a high-level programming language?",options:["Assembly Language","Machine Language","Python","BIOS instruction set"],answer:"C",explanation:"Python is a modern high-level language known for its readable syntax. Assembly and machine language are low-level. BIOS instructions are firmware-level code specific to hardware initialisation."},
+  {id:105,level:"Basic",type:"Concept",topic:"High-Level Languages",question:"High-level languages belong to which generation of programming languages?",options:["First generation (1GL)","Second generation (2GL)","Third generation (3GL) and above","Zero generation (0GL)"],answer:"C",explanation:"3GLs (like C, Java, Python, Pascal) were the first to use structured English-like syntax and support complex data structures. 4GLs and 5GLs are even higher-level, more domain-specific abstractions."},
+  {id:106,level:"Intermediate",type:"Concept",topic:"High-Level Languages",question:"A compiler translates high-level language code by:",options:["Translating and executing the program one line at a time","Translating the entire source code into machine code before execution","Running the program in a virtual environment without translation","Converting the code to assembly language only"],answer:"B",explanation:"A compiler scans the entire source code, checks for errors, optimises, and produces a complete machine code executable. Once compiled, the executable runs independently without the compiler being present."},
+  {id:107,level:"Intermediate",type:"Concept",topic:"High-Level Languages",question:"An interpreter translates high-level language code by:",options:["Converting the entire source code to machine code before running","Translating and executing one statement at a time during runtime","Producing an executable file that can be run independently","Assembling the code into binary object files"],answer:"B",explanation:"An interpreter reads one statement, translates it, executes it, then moves to the next. Python uses an interpreter. This means the source code must be present every time the program runs."},
+  {id:108,level:"Intermediate",type:"Concept",topic:"High-Level Languages",question:"Which of the following is an advantage of compiled languages over interpreted ones?",options:["Errors are easier to find since code runs line by line","Compiled programs generally run faster because translation happens before execution","Compilation does not require the source code to be complete before running","Compiled code can be run on any machine without modification"],answer:"B",explanation:"Compiled code runs faster because translation overhead is eliminated at runtime. The machine code executable runs directly on the CPU without any intermediate translation step during execution."},
+  {id:109,level:"Intermediate",type:"Concept",topic:"High-Level Languages",question:"Which of the following is an advantage of interpreted languages?",options:["They produce faster executables than compiled languages","They are easier to debug since errors are reported line by line during execution","They require no programming knowledge to use","Interpreted code is more portable as machine code than compiled code"],answer:"B",explanation:"When an interpreter encounters an error, it reports it immediately at that line, making it easier to locate and fix bugs interactively. This is useful during development and learning."},
+  {id:110,level:"Basic",type:"Concept",topic:"High-Level Languages",question:"'Portability' as an advantage of high-level languages means:",options:["High-level code can be easily moved to a USB drive","Programs can run on different types of computers with minimal or no modification","Programs are smaller in file size than machine language programs","Programs written in high-level languages execute faster"],answer:"B",explanation:"The same Python or Java source code can run on Windows, Linux, and macOS with little or no modification. This platform-independence is a major advantage over machine and assembly language."},
+  {id:111,level:"Basic",type:"Concept",topic:"High-Level Languages",question:"Which of the following is NOT a high-level programming language?",options:["C++","Java","FORTRAN","Assembly (x86)"],answer:"D",explanation:"x86 Assembly is a low-level 2nd generation language closely tied to the Intel/AMD hardware architecture. C++, Java, and FORTRAN are all high-level 3GL languages with structured, hardware-independent syntax."},
+  {id:112,level:"Intermediate",type:"Concept",topic:"High-Level Languages",question:"Object-Oriented Programming (OOP) is a paradigm supported by high-level languages where programs are organized around:",options:["Sequential binary instructions","Objects that encapsulate data and behaviour","Low-level memory addresses","Boolean logic gates"],answer:"B",explanation:"OOP models real-world entities as objects. Each object bundles data (attributes) and functions (methods). Key OOP principles: encapsulation, inheritance, polymorphism, and abstraction. Java and Python are OOP languages."},
+  {id:113,level:"Intermediate",type:"Concept",topic:"High-Level Languages",question:"FORTRAN was primarily developed for:",options:["Business data processing","Artificial intelligence research","Scientific and mathematical computations","Web application development"],answer:"C",explanation:"FORTRAN (FORmula TRANslation, 1957) was the first widely used high-level language, designed by IBM for scientists and engineers to write complex mathematical formulas efficiently. It is still used in scientific computing today."},
+  {id:114,level:"Intermediate",type:"Concept",topic:"High-Level Languages",question:"COBOL was primarily designed for:",options:["Scientific calculations and simulations","Business and administrative data processing","Systems programming and OS development","Embedded systems and firmware"],answer:"B",explanation:"COBOL (Common Business-Oriented Language, 1959) was designed for business applications: payroll, inventory, banking. Its English-like syntax made it accessible to non-mathematical business users."},
+  {id:115,level:"Basic",type:"Concept",topic:"High-Level Languages",question:"Which high-level language is considered the most widely used for general-purpose programming today and is known for its simple, readable syntax?",options:["COBOL","FORTRAN","Python","Pascal"],answer:"C",explanation:"Python consistently ranks as the world's most popular language. Its clean, indentation-based syntax, vast library ecosystem, and versatility (AI, web, data science, automation) make it suitable for beginners and experts alike."},
+  {id:116,level:"Basic",type:"Concept",topic:"High-Level Languages",question:"A program written in a high-level language is called:",options:["Object code","Machine code","Source code","Firmware"],answer:"C",explanation:"Source code is the human-readable text written by the programmer in a high-level language. It must be translated by a compiler or interpreter into machine code before the CPU can execute it."},
+  {id:117,level:"Basic",type:"Concept",topic:"High-Level Languages",question:"After compilation, the translated machine language version of the program is called:",options:["Source code","Object code / executable code","Pseudocode","Assembly code"],answer:"B",explanation:"After a compiler processes source code, it produces object code (machine code). This may be linked with library code to produce a final executable file (.exe on Windows, ELF on Linux)."},
+  {id:118,level:"Basic",type:"Concept",topic:"High-Level Languages",question:"Which of the following languages is primarily used for developing Android applications?",options:["COBOL","Pascal","Java / Kotlin","FORTRAN"],answer:"C",explanation:"Google officially supports Java and Kotlin for Android app development. Kotlin is now the preferred language. Both run on the Android Runtime (ART) and compile to bytecode compatible with Android devices."},
+  {id:119,level:"Advanced",type:"Concept",topic:"High-Level Languages",question:"4GL (Fourth Generation Languages) are characterized by:",options:["Being closer to machine language than 3GL","Being non-procedural and allowing users to specify WHAT they want without specifying HOW","Requiring knowledge of binary to use effectively","Being used only in embedded systems"],answer:"B",explanation:"4GLs are closer to human thought — the programmer states what result is needed, not how to achieve it step by step. SQL (query databases), report generators, and spreadsheet formula languages are 4GL examples."},
+  {id:120,level:"Intermediate",type:"Concept",topic:"High-Level Languages",question:"SQL (Structured Query Language) is an example of which generation language?",options:["1GL","2GL","3GL","4GL"],answer:"D",explanation:"SQL is a 4GL because it is declarative — you write SELECT name FROM students WHERE grade > 80 and the database engine works out HOW to retrieve that data. You specify the goal, not the steps."},
+  {id:121,level:"Basic",type:"Concept",topic:"Stored Program Concept",question:"The Stored Program Concept states that:",options:["Programs must be stored on external devices and loaded each time","Both program instructions and data are stored in the computer's memory and can be executed sequentially","Programs are hardwired into the CPU and cannot be changed","Only data is stored in memory; instructions are hardcoded in the hardware"],answer:"B",explanation:"The Stored Program Concept (1945) revolutionised computing by allowing instructions and data to coexist in the same memory. The CPU can then fetch instructions from memory, decode them, and execute them sequentially."},
+  {id:122,level:"Basic",type:"Concept",topic:"Stored Program Concept",question:"The Stored Program Concept is most closely associated with which computer architecture?",options:["Harvard Architecture","Von Neumann Architecture","RISC Architecture","Pipeline Architecture"],answer:"B",explanation:"John von Neumann's architecture stores both program instructions and data in a single memory unit, with a single bus connecting memory to the CPU. Most modern personal computers are based on this architecture."},
+  {id:123,level:"Intermediate",type:"Concept",topic:"Stored Program Concept",question:"Who is credited with developing the foundational ideas of the Stored Program Concept?",options:["Charles Babbage","Alan Turing and John von Neumann","Bill Gates","Tim Berners-Lee"],answer:"B",explanation:"Alan Turing's theoretical work on the Universal Turing Machine and John von Neumann's 1945 First Draft of a Report on EDVAC together established the theoretical and practical foundation of the stored program computer."},
+  {id:124,level:"Basic",type:"Concept",topic:"Stored Program Concept",question:"In the Von Neumann architecture, program instructions and data are stored in:",options:["Separate memory units to prevent conflicts","The same memory unit","The CPU registers only","External storage devices exclusively"],answer:"B",explanation:"The Von Neumann model uses a single unified memory for both code and data. This simplifies design but creates the Von Neumann bottleneck since both compete for the same memory bus bandwidth."},
+  {id:125,level:"Advanced",type:"Concept",topic:"Stored Program Concept",question:"The Von Neumann bottleneck refers to:",options:["The CPU running out of registers during complex calculations","The limited speed of data transfer between the CPU and shared memory causing performance constraints","The inability of the computer to run more than one program","The limited storage capacity of ROM chips"],answer:"B",explanation:"Since a single bus carries both instructions and data, the CPU often has to wait for memory access. Modern systems mitigate this with caches, pipelines, and wider buses, but the fundamental constraint remains."},
+  {id:126,level:"Basic",type:"Concept",topic:"Stored Program Concept",question:"Which of the following is a key advantage of the Stored Program Concept?",options:["Programs are burned into hardware and cannot be modified","The same computer can run different programs without physical rewiring","Only one type of program can be stored in memory at a time","Data and instructions are processed at different speeds"],answer:"B",explanation:"Before stored programs, computers had to be physically rewired to run different programs. With the stored program concept, swapping programs is as simple as loading different instructions into memory — enabling general-purpose computing."},
+  {id:127,level:"Intermediate",type:"Concept",topic:"Stored Program Concept",question:"The Fetch-Decode-Execute cycle is central to the Stored Program Concept. In this cycle, what happens during the FETCH stage?",options:["The CPU performs the arithmetic or logical operation","The CPU retrieves the next instruction from memory","The CPU converts the binary instruction into a control signal","The CPU writes the result back to memory"],answer:"B",explanation:"During FETCH, the CPU uses the Program Counter to find the address of the next instruction, places that address in the MAR, and copies the instruction from memory into the Memory Data Register and then the Current Instruction Register."},
+  {id:128,level:"Intermediate",type:"Concept",topic:"Stored Program Concept",question:"During the DECODE stage of the Fetch-Decode-Execute cycle:",options:["The instruction is fetched from memory","The CPU interprets (decodes) the fetched instruction to determine what action is needed","The arithmetic logic unit (ALU) performs the calculation","The result is stored back in memory or a register"],answer:"B",explanation:"In the DECODE stage, the Control Unit analyses the binary instruction to determine what operation is required (ADD, LOAD, JUMP, etc.) and which operands are involved, then signals the appropriate hardware units."},
+  {id:129,level:"Intermediate",type:"Concept",topic:"Stored Program Concept",question:"The Program Counter (PC) in a CPU:",options:["Counts the number of programs installed on the computer","Holds the memory address of the next instruction to be fetched and executed","Stores the result of the most recent arithmetic operation","Controls the speed of the CPU clock"],answer:"B",explanation:"The Program Counter is automatically incremented after each fetch to point to the next instruction. Branch and jump instructions modify the PC to change program flow, enabling loops and conditional execution."},
+  {id:130,level:"Intermediate",type:"Concept",topic:"Stored Program Concept",question:"The Memory Address Register (MAR) is used to:",options:["Store the instruction currently being decoded","Hold the address in memory from which data or an instruction is to be fetched","Temporarily hold the data that has just been read from memory","Determine the next instruction based on a condition"],answer:"B",explanation:"The MAR is connected to the address bus. Before any memory read or write, the CPU loads the target address into the MAR. The memory system then accesses that specific location."},
+  {id:131,level:"Intermediate",type:"Concept",topic:"Stored Program Concept",question:"The Memory Data Register (MDR) is used to:",options:["Hold the address of the memory location being accessed","Temporarily hold the data that is being transferred to or from memory","Count the number of executed instructions","Store permanent program files on the hard disk"],answer:"B",explanation:"The MDR (also called Memory Buffer Register) acts as a buffer between the CPU and memory. Data read from memory is first placed in the MDR before being processed; data to be written is placed here before being sent to memory."},
+  {id:132,level:"Advanced",type:"Concept",topic:"Stored Program Concept",question:"Harvard Architecture differs from Von Neumann Architecture in that it:",options:["Uses a single memory for both programs and data","Uses separate memory and buses for instructions and data, allowing simultaneous access","Does not support the Stored Program Concept","Only works with assembly language programs"],answer:"B",explanation:"Harvard Architecture uses physically separate storage and signal pathways for instructions and data. This eliminates the Von Neumann bottleneck, allowing the CPU to fetch the next instruction while processing data simultaneously. Used in many microcontrollers and DSPs."},
+  {id:133,level:"Intermediate",type:"Concept",topic:"Stored Program Concept",question:"Which of the following is a practical benefit of the Stored Program Concept in modern computing?",options:["It eliminates the need for an operating system","Programs can be easily updated, replaced, or modified without any hardware changes","The computer can only run one fixed program permanently","Data and instructions are completely separate, speeding up processing"],answer:"B",explanation:"Because programs are data stored in memory, they can be loaded, updated, patched, or replaced simply by writing new bytes to memory — no hardware changes needed. This flexibility underpins all modern software distribution and updating."},
+  {id:134,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"MS Office is best described as:",options:["An operating system developed by Microsoft","A suite of productivity application software including word processing, spreadsheet, and presentation tools","A firmware package embedded in Microsoft hardware","A programming language developed by Microsoft"],answer:"B",explanation:"Microsoft Office is a collection of productivity application software. Current MS 365 includes Word, Excel, PowerPoint, Outlook, OneNote, Access, Teams, and more — all designed to enhance workplace and personal productivity."},
+  {id:135,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"Microsoft Word is primarily used for:",options:["Performing complex statistical data analysis","Creating, editing, and formatting text documents","Building and managing relational databases","Designing and delivering slide-based presentations"],answer:"B",explanation:"MS Word is a full-featured word processor for creating letters, reports, essays, and books. It supports text formatting, tables, images, mail merge, spelling/grammar checking, and collaborative editing."},
+  {id:136,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"Microsoft Excel is primarily used for:",options:["Writing and formatting letters and reports","Creating and managing databases of customer information","Organizing data in rows and columns, performing calculations, and creating charts","Creating slide presentations for meetings"],answer:"C",explanation:"Excel is a powerful spreadsheet application. It organises data in cells (rows x columns), supports hundreds of built-in functions, enables chart creation, pivot tables, conditional formatting, and automation through macros."},
+  {id:137,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"Microsoft PowerPoint is primarily used for:",options:["Performing calculations using formulas and functions","Creating slide-show presentations with text, images, and multimedia","Writing, editing, and formatting long text documents","Managing and querying relational databases"],answer:"B",explanation:"PowerPoint is presentation software. Users create a sequence of slides containing text, images, charts, animations, and videos. Presentations are used in classrooms, boardrooms, and conferences."},
+  {id:138,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"Microsoft Access is primarily used for:",options:["Creating slide presentations","Word processing and document formatting","Building and managing relational databases","Creating spreadsheets and performing data analysis"],answer:"C",explanation:"MS Access is a relational database management system (RDBMS). Users can create tables, define relationships, build forms and reports, and write queries using QBE (Query By Example) or SQL."},
+  {id:139,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"Microsoft Outlook is primarily used for:",options:["Creating financial models and spreadsheets","Managing emails, contacts, calendar events, and tasks","Designing corporate logos and branding materials","Editing audio and video files"],answer:"B",explanation:"Outlook is a personal information manager and email client. It integrates email, a calendar for scheduling meetings, a contact directory, task management, and notes — all in one application."},
+  {id:140,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"In Microsoft Word, the feature that automatically corrects common spelling mistakes as you type is called:",options:["AutoSave","AutoComplete","AutoCorrect","SpellCheck"],answer:"C",explanation:"AutoCorrect automatically replaces common typos (e.g., 'teh' to 'the') as you type. AutoComplete suggests completions for frequently used phrases. SpellCheck is a manual or background checker, not an auto-replacement tool."},
+  {id:141,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"In Microsoft Excel, a formula always begins with:",options:["A hashtag (#)","An equals sign (=)","A dollar sign ($)","An ampersand (&)"],answer:"B",explanation:"The equals sign (=) tells Excel that what follows is a formula to be calculated, not plain text. For example, =A1+B1 adds the values in cells A1 and B1. Without =, Excel treats the entry as literal text."},
+  {id:142,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"What is a 'cell' in Microsoft Excel?",options:["A type of chart used to display data","The intersection of a row and a column in a worksheet, identified by a letter and number (e.g., A1)","A range of data selected for a formula","A special macro used to automate tasks"],answer:"B",explanation:"A cell is the basic unit of a spreadsheet. Column letter + row number = cell reference (e.g., C5 = column C, row 5). Each cell can hold text, numbers, dates, or formulas."},
+  {id:143,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"In Excel, a 'workbook' refers to:",options:["A single row of data in a spreadsheet","The entire Excel file, which can contain multiple worksheets","A named range of cells used in a formula","A chart embedded within a worksheet"],answer:"B",explanation:"A workbook is the entire .xlsx file. It can contain multiple worksheets (tabs) like Sheet1, Sheet2, etc. This allows related data to be organised in separate sheets within a single file."},
+  {id:144,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"Which of the following is a function in Microsoft Excel that adds up a range of numbers?",options:["=COUNT(A1:A10)","=AVERAGE(A1:A10)","=SUM(A1:A10)","=MAX(A1:A10)"],answer:"C",explanation:"=SUM(A1:A10) adds all numeric values in cells A1 through A10. COUNT counts how many cells have numbers; AVERAGE calculates the mean; MAX returns the largest value."},
+  {id:145,level:"Intermediate",type:"Concept",topic:"MS Office Packages",question:"In Microsoft PowerPoint, a 'slide transition' refers to:",options:["The animation applied to individual text or image objects within a slide","The visual effect that occurs when moving from one slide to the next during a presentation","The template theme applied to all slides","The process of converting a presentation to PDF format"],answer:"B",explanation:"Slide transitions are effects (fade, wipe, fly-in) that play between slides during a slideshow. They differ from animations, which apply to individual objects within a single slide."},
+  {id:146,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"Which of the following file extensions is associated with Microsoft Word documents?",options:[".xlsx",".pptx",".docx",".accdb"],answer:"C",explanation:".docx is the Word document format (introduced in Office 2007, based on Open XML). .xlsx = Excel, .pptx = PowerPoint, .accdb = Access database."},
+  {id:147,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"Which of the following file extensions is associated with Microsoft Excel files?",options:[".docx",".xlsx",".pptx",".mdb"],answer:"B",explanation:".xlsx stands for Excel Spreadsheet (XML-based format since Office 2007). The older format was .xls. .docx is Word, .pptx is PowerPoint, .mdb was the older Access format (replaced by .accdb)."},
+  {id:148,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"Which of the following file extensions is associated with Microsoft PowerPoint files?",options:[".pptx",".docx",".xlsx",".accdb"],answer:"A",explanation:".pptx is the PowerPoint Presentation format. A .ppsx file is a PowerPoint Show (opens directly in slideshow mode). The older format was .ppt. Remember: docx=Word, xlsx=Excel, pptx=PowerPoint."},
+  {id:149,level:"Intermediate",type:"Concept",topic:"MS Office Packages",question:"In MS Word, 'Mail Merge' is a feature used to:",options:["Send and receive emails directly within Word","Combine a document template with a data source to produce personalised letters or labels","Merge two separate Word documents into one","Format text by merging multiple font styles"],answer:"B",explanation:"Mail Merge takes a template letter and a data source (e.g., Excel spreadsheet of names/addresses) and automatically generates personalised copies — useful for sending the same letter to hundreds of people with individual names."},
+  {id:150,level:"Intermediate",type:"Concept",topic:"MS Office Packages",question:"Which of the following is NOT a chart type available in Microsoft Excel?",options:["Bar Chart","Pie Chart","Scatter Chart","Flow Chart"],answer:"D",explanation:"Excel offers Bar, Column, Line, Pie, Area, Scatter, Radar, and many other charts for data visualisation. A Flowchart is a process diagram drawn with drawing tools (or Visio) — it is not a data chart type in Excel."},
+  {id:151,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"The 'Ribbon' in MS Office applications refers to:",options:["A decorative border added to documents","The toolbar at the top of the screen that contains organized groups of commands and features","The footer area at the bottom of each page","The scrollbar on the right side of the document"],answer:"B",explanation:"Introduced in Office 2007, the Ribbon replaced traditional menus with a tabbed toolbar. Tabs (Home, Insert, Layout, etc.) contain related command groups, making features more discoverable and accessible."},
+  {id:152,level:"Intermediate",type:"Concept",topic:"MS Office Packages",question:"In Microsoft Word, 'Track Changes' is used to:",options:["Monitor how long it takes to open a document","Automatically save a document at timed intervals","Record and display edits made to a document so reviewers can accept or reject them","Track the word count as the document grows"],answer:"C",explanation:"Track Changes marks every insertion, deletion, and formatting change in a distinctive colour attributed to each reviewer. Document owners can then review changes and choose to accept or reject each one — essential for collaborative editing."},
+  {id:153,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"Microsoft OneNote is used for:",options:["Creating slide presentations for business meetings","Taking and organizing notes in a digital notebook format","Building relational databases and queries","Managing and scheduling emails and calendar events"],answer:"B",explanation:"OneNote is a digital notebook application. Users can create notebooks with sections and pages, add text, images, drawings, audio, and hyperlinks. It syncs across devices and supports collaborative note-taking."},
+  {id:154,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"Which MS Office application would be most suitable for creating a budget tracker?",options:["Microsoft Word","Microsoft PowerPoint","Microsoft Excel","Microsoft Access"],answer:"C",explanation:"A budget tracker requires numerical data entry, arithmetic formulas, and charts — all strengths of Excel. Word is for text documents, PowerPoint for presentations, and Access for relational databases requiring multiple linked tables."},
+  {id:155,level:"Advanced",type:"Concept",topic:"MS Office Packages",question:"In MS Excel, the VLOOKUP function is used to:",options:["Look for a value in the first column of a table and return a value in the same row from a specified column","Count the number of cells that contain numerical values","Calculate the average of a range of cells","Create a vertical bar chart from selected data"],answer:"A",explanation:"VLOOKUP (Vertical Lookup) searches for a value in the leftmost column of a table, then returns a value from a specified column in the same row. Syntax: =VLOOKUP(lookup_value, table_array, col_index, [range_lookup])."},
+  {id:156,level:"Intermediate",type:"Concept",topic:"MS Office Packages",question:"'Macro' in MS Office refers to:",options:["A large-size document format","A set of recorded commands and instructions that can be played back to automate repetitive tasks","A type of chart that shows trends over time","A password-protected section of a document"],answer:"B",explanation:"A macro is a sequence of actions recorded and saved so they can be replayed automatically. In Excel/Word, macros can be recorded manually or written in VBA (Visual Basic for Applications) for complex automation."},
+  {id:157,level:"Basic",type:"Concept",topic:"MS Office Packages",question:"Which of the following is a key advantage of using MS Office Packages?",options:["They replace the need for an operating system","They provide a familiar, integrated suite of productivity tools that improve efficiency","They are exclusively available for Linux operating systems","They can directly compile and run software programs"],answer:"B",explanation:"MS Office's greatest advantage is integration: data flows easily between Word, Excel, and PowerPoint. The consistent interface across applications reduces the learning curve, and cloud integration (OneDrive) enables real-time collaboration."},
+];
+
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── PREVENT ACCIDENTAL REFRESH / TAB CLOSE ──
+   Only triggers the browser's "Leave site?" dialog
+   once the user has answered at least one question. */
+window.addEventListener('beforeunload', e => {
+  if (Object.keys(S.answers).length > 0) e.preventDefault();
+});
+
+init();
+</script>
+</body>
+</html>

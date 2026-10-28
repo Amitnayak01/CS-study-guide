@@ -1,0 +1,3154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "Which is the default storage class for local variables declared inside a function/block in C?",
+    "options": [
+      "extern",
+      "static",
+      "register",
+      "auto"
+    ],
+    "answer": "D",
+    "explanation": "If no storage class is specified for a local variable, the C compiler treats it as <b>auto</b> by default."
+  },
+  {
+    "id": 2,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "In which memory area are automatic (auto) variables stored?",
+    "options": [
+      "Stack",
+      "CPU registers",
+      "Data segment",
+      "Heap segment"
+    ],
+    "answer": "A",
+    "explanation": "Auto variables are created on the function call stack and are removed automatically when the block/function exits."
+  },
+  {
+    "id": 3,
+    "level": "Basic",
+    "type": "Lifetime",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "What is the lifetime of an auto variable?",
+    "options": [
+      "Until the program restarts",
+      "Entire program execution",
+      "Until the block/function in which it is declared finishes execution",
+      "Permanent, across all function calls"
+    ],
+    "answer": "C",
+    "explanation": "An auto variable is created when its block is entered and destroyed as soon as control leaves that block."
+  },
+  {
+    "id": 4,
+    "level": "Basic",
+    "type": "Scope",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "What is the scope of an automatic variable?",
+    "options": [
+      "File scope",
+      "Global to the whole program",
+      "Scope of the entire project",
+      "Local to the block/function in which it is declared"
+    ],
+    "answer": "D",
+    "explanation": "Auto variables are visible only within the block in which they are declared; they cannot be accessed outside it."
+  },
+  {
+    "id": 5,
+    "level": "Basic",
+    "type": "Declaration",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "Which of the following is a syntactically correct declaration of an auto variable?",
+    "options": [
+      "int auto x;",
+      "x auto int;",
+      "auto x int;",
+      "auto int x;"
+    ],
+    "answer": "D",
+    "explanation": "The storage class keyword is written before the data type: <i>storage_class data_type variable_name;</i>"
+  },
+  {
+    "id": 6,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "An automatic variable that is declared but not explicitly initialized contains:",
+    "options": [
+      "The value -1",
+      "The value 0",
+      "NULL",
+      "An unpredictable garbage value"
+    ],
+    "answer": "D",
+    "explanation": "Unlike static/global variables, auto variables are not automatically initialized to zero; they hold garbage values until assigned."
+  },
+  {
+    "id": 7,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "The auto storage class is best suited for:",
+    "options": [
+      "Variables meant to be stored in CPU registers",
+      "Variables shared across multiple files",
+      "Variables that must retain their value across function calls",
+      "Temporary variables required only within a function"
+    ],
+    "answer": "D",
+    "explanation": "Since auto variables exist only for the duration of the block, they are ideal for short-lived, temporary working variables."
+  },
+  {
+    "id": 8,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "Statement: \"auto variables are created when the block is entered and destroyed when the block exits.\" This statement is:",
+    "options": [
+      "True",
+      "True only for global auto variables",
+      "True only in main()",
+      "False"
+    ],
+    "answer": "A",
+    "explanation": "Each call to the block allocates new stack memory for auto variables, so previous values are not retained."
+  },
+  {
+    "id": 9,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "Can the keyword 'auto' be used to declare a variable at global (file) scope?",
+    "options": [
+      "Yes, it behaves like a global variable",
+      "Yes, but only in the first file",
+      "Yes, if extern is also used",
+      "No, auto is invalid for variables declared outside all functions"
+    ],
+    "answer": "D",
+    "explanation": "The auto storage class applies only to local variables; using it at file scope results in a compile-time error."
+  },
+  {
+    "id": 10,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "What happens if you explicitly write 'auto' before a variable declared outside any function?",
+    "options": [
+      "It is treated as extern",
+      "It is silently accepted and treated as global",
+      "It is treated as static",
+      "It causes a compile-time error"
+    ],
+    "answer": "D",
+    "explanation": "auto is meaningless outside a block/function, and most compilers report an error for such a declaration."
+  },
+  {
+    "id": 11,
+    "level": "Basic",
+    "type": "Memory allocation",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "Each time a function containing an auto variable is called:",
+    "options": [
+      "Memory is allocated in the data segment",
+      "Memory is allocated from the heap",
+      "Fresh stack memory is allocated for the variable",
+      "The variable reuses the same memory address as the previous call"
+    ],
+    "answer": "C",
+    "explanation": "Stack memory for auto variables is allocated on entry to the function and released on exit, so a new call gets fresh memory."
+  },
+  {
+    "id": 12,
+    "level": "Advanced",
+    "type": "Code-based",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "What will the following code print if func() is called twice?<br><code>void func(){ auto int x = 5; x++; printf(\"%d \", x); }</code>",
+    "options": [
+      "5 6",
+      "5 5",
+      "6 6",
+      "6 7"
+    ],
+    "answer": "C",
+    "explanation": "Since x is reinitialized to 5 on every call (auto variables don't persist), each call prints 6."
+  },
+  {
+    "id": 13,
+    "level": "Advanced",
+    "type": "Output-based",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "Predict the output:<br><code>int i; for(i=0;i&lt;3;i++){ auto int c=0; c++; printf(\"%d\",c);} </code>",
+    "options": [
+      "123",
+      "000",
+      "111",
+      "012"
+    ],
+    "answer": "C",
+    "explanation": "'c' is declared and initialized to 0 afresh in every iteration of the loop since it is auto, so it becomes 1 each time before printing."
+  },
+  {
+    "id": 14,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "Assertion (A): Auto variables lose their value once the function returns.<br>Reason (R): Auto variables are stored in stack memory, which is deallocated when the function exits.",
+    "options": [
+      "A is true, R is false",
+      "Both A and R are true, and R is the correct explanation of A",
+      "Both A and R are true, but R is not the correct explanation of A",
+      "A is false, R is true"
+    ],
+    "answer": "B",
+    "explanation": "The stack frame (and hence the auto variable's memory) is destroyed on function return, which directly explains why its value is lost."
+  },
+  {
+    "id": 15,
+    "level": "Intermediate",
+    "type": "Fill-in-the-blank",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "The storage class keyword ______ is rarely typed explicitly in programs because it is the implicit default for local variables.",
+    "options": [
+      "register",
+      "auto",
+      "static",
+      "extern"
+    ],
+    "answer": "B",
+    "explanation": "Since 'auto' is applied automatically to local variables, programmers usually omit it."
+  },
+  {
+    "id": 16,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "Which of the following is NOT a characteristic of the auto storage class?",
+    "options": [
+      "Value persists between successive function calls",
+      "Stored in stack memory",
+      "Default storage class for local variables",
+      "Block/local scope"
+    ],
+    "answer": "A",
+    "explanation": "Auto variables do NOT retain their value between calls — that persistence is a property of static variables, not auto."
+  },
+  {
+    "id": 17,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "A programmer declares 'int count;' inside a for-loop body without any storage class keyword. What storage class does 'count' get by default?",
+    "options": [
+      "register",
+      "extern",
+      "auto",
+      "static"
+    ],
+    "answer": "C",
+    "explanation": "Any local variable without an explicit storage-class specifier is automatic (auto) by default."
+  },
+  {
+    "id": 18,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "The storage class that provides block scope, stack-based memory, and automatic destruction at the end of the block is called:",
+    "options": [
+      "static",
+      "auto",
+      "register",
+      "extern"
+    ],
+    "answer": "B",
+    "explanation": "This combination of properties — block scope, stack memory, automatic destruction — precisely defines the auto storage class."
+  },
+  {
+    "id": 19,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "Which of the following statements about auto variables is FALSE?",
+    "options": [
+      "The auto keyword can be used explicitly with local variables",
+      "Auto variables are destroyed when control leaves their block",
+      "Explicitly writing 'auto' is mandatory for every local variable",
+      "Auto variables have block/local scope"
+    ],
+    "answer": "C",
+    "explanation": "Writing 'auto' explicitly is optional, not mandatory, since it is the default for local declarations."
+  },
+  {
+    "id": 20,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "An automatic variable is also sometimes referred to as a:",
+    "options": [
+      "Global variable",
+      "Register variable",
+      "Local/temporary variable",
+      "Persistent variable"
+    ],
+    "answer": "C",
+    "explanation": "Because of its limited lifetime and scope, an auto variable is commonly called a local or temporary variable."
+  },
+  {
+    "id": 21,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "If two different functions each declare an auto variable named 'x', are these two variables related?",
+    "options": [
+      "Yes, they share the same memory",
+      "Yes, but only if both functions are called from main()",
+      "No, they are completely independent variables with separate memory",
+      "No, only one of them is valid"
+    ],
+    "answer": "C",
+    "explanation": "Each function has its own local scope; auto variables with the same name in different functions occupy separate stack memory."
+  },
+  {
+    "id": 22,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "Statement: \"Auto variables can be accessed from a function other than the one in which they are declared.\" This is:",
+    "options": [
+      "True",
+      "False",
+      "True only for pointers",
+      "True only if declared in main()"
+    ],
+    "answer": "B",
+    "explanation": "Auto variables have local scope and are inaccessible outside their declaring block/function."
+  },
+  {
+    "id": 23,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "Which of these is a typical, appropriate use of an auto variable?",
+    "options": [
+      "A configuration flag needed by every function in the file",
+      "A variable that must be optimized into a CPU register at all costs",
+      "A variable meant to be shared between multiple source files",
+      "A loop counter used only within a single function"
+    ],
+    "answer": "D",
+    "explanation": "Loop counters that are only needed within one function are classic, appropriate use cases for auto variables."
+  },
+  {
+    "id": 24,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "What is the initial value of an uninitialized auto variable of type int?",
+    "options": [
+      "Indeterminate (garbage) value",
+      "Always -1",
+      "Always the value of the last variable in that memory location, guaranteed by the standard",
+      "Always 0"
+    ],
+    "answer": "A",
+    "explanation": "The C standard does not guarantee any specific value for an uninitialized auto variable; it is indeterminate/garbage."
+  },
+  {
+    "id": 25,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Automatic Storage Class (auto)",
+    "question": "Auto variables differ from static local variables mainly in terms of:",
+    "options": [
+      "The keyword used for declaration only, with no functional difference",
+      "Only in the syntax of printf used with them",
+      "Data type restrictions",
+      "Lifetime and value persistence across function calls"
+    ],
+    "answer": "D",
+    "explanation": "The key functional difference is that auto variables are destroyed after each call, while static local variables persist their value across calls."
+  },
+  {
+    "id": 26,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Register Storage Class (register)",
+    "question": "The 'register' storage class is a request to the compiler to store a variable in:",
+    "options": [
+      "A file on disk",
+      "The heap",
+      "The data segment",
+      "A CPU register, for faster access"
+    ],
+    "answer": "D",
+    "explanation": "The register keyword suggests that the compiler place the variable in a CPU register for quicker access, though the compiler may not honor this."
+  },
+  {
+    "id": 27,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Register Storage Class (register)",
+    "question": "Is the compiler obligated to store a 'register' variable in an actual CPU register?",
+    "options": [
+      "Only for float variables",
+      "Yes, always",
+      "Only inside main()",
+      "No, the compiler may ignore the request and treat it as auto if registers are unavailable"
+    ],
+    "answer": "D",
+    "explanation": "The register specifier is only a hint/suggestion to the compiler; if no register is free, the variable is treated like an ordinary auto variable."
+  },
+  {
+    "id": 28,
+    "level": "Basic",
+    "type": "Declaration",
+    "topic": "Register Storage Class (register)",
+    "question": "Which of the following is a valid declaration using the register storage class?",
+    "options": [
+      "int register counter;",
+      "register int counter;",
+      "counter register int;",
+      "Both (a) and (b) are valid"
+    ],
+    "answer": "D",
+    "explanation": "The storage-class specifier may appear either before or after the type specifier, so both forms are valid C syntax."
+  },
+  {
+    "id": 29,
+    "level": "Basic",
+    "type": "Advantage",
+    "topic": "Register Storage Class (register)",
+    "question": "What is the main advantage claimed for register variables?",
+    "options": [
+      "They have global scope",
+      "They occupy less memory than int variables",
+      "Faster access/execution since CPU registers are quicker than RAM",
+      "They are automatically initialized to zero"
+    ],
+    "answer": "C",
+    "explanation": "Accessing a value directly from a CPU register avoids a memory (RAM) access, which can speed up execution for frequently used variables."
+  },
+  {
+    "id": 30,
+    "level": "Basic",
+    "type": "Limitation",
+    "topic": "Register Storage Class (register)",
+    "question": "Which operation is NOT allowed on a variable declared with the register storage class?",
+    "options": [
+      "Using it in a comparison",
+      "Arithmetic operations like addition",
+      "Assigning it a value",
+      "Taking its address using the & operator"
+    ],
+    "answer": "D",
+    "explanation": "Because a register variable may not have a normal memory address, the unary '&' (address-of) operator cannot be applied to it."
+  },
+  {
+    "id": 31,
+    "level": "Basic",
+    "type": "Scope",
+    "topic": "Register Storage Class (register)",
+    "question": "What is the scope of a register variable?",
+    "options": [
+      "Restricted only to CPU hardware routines",
+      "Program-wide",
+      "Local to the block in which it is declared, same as auto",
+      "Global to the file"
+    ],
+    "answer": "C",
+    "explanation": "Like auto variables, register variables are local to the block in which they are declared."
+  },
+  {
+    "id": 32,
+    "level": "Basic",
+    "type": "Lifetime",
+    "topic": "Register Storage Class (register)",
+    "question": "What is the lifetime of a register variable?",
+    "options": [
+      "Same as an extern variable",
+      "Permanent, stored for the OS lifetime",
+      "Same as a static variable — throughout the program",
+      "Same as an auto variable — until the block/function ends"
+    ],
+    "answer": "D",
+    "explanation": "Register variables behave like auto variables in terms of lifetime, existing only for the duration of their enclosing block."
+  },
+  {
+    "id": 33,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Register Storage Class (register)",
+    "question": "Register storage class is typically applied to variables that are:",
+    "options": [
+      "Meant to be shared across files",
+      "Large arrays and structures",
+      "Rarely used in the program",
+      "Frequently accessed, such as loop counters"
+    ],
+    "answer": "D",
+    "explanation": "Frequently accessed variables, like loop counters in performance-critical loops, are the classic candidates for the register hint."
+  },
+  {
+    "id": 34,
+    "level": "Basic",
+    "type": "Limitation",
+    "topic": "Register Storage Class (register)",
+    "question": "Why can large data types like arrays or structures generally NOT be effectively declared as register variables?",
+    "options": [
+      "Because arrays cannot be declared with any storage class",
+      "Because CPU registers are typically too small to hold them",
+      "Because register only applies to global variables",
+      "Because the compiler forbids syntax for arrays with register"
+    ],
+    "answer": "B",
+    "explanation": "CPU registers have limited size, so bulky data such as arrays/structures usually cannot fit into a register and the request is ignored."
+  },
+  {
+    "id": 35,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Register Storage Class (register)",
+    "question": "In modern C compilers, the register keyword is often considered:",
+    "options": [
+      "Illegal and removed from the language",
+      "Largely obsolete, since compilers automatically optimize variable placement",
+      "Only usable with pointers",
+      "Mandatory for performance"
+    ],
+    "answer": "B",
+    "explanation": "Modern optimizing compilers generally decide register allocation on their own, making the explicit register keyword mostly a legacy hint."
+  },
+  {
+    "id": 36,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Register Storage Class (register)",
+    "question": "Statement: \"A register variable is guaranteed to always be faster than an auto variable.\" This statement is:",
+    "options": [
+      "True in all cases",
+      "True only in loops",
+      "False, since the compiler may not place it in a register at all",
+      "True only for char variables"
+    ],
+    "answer": "C",
+    "explanation": "Since the compiler can silently ignore the register request, there is no guarantee of any speed benefit."
+  },
+  {
+    "id": 37,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Register Storage Class (register)",
+    "question": "What is the result of attempting to compile: 'register int x = 10; int *p = &x;'?",
+    "options": [
+      "Compiles with a warning but assigns garbage to p",
+      "Runtime crash only",
+      "Compile-time error because the address of a register variable cannot be taken",
+      "Compiles and runs normally"
+    ],
+    "answer": "C",
+    "explanation": "The C standard disallows applying the address-of operator to a variable declared as register."
+  },
+  {
+    "id": 38,
+    "level": "Advanced",
+    "type": "Code-based",
+    "topic": "Register Storage Class (register)",
+    "question": "Which line in the following code is invalid?<br><code>register int a = 5;<br>int *ptr = &a;</code>",
+    "options": [
+      "Neither line is invalid",
+      "register int a = 5;",
+      "int *ptr = &a;",
+      "Both lines are invalid"
+    ],
+    "answer": "C",
+    "explanation": "Taking the address of register variable 'a' is not permitted, making the second line invalid."
+  },
+  {
+    "id": 39,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Register Storage Class (register)",
+    "question": "Which pair correctly matches storage class with primary storage location suggested?",
+    "options": [
+      "register - CPU register",
+      "static - CPU register",
+      "extern - CPU register",
+      "auto - CPU register"
+    ],
+    "answer": "A",
+    "explanation": "The register storage class specifically suggests CPU register storage, unlike auto, static, or extern."
+  },
+  {
+    "id": 40,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Register Storage Class (register)",
+    "question": "Assertion (A): register variables cannot have their address taken.<br>Reason (R): CPU registers do not have conventional memory addresses like RAM locations.",
+    "options": [
+      "Both A and R are true, but R does not explain A",
+      "Both A and R are true, and R correctly explains A",
+      "A is true, R is false",
+      "A is false, R is true"
+    ],
+    "answer": "B",
+    "explanation": "Since registers lack ordinary addressable memory locations, the & operator cannot be meaningfully applied, explaining the restriction."
+  },
+  {
+    "id": 41,
+    "level": "Intermediate",
+    "type": "Fill-in-the-blank",
+    "topic": "Register Storage Class (register)",
+    "question": "The register storage class is only a ______ to the compiler, not a command.",
+    "options": [
+      "command",
+      "restriction",
+      "suggestion/request",
+      "guarantee"
+    ],
+    "answer": "C",
+    "explanation": "The keyword register merely requests register allocation; the compiler is free to disregard it."
+  },
+  {
+    "id": 42,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Register Storage Class (register)",
+    "question": "If a program declares more register variables than the number of available CPU registers, what happens?",
+    "options": [
+      "Compilation fails",
+      "The compiler treats the excess variables as ordinary auto variables",
+      "Only the first register variable is retained; others are deleted",
+      "The program crashes at runtime"
+    ],
+    "answer": "B",
+    "explanation": "When registers run out, the compiler gracefully falls back to treating additional register variables as auto."
+  },
+  {
+    "id": 43,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Register Storage Class (register)",
+    "question": "A programmer wants to speed up a loop counter that runs a million iterations. Which storage class hint might they apply, keeping in mind it may be ignored by the compiler?",
+    "options": [
+      "static",
+      "register",
+      "extern",
+      "auto is the only valid choice"
+    ],
+    "answer": "B",
+    "explanation": "register is the traditional hint used for performance-critical, frequently accessed variables like loop counters."
+  },
+  {
+    "id": 44,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Register Storage Class (register)",
+    "question": "Which of these is true regarding register variables and function scope?",
+    "options": [
+      "They exist for the life of the program",
+      "They are local, exactly like auto variables, restricted to their own block",
+      "They can be accessed from any function in the file",
+      "They must be declared only in main()"
+    ],
+    "answer": "B",
+    "explanation": "Apart from the register hint, scope rules for register variables mirror those of auto variables."
+  },
+  {
+    "id": 45,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Register Storage Class (register)",
+    "question": "Which of the following statements is TRUE about the register storage class in C?",
+    "options": [
+      "It automatically retains value between function calls",
+      "It has the same scope and lifetime as an auto variable, but a different storage suggestion",
+      "It can be used only for global variables",
+      "It guarantees storage in a CPU register"
+    ],
+    "answer": "B",
+    "explanation": "register shares auto's scope and lifetime rules; the only difference is the (non-binding) suggestion to use a CPU register."
+  },
+  {
+    "id": 46,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Register Storage Class (register)",
+    "question": "Why might using 'register' on too many variables sometimes have no visible effect on program performance?",
+    "options": [
+      "Because register variables are always slower than auto",
+      "Because register variables cannot be used in arithmetic expressions",
+      "Because using register disables all compiler optimizations",
+      "Because modern compilers already apply their own optimizations and may ignore explicit register requests"
+    ],
+    "answer": "D",
+    "explanation": "Contemporary compilers use sophisticated register-allocation algorithms, often outperforming or overriding manual register hints."
+  },
+  {
+    "id": 47,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Register Storage Class (register)",
+    "question": "Which is a key difference between register and auto variables?",
+    "options": [
+      "register variables are static, auto variables are not",
+      "There is no difference at all",
+      "register variables cannot have their address taken, unlike auto variables",
+      "register variables have global scope while auto variables do not"
+    ],
+    "answer": "C",
+    "explanation": "Address-of (&) is disallowed on register variables — a restriction that does not apply to ordinary auto variables."
+  },
+  {
+    "id": 48,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Register Storage Class (register)",
+    "question": "The register storage class was introduced in C primarily to:",
+    "options": [
+      "Improve execution speed by hinting frequently used variables for CPU register storage",
+      "Allow variables to be shared across files",
+      "Enable static memory allocation",
+      "Reduce program size"
+    ],
+    "answer": "A",
+    "explanation": "Its original design goal was to give the programmer a way to hint performance-critical variables to the compiler."
+  },
+  {
+    "id": 49,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Register Storage Class (register)",
+    "question": "Statement: \"All register variables must be declared inside a function or block.\" This statement is:",
+    "options": [
+      "False",
+      "True only for pointer variables",
+      "True",
+      "True only in single-file programs"
+    ],
+    "answer": "C",
+    "explanation": "Just like auto, the register storage class is applicable only to local variables inside functions/blocks, not at file scope."
+  },
+  {
+    "id": 50,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Register Storage Class (register)",
+    "question": "In embedded or performance-critical C code, the register keyword is historically applied to:",
+    "options": [
+      "Small, frequently accessed variables like counters or indices",
+      "Externally linked variables",
+      "File-scope global constants",
+      "Large data structures"
+    ],
+    "answer": "A",
+    "explanation": "Small, heavily used variables such as loop indices are the ideal (traditional) candidates for the register hint."
+  },
+  {
+    "id": 51,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "Which storage class allows a local variable to retain its value between successive calls to the function?",
+    "options": [
+      "static",
+      "extern",
+      "register",
+      "auto"
+    ],
+    "answer": "A",
+    "explanation": "A static local variable preserves its value across function calls because its memory is allocated only once, for the program's lifetime."
+  },
+  {
+    "id": 52,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "A static local variable is initialized:",
+    "options": [
+      "Only once, the first time the function is called",
+      "Twice — once at compile time and once at runtime",
+      "Every time the function is called",
+      "Never, it must be assigned manually every time"
+    ],
+    "answer": "A",
+    "explanation": "Static local variables are initialized only once, on the first call; subsequent calls skip the initialization statement."
+  },
+  {
+    "id": 53,
+    "level": "Basic",
+    "type": "Declaration",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "Which is the correct syntax to declare a static local integer variable initialized to 0?",
+    "options": [
+      "x static int = 0;",
+      "Both (a) and (b) are valid",
+      "int static x = 0;",
+      "static int x = 0;"
+    ],
+    "answer": "B",
+    "explanation": "The storage-class specifier may precede or follow the type specifier, so both forms are syntactically valid."
+  },
+  {
+    "id": 54,
+    "level": "Basic",
+    "type": "Lifetime",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "What is the lifetime of a static local variable?",
+    "options": [
+      "Only during compilation",
+      "Throughout the entire execution of the program",
+      "Only during the function call in which it is declared",
+      "Until another function with the same variable name is called"
+    ],
+    "answer": "B",
+    "explanation": "Once created, a static local variable exists for the whole program run, even though it is only accessible inside its function."
+  },
+  {
+    "id": 55,
+    "level": "Basic",
+    "type": "Scope",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "What is the scope of a static local variable?",
+    "options": [
+      "Local to the function/block in which it is declared",
+      "Accessible from any file in the project",
+      "File scope across the whole program",
+      "Global to the entire program"
+    ],
+    "answer": "A",
+    "explanation": "Despite its program-long lifetime, a static local variable's scope remains restricted to its declaring function/block."
+  },
+  {
+    "id": 56,
+    "level": "Basic",
+    "type": "Memory behavior",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "In which memory segment is a static local variable stored?",
+    "options": [
+      "Heap segment",
+      "Data segment (static/global memory area)",
+      "CPU register",
+      "Stack segment"
+    ],
+    "answer": "B",
+    "explanation": "Static variables (local or global) are allocated in the data segment, not the stack, which is why they persist across calls."
+  },
+  {
+    "id": 57,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "If not explicitly initialized, a static local variable of type int is automatically set to:",
+    "options": [
+      "0",
+      "1",
+      "-1",
+      "Garbage value"
+    ],
+    "answer": "A",
+    "explanation": "Unlike auto variables, static variables are automatically zero-initialized by the compiler if no explicit initializer is given."
+  },
+  {
+    "id": 58,
+    "level": "Advanced",
+    "type": "Code-based",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "What is the output of the following code when func() is called three times?<br><code>void func(){ static int count = 0; count++; printf(\"%d \", count); }</code>",
+    "options": [
+      "1 2 3",
+      "1 1 1",
+      "3 3 3",
+      "0 1 2"
+    ],
+    "answer": "A",
+    "explanation": "Because count is static, it retains its value between calls, incrementing from 1 to 2 to 3 across the three calls."
+  },
+  {
+    "id": 59,
+    "level": "Advanced",
+    "type": "Output-based",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "Predict the output:<br><code>void show(){ static int n = 5; n += 2; printf(\"%d \", n); }<br>int main(){ show(); show(); return 0; }</code>",
+    "options": [
+      "5 7",
+      "7 9",
+      "7 7",
+      "5 5"
+    ],
+    "answer": "B",
+    "explanation": "n starts at 5 (only once), becomes 7 after the first call, and retains that value, becoming 9 after the second call."
+  },
+  {
+    "id": 60,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "Static local variables are commonly used to:",
+    "options": [
+      "Replace all global variables in a program",
+      "Count how many times a function has been called across the program",
+      "Store CPU-register-only values",
+      "Store temporary loop indices"
+    ],
+    "answer": "B",
+    "explanation": "A classic use of a static local variable is a call-counter that persists its count between invocations of the function."
+  },
+  {
+    "id": 61,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "Statement: \"A static local variable is re-initialized every time its declaration statement is encountered during execution.\" This is:",
+    "options": [
+      "True only for float variables",
+      "False — initialization happens only once",
+      "True",
+      "True only for arrays"
+    ],
+    "answer": "B",
+    "explanation": "Even though the declaration line executes on every call, the actual initialization is performed only the very first time."
+  },
+  {
+    "id": 62,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "Assertion (A): A static local variable is not destroyed when the function returns.<br>Reason (R): Static variables are stored in the data segment, which exists for the entire program duration.",
+    "options": [
+      "Both A and R true, R is not the correct explanation",
+      "Both A and R true, R is the correct explanation",
+      "A false, R true",
+      "A true, R false"
+    ],
+    "answer": "B",
+    "explanation": "The persistence of static variables is a direct consequence of their allocation in the permanent data segment, correctly explaining assertion A."
+  },
+  {
+    "id": 63,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "Can two different functions each have a static local variable with the same name without conflict?",
+    "options": [
+      "No, this causes a compile-time error",
+      "No, only one static variable per program is allowed",
+      "Yes, but they will share the same memory location",
+      "Yes, each function's static local variable is independent, with its own storage"
+    ],
+    "answer": "D",
+    "explanation": "Static local variables are scoped to their own function, so identical names in different functions do not clash and use separate storage."
+  },
+  {
+    "id": 64,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "What is the key difference between an auto local variable and a static local variable?",
+    "options": [
+      "Static variables have global scope; auto do not",
+      "There is no real difference",
+      "Auto variables are zero-initialized by default, static are not",
+      "Static variables persist their value between calls; auto variables do not"
+    ],
+    "answer": "D",
+    "explanation": "Persistence of value across function calls is the defining distinction between static and auto local variables."
+  },
+  {
+    "id": 65,
+    "level": "Intermediate",
+    "type": "Fill-in-the-blank",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "A static local variable retains its previous value because it is allocated in the ______ segment rather than the stack.",
+    "options": [
+      "register",
+      "static/data",
+      "code (text)",
+      "heap"
+    ],
+    "answer": "B",
+    "explanation": "Static and global variables reside in the data segment, which is not deallocated when a function returns."
+  },
+  {
+    "id": 66,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "A programmer wants a function to remember how many times it has been invoked during the whole program run, without using a global variable. Which storage class should the counter use?",
+    "options": [
+      "extern",
+      "auto",
+      "static",
+      "register"
+    ],
+    "answer": "C",
+    "explanation": "A static local variable is the standard technique to keep a call-count without exposing it as a global variable."
+  },
+  {
+    "id": 67,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "Which of the following best explains why a static local variable is only initialized once?",
+    "options": [
+      "Because static local variables cannot be reassigned",
+      "Because static variables use the register storage location",
+      "Because the compiler ignores subsequent initializer expressions after the first program run",
+      "Because static variables are allocated and initialized at program load time, not each time the block executes"
+    ],
+    "answer": "D",
+    "explanation": "The static variable's storage and initial value are set up once when the program loads, not on every function call."
+  },
+  {
+    "id": 68,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "What will happen if a static local variable is declared with an initializer that calls another function, e.g. 'static int x = compute();' in standard C?",
+    "options": [
+      "This is always allowed, exactly like for auto variables",
+      "It compiles and calls compute() on every function invocation",
+      "In standard C, static local variable initializers must be constant expressions, so a function call is not allowed",
+      "It compiles and calls compute() only at the end of the program"
+    ],
+    "answer": "C",
+    "explanation": "Unlike auto variables, static variable initializers in C must be constant expressions evaluated at compile time, not function calls."
+  },
+  {
+    "id": 69,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "If a static local variable is never explicitly reset inside the function body, its value across multiple calls will:",
+    "options": [
+      "Continue changing/accumulating based on operations performed in previous calls",
+      "Always remain at zero",
+      "Become undefined after the second call",
+      "Reset to its initializer value every time"
+    ],
+    "answer": "A",
+    "explanation": "Because it is not re-initialized, any modifications made in earlier calls carry forward into later calls."
+  },
+  {
+    "id": 70,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "Statement: \"Static local variables can be accessed directly from other functions in the same file.\" This is:",
+    "options": [
+      "True",
+      "True only if declared in main()",
+      "False — scope remains local to the declaring function",
+      "True if the file has only one function"
+    ],
+    "answer": "C",
+    "explanation": "Even though its lifetime is program-long, a static local variable's visibility (scope) is still confined to its own function."
+  },
+  {
+    "id": 71,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "Which of these correctly differentiates 'lifetime' from 'scope' for a static local variable?",
+    "options": [
+      "Lifetime is program-long, but scope remains restricted to the declaring function/block",
+      "Scope is program-long, but lifetime is restricted to the function",
+      "Lifetime and scope are always identical for static variables",
+      "Both lifetime and scope are restricted to the function"
+    ],
+    "answer": "A",
+    "explanation": "This is the classic distinguishing feature of static local variables: extended lifetime combined with restricted (local) scope."
+  },
+  {
+    "id": 72,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "A function-local static array used to cache results between calls is a common technique known informally as:",
+    "options": [
+      "Static memoization within a function",
+      "Register caching",
+      "External linkage",
+      "Global caching"
+    ],
+    "answer": "A",
+    "explanation": "Using a static local variable/array to remember computed results between calls is a simple form of memoization."
+  },
+  {
+    "id": 73,
+    "level": "Advanced",
+    "type": "Code-based",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "What is printed by:<br><code>void f(){ static int a; printf(\"%d \", a); a=10; }<br>int main(){ f(); f(); }</code>",
+    "options": [
+      "0 10",
+      "0 0",
+      "10 0",
+      "10 10"
+    ],
+    "answer": "A",
+    "explanation": "a is zero-initialized by default on the first call (prints 0), then set to 10; on the second call it retains 10 from before printing."
+  },
+  {
+    "id": 74,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "Which of the following is TRUE when comparing static local and register variables?",
+    "options": [
+      "Register persists across calls; static does not",
+      "Both persist their value across function calls",
+      "Neither persists across calls",
+      "Static persists across calls; register does not (its lifetime matches auto)"
+    ],
+    "answer": "D",
+    "explanation": "Only static variables (local or global) persist values across calls; register variables behave like auto in terms of lifetime."
+  },
+  {
+    "id": 75,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Static Storage Class — Local Variables",
+    "question": "Why must a static local array's size be a constant expression known at compile time?",
+    "options": [
+      "Because static arrays can only hold single elements",
+      "Because static arrays are not supported by the C language at all",
+      "Because static variables must have a size and layout fixed before execution begins, since they are allocated in the data segment before the program runs",
+      "Because arrays cannot use the static keyword"
+    ],
+    "answer": "C",
+    "explanation": "Static storage is set up at compile/load time, so its size must be a constant expression known before the program runs."
+  },
+  {
+    "id": 76,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "What is the effect of declaring a global variable as 'static' in C?",
+    "options": [
+      "It is destroyed at the end of main()",
+      "Its scope is restricted to the file in which it is declared (internal linkage)",
+      "It becomes accessible from other files as well",
+      "It behaves exactly like a register variable"
+    ],
+    "answer": "B",
+    "explanation": "A static global variable has internal linkage, meaning it can be used only within the source file where it is defined."
+  },
+  {
+    "id": 77,
+    "level": "Basic",
+    "type": "Declaration",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "Which is the correct way to declare a static global variable at file scope?",
+    "options": [
+      "extern static int total;",
+      "int total; static;",
+      "register static int total;",
+      "static int total;  // written outside all functions"
+    ],
+    "answer": "D",
+    "explanation": "The static keyword is simply placed before the type in a file-scope declaration, outside any function."
+  },
+  {
+    "id": 78,
+    "level": "Basic",
+    "type": "Scope",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "The scope of a static global variable is best described as:",
+    "options": [
+      "Function scope only",
+      "Block scope",
+      "File scope — visible throughout the file it's declared in, but not other files",
+      "Program-wide across all files, like extern"
+    ],
+    "answer": "C",
+    "explanation": "Static global variables have file scope: usable anywhere in that file, but hidden (not linked) from other files."
+  },
+  {
+    "id": 79,
+    "level": "Basic",
+    "type": "Lifetime",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "What is the lifetime of a static global variable?",
+    "options": [
+      "Only until the file finishes compiling",
+      "Same as auto — until the enclosing function returns",
+      "Entire duration of the program",
+      "Same as register variables"
+    ],
+    "answer": "C",
+    "explanation": "Like all static variables, a static global variable is created once and exists for the whole program run."
+  },
+  {
+    "id": 80,
+    "level": "Intermediate",
+    "type": "Accessibility",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "Can a static global variable declared in file1.c be accessed in file2.c using an extern declaration?",
+    "options": [
+      "Yes, always",
+      "Yes, if both files are compiled together into one executable, regardless of static",
+      "Yes, but only if extern int x; is used with #include",
+      "No — static gives it internal linkage, preventing access from other files"
+    ],
+    "answer": "D",
+    "explanation": "The whole purpose of static at global scope is to block external linkage, so other files cannot access it even with extern."
+  },
+  {
+    "id": 81,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "The main purpose of declaring a global variable as static is to:",
+    "options": [
+      "Allow it to be modified only inside main()",
+      "Speed up program execution using CPU registers",
+      "Make the variable accept only integer values",
+      "Achieve data hiding/encapsulation by restricting visibility to a single file"
+    ],
+    "answer": "D",
+    "explanation": "Static globals implement a basic form of encapsulation, preventing accidental name clashes or misuse from other files."
+  },
+  {
+    "id": 82,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "Statement: \"A static global variable and a non-static (plain) global variable both have file-wide scope within their own file.\" This is:",
+    "options": [
+      "False",
+      "True only for integers",
+      "True only if extern is also used",
+      "True"
+    ],
+    "answer": "D",
+    "explanation": "Within the same file, both static and non-static globals are visible throughout; the difference is only in cross-file linkage."
+  },
+  {
+    "id": 83,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "What distinguishes a static global variable from a plain (non-static) global variable?",
+    "options": [
+      "There is no difference between them",
+      "Plain globals cannot be initialized; static globals can",
+      "Static globals have internal linkage (file-only); plain globals have external linkage (accessible from other files via extern)",
+      "Static globals are stored in the stack, plain globals in the heap"
+    ],
+    "answer": "C",
+    "explanation": "Linkage is the key distinction — static restricts visibility to the file, while plain globals can be shared across files."
+  },
+  {
+    "id": 84,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "Static global variables are typically used when a programmer wants:",
+    "options": [
+      "A variable with block-level scope",
+      "A variable to be accessible everywhere across the whole project",
+      "A file-private variable/helper accessible to all functions in that file but hidden from other files",
+      "A variable stored purely in a CPU register"
+    ],
+    "answer": "C",
+    "explanation": "This file-level encapsulation is the standard motivation for using static at global scope, e.g., for internal helper state."
+  },
+  {
+    "id": 85,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "If two files each declare 'static int count;' independently, do they refer to the same memory location?",
+    "options": [
+      "Yes, they always share memory",
+      "Yes, but only when linked together with extern",
+      "No — each file's static global variable is completely independent due to internal linkage",
+      "No, only one of the declarations is valid"
+    ],
+    "answer": "C",
+    "explanation": "Internal linkage means the two static globals, though same-named, are entirely separate variables in separate files."
+  },
+  {
+    "id": 86,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "Assertion (A): A static global variable cannot be accessed from another source file even by declaring it extern there.<br>Reason (R): The static keyword gives the variable internal linkage, restricting it strictly to the translation unit (file) in which it is defined.",
+    "options": [
+      "Both A and R true, R correctly explains A",
+      "Both A and R true, but R does not explain A",
+      "A false, R true",
+      "A true, R false"
+    ],
+    "answer": "A",
+    "explanation": "Internal linkage is precisely the mechanism that produces the inaccessibility described in the assertion."
+  },
+  {
+    "id": 87,
+    "level": "Basic",
+    "type": "Memory behavior",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "In which memory segment is a static global variable allocated?",
+    "options": [
+      "Heap",
+      "CPU register",
+      "Data/BSS segment, same as static local variables",
+      "Stack"
+    ],
+    "answer": "C",
+    "explanation": "All static-duration variables — global or local — reside in the program's data (initialized) or BSS (uninitialized) segment."
+  },
+  {
+    "id": 88,
+    "level": "Intermediate",
+    "type": "Fill-in-the-blank",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "A global variable with the ______ keyword is restricted in visibility to the file in which it appears, unlike an ordinary global variable.",
+    "options": [
+      "extern",
+      "auto",
+      "static",
+      "register"
+    ],
+    "answer": "C",
+    "explanation": "static is the keyword that limits a global variable's linkage to its own file."
+  },
+  {
+    "id": 89,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "A large project has multiple .c files, each needing a private helper variable named 'buffer' without naming conflicts across files. What should each file do?",
+    "options": [
+      "Declare 'buffer' using register in each file",
+      "Declare 'buffer' only once in one file and use it in all files without any keyword",
+      "Declare 'buffer' using extern in each file",
+      "Declare 'buffer' as static in each file so each copy is independent and file-private"
+    ],
+    "answer": "D",
+    "explanation": "Declaring the variable static in each file avoids linkage conflicts and keeps each file's copy private."
+  },
+  {
+    "id": 90,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "Which storage class is appropriate for a global variable meant to persist across the program but hidden from other files for safe/modular programming?",
+    "options": [
+      "static",
+      "auto",
+      "register",
+      "None, this is not possible in C"
+    ],
+    "answer": "A",
+    "explanation": "static at file scope offers both program-long persistence and restricted, file-only visibility."
+  },
+  {
+    "id": 91,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "If a static global variable is not explicitly initialized, its default value is:",
+    "options": [
+      "NULL only for pointers, garbage for other types",
+      "0 (zero-initialized, like all static-duration variables)",
+      "1",
+      "Garbage/unpredictable"
+    ],
+    "answer": "B",
+    "explanation": "As with static local variables, static globals are automatically zero-initialized if no explicit value is given."
+  },
+  {
+    "id": 92,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "Why might a programmer prefer static global variables over plain global variables in modular, multi-file software development?",
+    "options": [
+      "Static globals allow dynamic resizing of arrays",
+      "Static globals prevent accidental naming collisions and unintended modification from other files",
+      "Plain global variables are illegal in ISO C",
+      "Static globals execute faster in CPU registers"
+    ],
+    "answer": "B",
+    "explanation": "Restricting visibility to one file reduces the risk of naming clashes and unintended external modification — the core benefit of static globals."
+  },
+  {
+    "id": 93,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "Which statement is TRUE about function calls to a static global variable from within its own file?",
+    "options": [
+      "Only main() can access it",
+      "Only functions declared static can access it",
+      "Any function in that file can read/modify it directly",
+      "No function can access it directly, it needs a getter function"
+    ],
+    "answer": "C",
+    "explanation": "Within its own file, a static global variable behaves like an ordinary global — accessible to every function in that file."
+  },
+  {
+    "id": 94,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "Which of these correctly compares static local and static global variables?",
+    "options": [
+      "There is no difference between them",
+      "Static local variables are destroyed after each call, static globals are not",
+      "Both have program-long lifetime, but static local has function/block scope while static global has file scope",
+      "Static local variables have file scope; static global variables have block scope"
+    ],
+    "answer": "C",
+    "explanation": "Both share extended lifetime due to static storage duration, but differ in scope: local (function) vs file-wide (global)."
+  },
+  {
+    "id": 95,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Static Storage Class — Global Variables",
+    "question": "Statement: \"Declaring a variable static at global scope changes its lifetime compared to a plain global variable.\" This is:",
+    "options": [
+      "True — static changes lifetime from program-long to block-long",
+      "False — both static and plain globals already have program-long lifetime; static only changes linkage/scope, not lifetime",
+      "True — static globals exist only during compilation",
+      "True — only static globals persist across program runs"
+    ],
+    "answer": "B",
+    "explanation": "Plain global variables already have program-long lifetime by default; adding static only restricts linkage, not lifetime."
+  },
+  {
+    "id": 96,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "External Storage Class (extern)",
+    "question": "What is the primary purpose of the extern storage class in C?",
+    "options": [
+      "To create a temporary local variable",
+      "To declare a variable that is stored in a CPU register",
+      "To restrict a variable's scope to one function",
+      "To declare a reference to a global variable defined in another file or elsewhere in the program, enabling variable sharing"
+    ],
+    "answer": "D",
+    "explanation": "extern is used to tell the compiler that the variable is defined elsewhere (often another file) and should simply be referenced here."
+  },
+  {
+    "id": 97,
+    "level": "Basic",
+    "type": "Declaration",
+    "topic": "External Storage Class (extern)",
+    "question": "Which of the following correctly declares (without defining) an external variable?",
+    "options": [
+      "extern int total;",
+      "int extern total = 5;",
+      "static extern int total;",
+      "register extern int total;"
+    ],
+    "answer": "A",
+    "explanation": "'extern int total;' is a pure declaration — it tells the compiler the variable exists elsewhere, without allocating new storage."
+  },
+  {
+    "id": 98,
+    "level": "Basic",
+    "type": "Concept",
+    "topic": "External Storage Class (extern)",
+    "question": "When you write 'extern int x;' in a file without an initializer, does this allocate new memory for x?",
+    "options": [
+      "Yes, but only 1 byte",
+      "Yes, memory is always allocated",
+      "No, it deletes the variable",
+      "No, it only declares that x is defined somewhere else; no new memory is created"
+    ],
+    "answer": "D",
+    "explanation": "A pure extern declaration is just a reference/announcement; the actual memory is allocated wherever the variable is defined."
+  },
+  {
+    "id": 99,
+    "level": "Basic",
+    "type": "Purpose",
+    "topic": "External Storage Class (extern)",
+    "question": "The extern keyword is primarily useful in programs that:",
+    "options": [
+      "Span multiple source files and need to share global variables between them",
+      "Only use static local variables",
+      "Do not use any global variables at all",
+      "Consist of a single source file only"
+    ],
+    "answer": "A",
+    "explanation": "extern's main use-case is enabling multiple .c files in a project to access the same global variable."
+  },
+  {
+    "id": 100,
+    "level": "Basic",
+    "type": "Characteristics",
+    "topic": "External Storage Class (extern)",
+    "question": "If a variable is declared 'extern int count;' in file2.c, and defined as 'int count = 10;' in file1.c, what happens?",
+    "options": [
+      "Each file gets its own independent 'count'",
+      "file2.c can access and modify the same 'count' that is defined in file1.c",
+      "This is invalid syntax and won't compile",
+      "A linking error occurs because count is defined twice"
+    ],
+    "answer": "B",
+    "explanation": "extern correctly links file2.c's reference to the single definition of count present in file1.c, sharing the same variable."
+  },
+  {
+    "id": 101,
+    "level": "Basic",
+    "type": "Scope",
+    "topic": "External Storage Class (extern)",
+    "question": "The scope of an extern-declared variable, once properly linked to its definition, is:",
+    "options": [
+      "Restricted to a single function only",
+      "Effectively as wide as the files that declare it as extern, since it refers to a single shared global",
+      "Restricted to a single block",
+      "Restricted to the CPU register"
+    ],
+    "answer": "B",
+    "explanation": "Once linked, the variable is accessible in every file that has an extern declaration referencing the shared global definition."
+  },
+  {
+    "id": 102,
+    "level": "Basic",
+    "type": "Lifetime",
+    "topic": "External Storage Class (extern)",
+    "question": "What is the lifetime of a variable accessed through extern?",
+    "options": [
+      "Only during the function using it",
+      "Determined freshly in every file",
+      "Same as the underlying global variable it refers to — the entire program duration",
+      "Only until the file finishes execution"
+    ],
+    "answer": "C",
+    "explanation": "extern is just a reference to an already-existing global variable, so its lifetime matches that global's program-long lifetime."
+  },
+  {
+    "id": 103,
+    "level": "Basic",
+    "type": "Variable sharing",
+    "topic": "External Storage Class (extern)",
+    "question": "Which storage class specifically enables sharing of a single global variable across multiple .c files in a project?",
+    "options": [
+      "extern",
+      "register",
+      "auto",
+      "static"
+    ],
+    "answer": "A",
+    "explanation": "extern is designed exactly for this purpose — referencing and sharing global variables across translation units."
+  },
+  {
+    "id": 104,
+    "level": "Basic",
+    "type": "File accessibility",
+    "topic": "External Storage Class (extern)",
+    "question": "Suppose a global variable is declared as 'static int val;' in file1.c. Can file2.c access it using 'extern int val;'?",
+    "options": [
+      "No, static gives internal linkage, so extern in another file cannot access it",
+      "Yes, extern overrides static and grants access",
+      "Yes, but only if val is initialized to 0",
+      "Yes, if both files are in the same folder"
+    ],
+    "answer": "A",
+    "explanation": "static's internal linkage strictly prevents access from other files, and this cannot be bypassed by declaring extern elsewhere."
+  },
+  {
+    "id": 105,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "External Storage Class (extern)",
+    "question": "Statement: \"extern can be used to declare a variable multiple times across different files, but it must be defined (without extern) in exactly one file.\" This is:",
+    "options": [
+      "True only for pointer variables",
+      "True only for arrays",
+      "True",
+      "False"
+    ],
+    "answer": "C",
+    "explanation": "Multiple extern declarations are allowed, but the C 'one-definition rule' still requires exactly one actual definition of the variable."
+  },
+  {
+    "id": 106,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "External Storage Class (extern)",
+    "question": "Which of the following would be considered a 'definition' rather than a mere 'declaration'?",
+    "options": [
+      "extern int x;",
+      "Both (b) and (c) allocate storage and are definitions",
+      "int x;  (at file scope, no extern, may have an initializer)",
+      "extern int x = 5;  (has an initializer, so it IS a definition too)"
+    ],
+    "answer": "B",
+    "explanation": "A declaration with extern and no initializer is a pure declaration; but 'int x;' or any declaration with an initializer allocates storage and is a definition — including 'extern int x = 5;'."
+  },
+  {
+    "id": 107,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "External Storage Class (extern)",
+    "question": "extern variables are commonly used in large software projects to:",
+    "options": [
+      "Force variables into CPU registers",
+      "Share configuration or state variables like error codes or global counters between multiple .c files",
+      "Avoid the need for header files entirely",
+      "Make all local variables visible in every file"
+    ],
+    "answer": "B",
+    "explanation": "Sharing state such as global error flags/counters across modules is a very common real-world use of extern."
+  },
+  {
+    "id": 108,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "External Storage Class (extern)",
+    "question": "Assertion (A): Declaring the same global variable as extern in many files does not cause a 'multiple definition' linker error.<br>Reason (R): extern declarations (without initializers) do not allocate storage; they only reference an existing definition.",
+    "options": [
+      "Both A and R true, R correctly explains A",
+      "A false, R true",
+      "A true, R false",
+      "Both A and R true, but R does not explain A"
+    ],
+    "answer": "A",
+    "explanation": "Because extern declarations don't create new storage, having many of them across files causes no conflict, which explains assertion A."
+  },
+  {
+    "id": 109,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "External Storage Class (extern)",
+    "question": "What error occurs if a variable is defined (with storage, e.g., 'int total = 0;') in two different files without using extern or static, and both files are linked together?",
+    "options": [
+      "The second definition is silently ignored",
+      "A 'multiple definition' linker error, since each file allocates separate storage for the same external name",
+      "No error, both are simply merged",
+      "A compile-time syntax error"
+    ],
+    "answer": "B",
+    "explanation": "Two full definitions of the same externally-linked global cause a linker conflict due to duplicate storage allocation for the same symbol."
+  },
+  {
+    "id": 110,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "External Storage Class (extern)",
+    "question": "How does extern differ from static at global scope?",
+    "options": [
+      "extern enables sharing across files (external linkage); static restricts visibility to one file (internal linkage)",
+      "extern is used only for local variables",
+      "They are functionally identical",
+      "extern restricts visibility to one file; static allows sharing across files"
+    ],
+    "answer": "A",
+    "explanation": "extern and static are essentially opposites in terms of linkage: extern allows cross-file access, static blocks it."
+  },
+  {
+    "id": 111,
+    "level": "Intermediate",
+    "type": "Fill-in-the-blank",
+    "topic": "External Storage Class (extern)",
+    "question": "To use a global variable defined in another source file, a program must include a(n) ______ declaration of that variable.",
+    "options": [
+      "extern",
+      "register",
+      "auto",
+      "static"
+    ],
+    "answer": "A",
+    "explanation": "The extern keyword is used exactly for referencing variables defined elsewhere, typically in another file."
+  },
+  {
+    "id": 112,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "External Storage Class (extern)",
+    "question": "A project has a global error-counter 'errCount' defined once in main.c. Other files (utils.c, io.c) need to increment it. What should utils.c and io.c include?",
+    "options": [
+      "auto int errCount;",
+      "register int errCount;",
+      "static int errCount;",
+      "extern int errCount;"
+    ],
+    "answer": "D",
+    "explanation": "Each of the other files should declare 'extern int errCount;' to reference the single shared definition in main.c."
+  },
+  {
+    "id": 113,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "External Storage Class (extern)",
+    "question": "Which of the following is the correct relationship between a variable's declaration and definition when using extern?",
+    "options": [
+      "A declaration and definition are always the same statement",
+      "extern always allocates its own separate storage",
+      "A variable can never be declared more than once",
+      "extern int x; is a declaration (no storage); int x; elsewhere is the definition (allocates storage)"
+    ],
+    "answer": "D",
+    "explanation": "This correctly captures how extern (declaration only) relates to the actual definition that reserves memory."
+  },
+  {
+    "id": 114,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "External Storage Class (extern)",
+    "question": "If 'extern int x;' appears in a file, but 'x' is never actually defined anywhere in the whole program, what happens?",
+    "options": [
+      "A linker error occurs — 'undefined reference to x'",
+      "A compile-time syntax error occurs immediately",
+      "It compiles and runs fine with x defaulting to 0",
+      "x is automatically treated as a local variable"
+    ],
+    "answer": "A",
+    "explanation": "Since extern is only a promise that a definition exists elsewhere, the linker fails if no matching definition is ever found."
+  },
+  {
+    "id": 115,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "External Storage Class (extern)",
+    "question": "Function declarations (prototypes) in C header files are implicitly treated with which storage-class-like linkage, similar in spirit to extern variables?",
+    "options": [
+      "extern, by default — functions are externally linked unless declared static",
+      "register, by default",
+      "auto, by default",
+      "static, by default"
+    ],
+    "answer": "A",
+    "explanation": "Just like variables, functions have external linkage by default, mirroring how extern variables work across files."
+  },
+  {
+    "id": 116,
+    "level": "Intermediate",
+    "type": "Application",
+    "topic": "External Storage Class (extern)",
+    "question": "Global constants meant to be used across many modules of a large C project are typically declared in a header file using:",
+    "options": [
+      "register",
+      "auto",
+      "No storage class is ever used for shared constants",
+      "extern (declaration in header, single definition in one .c file)"
+    ],
+    "answer": "D",
+    "explanation": "This extern-in-header, define-in-one-file pattern is the standard idiom for sharing global variables safely across a multi-file project."
+  },
+  {
+    "id": 117,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "External Storage Class (extern)",
+    "question": "Can a variable be declared as both 'static' and 'extern' simultaneously for the same declaration?",
+    "options": [
+      "Yes, but only for arrays",
+      "No, static and extern represent conflicting linkage specifications and cannot both apply to the same declaration",
+      "Yes, and it behaves like a normal extern variable",
+      "Yes, and it forces the variable into a CPU register"
+    ],
+    "answer": "B",
+    "explanation": "static (internal linkage) and extern (external linkage) are mutually exclusive linkage specifications for the same declaration."
+  },
+  {
+    "id": 118,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "External Storage Class (extern)",
+    "question": "Among auto, register, static, and extern, which storage class is the only one that can span multiple source files for a single shared variable?",
+    "options": [
+      "static",
+      "extern",
+      "auto",
+      "register"
+    ],
+    "answer": "B",
+    "explanation": "extern uniquely allows a single variable's definition to be referenced and shared from multiple different files."
+  },
+  {
+    "id": 119,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "External Storage Class (extern)",
+    "question": "Statement: \"An extern declaration inside a function body can be used to access a global variable defined elsewhere, even if that variable is not visible at file scope in the current file.\" This is:",
+    "options": [
+      "True only in main()",
+      "False, extern declarations are only allowed at file scope",
+      "True",
+      "True only for pointers"
+    ],
+    "answer": "C",
+    "explanation": "extern declarations are also permitted inside function bodies (block scope) as a way to access an external global variable locally."
+  },
+  {
+    "id": 120,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "External Storage Class (extern)",
+    "question": "In the statement 'extern int x = 10;' written at file scope, what actually happens?",
+    "options": [
+      "It is treated as a definition of x with external linkage and an initial value of 10, not merely a declaration",
+      "The initializer 10 is ignored because extern is present",
+      "It behaves exactly like 'static int x = 10;'",
+      "This is invalid syntax and never compiles"
+    ],
+    "answer": "A",
+    "explanation": "Providing an initializer along with extern makes it a definition (with external linkage) rather than a pure declaration."
+  },
+  {
+    "id": 121,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "In C, 'scope' of a variable refers to:",
+    "options": [
+      "Whether it is initialized or not",
+      "How long the variable exists in memory",
+      "The amount of memory it occupies",
+      "The region of the program in which the variable is accessible/visible"
+    ],
+    "answer": "D",
+    "explanation": "Scope specifically defines the portion of source code where a variable's name can be legally referenced."
+  },
+  {
+    "id": 122,
+    "level": "Basic",
+    "type": "Definition",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "In C, 'lifetime' (storage duration) of a variable refers to:",
+    "options": [
+      "Its data type",
+      "The region of code where it is visible",
+      "The duration for which the variable actually exists in memory during execution",
+      "The number of times it is used in a program"
+    ],
+    "answer": "C",
+    "explanation": "Lifetime concerns how long memory for the variable remains allocated during program execution, distinct from scope."
+  },
+  {
+    "id": 123,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Which of the following pairs represents the concepts of 'accessibility (scope)' versus 'existence duration (lifetime)'?",
+    "options": [
+      "Scope versus lifetime",
+      "Declaration versus definition, only",
+      "Data type versus storage class",
+      "Global versus local, only"
+    ],
+    "answer": "A",
+    "explanation": "Scope and lifetime are the two independent but related concepts governing how variables can be used."
+  },
+  {
+    "id": 124,
+    "level": "Basic",
+    "type": "Local Scope",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "A variable with local scope is accessible:",
+    "options": [
+      "In every file of the project",
+      "Throughout the entire program",
+      "Only inside main()",
+      "Only within the block/function in which it is declared"
+    ],
+    "answer": "D",
+    "explanation": "Local scope confines a variable's visibility to its enclosing block or function."
+  },
+  {
+    "id": 125,
+    "level": "Basic",
+    "type": "Global Scope",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "A variable with global scope, declared at file level without static, is accessible:",
+    "options": [
+      "Only inside the function where declared",
+      "Nowhere outside main()",
+      "Throughout the file, and in other files too if declared there with extern",
+      "Only inside loops"
+    ],
+    "answer": "C",
+    "explanation": "Non-static globals have external linkage, making them potentially accessible file-wide and across files via extern."
+  },
+  {
+    "id": 126,
+    "level": "Basic",
+    "type": "Block Scope",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Block scope means a variable declared inside { } (e.g., inside an if or for statement) is:",
+    "options": [
+      "Visible in the entire file",
+      "Visible throughout the entire function",
+      "Visible in all functions",
+      "Visible only within that specific block and any nested blocks inside it"
+    ],
+    "answer": "D",
+    "explanation": "A block-scoped variable's visibility ends at the closing brace of the block in which it is declared."
+  },
+  {
+    "id": 127,
+    "level": "Basic",
+    "type": "File Scope",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "A variable with file scope is declared:",
+    "options": [
+      "Inside a for-loop only",
+      "Only using the register keyword",
+      "Outside all functions, at the top level of a source file",
+      "Inside a function"
+    ],
+    "answer": "C",
+    "explanation": "File scope applies to identifiers declared outside any function body, at the outermost level of a translation unit."
+  },
+  {
+    "id": 128,
+    "level": "Intermediate",
+    "type": "Visibility Rules",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "If a local variable has the same name as a global variable, which one is used inside the function where the local variable is declared?",
+    "options": [
+      "Neither can be used; this is illegal",
+      "Both are used simultaneously, causing an error",
+      "The global variable always takes priority",
+      "The local variable, which 'shadows'/hides the global variable within that block"
+    ],
+    "answer": "D",
+    "explanation": "Variable name shadowing rules in C give priority to the more locally-scoped declaration within its own block."
+  },
+  {
+    "id": 129,
+    "level": "Intermediate",
+    "type": "Accessibility Rules",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Which storage class specifier used at global scope makes a variable inaccessible from other source files?",
+    "options": [
+      "auto",
+      "static",
+      "register",
+      "extern"
+    ],
+    "answer": "B",
+    "explanation": "static gives global variables internal linkage, restricting accessibility strictly to the declaring file."
+  },
+  {
+    "id": 130,
+    "level": "Intermediate",
+    "type": "Lifetime versus Scope",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Which of the following correctly illustrates the difference between lifetime and scope using the static local variable?",
+    "options": [
+      "A static local variable has file scope and block lifetime",
+      "A static local variable has program-long scope and block lifetime",
+      "A static local variable has block/function scope but program-long lifetime",
+      "A static local variable has no scope and no lifetime"
+    ],
+    "answer": "C",
+    "explanation": "This is the textbook example: extended (program-long) lifetime combined with restricted (function-only) scope."
+  },
+  {
+    "id": 131,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Which storage classes provide local scope AND local (function-call) lifetime together?",
+    "options": [
+      "static (global) only",
+      "auto and register",
+      "static (local) only",
+      "extern only"
+    ],
+    "answer": "B",
+    "explanation": "Both auto and register variables share local scope and lifetime tied to the function call, unlike static or extern."
+  },
+  {
+    "id": 132,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Which storage class provides file/global scope AND program-long lifetime, but restricted to a single file?",
+    "options": [
+      "register",
+      "extern",
+      "auto",
+      "static (global)"
+    ],
+    "answer": "D",
+    "explanation": "Static global variables combine program-long lifetime with scope confined to a single file (internal linkage)."
+  },
+  {
+    "id": 133,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Which storage class provides potentially multi-file scope AND program-long lifetime?",
+    "options": [
+      "register",
+      "auto",
+      "static",
+      "extern (referring to an externally-linked global)"
+    ],
+    "answer": "D",
+    "explanation": "extern-linked global variables can be accessed from multiple files and persist for the whole program run."
+  },
+  {
+    "id": 134,
+    "level": "Advanced",
+    "type": "Match-the-Following",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Match: (1) auto (2) register (3) static local (4) extern — with: (i) Multi-file sharing (ii) CPU-register hint, no address-of (iii) Block scope, block lifetime (iv) Block scope, program lifetime. Which is the correct match?",
+    "options": [
+      "1-ii, 2-iii, 3-i, 4-iv",
+      "1-iii, 2-ii, 3-iv, 4-i",
+      "1-iv, 2-i, 3-ii, 4-iii",
+      "1-i, 2-ii, 3-iii, 4-iv"
+    ],
+    "answer": "B",
+    "explanation": "auto→block scope+lifetime; register→CPU hint with no address-of; static local→block scope+program lifetime; extern→multi-file sharing."
+  },
+  {
+    "id": 135,
+    "level": "Advanced",
+    "type": "Match-the-Following",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Match: (1) Local Scope (2) Global Scope (3) Block Scope (4) File Scope — with: (i) Declared outside all functions (ii) Confined to { } braces (iii) Confined to a function (iv) Program-wide (typically) via external linkage. Correct match?",
+    "options": [
+      "1-ii, 2-i, 3-iv, 4-iii",
+      "1-iii, 2-iv, 3-ii, 4-i",
+      "1-i, 2-ii, 3-iii, 4-iv",
+      "1-iv, 2-iii, 3-i, 4-ii"
+    ],
+    "answer": "B",
+    "explanation": "Local scope→confined to a function; Global scope→program-wide via linkage; Block scope→within braces; File scope→declared outside all functions."
+  },
+  {
+    "id": 136,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Statement: \"All variables with file scope automatically have program-long lifetime.\" This statement is:",
+    "options": [
+      "True",
+      "True only if extern is used",
+      "True only for arrays",
+      "False"
+    ],
+    "answer": "A",
+    "explanation": "Any variable declared at file scope (static or not) has static storage duration, meaning it exists for the entire program run."
+  },
+  {
+    "id": 137,
+    "level": "Intermediate",
+    "type": "Statement-based",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Statement: \"A variable's scope can be block-level even though its lifetime is program-long.\" This statement is:",
+    "options": [
+      "True — this describes static local variables exactly",
+      "False, scope and lifetime must always match",
+      "True only for extern variables",
+      "True only for register variables"
+    ],
+    "answer": "A",
+    "explanation": "Static local variables are the precise real-world example proving that scope and lifetime can differ within one variable."
+  },
+  {
+    "id": 138,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Assertion (A): Scope and lifetime are independent properties of a variable.<br>Reason (R): A static local variable has restricted (block) scope but extended (program-long) lifetime, showing the two need not coincide.",
+    "options": [
+      "Both A and R true, R correctly explains A",
+      "A true, R false",
+      "A false, R true",
+      "Both A and R true, but R does not explain A"
+    ],
+    "answer": "A",
+    "explanation": "The static local variable example is a direct, correct illustration that scope and lifetime are separate concepts."
+  },
+  {
+    "id": 139,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Complete the comparison table entry: Storage Class = auto | Scope = Local | Lifetime = ? | Default Value = ?",
+    "options": [
+      "File-only ; NULL",
+      "Multi-file ; 0",
+      "Block/function ; Garbage (indeterminate)",
+      "Program-long ; 0"
+    ],
+    "answer": "C",
+    "explanation": "auto variables exist only for the block's execution and are not automatically zero-initialized (garbage default)."
+  },
+  {
+    "id": 140,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Complete the comparison table entry: Storage Class = static (local) | Scope = ? | Lifetime = ? | Default Value = ?",
+    "options": [
+      "Block/function ; Program-long ; 0",
+      "Global ; Block-only ; garbage",
+      "Multi-file ; Block-only ; 0",
+      "File ; Program-long ; garbage"
+    ],
+    "answer": "A",
+    "explanation": "Static local variables have restricted block scope but program-long lifetime and are zero-initialized by default."
+  },
+  {
+    "id": 141,
+    "level": "Intermediate",
+    "type": "Comparison",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Complete the comparison table entry: Storage Class = extern | Scope = ? | Lifetime = ?",
+    "options": [
+      "CPU register ; Program-long",
+      "Block-only ; Block-only",
+      "File-only ; Block-only",
+      "Program-wide (multi-file, via linkage) ; Program-long"
+    ],
+    "answer": "D",
+    "explanation": "extern-referenced global variables can be scoped across multiple files and persist for the program's entire run."
+  },
+  {
+    "id": 142,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Which of the following variables would have BOTH the widest possible scope AND the longest lifetime simultaneously?",
+    "options": [
+      "A non-static global variable accessed via extern from multiple files",
+      "An auto variable inside a nested loop",
+      "A static local variable",
+      "A register variable inside a function"
+    ],
+    "answer": "A",
+    "explanation": "A plain (non-static) global variable shared through extern declarations achieves both multi-file scope and program-long lifetime."
+  },
+  {
+    "id": 143,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Rank the following storage classes from MOST restricted scope to LEAST restricted scope: auto/register (block), static local (block), static global (file), extern-linked global (multi-file).",
+    "options": [
+      "auto/register = static local (block) < static global (file) < extern-linked global (multi-file/program)",
+      "extern < static global < static local = auto/register",
+      "static global < auto/register < extern < static local",
+      "All have identical scope"
+    ],
+    "answer": "A",
+    "explanation": "Block-scoped variables (auto, register, static local) are most restricted; static global is file-wide; extern-linked globals can span the whole program."
+  },
+  {
+    "id": 144,
+    "level": "Intermediate",
+    "type": "Scenario-based",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "A function-local variable needs to (a) be visible only inside that function, and (b) retain its value across repeated calls. Which single storage class satisfies BOTH requirements?",
+    "options": [
+      "auto",
+      "static",
+      "register",
+      "extern"
+    ],
+    "answer": "B",
+    "explanation": "static local variables uniquely combine restricted local scope with persistent, program-long lifetime."
+  },
+  {
+    "id": 145,
+    "level": "Advanced",
+    "type": "Previous-Year Pattern",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Which of the following correctly ranks storage classes by their typical use for cross-file variable sharing (from 'not shareable' to 'fully shareable')?",
+    "options": [
+      "static global is the most shareable of all",
+      "auto/register and static local (not shareable) < static global (not shareable outside file) < plain global with extern (shareable across files)",
+      "register variables are the most shareable across files",
+      "extern < static (global) < auto/register"
+    ],
+    "answer": "B",
+    "explanation": "Block-scoped classes are never shareable across files; static globals stay confined to one file; extern enables true cross-file sharing."
+  },
+  {
+    "id": 146,
+    "level": "Intermediate",
+    "type": "Conceptual",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Which two storage classes share identical scope and lifetime rules, differing only in a compiler storage hint?",
+    "options": [
+      "extern and register",
+      "auto and register",
+      "static and extern",
+      "static local and static global"
+    ],
+    "answer": "B",
+    "explanation": "auto and register are functionally identical in scope/lifetime; register merely adds a (non-binding) CPU-register storage suggestion."
+  },
+  {
+    "id": 147,
+    "level": "Advanced",
+    "type": "Difficult",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "A programmer removes the 'static' keyword from a previously static local variable in a function that is called repeatedly in a loop, expecting a running total. What is the most likely consequence?",
+    "options": [
+      "The variable resets to its initial value on every call (loses its 'running total' behavior), since it is now auto by default",
+      "No change in behavior at all",
+      "The program fails to compile",
+      "The variable becomes accessible from other files"
+    ],
+    "answer": "A",
+    "explanation": "Without static, the variable reverts to auto behavior, losing its persisted value and no longer functioning as a running total."
+  },
+  {
+    "id": 148,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Scope Rules & Storage Class Comparison",
+    "question": "Why is it generally considered good practice to minimize the use of plain (non-static) global variables in large C programs, even though extern allows sharing them across files?",
+    "options": [
+      "Because widespread global scope increases the risk of unintended modification and naming conflicts across a large codebase",
+      "Because global variables cannot store integer values",
+      "Because extern variables are always slower than local variables",
+      "Because global variables are illegal in ISO C"
+    ],
+    "answer": "A",
+    "explanation": "Wide, uncontrolled scope raises maintenance risk (accidental writes, name collisions), which is why controlled sharing/encapsulation is preferred."
+  }
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>

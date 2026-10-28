@@ -1,0 +1,2554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MCQ Exam Prep — Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* Refresh-prevention banner */
+#refresh-warn{
+  position:fixed;top:70px;left:50%;
+  transform:translateX(-50%) translateY(-80px);
+  background:var(--card);border:1.5px solid var(--amber);
+  border-radius:var(--rs);padding:10px 20px;font-size:13px;
+  font-weight:600;color:var(--amber);box-shadow:var(--shl);
+  z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;pointer-events:none
+}
+#refresh-warn.show{transform:translateX(-50%) translateY(0)}
+
+:root{--bg:#F5F3EE;--bg2:#EDEAE2;--card:#FFF;--border:#D8D4C8;--text:#1C1B18;--text2:#6B6860;--text3:#9B998F;--ac:#1B6F52;--ac2:#14543E;--acl:#E3F2EC;--amber:#C47F17;--ambl:#FDF3DC;--red:#C0392B;--redl:#FDECEA;--green:#1B8A52;--greenl:#E3F5EC;--purple:#6B4EAA;--purpl:#F0EBFC;--sh:0 2px 12px rgba(0,0,0,.07);--shl:0 8px 32px rgba(0,0,0,.12);--r:14px;--rs:8px;--fd:'DM Serif Display',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;--tr:.18s cubic-bezier(.4,0,.2,1)}
+[data-dark]{--bg:#0E0E0C;--bg2:#161613;--card:#1C1C19;--border:#2E2D27;--text:#F0EDE4;--text2:#908E84;--text3:#5A5850;--ac:#2EAD7A;--ac2:#25946A;--acl:#0A2318;--amber:#E0A030;--ambl:#221800;--red:#E05548;--redl:#260E0A;--green:#2EBD6A;--greenl:#082214;--purple:#9B80E0;--purpl:#160F2A;--sh:0 2px 12px rgba(0,0,0,.4);--shl:0 8px 40px rgba(0,0,0,.65)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;transition:background var(--tr),color var(--tr)}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,select{font-family:var(--fb)}
+
+/* TOP BAR */
+#top-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh)}
+.navbar{max-width:960px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column}
+.nav-row1{display:flex;align-items:center;gap:10px;height:52px;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:16px;color:var(--ac);white-space:nowrap;flex-shrink:0}
+#progress-wrap{flex:1;min-width:0}
+.progress-label{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;justify-content:space-between}
+.progress-track{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--ac);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.nav-icon-group{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background var(--tr),color var(--tr)}
+.icon-btn:hover{background:var(--bg2);color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+#timer-display{font-size:11px;font-weight:700;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums;flex-shrink:0}
+#timer-display.warn{color:var(--red);border-color:var(--red);background:var(--redl)}
+.nav-row2{display:flex;align-items:center;gap:5px;padding:6px 0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.nav-row2::-webkit-scrollbar{display:none}
+.stat-pill{display:flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--text2);white-space:nowrap;flex-shrink:0}
+.stat-pill span{font-weight:700}
+.stat-pill.correct{border-color:var(--green);color:var(--green);background:var(--greenl)}
+.stat-pill.wrong{border-color:var(--red);color:var(--red);background:var(--redl)}
+.stat-pill.acc{border-color:var(--amber);color:var(--amber);background:var(--ambl)}
+.nav-row3{display:flex;align-items:center;gap:6px;padding:8px 0;flex-wrap:wrap}
+.filter-select{flex:1;min-width:100px;padding:7px 28px 7px 10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--tr),background var(--tr)}
+.filter-select:focus{border-color:var(--ac);background-color:var(--card)}
+.nav-filter-btns{display:flex;gap:6px;flex-shrink:0}
+
+/* LAYOUT */
+#app{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.screen{display:none}
+.screen.active{display:block}
+
+/* QUESTION CARD */
+#question-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:slideIn .25s cubic-bezier(.4,0,.2,1)}
+#question-card.basic-card{border-top:3px solid var(--green)}
+#question-card.inter-card{border-top:3px solid var(--amber)}
+#question-card.advanced-card{border-top:3px solid var(--red)}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.card-header{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.q-number{font-size:12px;font-weight:700;color:var(--ac);background:var(--acl);padding:3px 10px;border-radius:99px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-basic{background:var(--greenl);color:var(--green)}
+.badge-intermediate{background:var(--ambl);color:var(--amber)}
+.badge-advanced{background:var(--redl);color:var(--red)}
+.badge-type{background:var(--purpl);color:var(--purple)}
+.badge-topic{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.bookmark-btn{margin-left:auto;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:color var(--tr),background var(--tr)}
+.bookmark-btn:hover,.bookmark-btn.active{color:var(--amber)}
+.bookmark-btn:hover{background:var(--ambl)}
+.bookmark-btn svg{width:16px;height:16px}
+.q-body{padding:20px 18px 14px}
+.q-text{font-size:16px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.options-list{display:flex;flex-direction:column;gap:8px}
+.option-btn{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.option-btn:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ac);background:var(--acl);transform:translateX(2px);box-shadow:0 4px 16px rgba(27,111,82,.15)}
+.option-label{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:background var(--tr),border-color var(--tr),color var(--tr)}
+.option-btn.correct{border-color:var(--green);background:var(--greenl);animation:flashG .6s ease forwards}
+.option-btn.correct .option-label{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong{border-color:var(--red);background:var(--redl);animation:flashR .6s ease forwards}
+.option-btn.wrong .option-label{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn:disabled{cursor:default;transform:none!important}
+.option-icon{margin-left:auto;flex-shrink:0;font-size:16px}
+@keyframes flashG{0%{box-shadow:0 0 0 0 rgba(27,138,82,.5)}70%{box-shadow:0 0 0 10px rgba(27,138,82,0)}100%{box-shadow:0 0 0 0 rgba(27,138,82,0)}}
+@keyframes flashR{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 10px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+
+/* EXPLANATION */
+.explanation-box{margin:14px 18px 16px;border-radius:var(--rs);border:1.5px solid var(--green);background:var(--greenl);overflow:hidden;animation:fadeIn .25s ease}
+.exp-header{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.exp-body{padding:12px 14px;font-size:13.5px;line-height:1.6}
+.exp-answer{font-weight:700;color:var(--green);margin-bottom:5px;font-size:14px}
+.show-exp-btn{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ac);font-weight:600;margin:12px 18px;cursor:pointer}
+.show-exp-btn:hover{text-decoration:underline}
+
+/* NAV BUTTONS */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;transition:background var(--tr),color var(--tr),transform .1s}
+.nav-btn:active{transform:scale(.97)}
+.nav-btn.primary{background:var(--ac);color:#fff}
+.nav-btn.primary:hover{background:var(--ac2)}
+.nav-btn.secondary{background:var(--bg2);color:var(--text2);border:1.5px solid var(--border)}
+.nav-btn.secondary:hover{background:var(--border);color:var(--text)}
+.nav-btn svg{width:16px;height:16px}
+.nav-btn.view-all-btn{background:var(--ac);color:#fff;border:none}
+.nav-btn.view-all-btn:hover{background:var(--ac2)}
+.q-counter{font-size:13px;color:var(--text2);font-weight:500;text-align:center}
+.skip-btn{font-size:11px;color:var(--text3);margin-top:3px;cursor:pointer;background:none;border:none;display:block;transition:color var(--tr)}
+.skip-btn:hover{color:var(--amber)}
+.kbd-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px}
+kbd{display:inline-block;background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:10px;color:var(--text2)}
+
+/* JUMP BAR */
+#jump-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-top:16px;display:none}
+#jump-bar.open{display:block;animation:fadeIn .2s}
+.jump-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.jump-grid{display:flex;flex-wrap:wrap;gap:5px}
+.jump-btn{width:34px;height:34px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text2);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr)}
+.jump-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl)}
+.jump-btn.current{background:var(--ac);border-color:var(--ac);color:#fff}
+.jump-btn.answered-c{background:var(--greenl);border-color:var(--green);color:var(--green)}
+.jump-btn.answered-w{background:var(--redl);border-color:var(--red);color:var(--red)}
+.jump-btn.bookmarked{border-style:dashed;border-color:var(--amber);color:var(--amber)}
+.jump-legend{display:flex;gap:12px;margin-top:10px;font-size:11px;color:var(--text3);flex-wrap:wrap}
+.jump-legend-item{display:flex;align-items:center;gap:5px}
+.jump-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* RESULT */
+.result-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shl);overflow:hidden;margin-bottom:20px}
+.result-hero{padding:36px 24px 28px;text-align:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.result-emoji{font-size:56px;margin-bottom:10px}
+.result-title{font-family:var(--fd);font-size:28px;margin-bottom:6px}
+.result-msg{font-size:15px;opacity:.88}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.result-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.result-stat:last-child{border-right:none}
+.result-stat .val{font-family:var(--fd);font-size:32px;color:var(--ac);display:block}
+.result-stat .lbl{font-size:12px;color:var(--text2);font-weight:500}
+.result-actions{padding:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.topic-breakdown{padding:16px 18px;border-top:1px solid var(--border)}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.tb-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.tb-label{width:130px;flex-shrink:0;color:var(--text2);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.tb-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.tb-pct{width:36px;text-align:right;font-weight:700;color:var(--text2)}
+
+/* REVIEW */
+.review-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.review-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.review-status{margin-left:auto;font-size:18px}
+.review-body{padding:14px 16px}
+.review-q{font-size:14.5px;font-weight:600;margin-bottom:12px;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.review-opt{padding:7px 12px;border-radius:var(--rs);font-size:13px;border:1px solid var(--border)}
+.review-opt.correct-ans{border-color:var(--green);background:var(--greenl);color:var(--green);font-weight:600}
+.review-opt.user-wrong{border-color:var(--red);background:var(--redl);color:var(--red);font-weight:600}
+.review-exp{font-size:12.5px;color:var(--text);background:var(--acl);border-left:3px solid var(--ac);border-radius:0 var(--rs) var(--rs) 0;padding:10px 14px;line-height:1.55}
+.review-filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.rfbtn{padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr)}
+.rfbtn.active{background:var(--ac);border-color:var(--ac);color:#fff}
+
+/* ALL QUESTIONS VIEW */
+.all-q-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;transition:border-color var(--tr)}
+.all-q-card:hover{border-color:var(--ac)}
+.all-q-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.all-q-body{padding:16px 16px 10px}
+.all-q-text{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:14px}
+.all-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.all-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--bg);color:var(--text);font-size:14px;text-align:left;cursor:pointer;width:100%;line-height:1.45;transition:border-color var(--tr),background var(--tr),transform .1s}
+.all-opt:hover:not(:disabled){border-color:var(--ac);background:var(--acl);transform:translateX(2px)}
+.all-opt-lbl{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text2);transition:all var(--tr)}
+.all-opt.ao-correct{border-color:var(--green);background:var(--greenl)}
+.all-opt.ao-correct .all-opt-lbl{background:var(--green);border-color:var(--green);color:#fff}
+.all-opt.ao-wrong{border-color:var(--red);background:var(--redl)}
+.all-opt.ao-wrong .all-opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.all-opt:disabled{cursor:default;transform:none!important}
+.all-exp{margin:0 0 12px;padding:10px 14px;border-radius:var(--rs);background:var(--acl);border-left:3px solid var(--ac);font-size:13px;line-height:1.6;display:none}
+.all-exp.visible{display:block;animation:fadeIn .2s}
+.all-exp-ans{font-weight:700;color:var(--green);margin-bottom:4px;font-size:13.5px}
+
+/* MISC */
+.hidden{display:none!important}
+.no-results,.all-no-results{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.section-title{font-family:var(--fd);font-size:20px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.back-link{font-size:13px;color:var(--ac);display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-link:hover{text-decoration:underline}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:10px 20px;font-size:13px;font-weight:600;box-shadow:var(--shl);z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.toast-correct{border-color:var(--green);color:var(--green)}
+#toast.toast-wrong{border-color:var(--red);color:var(--red)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+
+/* RESPONSIVE */
+/* ── Laptop / large tablet (≤1024px) ── */
+@media(max-width:1024px){
+  body{font-size:15px}
+  .q-text{font-size:16px}
+  .option-btn{font-size:14px}
+  .all-q-text{font-size:15px}
+  .all-opt{font-size:14px}
+  .result-stat .val{font-size:28px}
+  .result-title{font-size:26px}
+}
+/* ── Tablet (≤768px) ── */
+@media(max-width:768px){
+  body{font-size:14px}
+  .navbar{padding:0 12px}
+  .logo{font-size:14px}
+  .nav-row1{height:48px;gap:8px}
+  .progress-label{font-size:9px}
+  #timer-display{font-size:11px;padding:3px 8px}
+  .stat-pill{font-size:11px;padding:3px 8px}
+  .filter-select{font-size:12px;min-width:80px}
+  .nav-btn{font-size:13px;padding:8px 14px}
+  .nav-btn svg{width:14px;height:14px}
+  .q-number{font-size:11px}
+  .badge{font-size:10px;padding:2px 7px}
+  .q-body{padding:16px 14px 12px}
+  .q-text{font-size:15px;line-height:1.5}
+  .option-btn{font-size:13.5px;padding:10px 14px;gap:10px}
+  .option-label{width:22px;height:22px;font-size:11px}
+  .exp-body{font-size:13px}
+  .exp-answer{font-size:13px}
+  .show-exp-btn{font-size:12px}
+  .q-counter{font-size:12px}
+  .skip-btn{font-size:11px}
+  .kbd-hint{font-size:10px}
+  .jump-btn{width:32px;height:32px;font-size:11px}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-title{font-size:24px}
+  .result-msg{font-size:14px}
+  .result-stat .val{font-size:26px}
+  .result-stat .lbl{font-size:11px}
+  .review-q{font-size:14px}
+  .review-opt{font-size:12.5px}
+  .review-exp{font-size:12px}
+  .all-q-text{font-size:14.5px}
+  .all-opt{font-size:13.5px;padding:9px 12px}
+  .all-exp{font-size:12.5px}
+  .rfbtn{font-size:12px;padding:6px 12px}
+  #app{padding:14px 12px 60px}
+}
+/* ── Mobile (≤480px) ── */
+@media(max-width:480px){
+  body{font-size:13px}
+  .navbar{padding:0 10px}
+  .logo{font-size:13px;letter-spacing:0}
+  .nav-row1{height:44px;gap:6px}
+  .progress-label{display:none}
+  #timer-display{font-size:10px;padding:2px 7px}
+  .icon-btn{width:30px;height:30px}
+  .icon-btn svg{width:15px;height:15px}
+  /* Stats row – 2 per row wrap */
+  .nav-row2{flex-wrap:wrap;gap:4px;padding:5px 0}
+  .stat-pill{font-size:10px;padding:2px 7px}
+  /* Filter row – 2 selects per row */
+  .nav-row3{gap:4px;padding:5px 0;flex-wrap:wrap}
+  .filter-select{width:calc(50% - 4px);min-width:unset;flex:none;font-size:11px;padding:6px 24px 6px 8px}
+  .nav-filter-btns{width:100%;gap:4px}
+  .nav-filter-btns button{flex:1;justify-content:center;font-size:11px;padding:7px 8px}
+  /* Question card */
+  .card-header{padding:8px 10px;gap:5px}
+  .q-number{font-size:10px;padding:2px 8px}
+  .badge{font-size:9px;padding:2px 6px}
+  .bookmark-btn{width:24px;height:24px}
+  .q-body{padding:12px 10px 10px}
+  .q-text{font-size:13.5px;line-height:1.5;margin-bottom:14px}
+  .option-btn{font-size:12.5px;padding:9px 10px;gap:8px}
+  .option-label{width:20px;height:20px;font-size:10px;flex-shrink:0}
+  .option-icon{font-size:14px}
+  .show-exp-btn{font-size:11px;margin:8px 12px}
+  .exp-header{font-size:12px;padding:8px 12px}
+  .exp-body{font-size:12px;padding:10px 12px}
+  .exp-answer{font-size:12.5px}
+  /* Nav row */
+  .nav-row{gap:6px;margin-top:10px}
+  .nav-btn{font-size:12px;padding:8px 12px;gap:4px}
+  .nav-btn svg{width:13px;height:13px}
+  .q-counter{font-size:11px}
+  .skip-btn{font-size:10px}
+  .kbd-hint{display:none}
+  /* Jump grid */
+  .jump-btn{width:28px;height:28px;font-size:10px}
+  .jump-label{font-size:11px}
+  .jump-legend{font-size:10px;gap:8px}
+  /* Results */
+  .result-hero{padding:20px 14px 16px}
+  .result-emoji{font-size:40px}
+  .result-title{font-size:20px}
+  .result-msg{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
+  .result-stat{padding:14px 10px}
+  .result-stat .val{font-size:22px}
+  .result-stat .lbl{font-size:10px}
+  .result-actions{padding:12px;gap:8px}
+  /* Review */
+  .review-q{font-size:13px}
+  .review-opt{font-size:12px;padding:6px 10px}
+  .review-exp{font-size:11.5px;padding:8px 10px}
+  .rfbtn{font-size:11px;padding:5px 10px}
+  .section-title{font-size:17px}
+  .back-link{font-size:12px}
+  /* View All */
+  .all-q-text{font-size:13px}
+  .all-opt{font-size:12.5px;padding:8px 10px;gap:8px}
+  .all-opt-lbl{width:20px;height:20px;font-size:10px}
+  .all-exp{font-size:11.5px;padding:8px 10px}
+  .all-exp-ans{font-size:12px}
+  #app{padding:10px 8px 60px}
+}
+/* ── Small phones (≤360px) ── */
+@media(max-width:360px){
+  .logo{font-size:12px}
+  .q-text{font-size:13px}
+  .option-btn{font-size:12px;padding:8px 9px}
+  .nav-btn{font-size:11px;padding:7px 10px}
+  .filter-select{font-size:10px}
+  .result-stat .val{font-size:20px}
+  .result-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="top-bar"><div class="navbar">
+  <div class="nav-row1">
+    <div class="logo">MCQ Exam Prep</div>
+    <div id="progress-wrap">
+      <div class="progress-label"><span id="prog-label">Question 1 of 0</span><span id="prog-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="timer-display">00:00</div>
+    <div class="nav-icon-group">
+      <button class="icon-btn" id="dark-toggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="jump-toggle" title="Jump to question">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="icon-btn" id="restart-btn" title="Restart quiz">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <div class="stat-pill">Total <span id="s-total">0</span></div>
+    <div class="stat-pill">✎ Attempted <span id="s-attempted">0</span></div>
+    <div class="stat-pill correct">✓ Correct <span id="s-correct">0</span></div>
+    <div class="stat-pill wrong">✗ Wrong <span id="s-wrong">0</span></div>
+    <div class="stat-pill acc">⚡ Accuracy <span id="s-acc">—</span></div>
+  </div>
+  <div class="nav-row3">
+    <select class="filter-select" id="filter-level"><option value="all">All Levels</option><option value="Basic">Basic</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select>
+    <select class="filter-select" id="filter-topic"><option value="all">All Topics</option></select>
+    <select class="filter-select" id="filter-type"><option value="all">All Types</option></select>
+    <div class="nav-filter-btns">
+      <button class="nav-btn secondary" id="bookmark-filter-btn">★ Bookmarked</button>
+      <button class="nav-btn view-all-btn" id="view-all-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All
+      </button>
+    </div>
+  </div>
+</div></div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen active">
+    <div id="quiz-body">
+      <div id="question-card">
+        <div class="card-header" id="card-header"></div>
+        <div class="q-body">
+          <div class="q-text" id="q-text"></div>
+          <div class="options-list" id="options-list"></div>
+        </div>
+        <button class="show-exp-btn hidden" id="show-exp-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Show Explanation
+        </button>
+        <div id="explanation-box" class="hidden"></div>
+      </div>
+      <div class="nav-row" style="margin-top:14px">
+        <button class="nav-btn secondary" id="prev-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Prev</button>
+        <div style="text-align:center"><div class="q-counter" id="q-counter">1 / 0</div><button class="skip-btn" id="skip-btn">Skip ↩</button></div>
+        <button class="nav-btn primary" id="next-btn">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+      <div class="kbd-hint">Keyboard: <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> — options &nbsp;|&nbsp; <kbd>←</kbd><kbd>→</kbd> — navigate &nbsp;|&nbsp; <kbd>E</kbd> — explanation</div>
+      <div id="jump-bar">
+        <div class="jump-label">Jump to Question</div>
+        <div class="jump-grid" id="jump-grid"></div>
+        <div class="jump-legend">
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--green)"></div> Correct</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--red)"></div> Wrong</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--bg2);border:1.5px dashed var(--amber)"></div> Bookmarked</div>
+          <div class="jump-legend-item"><div class="jump-dot" style="background:var(--ac)"></div> Current</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="nav-btn primary" id="finish-btn">Finish Quiz &amp; See Results <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg></button>
+      </div>
+    </div>
+    <div id="all-panel" style="display:none"><div id="all-list"></div></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="result-card">
+      <div class="result-hero">
+        <div class="result-emoji" id="res-emoji">🎉</div>
+        <div class="result-title" id="res-title">Quiz Complete!</div>
+        <div class="result-msg" id="res-msg">Here's how you did</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><span class="val" id="res-score">0</span><span class="lbl">Score</span></div>
+        <div class="result-stat"><span class="val" id="res-correct">0</span><span class="lbl">Correct</span></div>
+        <div class="result-stat"><span class="val" id="res-wrong">0</span><span class="lbl">Wrong</span></div>
+        <div class="result-stat"><span class="val" id="res-skipped">0</span><span class="lbl">Skipped</span></div>
+        <div class="result-stat"><span class="val" id="res-pct">0%</span><span class="lbl">Accuracy</span></div>
+        <div class="result-stat"><span class="val" id="res-time">—</span><span class="lbl">Time Taken</span></div>
+      </div>
+      <div id="topic-breakdown" class="topic-breakdown"></div>
+      <div class="result-actions">
+        <button class="nav-btn primary" id="review-btn">📋 Review Answers</button>
+        <button class="nav-btn secondary" id="restart-btn2">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="review-screen" class="screen">
+    <div class="back-link" id="back-to-result"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Back to Results</div>
+    <div class="section-title">📋 Answer Review</div>
+    <div class="review-filter-bar">
+      <button class="rfbtn active" data-rf="all">All</button>
+      <button class="rfbtn" data-rf="correct">✓ Correct</button>
+      <button class="rfbtn" data-rf="wrong">✗ Wrong</button>
+      <button class="rfbtn" data-rf="skipped">— Skipped</button>
+      <button class="rfbtn" data-rf="bookmarked">★ Bookmarked</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ▼▼▼  ADD YOUR QUESTIONS HERE  ▼▼▼
+   Format:
+   {
+     "id": 1,
+     "level": "Basic",          // Basic | Intermediate | Advanced
+     "type": "Concept",         // any label
+     "topic": "Topic Name",     // used in filter dropdown
+     "question": "Question?",
+     "options": ["A text","B text","C text","D text"],
+     "answer": "A",             // A | B | C | D
+     "explanation": "Reason."
+   }
+═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  {
+    "id": 1,
+    "level": "Basic",
+    "type": "Command Identification",
+    "topic": "DDL",
+    "question": "Which command creates a new database?",
+    "options": [
+      "CREATE DATABASE",
+      "MAKE DATABASE",
+      "ADD DATABASE",
+      "NEW DATABASE"
+    ],
+    "answer": "A",
+    "explanation": "CREATE DATABASE is the standard SQL command used to create a new database."
+  },
+  {
+    "id": 2,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "DDL",
+    "question": "Which command permanently deletes an entire database along with all its tables?",
+    "options": [
+      "DELETE DATABASE",
+      "DROP DATABASE",
+      "REMOVE DATABASE",
+      "TRUNCATE DATABASE"
+    ],
+    "answer": "B",
+    "explanation": "DROP DATABASE removes the database along with all the tables and data stored in it."
+  },
+  {
+    "id": 3,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "DDL",
+    "question": "Which is the correct syntax to create a new table named Student?",
+    "options": [
+      "NEW TABLE Student (...columns...);",
+      "CREATE Student TABLE (...columns...);",
+      "CREATE TABLE Student (...columns...);",
+      "TABLE CREATE Student (...columns...);"
+    ],
+    "answer": "C",
+    "explanation": "The correct syntax begins with CREATE TABLE, followed by the table name and column definitions in brackets."
+  },
+  {
+    "id": 4,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "Alter Table",
+    "question": "Which keyword is used with ALTER TABLE to add a new column to an existing table?",
+    "options": [
+      "INSERT COLUMN",
+      "NEW COLUMN",
+      "CREATE COLUMN",
+      "ADD"
+    ],
+    "answer": "D",
+    "explanation": "ALTER TABLE ... ADD ColumnName Datatype; is used to add a new column to an existing table."
+  },
+  {
+    "id": 5,
+    "level": "Basic",
+    "type": "Command Identification",
+    "topic": "DDL",
+    "question": "Which command is used to remove an entire table, including its structure and all data?",
+    "options": [
+      "DROP TABLE",
+      "CLEAR TABLE",
+      "REMOVE TABLE",
+      "DELETE TABLE"
+    ],
+    "answer": "A",
+    "explanation": "DROP TABLE deletes both the table structure and its stored data permanently."
+  },
+  {
+    "id": 6,
+    "level": "Intermediate",
+    "type": "Valid/Invalid Statement",
+    "topic": "Alter Table",
+    "question": "Which of the following is a valid SQL statement to add a column 'Age' to table 'Student'?",
+    "options": [
+      "INSERT COLUMN Age INTO Student;",
+      "ALTER TABLE Student ADD Age INT;",
+      "MODIFY TABLE Student ADD Age INT;",
+      "ALTER Student ADD COLUMN Age INT;"
+    ],
+    "answer": "B",
+    "explanation": "The valid syntax is ALTER TABLE followed by the table name, ADD, and the new column with its datatype."
+  },
+  {
+    "id": 7,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "DDL",
+    "question": "Which command is used to change the structure of an existing table, such as adding, modifying, or dropping a column?",
+    "options": [
+      "MODIFY TABLE",
+      "CHANGE TABLE",
+      "ALTER TABLE",
+      "UPDATE TABLE"
+    ],
+    "answer": "C",
+    "explanation": "ALTER TABLE is the DDL command used to change the structure of an existing table."
+  },
+  {
+    "id": 8,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "Alter Table",
+    "question": "Which statement correctly deletes only the \"Marks\" column from table \"Result\"?",
+    "options": [
+      "DELETE COLUMN Marks FROM Result;",
+      "REMOVE Marks FROM Result;",
+      "DROP COLUMN Marks;",
+      "ALTER TABLE Result DROP COLUMN Marks;"
+    ],
+    "answer": "D",
+    "explanation": "ALTER TABLE ... DROP COLUMN is used to remove a specific column from an existing table."
+  },
+  {
+    "id": 9,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "Alter Table",
+    "question": "Which command is used to change the data type of an existing column in a table?",
+    "options": [
+      "ALTER TABLE ... MODIFY",
+      "SET COLUMN TYPE",
+      "CHANGE TABLE ... TYPE",
+      "UPDATE TABLE ... CHANGE"
+    ],
+    "answer": "A",
+    "explanation": "ALTER TABLE with the MODIFY clause is used to change the data type or size of an existing column."
+  },
+  {
+    "id": 10,
+    "level": "Basic",
+    "type": "Statement-Based",
+    "topic": "DDL",
+    "question": "\"CREATE DATABASE and CREATE TABLE are both DDL (Data Definition Language) commands used to define database structure.\" Is this statement correct?",
+    "options": [
+      "False, CREATE TABLE is DML",
+      "True, both define structure",
+      "False, both are DML",
+      "True, but only CREATE DATABASE is DDL"
+    ],
+    "answer": "B",
+    "explanation": "Both commands define the structure of database objects, so both belong to the DDL category."
+  },
+  {
+    "id": 11,
+    "level": "Basic",
+    "type": "Command Identification",
+    "topic": "DML",
+    "question": "Which of the following is NOT a DML command as per this syllabus?",
+    "options": [
+      "DELETE",
+      "INSERT",
+      "CREATE",
+      "UPDATE"
+    ],
+    "answer": "C",
+    "explanation": "CREATE defines database structure (DDL), while INSERT, UPDATE and DELETE manipulate data (DML)."
+  },
+  {
+    "id": 12,
+    "level": "Basic",
+    "type": "Terminology",
+    "topic": "DML",
+    "question": "DML stands for:",
+    "options": [
+      "Data Management Language",
+      "Data Modify Language",
+      "Database Modeling Language",
+      "Data Manipulation Language"
+    ],
+    "answer": "D",
+    "explanation": "DML stands for Data Manipulation Language, used to manipulate data stored in tables."
+  },
+  {
+    "id": 13,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "DML",
+    "question": "Which command is used to modify existing records in a table?",
+    "options": [
+      "UPDATE",
+      "INSERT",
+      "SELECT",
+      "CREATE"
+    ],
+    "answer": "A",
+    "explanation": "UPDATE is used to change the values of existing records in a table."
+  },
+  {
+    "id": 14,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "DML",
+    "question": "Which command retrieves data from one or more tables?",
+    "options": [
+      "FETCH",
+      "SELECT",
+      "SHOW",
+      "GET"
+    ],
+    "answer": "B",
+    "explanation": "SELECT is the SQL command used to retrieve/query data from tables."
+  },
+  {
+    "id": 15,
+    "level": "Advanced",
+    "type": "Match the Following",
+    "topic": "DML",
+    "question": "Match the DML commands with their function:\nColumn A: 1. INSERT  2. UPDATE  3. DELETE  4. SELECT\nColumn B: (i) Retrieve records (ii) Add new records (iii) Modify records (iv) Remove records",
+    "options": [
+      "1-iii, 2-i, 3-ii, 4-iv",
+      "1-ii, 2-iv, 3-iii, 4-i",
+      "1-ii, 2-iii, 3-iv, 4-i",
+      "1-i, 2-ii, 3-iii, 4-iv"
+    ],
+    "answer": "C",
+    "explanation": "INSERT adds records, UPDATE modifies them, DELETE removes them, and SELECT retrieves them."
+  },
+  {
+    "id": 16,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "DML",
+    "question": "Assertion (A): DELETE removes rows from a table without deleting the table structure.\nReason (R): DELETE is a DML command that operates on table data, not on table definition.",
+    "options": [
+      "A is true, R is false",
+      "Both A and R are true, but R does not explain A",
+      "A is false, R is true",
+      "Both A and R are true, and R correctly explains A"
+    ],
+    "answer": "D",
+    "explanation": "DELETE only removes data (rows) using DML, while the table structure defined by DDL remains unaffected."
+  },
+  {
+    "id": 17,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "INSERT",
+    "question": "Which is the correct syntax to insert values into all columns of table Student(RollNo, Name, Marks)?",
+    "options": [
+      "INSERT INTO Student VALUES (1,'Anu',90);",
+      "ADD INTO Student VALUES (1,'Anu',90);",
+      "INSERT Student VALUES (1,'Anu',90);",
+      "INSERT INTO VALUES Student (1,'Anu',90);"
+    ],
+    "answer": "A",
+    "explanation": "The correct syntax is INSERT INTO TableName VALUES(...) when inserting values for all columns in order."
+  },
+  {
+    "id": 18,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "UPDATE",
+    "question": "Which clause is essential with UPDATE to change only specific record(s) instead of the entire table?",
+    "options": [
+      "HAVING",
+      "WHERE",
+      "ORDER BY",
+      "GROUP BY"
+    ],
+    "answer": "B",
+    "explanation": "The WHERE clause specifies the condition to identify which record(s) should be updated."
+  },
+  {
+    "id": 19,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "UPDATE",
+    "question": "What happens if the UPDATE command is executed without a WHERE clause?",
+    "options": [
+      "A syntax error occurs",
+      "Only the first row is updated",
+      "All rows in the table get updated",
+      "The command is ignored"
+    ],
+    "answer": "C",
+    "explanation": "Without a WHERE clause, UPDATE applies the change to every row in the table."
+  },
+  {
+    "id": 20,
+    "level": "Basic",
+    "type": "Command Identification",
+    "topic": "DELETE",
+    "question": "Which command is used to remove specific row(s) from a table based on a condition?",
+    "options": [
+      "TRUNCATE",
+      "REMOVE",
+      "DROP",
+      "DELETE"
+    ],
+    "answer": "D",
+    "explanation": "DELETE removes rows that satisfy a specified condition while keeping the table structure intact."
+  },
+  {
+    "id": 21,
+    "level": "Intermediate",
+    "type": "Valid/Invalid Statement",
+    "topic": "SELECT",
+    "question": "Which is the correct SELECT statement to display Name and Marks of all students?",
+    "options": [
+      "SELECT Name, Marks FROM Student;",
+      "SELECT * Name, Marks Student;",
+      "GET Name, Marks FROM Student;",
+      "SELECT Name Marks FROM Student;"
+    ],
+    "answer": "A",
+    "explanation": "Column names must be comma-separated after SELECT, followed by FROM and the table name."
+  },
+  {
+    "id": 22,
+    "level": "Intermediate",
+    "type": "Query-Based",
+    "topic": "UPDATE",
+    "question": "In table Employee(EmpID, Name, Salary), which statement increases the Salary of employee EmpID=5 by 1000?",
+    "options": [
+      "UPDATE SET Salary=Salary+1000 FROM Employee WHERE EmpID=5;",
+      "UPDATE Employee SET Salary=Salary+1000 WHERE EmpID=5;",
+      "ALTER Employee SET Salary=Salary+1000;",
+      "UPDATE Employee Salary=Salary+1000 WHERE EmpID=5;"
+    ],
+    "answer": "B",
+    "explanation": "UPDATE requires the SET keyword before assigning new values and a WHERE clause to target the correct row."
+  },
+  {
+    "id": 23,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "SELECT",
+    "question": "Which symbol is used in a SELECT statement to fetch all columns of a table?",
+    "options": [
+      "%",
+      "#",
+      "*",
+      "ALL"
+    ],
+    "answer": "C",
+    "explanation": "The asterisk (*) symbol represents \"all columns\" in a SELECT statement."
+  },
+  {
+    "id": 24,
+    "level": "Intermediate",
+    "type": "Error Identification",
+    "topic": "DELETE",
+    "question": "What does the statement \"DELETE FROM Student WHERE RollNo=5;\" do?",
+    "options": [
+      "Causes an error since WHERE is not allowed with DELETE",
+      "Deletes the entire Student table",
+      "Deletes only the RollNo column",
+      "Deletes only the row where RollNo is 5"
+    ],
+    "answer": "D",
+    "explanation": "The WHERE clause restricts DELETE to only the row(s) matching the given condition."
+  },
+  {
+    "id": 25,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "INSERT",
+    "question": "Which command would you use to add a new student's record without affecting existing records?",
+    "options": [
+      "INSERT",
+      "ALTER",
+      "CREATE",
+      "UPDATE"
+    ],
+    "answer": "A",
+    "explanation": "INSERT adds new rows to a table without changing the existing data."
+  },
+  {
+    "id": 26,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "UPDATE",
+    "question": "In table Library(BookID, Title, Status), which statement correctly changes the Status of BookID=101 to 'Issued'?",
+    "options": [
+      "INSERT INTO Library SET Status='Issued' WHERE BookID=101;",
+      "UPDATE Library SET Status='Issued' WHERE BookID=101;",
+      "ALTER Library SET Status='Issued' WHERE BookID=101;",
+      "UPDATE Library WHERE BookID=101 SET Status='Issued';"
+    ],
+    "answer": "B",
+    "explanation": "The correct UPDATE syntax places SET before WHERE, assigning the new value before specifying the condition."
+  },
+  {
+    "id": 27,
+    "level": "Basic",
+    "type": "Command Identification",
+    "topic": "Aggregate",
+    "question": "Which function is used to calculate the total sum of values in a numeric column?",
+    "options": [
+      "COUNT()",
+      "AVG()",
+      "SUM()",
+      "MAX()"
+    ],
+    "answer": "C",
+    "explanation": "SUM() adds up all the numeric values in the specified column."
+  },
+  {
+    "id": 28,
+    "level": "Basic",
+    "type": "Command Identification",
+    "topic": "Aggregate",
+    "question": "Which aggregate function returns the highest value in a column?",
+    "options": [
+      "HIGH()",
+      "MIN()",
+      "TOP()",
+      "MAX()"
+    ],
+    "answer": "D",
+    "explanation": "MAX() returns the largest value present in the specified column."
+  },
+  {
+    "id": 29,
+    "level": "Basic",
+    "type": "Command Identification",
+    "topic": "Aggregate",
+    "question": "Which aggregate function returns the lowest value in a column?",
+    "options": [
+      "MIN()",
+      "LOW()",
+      "SMALL()",
+      "BOTTOM()"
+    ],
+    "answer": "A",
+    "explanation": "MIN() returns the smallest value present in the specified column."
+  },
+  {
+    "id": 30,
+    "level": "Basic",
+    "type": "Command Identification",
+    "topic": "Aggregate",
+    "question": "Which function calculates the average (mean) value of a numeric column?",
+    "options": [
+      "SUM()/COUNT()",
+      "AVG()",
+      "AVERAGE()",
+      "MEAN()"
+    ],
+    "answer": "B",
+    "explanation": "AVG() computes the mean of all values in the specified numeric column."
+  },
+  {
+    "id": 31,
+    "level": "Intermediate",
+    "type": "Query-Based",
+    "topic": "Aggregate",
+    "question": "Which SQL function, used as COUNT(*), returns the total number of rows in a result set, including rows with NULL values?",
+    "options": [
+      "COUNT(column)",
+      "SUM()",
+      "COUNT(*)",
+      "AVG()"
+    ],
+    "answer": "C",
+    "explanation": "COUNT(*) counts all rows regardless of NULL values, unlike COUNT(column) which ignores NULLs in that column."
+  },
+  {
+    "id": 32,
+    "level": "Intermediate",
+    "type": "Query-Based",
+    "topic": "Aggregate",
+    "question": "In table Marks(StudentID, Subject, Score), which query finds the highest score obtained by any student?",
+    "options": [
+      "SELECT TOP(Score) FROM Marks;",
+      "SELECT MAX(Score) FROM Marks GROUP BY Score;",
+      "SELECT HIGH(Score) FROM Marks;",
+      "SELECT MAX(Score) FROM Marks;"
+    ],
+    "answer": "D",
+    "explanation": "MAX(Score) directly returns the single highest value present in the Score column."
+  },
+  {
+    "id": 33,
+    "level": "Intermediate",
+    "type": "Valid/Invalid Statement",
+    "topic": "Aggregate",
+    "question": "Which of the following is NOT a valid aggregate function under this syllabus?",
+    "options": [
+      "TOTAL()",
+      "COUNT()",
+      "SUM()",
+      "AVG()"
+    ],
+    "answer": "A",
+    "explanation": "TOTAL() is not a standard SQL aggregate function; SUM(), COUNT() and AVG() are the valid ones listed."
+  },
+  {
+    "id": 34,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Aggregate",
+    "question": "Query: \"SELECT COUNT(Marks) FROM Result WHERE Marks IS NOT NULL;\" — what does this count?",
+    "options": [
+      "Total sum of Marks",
+      "Number of rows where the Marks value is present (not NULL)",
+      "Number of rows with NULL Marks",
+      "Average of Marks"
+    ],
+    "answer": "B",
+    "explanation": "COUNT(Marks) counts only the rows where Marks has a non-NULL value."
+  },
+  {
+    "id": 35,
+    "level": "Intermediate",
+    "type": "Query-Based",
+    "topic": "Aggregate",
+    "question": "Which query finds the total number of employees in table Employee(EmpID, Name, Dept)?",
+    "options": [
+      "SELECT MAX(EmpID) FROM Employee;",
+      "SELECT AVG(EmpID) FROM Employee;",
+      "SELECT COUNT(*) FROM Employee;",
+      "SELECT SUM(EmpID) FROM Employee;"
+    ],
+    "answer": "C",
+    "explanation": "COUNT(*) counts the total number of rows, which equals the total number of employees."
+  },
+  {
+    "id": 36,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Aggregate",
+    "question": "Assertion (A): AVG() ignores NULL values while calculating the average of a column.\nReason (R): Aggregate functions in SQL generally exclude NULL values from their calculation, except COUNT(*).",
+    "options": [
+      "Both A and R are true, but R does not explain A",
+      "A is true, R is false",
+      "A is false, R is true",
+      "Both A and R are true, and R correctly explains A"
+    ],
+    "answer": "D",
+    "explanation": "Most aggregate functions skip NULL values during calculation, which correctly explains why AVG() excludes them."
+  },
+  {
+    "id": 37,
+    "level": "Basic",
+    "type": "Command Identification",
+    "topic": "GROUP BY",
+    "question": "Which clause is used to arrange identical data into groups based on one or more columns?",
+    "options": [
+      "GROUP BY",
+      "HAVING",
+      "ORDER BY",
+      "JOIN BY"
+    ],
+    "answer": "A",
+    "explanation": "GROUP BY groups rows that share the same values in specified columns."
+  },
+  {
+    "id": 38,
+    "level": "Intermediate",
+    "type": "Query-Based",
+    "topic": "GROUP BY",
+    "question": "In table Sales(Region, Amount), which query gives the total sales amount for each region?",
+    "options": [
+      "SELECT SUM(Amount) FROM Sales GROUP Region;",
+      "SELECT Region, SUM(Amount) FROM Sales GROUP BY Region;",
+      "SELECT Region, SUM(Amount) FROM Sales;",
+      "SELECT Region, SUM(Amount) FROM Sales ORDER BY Region;"
+    ],
+    "answer": "B",
+    "explanation": "GROUP BY Region is required to calculate a separate SUM(Amount) for each region."
+  },
+  {
+    "id": 39,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "GROUP BY",
+    "question": "GROUP BY is usually used together with which type of SQL functions?",
+    "options": [
+      "Date functions",
+      "Mathematical functions only",
+      "Aggregate functions",
+      "String functions"
+    ],
+    "answer": "C",
+    "explanation": "GROUP BY is commonly paired with aggregate functions like SUM(), COUNT(), AVG() to summarize each group."
+  },
+  {
+    "id": 40,
+    "level": "Intermediate",
+    "type": "Error Identification",
+    "topic": "GROUP BY",
+    "question": "In the query \"SELECT Dept, COUNT(*) FROM Employee;\", intended to show employee count per department, what is missing?",
+    "options": [
+      "Nothing is wrong",
+      "COUNT(*) is invalid",
+      "SELECT cannot use two columns",
+      "The GROUP BY Dept clause"
+    ],
+    "answer": "D",
+    "explanation": "Without GROUP BY Dept, the query cannot correctly summarize COUNT(*) separately for each department."
+  },
+  {
+    "id": 41,
+    "level": "Intermediate",
+    "type": "Query-Based",
+    "topic": "GROUP BY",
+    "question": "In table Student(Class, Name, Marks), which query lists each Class along with the number of students in it?",
+    "options": [
+      "SELECT Class, COUNT(*) FROM Student GROUP BY Class;",
+      "SELECT Class, COUNT(*) FROM Student;",
+      "SELECT COUNT(Class) FROM Student;",
+      "SELECT Class, COUNT(*) FROM Student ORDER BY Class;"
+    ],
+    "answer": "A",
+    "explanation": "GROUP BY Class is needed so COUNT(*) is calculated separately for each class."
+  },
+  {
+    "id": 42,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "GROUP BY",
+    "question": "When GROUP BY is used, which column(s) can safely appear in SELECT without an aggregate function?",
+    "options": [
+      "None, all columns need aggregate functions",
+      "Only the column(s) listed in the GROUP BY clause",
+      "Any column of the table",
+      "Only numeric columns"
+    ],
+    "answer": "B",
+    "explanation": "Non-aggregated columns in SELECT must match the columns used in GROUP BY to give meaningful results."
+  },
+  {
+    "id": 43,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "GROUP BY",
+    "question": "Query: \"SELECT Dept, AVG(Salary) FROM Employee GROUP BY Dept;\" — what does this return?",
+    "options": [
+      "Total salary for each department",
+      "Highest salary in each department",
+      "Average salary for each department",
+      "Average salary of the whole company"
+    ],
+    "answer": "C",
+    "explanation": "GROUP BY Dept causes AVG(Salary) to be calculated separately for every department."
+  },
+  {
+    "id": 44,
+    "level": "Basic",
+    "type": "Statement-Based",
+    "topic": "GROUP BY",
+    "question": "\"GROUP BY groups rows that have the same values in specified columns, and is often used with aggregate functions to summarize each group.\" Is this statement correct?",
+    "options": [
+      "False, GROUP BY cannot be used with aggregate functions",
+      "False, GROUP BY works only on numeric columns",
+      "False, GROUP BY only sorts data",
+      "True"
+    ],
+    "answer": "D",
+    "explanation": "This is a correct description of the purpose and typical use of the GROUP BY clause."
+  },
+  {
+    "id": 45,
+    "level": "Basic",
+    "type": "Command Identification",
+    "topic": "ORDER BY",
+    "question": "Which clause is used to sort the result set of a query?",
+    "options": [
+      "ORDER BY",
+      "SORT BY",
+      "GROUP BY",
+      "HAVING"
+    ],
+    "answer": "A",
+    "explanation": "ORDER BY arranges the output rows of a query in ascending or descending order."
+  },
+  {
+    "id": 46,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "ORDER BY",
+    "question": "By default, ORDER BY sorts records in which order?",
+    "options": [
+      "No specific order",
+      "Ascending",
+      "Descending",
+      "Random"
+    ],
+    "answer": "B",
+    "explanation": "If no keyword is specified, ORDER BY sorts the result in ascending order by default."
+  },
+  {
+    "id": 47,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "ORDER BY",
+    "question": "Which keyword is used with ORDER BY to sort records in descending order?",
+    "options": [
+      "LOW",
+      "REV",
+      "DESC",
+      "DOWN"
+    ],
+    "answer": "C",
+    "explanation": "DESC is added after the column name in ORDER BY to sort results from highest to lowest."
+  },
+  {
+    "id": 48,
+    "level": "Intermediate",
+    "type": "Query-Based",
+    "topic": "ORDER BY",
+    "question": "In table Student(Name, Marks), which query displays students sorted by Marks from highest to lowest?",
+    "options": [
+      "SELECT Name, Marks FROM Student ORDER BY Marks;",
+      "SELECT Name, Marks FROM Student SORT BY Marks DESC;",
+      "SELECT Name, Marks FROM Student GROUP BY Marks DESC;",
+      "SELECT Name, Marks FROM Student ORDER BY Marks DESC;"
+    ],
+    "answer": "D",
+    "explanation": "ORDER BY Marks DESC arranges the rows from the highest to the lowest Marks value."
+  },
+  {
+    "id": 49,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "ORDER BY",
+    "question": "Can ORDER BY be used to sort by more than one column at the same time?",
+    "options": [
+      "Yes, multiple columns can be specified, separated by commas",
+      "No, only a single column is allowed",
+      "Only when using SELECT *",
+      "Only when used with GROUP BY"
+    ],
+    "answer": "A",
+    "explanation": "ORDER BY accepts a comma-separated list of columns, sorting first by the first column, then the next."
+  },
+  {
+    "id": 50,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "ORDER BY",
+    "question": "In the query \"SELECT Name FROM Student ORDER BY Name ASC;\", what does ASC represent?",
+    "options": [
+      "Automatic sort",
+      "Ascending order",
+      "An aggregate sort condition",
+      "A special column"
+    ],
+    "answer": "B",
+    "explanation": "ASC explicitly specifies that the results should be sorted in ascending order."
+  },
+  {
+    "id": 51,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "ORDER BY",
+    "question": "Among GROUP BY, HAVING and ORDER BY, which clause is generally written last in a SELECT query?",
+    "options": [
+      "All appear in the same position",
+      "HAVING",
+      "ORDER BY",
+      "GROUP BY"
+    ],
+    "answer": "C",
+    "explanation": "ORDER BY is applied last, after grouping and filtering of groups is complete, to sort the final output."
+  },
+  {
+    "id": 52,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "ORDER BY",
+    "question": "A teacher wants the marks list arranged from lowest to highest. Which query is correct?",
+    "options": [
+      "SELECT * FROM Marks ORDER BY Score DESC;",
+      "SELECT * FROM Marks GROUP BY Score ASC;",
+      "SELECT * FROM Marks ORDER BY Score HAVING ASC;",
+      "SELECT * FROM Marks ORDER BY Score;"
+    ],
+    "answer": "D",
+    "explanation": "Since ascending is the default order, ORDER BY Score alone arranges data from lowest to highest."
+  },
+  {
+    "id": 53,
+    "level": "Basic",
+    "type": "Command Identification",
+    "topic": "HAVING",
+    "question": "Which clause filters groups after aggregation, unlike WHERE which filters individual rows before grouping?",
+    "options": [
+      "HAVING",
+      "ORDER BY",
+      "WHERE",
+      "GROUP BY"
+    ],
+    "answer": "A",
+    "explanation": "HAVING is applied after GROUP BY to filter the aggregated groups based on a condition."
+  },
+  {
+    "id": 54,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "HAVING",
+    "question": "The HAVING clause must generally be used along with which clause?",
+    "options": [
+      "It can only be used alone",
+      "GROUP BY",
+      "SELECT DISTINCT",
+      "ORDER BY"
+    ],
+    "answer": "B",
+    "explanation": "HAVING filters the groups created by GROUP BY, so it is typically used together with it."
+  },
+  {
+    "id": 55,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "HAVING",
+    "question": "Query: \"SELECT Dept, COUNT(*) FROM Employee GROUP BY Dept HAVING COUNT(*) > 5;\" — what does this return?",
+    "options": [
+      "Departments with less than 5 employees",
+      "All departments regardless of employee count",
+      "Departments with more than 5 employees",
+      "Employees with more than 5 records"
+    ],
+    "answer": "C",
+    "explanation": "HAVING COUNT(*) > 5 keeps only those grouped departments whose employee count exceeds 5."
+  },
+  {
+    "id": 56,
+    "level": "Intermediate",
+    "type": "Valid/Invalid Statement",
+    "topic": "HAVING",
+    "question": "Which of the following correctly describes a valid use of HAVING?",
+    "options": [
+      "HAVING can filter individual rows before any grouping takes place",
+      "HAVING is used only to sort grouped results",
+      "HAVING replaces the SELECT clause",
+      "HAVING filters groups based on a condition applied to an aggregate function"
+    ],
+    "answer": "D",
+    "explanation": "HAVING is specifically designed to apply conditions on aggregated group values, unlike WHERE."
+  },
+  {
+    "id": 57,
+    "level": "Intermediate",
+    "type": "Error Identification",
+    "topic": "HAVING",
+    "question": "In the query \"SELECT Region, SUM(Amount) FROM Sales HAVING SUM(Amount) > 10000;\", what clause is missing?",
+    "options": [
+      "GROUP BY Region",
+      "ORDER BY clause",
+      "Nothing is missing",
+      "WHERE clause"
+    ],
+    "answer": "A",
+    "explanation": "HAVING needs groups to filter, so GROUP BY Region must be included before HAVING can work correctly."
+  },
+  {
+    "id": 58,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "HAVING",
+    "question": "Assertion (A): HAVING can filter records using aggregate functions, but WHERE cannot.\nReason (R): WHERE is applied before grouping/aggregation, so aggregate results are not yet available to it.",
+    "options": [
+      "A is true, R is false",
+      "Both A and R are true, and R correctly explains A",
+      "A is false, R is true",
+      "Both A and R are true, but R does not explain A"
+    ],
+    "answer": "B",
+    "explanation": "Since WHERE executes before aggregation, it cannot filter on aggregate results, which is exactly why HAVING is needed."
+  },
+  {
+    "id": 59,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "HAVING",
+    "question": "Query: \"SELECT Class, AVG(Marks) FROM Student GROUP BY Class HAVING AVG(Marks) >= 75;\" — which classes are shown in the result?",
+    "options": [
+      "All classes irrespective of marks",
+      "Only the class with the single highest marks",
+      "Classes with average marks of 75 or above",
+      "Classes with average marks less than 75"
+    ],
+    "answer": "C",
+    "explanation": "HAVING AVG(Marks) >= 75 retains only those class-groups whose average marks meet or exceed 75."
+  },
+  {
+    "id": 60,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "HAVING",
+    "question": "Which is the correct clause order in a SELECT query using GROUP BY, HAVING and ORDER BY together?",
+    "options": [
+      "SELECT ... FROM ... HAVING ... ORDER BY ... GROUP BY",
+      "SELECT ... FROM ... HAVING ... GROUP BY ... ORDER BY",
+      "SELECT ... FROM ... ORDER BY ... GROUP BY ... HAVING",
+      "SELECT ... FROM ... GROUP BY ... HAVING ... ORDER BY"
+    ],
+    "answer": "D",
+    "explanation": "SQL executes grouping first, then filters groups with HAVING, and finally sorts the result with ORDER BY."
+  },
+  {
+    "id": 61,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Table Query",
+    "question": "Based on the Student table above, what is the output of \"SELECT COUNT(*) FROM Student;\"?",
+    "options": [
+      "5",
+      "4",
+      "6",
+      "3"
+    ],
+    "answer": "A",
+    "explanation": "The table contains 5 rows in total, so COUNT(*) returns 5."
+  },
+  {
+    "id": 62,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Aggregate",
+    "question": "Based on the Student table above, what is the output of \"SELECT MAX(Marks) FROM Student;\"?",
+    "options": [
+      "78",
+      "92",
+      "88",
+      "65"
+    ],
+    "answer": "B",
+    "explanation": "The highest Marks value in the table is 92, scored by Riya."
+  },
+  {
+    "id": 63,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Aggregate",
+    "question": "Based on the Student table above, what is the output of \"SELECT MIN(Marks) FROM Student;\"?",
+    "options": [
+      "88",
+      "78",
+      "55",
+      "65"
+    ],
+    "answer": "C",
+    "explanation": "The lowest Marks value in the table is 55, scored by Karan."
+  },
+  {
+    "id": 64,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "GROUP BY",
+    "question": "Based on the Student table above, what is the output of \"SELECT Class, COUNT(*) FROM Student GROUP BY Class;\"?",
+    "options": [
+      "Class 9 → 3, Class 10 → 2",
+      "Class 9 → 1, Class 10 → 4",
+      "Class 9 → 2, Class 10 → 2",
+      "Class 9 → 2, Class 10 → 3"
+    ],
+    "answer": "D",
+    "explanation": "Class 9 has 2 students (Sohan, Meena) and Class 10 has 3 students (Aman, Riya, Karan)."
+  },
+  {
+    "id": 65,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Aggregate",
+    "question": "Based on the Student table above, what is the output of \"SELECT SUM(Marks) FROM Student WHERE Class=10;\"?",
+    "options": [
+      "225",
+      "378",
+      "245",
+      "153"
+    ],
+    "answer": "A",
+    "explanation": "For Class 10, Marks are 78+92+55, which sum to 225."
+  },
+  {
+    "id": 66,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "ORDER BY",
+    "question": "Based on the Student table above, if results are sorted using \"ORDER BY Marks;\" (ascending), which student's name appears first?",
+    "options": [
+      "Riya",
+      "Karan",
+      "Meena",
+      "Aman"
+    ],
+    "answer": "B",
+    "explanation": "Karan has the lowest Marks (55), so he appears first in ascending order."
+  },
+  {
+    "id": 67,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Aggregate",
+    "question": "Based on the Student table above, what is the output of \"SELECT AVG(Marks) FROM Student WHERE Class=9;\"?",
+    "options": [
+      "78",
+      "74",
+      "76.5",
+      "80"
+    ],
+    "answer": "C",
+    "explanation": "For Class 9, Marks are 65 and 88; their average is (65+88)/2 = 76.5."
+  },
+  {
+    "id": 68,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "HAVING",
+    "question": "Based on the Student table above, what is the output of \"SELECT Class, AVG(Marks) FROM Student GROUP BY Class HAVING AVG(Marks) > 75;\"?",
+    "options": [
+      "Both classes are shown",
+      "Only Class 10 is shown",
+      "Neither class is shown",
+      "Only Class 9 is shown"
+    ],
+    "answer": "D",
+    "explanation": "Class 9's average is 76.5 (>75), while Class 10's average is exactly 75, so only Class 9 satisfies HAVING."
+  },
+  {
+    "id": 69,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "UPDATE",
+    "question": "Based on the Student table above, if \"UPDATE Student SET Marks=100 WHERE RollNo=5;\" is executed, what will Karan's new Marks value be?",
+    "options": [
+      "100",
+      "NULL",
+      "55",
+      "0"
+    ],
+    "answer": "A",
+    "explanation": "The UPDATE statement sets Marks to 100 specifically for the row where RollNo equals 5 (Karan)."
+  },
+  {
+    "id": 70,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "DELETE",
+    "question": "Based on the Student table above, if \"DELETE FROM Student WHERE Class=9;\" is executed, how many rows remain?",
+    "options": [
+      "5",
+      "3",
+      "0",
+      "2"
+    ],
+    "answer": "B",
+    "explanation": "The two Class 9 rows (Sohan, Meena) are deleted, leaving the 3 Class 10 rows."
+  },
+  {
+    "id": 71,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "DDL vs DML",
+    "question": "Which statement correctly differentiates DROP TABLE from DELETE (without WHERE)?",
+    "options": [
+      "DROP TABLE removes only data; DELETE removes structure",
+      "Both remove only data and keep the structure",
+      "DROP TABLE removes structure and data; DELETE removes only data, and structure remains",
+      "There is no difference between them"
+    ],
+    "answer": "C",
+    "explanation": "DROP TABLE is a DDL command that erases the table entirely, whereas DELETE is a DML command that only clears data."
+  },
+  {
+    "id": 72,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "DDL",
+    "question": "Which command would completely remove a table so that even its structure no longer exists in the database?",
+    "options": [
+      "DELETE FROM TableName;",
+      "TRUNCATE TableName;",
+      "ALTER TABLE TableName DROP;",
+      "DROP TABLE TableName;"
+    ],
+    "answer": "D",
+    "explanation": "DROP TABLE eliminates both the data and the table's structure permanently."
+  },
+  {
+    "id": 73,
+    "level": "Advanced",
+    "type": "Match the Following",
+    "topic": "Mixed",
+    "question": "Match the Following:\nColumn A: 1. SUM()  2. GROUP BY  3. HAVING  4. ORDER BY\nColumn B: (i) Filters groups after aggregation (ii) Sorts the final result (iii) Adds values of a column (iv) Groups rows with the same values",
+    "options": [
+      "1-iii, 2-iv, 3-i, 4-ii",
+      "1-i, 2-ii, 3-iii, 4-iv",
+      "1-iv, 2-iii, 3-ii, 4-i",
+      "1-ii, 2-i, 3-iv, 4-iii"
+    ],
+    "answer": "A",
+    "explanation": "SUM() adds values, GROUP BY groups rows, HAVING filters groups, and ORDER BY sorts the final result."
+  },
+  {
+    "id": 74,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Mixed",
+    "question": "Assertion (A): ORDER BY can be used without GROUP BY, but HAVING generally requires GROUP BY.\nReason (R): ORDER BY only sorts the final output, whereas HAVING filters aggregated group results.",
+    "options": [
+      "Both A and R are true, but R does not explain A",
+      "Both A and R are true, and R correctly explains A",
+      "Both A and R are false",
+      "A is true, R is false"
+    ],
+    "answer": "B",
+    "explanation": "Since HAVING depends on groups formed by GROUP BY, while ORDER BY just sorts output, the reason correctly justifies the assertion."
+  },
+  {
+    "id": 75,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Clause Order",
+    "question": "In a query using GROUP BY, HAVING and ORDER BY together, which is the correct clause order?",
+    "options": [
+      "SELECT, FROM, HAVING, GROUP BY, ORDER BY",
+      "SELECT, FROM, ORDER BY, GROUP BY, HAVING",
+      "SELECT, FROM, GROUP BY, HAVING, ORDER BY",
+      "SELECT, FROM, GROUP BY, ORDER BY, HAVING"
+    ],
+    "answer": "C",
+    "explanation": "SQL processes grouping, then filters groups with HAVING, and finally sorts the output using ORDER BY."
+  },
+  {
+    "id": 76,
+    "level": "Intermediate",
+    "type": "Error Identification",
+    "topic": "GROUP BY",
+    "question": "Why is \"SELECT Name, Marks FROM Student GROUP BY Class;\" considered problematic?",
+    "options": [
+      "SELECT cannot use commas between column names",
+      "The Class column doesn't exist",
+      "GROUP BY cannot be used with SELECT",
+      "Name and Marks are not aggregated and are not part of the GROUP BY column, causing inconsistent results"
+    ],
+    "answer": "D",
+    "explanation": "When GROUP BY is used, non-grouped, non-aggregated columns like Name and Marks produce ambiguous or inconsistent output."
+  },
+  {
+    "id": 77,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Aggregate",
+    "question": "If table Employee has 0 rows, what will \"SELECT COUNT(*) FROM Employee;\" return?",
+    "options": [
+      "0",
+      "Blank/no output",
+      "Error",
+      "NULL"
+    ],
+    "answer": "A",
+    "explanation": "COUNT(*) always returns a numeric value, and it correctly returns 0 when there are no rows to count."
+  },
+  {
+    "id": 78,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Aggregate",
+    "question": "If table Employee has 0 rows, what will \"SELECT SUM(Salary) FROM Employee;\" return?",
+    "options": [
+      "Error",
+      "NULL",
+      "Blank table",
+      "0"
+    ],
+    "answer": "B",
+    "explanation": "Unlike COUNT(*), SUM() returns NULL when there are no rows to sum, since there are no values to add."
+  },
+  {
+    "id": 79,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "SELECT",
+    "question": "Which of the following commands does not strictly require a WHERE clause for normal use, but can still accept one to restrict its result?",
+    "options": [
+      "CREATE DATABASE",
+      "DROP TABLE",
+      "SELECT",
+      "CREATE TABLE"
+    ],
+    "answer": "C",
+    "explanation": "SELECT can be used with or without WHERE, while commands like CREATE and DROP don't use WHERE at all."
+  },
+  {
+    "id": 80,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Mixed",
+    "question": "Assertion (A): CREATE TABLE and ALTER TABLE both fall under DDL, while INSERT and UPDATE fall under DML.\nReason (R): DDL commands define or modify the structure of database objects, while DML commands manipulate the data stored within them.",
+    "options": [
+      "A is false, R is true",
+      "Both A and R are true, but R does not explain A",
+      "A is true, R is false",
+      "Both A and R are true, and R correctly explains A"
+    ],
+    "answer": "D",
+    "explanation": "This is a correct and complete explanation of how DDL and DML commands are categorized."
+  },
+  {
+    "id": 81,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "DDL",
+    "question": "Which command must be used first, before data can be inserted into a newly designed table?",
+    "options": [
+      "CREATE TABLE",
+      "UPDATE",
+      "INSERT",
+      "SELECT"
+    ],
+    "answer": "A",
+    "explanation": "A table's structure must be created first using CREATE TABLE before any data can be inserted into it."
+  },
+  {
+    "id": 82,
+    "level": "Basic",
+    "type": "Command Identification",
+    "topic": "Mixed",
+    "question": "Which of the following pairs correctly matches a command with its category?",
+    "options": [
+      "CREATE TABLE - DML",
+      "DELETE - DML",
+      "SELECT - DDL",
+      "DROP TABLE - DML"
+    ],
+    "answer": "B",
+    "explanation": "DELETE manipulates data and belongs to DML, whereas CREATE TABLE and DROP TABLE belong to DDL."
+  },
+  {
+    "id": 83,
+    "level": "Intermediate",
+    "type": "Query-Based",
+    "topic": "Aggregate",
+    "question": "Query: \"SELECT COUNT(*) FROM Book WHERE Price > 500;\" — what does this determine?",
+    "options": [
+      "The maximum price among books",
+      "The average price of books",
+      "The number of books priced above 500",
+      "The total price of all books"
+    ],
+    "answer": "C",
+    "explanation": "COUNT(*) with the WHERE condition counts only the rows where the Price exceeds 500."
+  },
+  {
+    "id": 84,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "Mixed",
+    "question": "A school database needs a report of subject-wise average marks, but only for subjects where more than 20 students appeared. Which clauses should be combined?",
+    "options": [
+      "ORDER BY and HAVING only",
+      "WHERE and ORDER BY only",
+      "DROP and ALTER",
+      "GROUP BY and HAVING"
+    ],
+    "answer": "D",
+    "explanation": "GROUP BY groups records by subject, and HAVING filters those groups based on the aggregated student count."
+  },
+  {
+    "id": 85,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "DDL",
+    "question": "Which SQL command permanently removes the \"Marks\" table and all its data from the database?",
+    "options": [
+      "DROP TABLE Marks;",
+      "TRUNCATE Marks;",
+      "ALTER TABLE Marks DROP;",
+      "DELETE Marks;"
+    ],
+    "answer": "A",
+    "explanation": "DROP TABLE Marks; deletes the table's structure along with all the data it contains."
+  },
+  {
+    "id": 86,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "SELECT",
+    "question": "Which of the following is TRUE about the SELECT statement?",
+    "options": [
+      "It can only be used with GROUP BY",
+      "It retrieves data without changing it",
+      "It always deletes rows after retrieval",
+      "It modifies data in a table"
+    ],
+    "answer": "B",
+    "explanation": "SELECT is a read-only DML command that fetches data without altering the table's contents."
+  },
+  {
+    "id": 87,
+    "level": "Intermediate",
+    "type": "Query-Based",
+    "topic": "Aggregate",
+    "question": "Which function, combined with WHERE, would best answer \"How many students scored above 90 marks?\"",
+    "options": [
+      "MAX()",
+      "SUM()",
+      "COUNT()",
+      "AVG()"
+    ],
+    "answer": "C",
+    "explanation": "COUNT() combined with a WHERE condition counts the number of rows satisfying that condition."
+  },
+  {
+    "id": 88,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "DDL",
+    "question": "Which of the following statements about ALTER TABLE is correct?",
+    "options": [
+      "It only renames a database",
+      "It permanently deletes a table",
+      "It creates a brand-new table",
+      "It is used to add, modify, or drop columns in an existing table"
+    ],
+    "answer": "D",
+    "explanation": "ALTER TABLE changes the structure of an existing table without deleting the table itself."
+  },
+  {
+    "id": 89,
+    "level": "Intermediate",
+    "type": "Query-Based",
+    "topic": "Mixed",
+    "question": "Query: \"SELECT Dept, MAX(Salary) FROM Employee GROUP BY Dept ORDER BY MAX(Salary) DESC;\" — what does this show?",
+    "options": [
+      "Each department's highest salary, sorted from highest to lowest",
+      "Each employee's salary sorted alphabetically",
+      "Departments listed randomly with average salary",
+      "Only the single highest salary in the entire company"
+    ],
+    "answer": "A",
+    "explanation": "GROUP BY finds the highest salary per department, and ORDER BY DESC arranges these results from highest to lowest."
+  },
+  {
+    "id": 90,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Clause Order",
+    "question": "Which is the correct logical order for grouping data, filtering groups, and sorting the final output in a query?",
+    "options": [
+      "HAVING → GROUP BY → ORDER BY",
+      "GROUP BY → HAVING → ORDER BY",
+      "ORDER BY → GROUP BY → HAVING",
+      "ORDER BY → HAVING → GROUP BY"
+    ],
+    "answer": "B",
+    "explanation": "Data is first grouped, then groups are filtered with HAVING, and finally the result is sorted with ORDER BY."
+  },
+  {
+    "id": 91,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "UPDATE",
+    "question": "Which command should be used to correct a wrongly entered Marks value for one specific student, without affecting other records?",
+    "options": [
+      "DELETE the record then INSERT the whole table again",
+      "DROP and CREATE the table again",
+      "UPDATE with a WHERE clause for that student",
+      "ALTER TABLE"
+    ],
+    "answer": "C",
+    "explanation": "UPDATE with a WHERE clause modifies only the targeted record, leaving all other rows unchanged."
+  },
+  {
+    "id": 92,
+    "level": "Advanced",
+    "type": "Assertion-Reason",
+    "topic": "Aggregate",
+    "question": "Assertion (A): COUNT(*), SUM(), AVG(), MIN(), MAX() are all classified as aggregate functions in SQL.\nReason (R): Aggregate functions perform a calculation on a set of values and return a single summary value.",
+    "options": [
+      "A is false, R is true",
+      "A is true, R is false",
+      "Both A and R are true, but R does not explain A",
+      "Both A and R are true, and R correctly explains A"
+    ],
+    "answer": "D",
+    "explanation": "All five functions summarize multiple values into a single result, which is the defining property of aggregate functions."
+  },
+  {
+    "id": 93,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "DDL",
+    "question": "Which statement correctly differentiates DROP DATABASE from DROP TABLE?",
+    "options": [
+      "DROP DATABASE removes the entire database (all tables); DROP TABLE removes only one specified table",
+      "DROP DATABASE keeps the data but removes structure; DROP TABLE removes everything permanently",
+      "Both commands do exactly the same thing",
+      "DROP DATABASE removes only one table; DROP TABLE removes the entire database"
+    ],
+    "answer": "A",
+    "explanation": "DROP DATABASE deletes the whole database along with every table in it, while DROP TABLE deletes just the one table specified."
+  },
+  {
+    "id": 94,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "INSERT",
+    "question": "Which statement correctly inserts a value into only the Name and Marks columns of table Student(RollNo, Name, Marks), leaving RollNo to be filled later?",
+    "options": [
+      "INSERT INTO Student VALUES ('Anu', 90);",
+      "INSERT INTO Student (Name, Marks) VALUES ('Anu', 90);",
+      "INSERT Student (Name, Marks) VALUES ('Anu', 90);",
+      "INSERT INTO Student SET (Name, Marks) = ('Anu', 90);"
+    ],
+    "answer": "B",
+    "explanation": "Specifying the column list in parentheses after the table name lets you insert values for only selected columns."
+  },
+  {
+    "id": 95,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "UPDATE",
+    "question": "Which statement correctly updates both the Name and Marks of the student with RollNo=3 in one statement?",
+    "options": [
+      "UPDATE Student SET Name='Rohit' AND Marks=85 WHERE RollNo=3;",
+      "UPDATE Student SET Name='Rohit', SET Marks=85 WHERE RollNo=3;",
+      "UPDATE Student SET Name='Rohit', Marks=85 WHERE RollNo=3;",
+      "UPDATE Student SET Name='Rohit' SET Marks=85 WHERE RollNo=3;"
+    ],
+    "answer": "C",
+    "explanation": "Multiple columns can be updated in a single UPDATE statement by separating the column=value pairs with commas after SET."
+  },
+  {
+    "id": 96,
+    "level": "Basic",
+    "type": "Command Purpose",
+    "topic": "Aggregate",
+    "question": "If \"SELECT AVG(Marks) FROM Student;\" is run without a GROUP BY clause, what does it return?",
+    "options": [
+      "A separate average for each row",
+      "An error, since AVG() requires GROUP BY",
+      "NULL, because GROUP BY is mandatory",
+      "A single average value calculated over all rows in the table"
+    ],
+    "answer": "D",
+    "explanation": "Without GROUP BY, an aggregate function treats the entire table as one group and returns a single summary value."
+  },
+  {
+    "id": 97,
+    "level": "Intermediate",
+    "type": "Query-Based",
+    "topic": "GROUP BY",
+    "question": "In table Sales(Region, Product, Amount), which query gives total Amount for each Region-Product combination?",
+    "options": [
+      "SELECT Region, Product, SUM(Amount) FROM Sales GROUP BY Region, Product;",
+      "SELECT Region, Product, SUM(Amount) FROM Sales GROUP BY Region;",
+      "SELECT SUM(Amount) FROM Sales GROUP BY Region AND Product;",
+      "SELECT Region, Product, SUM(Amount) FROM Sales GROUP BY Amount;"
+    ],
+    "answer": "A",
+    "explanation": "Listing both columns after GROUP BY, separated by a comma, groups rows by every unique Region-Product combination."
+  },
+  {
+    "id": 98,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "ORDER BY",
+    "question": "In the query \"SELECT Name, Marks FROM Student ORDER BY 2 DESC;\", what does the number 2 refer to?",
+    "options": [
+      "The second table in the FROM clause",
+      "The second column in the SELECT list, i.e. Marks",
+      "The second row of the table",
+      "A fixed numeric sort value"
+    ],
+    "answer": "B",
+    "explanation": "In ORDER BY, a number refers to the position of the column as listed in the SELECT clause, so 2 means Marks."
+  },
+  {
+    "id": 99,
+    "level": "Intermediate",
+    "type": "Query-Based",
+    "topic": "HAVING",
+    "question": "Which query correctly shows departments with more than 3 employees AND an average salary above 40000?",
+    "options": [
+      "SELECT Dept, COUNT(*), AVG(Salary) FROM Employee GROUP BY Dept HAVING COUNT(*) > 3 OR AVG(Salary) > 40000 ONLY;",
+      "SELECT Dept, COUNT(*), AVG(Salary) FROM Employee HAVING COUNT(*) > 3 AND AVG(Salary) > 40000;",
+      "SELECT Dept, COUNT(*), AVG(Salary) FROM Employee GROUP BY Dept HAVING COUNT(*) > 3 AND AVG(Salary) > 40000;",
+      "SELECT Dept, COUNT(*), AVG(Salary) FROM Employee GROUP BY Dept WHERE COUNT(*) > 3 AND AVG(Salary) > 40000;"
+    ],
+    "answer": "C",
+    "explanation": "Multiple conditions can be combined in HAVING using AND, and it must follow a GROUP BY clause to filter aggregated groups."
+  },
+  {
+    "id": 100,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "ORDER BY",
+    "question": "Based on the Student table above, what is the output of \"SELECT Name FROM Student ORDER BY Marks DESC;\" for the very first name listed?",
+    "options": [
+      "Aman",
+      "Sohan",
+      "Meena",
+      "Riya"
+    ],
+    "answer": "D",
+    "explanation": "Riya has the highest Marks (92), so she appears first when sorted in descending order."
+  },
+  {
+    "id": 101,
+    "level": "Intermediate",
+    "type": "Output-Based",
+    "topic": "Table Query",
+    "question": "Based on the Student table above, what is the output of \"SELECT COUNT(*) FROM Student WHERE Marks > 70;\"?",
+    "options": [
+      "3",
+      "5",
+      "2",
+      "4"
+    ],
+    "answer": "A",
+    "explanation": "Three students — Aman(78), Riya(92), Meena(88) — have Marks greater than 70."
+  },
+  {
+    "id": 102,
+    "level": "Intermediate",
+    "type": "Error Identification",
+    "topic": "Tricky",
+    "question": "Why is the statement \"SELECT Dept FROM Employee WHERE COUNT(*) > 5;\" invalid?",
+    "options": [
+      "Dept is not a valid column name",
+      "Aggregate functions like COUNT() cannot be used directly in a WHERE clause",
+      "COUNT() can only be used with INSERT",
+      "WHERE cannot be used with SELECT"
+    ],
+    "answer": "B",
+    "explanation": "WHERE filters rows before aggregation happens, so aggregate functions must be used in HAVING instead, after GROUP BY."
+  },
+  {
+    "id": 103,
+    "level": "Intermediate",
+    "type": "Scenario-Based",
+    "topic": "Mixed",
+    "question": "After executing \"INSERT INTO Student (RollNo, Name, Class, Marks) VALUES (6,'Priya',9,95);\" on the Student table, what will \"SELECT COUNT(*) FROM Student;\" return?",
+    "options": [
+      "5",
+      "7",
+      "6",
+      "4"
+    ],
+    "answer": "C",
+    "explanation": "Adding one new row through INSERT increases the total row count from 5 to 6."
+  },
+  {
+    "id": 104,
+    "level": "Intermediate",
+    "type": "Query-Based",
+    "topic": "Mixed",
+    "question": "Which query lists only classes with more than 2 students, sorted by class in ascending order, using the Student table?",
+    "options": [
+      "SELECT Class, COUNT(*) FROM Student WHERE COUNT(*) > 2 GROUP BY Class ORDER BY Class;",
+      "SELECT Class, COUNT(*) FROM Student GROUP BY Class ORDER BY Class HAVING COUNT(*) > 2;",
+      "SELECT Class, COUNT(*) FROM Student HAVING COUNT(*) > 2 GROUP BY Class ORDER BY Class;",
+      "SELECT Class, COUNT(*) FROM Student GROUP BY Class HAVING COUNT(*) > 2 ORDER BY Class;"
+    ],
+    "answer": "D",
+    "explanation": "The correct order is GROUP BY first, then HAVING to filter groups, and finally ORDER BY to sort the output."
+  },
+  {
+    "id": 105,
+    "level": "Basic",
+    "type": "Syntax",
+    "topic": "CREATE TABLE",
+    "question": "Which statement correctly creates a table named Student with RollNo as an integer and Name as a 30-character text field?",
+    "options": [
+      "CREATE TABLE Student (RollNo INT, Name VARCHAR(30));",
+      "CREATE TABLE Student (RollNo INT Name VARCHAR(30));",
+      "CREATE Student TABLE (RollNo INT, Name VARCHAR(30));",
+      "TABLE CREATE Student (RollNo INT, Name VARCHAR(30));"
+    ],
+    "answer": "A",
+    "explanation": "Column definitions are placed in brackets after the table name, separated by commas, each with its own datatype."
+  },
+  {
+    "id": 106,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "Aggregate",
+    "question": "If the Marks column has one NULL value among 5 rows, what is the difference between COUNT(*) and COUNT(Marks)?",
+    "options": [
+      "COUNT(*) returns 4, while COUNT(Marks) returns 5",
+      "COUNT(*) returns 5, while COUNT(Marks) returns 4",
+      "Both return 4",
+      "Both return 5"
+    ],
+    "answer": "B",
+    "explanation": "COUNT(*) counts every row including NULLs, while COUNT(column) counts only the rows where that column is not NULL."
+  },
+  {
+    "id": 107,
+    "level": "Advanced",
+    "type": "Tricky",
+    "topic": "GROUP BY",
+    "question": "What is the output of \"SELECT Class FROM Student GROUP BY Class;\" on the Student table, even though no aggregate function is used?",
+    "options": [
+      "It causes a syntax error since no aggregate function is used",
+      "It returns only the first row's Class value",
+      "It lists each distinct Class value once (9 and 10)",
+      "It lists all 5 rows unchanged"
+    ],
+    "answer": "C",
+    "explanation": "GROUP BY can be used alone to collapse rows into unique groups, effectively listing each distinct value once, even without an aggregate function."
+  },
+  {
+    "id": 108,
+    "level": "Intermediate",
+    "type": "Query-Based",
+    "topic": "Mixed",
+    "question": "Which query lists names of Class 10 students, sorted by Marks in descending order, using the Student table?",
+    "options": [
+      "SELECT Name FROM Student GROUP BY Class=10 ORDER BY Marks DESC;",
+      "SELECT Name FROM Student HAVING Class=10 ORDER BY Marks DESC;",
+      "SELECT Name FROM Student ORDER BY Marks DESC WHERE Class=10;",
+      "SELECT Name FROM Student WHERE Class=10 ORDER BY Marks DESC;"
+    ],
+    "answer": "D",
+    "explanation": "WHERE must come before ORDER BY in a SELECT statement; it filters rows first, then ORDER BY sorts the filtered result."
+  }
+];
+
+/* STATE */
+const S = {
+  filtered:[],idx:0,answers:{},bookmarks:new Set(),
+  dark:false,jumpOpen:false,expVisible:false,
+  startTime:Date.now(),timerInterval:null,
+  phase:'quiz',reviewFilter:'all',
+  showBookmarkOnly:false,viewAll:false
+};
+
+const OPT = ['A','B','C','D'];
+const $ = id => document.getElementById(id);
+
+/* INIT */
+function init(){
+  populateFilters();
+  applyFilters();
+  buildJumpGrid();
+  startTimer();
+  render();
+  updateStats();
+  const d = localStorage.getItem('mcq-dark');
+  toggleDark(d===null?true:d==='1');
+}
+
+function populateFilters(){
+  ['topic','type'].forEach(k=>{
+    const vals=[...new Set(QUESTIONS.map(q=>q[k]))].sort();
+    const el=$('filter-'+k);
+    vals.forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;el.appendChild(o);});
+  });
+}
+
+function applyFilters(){
+  const lv=$('filter-level').value, tp=$('filter-topic').value, ty=$('filter-type').value;
+  S.filtered=QUESTIONS.filter(q=>
+    (lv==='all'||q.level===lv)&&
+    (tp==='all'||q.topic===tp)&&
+    (ty==='all'||q.type===ty)&&
+    (!S.showBookmarkOnly||S.bookmarks.has(q.id))
+  );
+  S.idx=0;
+  buildJumpGrid();
+  S.viewAll?renderAllQuestions():render();
+  updateStats();
+}
+
+/* RENDER QUESTION */
+function render(){
+  const card=$('question-card'), noRes=document.querySelector('.no-results');
+  if(!S.filtered.length){
+    card.style.display='none';
+    if(!noRes){
+      const d=document.createElement('div');
+      d.className='no-results';
+      d.textContent=QUESTIONS.length===0?'No questions loaded. Add your questions to the QUESTIONS array.':'No questions match your filters.';
+      card.parentNode.insertBefore(d,card.nextSibling);
+    }
+    $('q-counter').textContent='0 / 0';
+    $('prog-label').textContent='No questions';
+    $('progress-fill').style.width='0%';
+    $('prog-pct').textContent='0%';
+    return;
+  }
+  if(noRes)noRes.remove();
+  card.style.display='';
+  const q=S.filtered[S.idx], ans=S.answers[q.id], done=ans&&ans.selected;
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  $('card-header').innerHTML=`
+    <span class="q-number">Q${q.id}</span>
+    <span class="badge ${lvC}">${q.level}</span>
+    <span class="badge badge-type">${q.type}</span>
+    <span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${S.bookmarks.has(q.id)?' active':''}" onclick="toggleBookmark(${q.id})">
+      <svg viewBox="0 0 24 24" fill="${S.bookmarks.has(q.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  $('q-text').innerHTML=q.question.replace(/\n/g,'<br>');
+
+  const ol=$('options-list');
+  ol.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const lbl=OPT[i];
+    let cls='option-btn', icon='';
+    if(done){
+      if(lbl===q.answer){cls+=' correct';icon='<span class="option-icon">✅</span>';}
+      else if(lbl===ans.selected){cls+=' wrong';icon='<span class="option-icon">❌</span>';}
+    }
+    const btn=document.createElement('button');
+    btn.className=cls;btn.disabled=!!done;
+    btn.innerHTML=`<span class="option-label">${lbl}</span><span style="flex:1">${opt}</span>${icon}`;
+    btn.addEventListener('click',()=>selectAnswer(q.id,lbl,q.answer));
+    ol.appendChild(btn);
+  });
+
+  const expBox=$('explanation-box'), expBtn=$('show-exp-btn');
+  expBox.classList.add('hidden');expBtn.classList.add('hidden');
+  S.expVisible=false;
+  setExpBtnText(false);
+  if(done){S.expVisible=true;showExplanation(q);expBtn.classList.remove('hidden');}
+
+  const total=S.filtered.length, cur=S.idx+1;
+  $('q-counter').textContent=`${cur} / ${total}`;
+  $('prog-label').textContent=`Question ${cur} of ${total}`;
+  const pct=Math.round(cur/total*100);
+  $('progress-fill').style.width=pct+'%';
+  $('prog-pct').textContent=pct+'%';
+  $('s-total').textContent=total;
+  document.querySelectorAll('.jump-btn').forEach((b,bi)=>b.classList.toggle('current',bi===S.idx));
+}
+
+function setExpBtnText(visible){
+  const ico='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  $('show-exp-btn').innerHTML=ico+(visible?' Hide Explanation':' Show Explanation');
+}
+
+function selectAnswer(qid,selected,correct){
+  if(S.answers[qid]?.selected)return;
+  const ok=selected===correct;
+  S.answers[qid]={selected,correct:ok};
+  const jb=document.querySelector(`.jump-btn[data-qi="${qid}"]`);
+  if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+  updateStats();
+  if(ok){
+    // Correct: briefly flash green then auto-advance
+    render();
+    setTimeout(()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz(),700);
+  }else{
+    // Wrong: stay on question and show explanation
+    S.expVisible=true;render();
+  }
+}
+
+function showExplanation(q){
+  $('explanation-box').className='explanation-box';
+  $('explanation-box').innerHTML=`
+    <div class="exp-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Explanation</div>
+    <div class="exp-body"><div class="exp-answer">Correct Answer: ${q.answer}</div>${q.explanation}</div>`;
+  setExpBtnText(true);
+}
+function hideExplanation(){
+  $('explanation-box').className='explanation-box hidden';
+  setExpBtnText(false);
+}
+
+function goTo(idx){
+  if(idx<0||idx>=S.filtered.length)return;
+  S.idx=idx;S.expVisible=false;render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildJumpGrid(){
+  const grid=$('jump-grid');grid.innerHTML='';
+  S.filtered.forEach((q,i)=>{
+    const btn=document.createElement('button');
+    btn.className='jump-btn';btn.dataset.qi=q.id;btn.textContent=q.id;
+    if(i===S.idx)btn.classList.add('current');
+    const a=S.answers[q.id];
+    if(a?.selected)btn.classList.add(a.correct?'answered-c':'answered-w');
+    if(S.bookmarks.has(q.id))btn.classList.add('bookmarked');
+    btn.addEventListener('click',()=>{goTo(i);S.jumpOpen=false;$('jump-bar').classList.remove('open');});
+    grid.appendChild(btn);
+  });
+}
+
+function toggleBookmark(qid){
+  S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+  render();buildJumpGrid();
+}
+
+function updateStats(){
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  $('s-attempted').textContent=ans.length;
+  $('s-correct').textContent=ok;
+  $('s-wrong').textContent=ans.length-ok;
+  $('s-acc').textContent=ans.length?Math.round(ok/ans.length*100)+'%':'—';
+}
+
+function finishQuiz(){
+  stopTimer();
+  const total=S.filtered.length;
+  const ans=Object.values(S.answers).filter(a=>a?.selected);
+  const ok=ans.filter(a=>a.correct).length;
+  const pct=ans.length?Math.round(ok/total*100):0;
+  const tier=pct>=90?4:pct>=75?3:pct>=60?2:pct>=40?1:0;
+  const emojis=['😔','😐','🙂','😊','🎉'],msgs=['Needs Improvement','Keep Practicing!','Good Work!','Very Good!','Excellent!'];
+  $('res-emoji').textContent=emojis[tier];$('res-title').textContent=msgs[tier];
+  $('res-msg').textContent=`You scored ${ok} out of ${total}`;
+  $('res-score').textContent=`${ok}/${total}`;$('res-correct').textContent=ok;
+  $('res-wrong').textContent=ans.length-ok;$('res-skipped').textContent=total-ans.length;
+  $('res-pct').textContent=pct+'%';$('res-time').textContent=$('timer-display').textContent;
+  showScreen('result-screen');
+}
+
+function renderReview(){
+  const list=$('review-list');list.innerHTML='';
+  const rf=S.reviewFilter;
+  S.filtered.forEach(q=>{
+    const a=S.answers[q.id],sel=a?.selected,ok=a?.correct,skip=!sel,bm=S.bookmarks.has(q.id);
+    if(rf==='correct'&&(!a||!ok))return;
+    if(rf==='wrong'&&(!a||ok||skip))return;
+    if(rf==='skipped'&&!skip)return;
+    if(rf==='bookmarked'&&!bm)return;
+    const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+    const card=document.createElement('div');card.className='review-card';
+    const optsH=q.options.map((opt,i)=>{
+      const l=OPT[i];let c='review-opt';
+      if(l===q.answer)c+=' correct-ans';
+      else if(l===sel&&sel!==q.answer)c+=' user-wrong';
+      return`<div class="${c}"><b>${l}.</b> ${opt}</div>`;
+    }).join('');
+    card.innerHTML=`
+      <div class="review-header">
+        <span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span>
+        <span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+        <span class="review-status">${skip?'—':ok?'✅':'❌'}</span>
+      </div>
+      <div class="review-body">
+        <div class="review-q">${q.question.replace(/\n/g,'<br>')}</div>
+        <div class="review-opts">${optsH}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">${sel?`Your answer: <b>${sel}</b> | Correct: <b>${q.answer}</b>`:`Not attempted — Correct: <b>${q.answer}</b>`}</div>
+        <div class="review-exp">${q.explanation}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+  if(!list.hasChildNodes())list.innerHTML='<div class="no-results">No questions in this category.</div>';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startTimer(){
+  S.startTime=Date.now();
+  S.timerInterval=setInterval(()=>{
+    const e=Math.floor((Date.now()-S.startTime)/1000);
+    const el=$('timer-display');
+    el.textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+    el.classList.toggle('warn',e>3600);
+  },1000);
+}
+function stopTimer(){clearInterval(S.timerInterval);}
+
+function toggleDark(force){
+  S.dark=force!==undefined?force:!S.dark;
+  document.body.toggleAttribute('data-dark',S.dark);
+  localStorage.setItem('mcq-dark',S.dark?'1':'0');
+  const p=document.querySelector('#dark-toggle svg path');
+  p.setAttribute('d',S.dark?'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7z':'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+}
+
+function restartQuiz(){
+  S.answers={};S.idx=0;S.expVisible=false;S.viewAll=false;
+  $('quiz-body').style.display='';$('all-panel').style.display='none';
+  resetViewAllBtn();
+  stopTimer();startTimer();applyFilters();buildJumpGrid();showScreen('quiz-screen');updateStats();
+}
+
+function resetViewAllBtn(){
+  const btn=$('view-all-btn');
+  btn.style.cssText='';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> View All';
+}
+
+/* ALL QUESTIONS VIEW */
+function renderAllQuestions(){
+  const list=$('all-list');list.innerHTML='';
+  const qs=S.filtered;
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--border)';
+  hdr.innerHTML=`<div style="font-family:var(--fd);font-size:18px;color:var(--text)">All Questions <span style="background:var(--acl);color:var(--ac);border-radius:99px;font-size:12px;font-weight:700;padding:3px 12px">${qs.length} Question${qs.length!==1?'s':''}</span></div>`;
+  list.appendChild(hdr);
+  if(!qs.length){const e=document.createElement('div');e.className='all-no-results';e.textContent='No questions match the current filters.';list.appendChild(e);return;}
+  qs.forEach(q=>list.appendChild(buildAllCard(q)));
+}
+
+function buildAllCard(q){
+  const ans=S.answers[q.id],done=ans?.selected;
+  const lvC={Basic:'badge-basic',Intermediate:'badge-intermediate',Advanced:'badge-advanced'}[q.level]||'';
+  const bm=S.bookmarks.has(q.id);
+
+  const card=document.createElement('div');
+  card.className='all-q-card';card.id='allcard-'+q.id;
+
+  const hdr=document.createElement('div');hdr.className='all-q-header';
+  hdr.innerHTML=`<span class="q-number">Q${q.id}</span><span class="badge ${lvC}">${q.level}</span><span class="badge badge-type">${q.type}</span><span class="badge badge-topic">${q.topic}</span>
+    <button class="bookmark-btn${bm?' active':''}" data-qid="${q.id}" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="${bm?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>`;
+  hdr.querySelector('.bookmark-btn').addEventListener('click',function(){
+    const qid=parseInt(this.dataset.qid);
+    S.bookmarks.has(qid)?S.bookmarks.delete(qid):S.bookmarks.add(qid);
+    if(S.showBookmarkOnly){renderAllQuestions();return;}
+    const a=S.bookmarks.has(qid);
+    this.classList.toggle('active',a);
+    this.querySelector('svg').setAttribute('fill',a?'currentColor':'none');
+  });
+
+  const body=document.createElement('div');body.className='all-q-body';
+  const qt=document.createElement('div');qt.className='all-q-text';qt.innerHTML=q.question.replace(/\n/g,'<br>');
+  body.appendChild(qt);
+
+  const ol=document.createElement('div');ol.className='all-opts';
+  OPT.forEach((lbl,i)=>{
+    const btn=document.createElement('button');btn.className='all-opt';
+    let icon='';
+    if(done){
+      btn.disabled=true;
+      if(lbl===q.answer){btn.classList.add('ao-correct');icon='<span style="margin-left:auto">✅</span>';}
+      else if(lbl===ans.selected){btn.classList.add('ao-wrong');icon='<span style="margin-left:auto">❌</span>';}
+    }
+    btn.innerHTML=`<span class="all-opt-lbl">${lbl}</span><span style="flex:1">${q.options[i]}</span>${icon}`;
+    if(!done){
+      btn.addEventListener('click',()=>{
+        const ok=lbl===q.answer;
+        S.answers[q.id]={selected:lbl,correct:ok};
+        updateStats();
+        const jb=document.querySelector(`.jump-btn[data-qi="${q.id}"]`);
+        if(jb){jb.classList.remove('answered-c','answered-w');jb.classList.add(ok?'answered-c':'answered-w');}
+        card.replaceWith(buildAllCard(q));
+      });
+    }
+    ol.appendChild(btn);
+  });
+  body.appendChild(ol);
+
+  const exp=document.createElement('div');
+  exp.className='all-exp'+(done?' visible':'');
+  exp.innerHTML=`<div class="all-exp-ans">✓ Correct Answer: ${q.answer}</div>${q.explanation}`;
+  body.appendChild(exp);
+
+  card.appendChild(hdr);card.appendChild(body);
+  return card;
+}
+
+function toggleViewAll(){
+  const btn=$('view-all-btn');
+  if(S.viewAll){
+    $('quiz-body').style.display='none';$('all-panel').style.display='block';
+    btn.style.cssText='background:var(--amber);border-color:var(--amber);color:#fff';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><polyline points="15 18 9 12 15 6"/></svg> Quiz Mode';
+    renderAllQuestions();
+    // Scroll to the card matching the current quiz question
+    const currentQ=S.filtered[S.idx];
+    if(currentQ){
+      setTimeout(()=>{
+        const card=document.getElementById('allcard-'+currentQ.id);
+        if(card){
+          const navH=$('top-bar').offsetHeight;
+          const top=card.getBoundingClientRect().top+window.scrollY-navH-12;
+          window.scrollTo({top,behavior:'smooth'});
+        }
+      },150);
+    }
+  }else{
+    $('quiz-body').style.display='';$('all-panel').style.display='none';
+    resetViewAllBtn();render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+/* EVENT LISTENERS */
+$('prev-btn').addEventListener('click',()=>goTo(S.idx-1));
+$('next-btn').addEventListener('click',()=>S.idx<S.filtered.length-1?goTo(S.idx+1):finishQuiz());
+$('jump-toggle').addEventListener('click',()=>{S.jumpOpen=!S.jumpOpen;$('jump-bar').classList.toggle('open',S.jumpOpen);});
+$('dark-toggle').addEventListener('click',()=>toggleDark());
+$('finish-btn').addEventListener('click',finishQuiz);
+$('restart-btn').addEventListener('click',restartQuiz);
+$('restart-btn2').addEventListener('click',restartQuiz);
+$('review-btn').addEventListener('click',()=>{
+  S.reviewFilter='all';
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.toggle('active',b.dataset.rf==='all'));
+  renderReview();showScreen('review-screen');
+});
+$('back-to-result').addEventListener('click',()=>showScreen('result-screen'));
+$('show-exp-btn').addEventListener('click',()=>{
+  const q=S.filtered[S.idx];if(!q)return;
+  S.expVisible=!S.expVisible;
+  S.expVisible?showExplanation(q):hideExplanation();
+});
+$('bookmark-filter-btn').addEventListener('click',function(){
+  S.showBookmarkOnly=!S.showBookmarkOnly;
+  this.style.cssText=S.showBookmarkOnly?'background:var(--amber);color:#fff;border-color:var(--amber)':'';
+  applyFilters();
+});
+$('view-all-btn').addEventListener('click',()=>{S.viewAll=!S.viewAll;toggleViewAll();});
+
+['filter-level','filter-topic','filter-type'].forEach(id=>$(id).addEventListener('change',applyFilters));
+
+document.querySelectorAll('.rfbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.rfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');S.reviewFilter=btn.dataset.rf;renderReview();
+}));
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;
+  const q=S.filtered[S.idx];if(!q)return;
+  if(e.key==='ArrowLeft'){goTo(S.idx-1);return;}
+  if(e.key==='ArrowRight'){goTo(S.idx+1);return;}
+  if(e.key==='e'||e.key==='E'){
+    if(S.answers[q.id]?.selected){S.expVisible=!S.expVisible;S.expVisible?showExplanation(q):hideExplanation();}
+    return;
+  }
+  const lbl={a:'A',b:'B',c:'C',d:'D'}[e.key.toLowerCase()];
+  if(lbl&&!S.answers[q.id]?.selected)selectAnswer(q.id,lbl,q.answer);
+});
+
+/* ── Prevent accidental refresh / navigation ── */
+function hasProgress(){
+  return Object.keys(S.answers).length > 0;
+}
+
+// Browser close / tab close / address bar navigation
+window.addEventListener('beforeunload', function(e){
+  if(hasProgress()){
+    e.preventDefault();
+    e.returnValue = 'You have quiz progress that will be lost. Leave anyway?';
+    return e.returnValue;
+  }
+});
+
+// F5 / Ctrl+R / Cmd+R key intercept
+document.addEventListener('keydown', function(e){
+  if(!hasProgress()) return;
+  const isRefresh = e.key === 'F5' ||
+    ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'r');
+  if(isRefresh){
+    e.preventDefault();
+    showRefreshWarn();
+  }
+}, true);  // capture phase so it fires before other handlers
+
+function showRefreshWarn(){
+  let el = document.getElementById('refresh-warn');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'refresh-warn';
+    el.textContent = '⚠ Refresh blocked – quiz in progress!';
+    document.body.appendChild(el);
+  }
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+
+init();
+
+
+
+</script>
+</body>
+</html>
