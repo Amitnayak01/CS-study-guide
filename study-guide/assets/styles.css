@@ -850,3 +850,81 @@ a.brand:hover .logo { transform: scale(1.06); }
 
 /* Heading above sidebar topics that share a parent folder */
 .nav-group { margin: 0.55rem 0 0.1rem 0.9rem; color: var(--muted); font-size: 0.72rem; font-weight: 600; }
+
+
+
+
+/* Phone, full screen only: hide extra tools, float the exit button */
+@media (max-width: 720px), (max-height: 500px) {
+  #viewer.is-fullscreen #fit-screen-btn,
+  #viewer.is-fullscreen #zoom-toggle,
+  #viewer.is-fullscreen #zoom-controls,
+  #viewer.is-fullscreen #pdf-tools,
+  #viewer.is-expanded #fit-screen-btn,
+  #viewer.is-expanded #zoom-toggle,
+  #viewer.is-expanded #zoom-controls,
+  #viewer.is-expanded #pdf-tools {
+    display: none !important;
+  }
+
+  #viewer.is-fullscreen,
+  #viewer.is-expanded {
+    padding: 0 !important;
+  }
+  #viewer.is-fullscreen .viewer-tools,
+  #viewer.is-expanded .viewer-tools {
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  #viewer.is-fullscreen .viewer-tools > :first-child,
+  #viewer.is-expanded .viewer-tools > :first-child {
+    position: fixed !important;
+    top: 8px;
+    right: 8px;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    box-shadow: none !important;
+  }
+}
+
+
+/* Phone: small toolbar buttons */
+@media (max-width: 720px), (max-height: 500px) {
+  #viewer .btn {
+    padding: 3px 7px !important;
+    font-size: 11px !important;
+    min-height: 0 !important;
+    height: 26px !important;
+    line-height: 1 !important;
+    border-radius: 6px !important;
+    gap: 3px !important;
+  }
+
+  #viewer .page-input {
+    width: 36px !important;
+    height: 26px !important;
+    padding: 0 2px !important;
+    font-size: 11px !important;
+    text-align: center;
+  }
+
+  #viewer .pdf-tools,
+  #viewer .pdf-tools .muted {
+    font-size: 11px !important;
+    gap: 3px !important;
+  }
+
+  #viewer .btn svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+}
+
+
+
+
