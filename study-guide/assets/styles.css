@@ -926,5 +926,10 @@ a.brand:hover .logo { transform: scale(1.06); }
 }
 
 
-
+/* Phone: hide the Exit full screen button (real full screen only) */
+@media (max-width: 720px), (max-height: 500px) {
+  #viewer.is-fullscreen .viewer-tools > :first-child {
+    display: none !important;
+  }
+}
 
